@@ -18,19 +18,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.trilemon</groupId>
+    <groupId>com.trilemon.top</groupId>
     <artifactId>360boss</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>360boss-parent</module>
-        <module>360boss-auto-shelf</module>
+        <module>parent</module>
+        <module>shelf</module>
     </modules>
 
-    <name>trilemon-360boss</name>
+    <name>Trilemon-TOP-360boss</name>
     <packaging>pom</packaging>
 
     <description>360boss</description>
-    <url>https://github.com/KevinGu/trilemon-360boss</url>
+    <url>https://github.com/KevinGu/Trilemon-TOP-360boss</url>
     <inceptionYear>2013</inceptionYear>
     <organization>
         <name>trilemon</name>
@@ -52,6 +52,6 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/KevinGu/trilemon-360boss/issues</url>
+        <url>https://github.com/KevinGu/Trilemon-TOP-360boss/issues</url>
     </issueManagement>
 </project>

@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>360boss-parent</artifactId>
-        <groupId>com.trilemon</groupId>
+        <artifactId>parent</artifactId>
+        <groupId>com.trilemon.top.360boss</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../360boss-parent</relativePath>
+        <relativePath>../parent</relativePath>
     </parent>
 
-    <groupId>com.trilemon</groupId>
-    <artifactId>360boss-auto-shelf</artifactId>
+    <groupId>com.trilemon.top.360boss</groupId>
+    <artifactId>shelf</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
