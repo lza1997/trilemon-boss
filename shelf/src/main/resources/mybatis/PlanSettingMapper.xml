@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.trilemon.top.boss360.shelf.dao.PlanSettingMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.shelf.model.PlanSetting" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="exclude_keywords" property="excludeKeywords" jdbcType="INTEGER" />
+    <result column="exclude_item_iids" property="excludeItemIids" jdbcType="INTEGER" />
+    <result column="include_cids" property="includeCids" jdbcType="INTEGER" />
+    <result column="include_keywords" property="includeKeywords" jdbcType="INTEGER" />
+    <result column="include_item_iids" property="includeItemIids" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="INTEGER" />
+    <result column="upd_time" property="updTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, name, type, exclude_keywords, exclude_item_iids, include_cids, include_keywords, 
+    include_item_iids, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.shelf.model.PlanSettingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from plan_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from plan_setting
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from plan_setting
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.shelf.model.PlanSettingExample" >
+    delete from plan_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.top.boss360.shelf.model.PlanSetting" >
+    insert into plan_setting (id, user_id, name, 
+      type, exclude_keywords, exclude_item_iids, 
+      include_cids, include_keywords, include_item_iids, 
+      add_time, upd_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{name,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{excludeKeywords,jdbcType=INTEGER}, #{excludeItemIids,jdbcType=INTEGER}, 
+      #{includeCids,jdbcType=INTEGER}, #{includeKeywords,jdbcType=INTEGER}, #{includeItemIids,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=INTEGER}, #{updTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.shelf.model.PlanSetting" >
+    insert into plan_setting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="excludeKeywords != null" >
+        exclude_keywords,
+      </if>
+      <if test="excludeItemIids != null" >
+        exclude_item_iids,
+      </if>
+      <if test="includeCids != null" >
+        include_cids,
+      </if>
+      <if test="includeKeywords != null" >
+        include_keywords,
+      </if>
+      <if test="includeItemIids != null" >
+        include_item_iids,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="excludeKeywords != null" >
+        #{excludeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="excludeItemIids != null" >
+        #{excludeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="includeCids != null" >
+        #{includeCids,jdbcType=INTEGER},
+      </if>
+      <if test="includeKeywords != null" >
+        #{includeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="includeItemIids != null" >
+        #{includeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.top.boss360.shelf.model.PlanSettingExample" resultType="java.lang.Integer" >
+    select count(*) from plan_setting
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update plan_setting
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.excludeKeywords != null" >
+        exclude_keywords = #{record.excludeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="record.excludeItemIids != null" >
+        exclude_item_iids = #{record.excludeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="record.includeCids != null" >
+        include_cids = #{record.includeCids,jdbcType=INTEGER},
+      </if>
+      <if test="record.includeKeywords != null" >
+        include_keywords = #{record.includeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="record.includeItemIids != null" >
+        include_item_iids = #{record.includeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update plan_setting
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
+      exclude_keywords = #{record.excludeKeywords,jdbcType=INTEGER},
+      exclude_item_iids = #{record.excludeItemIids,jdbcType=INTEGER},
+      include_cids = #{record.includeCids,jdbcType=INTEGER},
+      include_keywords = #{record.includeKeywords,jdbcType=INTEGER},
+      include_item_iids = #{record.includeItemIids,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=INTEGER},
+      upd_time = #{record.updTime,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.shelf.model.PlanSetting" >
+    update plan_setting
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="excludeKeywords != null" >
+        exclude_keywords = #{excludeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="excludeItemIids != null" >
+        exclude_item_iids = #{excludeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="includeCids != null" >
+        include_cids = #{includeCids,jdbcType=INTEGER},
+      </if>
+      <if test="includeKeywords != null" >
+        include_keywords = #{includeKeywords,jdbcType=INTEGER},
+      </if>
+      <if test="includeItemIids != null" >
+        include_item_iids = #{includeItemIids,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.shelf.model.PlanSetting" >
+    update plan_setting
+    set user_id = #{userId,jdbcType=INTEGER},
+      name = #{name,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      exclude_keywords = #{excludeKeywords,jdbcType=INTEGER},
+      exclude_item_iids = #{excludeItemIids,jdbcType=INTEGER},
+      include_cids = #{includeCids,jdbcType=INTEGER},
+      include_keywords = #{includeKeywords,jdbcType=INTEGER},
+      include_item_iids = #{includeItemIids,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=INTEGER},
+      upd_time = #{updTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
