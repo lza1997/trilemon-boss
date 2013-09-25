@@ -24,8 +24,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.taobao</groupId>
-            <artifactId>sdk</artifactId>
+            <groupId>com.taobao.sdk</groupId>
+            <artifactId>standard</artifactId>
         </dependency>
 
         <dependency>

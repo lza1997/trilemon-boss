@@ -53,9 +53,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.taobao</groupId>
-                <artifactId>sdk</artifactId>
-                <version>standard-20130925</version>
+                <groupId>com.taobao.sdk</groupId>
+                <artifactId>standard</artifactId>
+                <version>20130925</version>
             </dependency>
 
             <!-- SPRING basic begin(一般不需要显式定义) -->
