@@ -1,27 +1,23 @@
 package com.trilemon.top.boss360.shelf.model;
 
+import com.sun.tools.javac.util.List;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
 public class PlanSetting {
     private Integer id;
-
     private Integer userId;
-
     private Integer name;
-
+    private Boolean isAuto;
     private Integer type;
-
     private Integer excludeKeywords;
-
     private Integer excludeItemIids;
-
     private Integer includeCids;
-
     private Integer includeKeywords;
-
     private Integer includeItemIids;
-
     private Integer addTime;
-
     private Integer updTime;
+    private java.util.List<Interval> parsedAdjustPeriod;
 
     public Integer getId() {
         return id;
@@ -45,6 +41,14 @@ public class PlanSetting {
 
     public void setName(Integer name) {
         this.name = name;
+    }
+
+    public Boolean getAuto() {
+        return isAuto;
+    }
+
+    public void setAuto(Boolean auto) {
+        isAuto = auto;
     }
 
     public Integer getType() {
@@ -109,5 +113,13 @@ public class PlanSetting {
 
     public void setUpdTime(Integer updTime) {
         this.updTime = updTime;
+    }
+
+    public List<DateTime> getParsedAdjustTime() {
+       return null;
+    }
+
+    public java.util.List<Interval> getParsedAdjustPeriod() {
+        return parsedAdjustPeriod;
     }
 }

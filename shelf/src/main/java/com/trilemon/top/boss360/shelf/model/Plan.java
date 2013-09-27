@@ -1,5 +1,7 @@
 package com.trilemon.top.boss360.shelf.model;
 
+import java.util.Date;
+
 public class Plan {
     private Integer id;
 
@@ -7,7 +9,7 @@ public class Plan {
 
     private Integer userId;
 
-    private Integer itemIid;
+    private Long itemIid;
 
     private Integer itemName;
 
@@ -15,7 +17,7 @@ public class Plan {
 
     private Integer state;
 
-    private Integer planListingTime;
+    private Date planListingTime;
 
     private Integer listingTime;
 
@@ -47,11 +49,11 @@ public class Plan {
         this.userId = userId;
     }
 
-    public Integer getItemIid() {
+    public Long getItemIid() {
         return itemIid;
     }
 
-    public void setItemIid(Integer itemIid) {
+    public void setItemIid(Long itemIid) {
         this.itemIid = itemIid;
     }
 
@@ -79,11 +81,11 @@ public class Plan {
         this.state = state;
     }
 
-    public Integer getPlanListingTime() {
+    public Date getPlanListingTime() {
         return planListingTime;
     }
 
-    public void setPlanListingTime(Integer planListingTime) {
+    public void setPlanListingTime(Date planListingTime) {
         this.planListingTime = planListingTime;
     }
 

@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.trilemon.top.360boss</groupId>
-    <artifactId>shelf</artifactId>
+    <artifactId>base</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -28,10 +28,6 @@
             <artifactId>standard</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>

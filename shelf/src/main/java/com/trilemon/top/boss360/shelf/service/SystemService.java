@@ -34,6 +34,7 @@ import com.google.common.collect.Maps;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -42,6 +43,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * @author kevin
  */
+@Service
 public class SystemService {
     private static Logger logger = LoggerFactory.getLogger(SystemService.class);
     private Map<String, ThreadPoolExecutor> threadPoolExecutorMap = Maps.newHashMap();

@@ -28,4 +28,6 @@ public interface PlanMapper {
     int updateByPrimaryKeySelective(Plan record);
 
     int updateByPrimaryKey(Plan record);
+
+    void insert(List<Plan> plans);
 }

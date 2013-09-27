@@ -58,6 +58,12 @@
                 <version>20130925</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>0.9.9-RC1</version>
+            </dependency>
+
             <!-- SPRING basic begin(一般不需要显式定义) -->
             <dependency>
                 <groupId>org.springframework</groupId>
