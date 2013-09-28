@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>parent</artifactId>
-        <groupId>com.trilemon.top.360boss</groupId>
+        <artifactId>trilemon-360boss-parent</artifactId>
+        <groupId>com.trilemon.360boss</groupId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../parent</relativePath>
     </parent>
 
-    <groupId>com.trilemon.top.360boss</groupId>
-    <artifactId>base</artifactId>
+    <groupId>com.trilemon.360boss</groupId>
+    <artifactId>trilemon-360boss-base</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -21,6 +21,11 @@
         <dependency>
             <groupId>com.trilemon.commons</groupId>
             <artifactId>trilemon-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.trilemon.360boss</groupId>
+            <artifactId>trilemon-360boss-base-client</artifactId>
         </dependency>
 
         <dependency>

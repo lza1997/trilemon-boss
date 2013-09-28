@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoShopMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoShop" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="cid" property="cid" jdbcType="BIGINT" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="bulletin" property="bulletin" jdbcType="VARCHAR" />
+    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="modified" property="modified" jdbcType="TIMESTAMP" />
+    <result column="shop_score_item_score" property="shopScoreItemScore" jdbcType="VARCHAR" />
+    <result column="shop_score_service_score" property="shopScoreServiceScore" jdbcType="VARCHAR" />
+    <result column="shop_score_delivery_score" property="shopScoreDeliveryScore" jdbcType="VARCHAR" />
+    <result column="remain_count" property="remainCount" jdbcType="BIGINT" />
+    <result column="all_count" property="allCount" jdbcType="BIGINT" />
+    <result column="used_count" property="usedCount" jdbcType="BIGINT" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, cid, nick, title, description, bulletin, pic_path, created, modified, 
+    shop_score_item_score, shop_score_service_score, shop_score_delivery_score, remain_count, 
+    all_count, used_count, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from taobao_shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from taobao_shop
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from taobao_shop
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" >
+    delete from taobao_shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+    insert into taobao_shop (id, user_id, cid, 
+      nick, title, description, 
+      bulletin, pic_path, created, 
+      modified, shop_score_item_score, shop_score_service_score, 
+      shop_score_delivery_score, remain_count, all_count, 
+      used_count, add_time, upd_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{cid,jdbcType=BIGINT}, 
+      #{nick,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{bulletin,jdbcType=VARCHAR}, #{picPath,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+      #{modified,jdbcType=TIMESTAMP}, #{shopScoreItemScore,jdbcType=VARCHAR}, #{shopScoreServiceScore,jdbcType=VARCHAR}, 
+      #{shopScoreDeliveryScore,jdbcType=VARCHAR}, #{remainCount,jdbcType=BIGINT}, #{allCount,jdbcType=BIGINT}, 
+      #{usedCount,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+    insert into taobao_shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="bulletin != null" >
+        bulletin,
+      </if>
+      <if test="picPath != null" >
+        pic_path,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="modified != null" >
+        modified,
+      </if>
+      <if test="shopScoreItemScore != null" >
+        shop_score_item_score,
+      </if>
+      <if test="shopScoreServiceScore != null" >
+        shop_score_service_score,
+      </if>
+      <if test="shopScoreDeliveryScore != null" >
+        shop_score_delivery_score,
+      </if>
+      <if test="remainCount != null" >
+        remain_count,
+      </if>
+      <if test="allCount != null" >
+        all_count,
+      </if>
+      <if test="usedCount != null" >
+        used_count,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null" >
+        #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="bulletin != null" >
+        #{bulletin,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shopScoreItemScore != null" >
+        #{shopScoreItemScore,jdbcType=VARCHAR},
+      </if>
+      <if test="shopScoreServiceScore != null" >
+        #{shopScoreServiceScore,jdbcType=VARCHAR},
+      </if>
+      <if test="shopScoreDeliveryScore != null" >
+        #{shopScoreDeliveryScore,jdbcType=VARCHAR},
+      </if>
+      <if test="remainCount != null" >
+        #{remainCount,jdbcType=BIGINT},
+      </if>
+      <if test="allCount != null" >
+        #{allCount,jdbcType=BIGINT},
+      </if>
+      <if test="usedCount != null" >
+        #{usedCount,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" resultType="java.lang.Integer" >
+    select count(*) from taobao_shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update taobao_shop
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cid != null" >
+        cid = #{record.cid,jdbcType=BIGINT},
+      </if>
+      <if test="record.nick != null" >
+        nick = #{record.nick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bulletin != null" >
+        bulletin = #{record.bulletin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picPath != null" >
+        pic_path = #{record.picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modified != null" >
+        modified = #{record.modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.shopScoreItemScore != null" >
+        shop_score_item_score = #{record.shopScoreItemScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopScoreServiceScore != null" >
+        shop_score_service_score = #{record.shopScoreServiceScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopScoreDeliveryScore != null" >
+        shop_score_delivery_score = #{record.shopScoreDeliveryScore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remainCount != null" >
+        remain_count = #{record.remainCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.allCount != null" >
+        all_count = #{record.allCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.usedCount != null" >
+        used_count = #{record.usedCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update taobao_shop
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      cid = #{record.cid,jdbcType=BIGINT},
+      nick = #{record.nick,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      bulletin = #{record.bulletin,jdbcType=VARCHAR},
+      pic_path = #{record.picPath,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      modified = #{record.modified,jdbcType=TIMESTAMP},
+      shop_score_item_score = #{record.shopScoreItemScore,jdbcType=VARCHAR},
+      shop_score_service_score = #{record.shopScoreServiceScore,jdbcType=VARCHAR},
+      shop_score_delivery_score = #{record.shopScoreDeliveryScore,jdbcType=VARCHAR},
+      remain_count = #{record.remainCount,jdbcType=BIGINT},
+      all_count = #{record.allCount,jdbcType=BIGINT},
+      used_count = #{record.usedCount,jdbcType=BIGINT},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+    update taobao_shop
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="cid != null" >
+        cid = #{cid,jdbcType=BIGINT},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="bulletin != null" >
+        bulletin = #{bulletin,jdbcType=VARCHAR},
+      </if>
+      <if test="picPath != null" >
+        pic_path = #{picPath,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modified != null" >
+        modified = #{modified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shopScoreItemScore != null" >
+        shop_score_item_score = #{shopScoreItemScore,jdbcType=VARCHAR},
+      </if>
+      <if test="shopScoreServiceScore != null" >
+        shop_score_service_score = #{shopScoreServiceScore,jdbcType=VARCHAR},
+      </if>
+      <if test="shopScoreDeliveryScore != null" >
+        shop_score_delivery_score = #{shopScoreDeliveryScore,jdbcType=VARCHAR},
+      </if>
+      <if test="remainCount != null" >
+        remain_count = #{remainCount,jdbcType=BIGINT},
+      </if>
+      <if test="allCount != null" >
+        all_count = #{allCount,jdbcType=BIGINT},
+      </if>
+      <if test="usedCount != null" >
+        used_count = #{usedCount,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+    update taobao_shop
+    set user_id = #{userId,jdbcType=BIGINT},
+      cid = #{cid,jdbcType=BIGINT},
+      nick = #{nick,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      bulletin = #{bulletin,jdbcType=VARCHAR},
+      pic_path = #{picPath,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      modified = #{modified,jdbcType=TIMESTAMP},
+      shop_score_item_score = #{shopScoreItemScore,jdbcType=VARCHAR},
+      shop_score_service_score = #{shopScoreServiceScore,jdbcType=VARCHAR},
+      shop_score_delivery_score = #{shopScoreDeliveryScore,jdbcType=VARCHAR},
+      remain_count = #{remainCount,jdbcType=BIGINT},
+      all_count = #{allCount,jdbcType=BIGINT},
+      used_count = #{usedCount,jdbcType=BIGINT},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

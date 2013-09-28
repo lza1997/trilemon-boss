@@ -3,14 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.trilemon.top.360boss</groupId>
-    <artifactId>parent</artifactId>
+    <groupId>com.trilemon.360boss</groupId>
+    <artifactId>trilemon-360boss-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <!-- 主要依赖库的版本定义 -->
-        <trilemon.version>1.0-SNAPSHOT</trilemon.version>
+        <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
+        <trilemon.boss360.base.version>1.0-SNAPSHOT</trilemon.boss360.base.version>
         <spring.version>3.2.4.RELEASE</spring.version>
         <mybatis.version>3.2.2</mybatis.version>
         <mybatis-spring.version>1.2.0</mybatis-spring.version>
@@ -49,7 +50,13 @@
             <dependency>
                 <groupId>com.trilemon.commons</groupId>
                 <artifactId>trilemon-commons</artifactId>
-                <version>${trilemon.version}</version>
+                <version>${trilemon.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.trilemon.360boss</groupId>
+                <artifactId>trilemon-360boss-base-client</artifactId>
+                <version>${trilemon.boss360.base.version}</version>
             </dependency>
 
             <dependency>

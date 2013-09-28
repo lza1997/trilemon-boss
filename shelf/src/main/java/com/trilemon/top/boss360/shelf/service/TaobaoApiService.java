@@ -138,12 +138,14 @@ public class TaobaoApiService {
             Object cacheValue = memcachedClient.get(cacheKey);
             if (null != cacheValue) {
                 int count = Integer.valueOf(String.valueOf(cacheValue));
-                String[] keys = cacheKey.split(":");
-                // insert and update database
-                //clear cache
-                memcachedClient.set(cacheKey, CACHE_EXPIRE_TIME, "0");
-                totalApiExecTime.remove(cacheKey);
-                totalApiExecCount.remove(cacheKey);
+                if (count == 0) {
+                    String[] keys = cacheKey.split(":");
+                    // insert and update database
+                    //clear cache
+                    memcachedClient.set(cacheKey, CACHE_EXPIRE_TIME, "0");
+                    totalApiExecTime.remove(cacheKey);
+                    totalApiExecCount.remove(cacheKey);
+                }
             }
         }
     }

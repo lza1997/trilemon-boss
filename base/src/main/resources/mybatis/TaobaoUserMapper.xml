@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoUserMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoUser" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="buyer_credit_level" property="buyerCreditLevel" jdbcType="TINYINT" />
+    <result column="buyer_credit_score" property="buyerCreditScore" jdbcType="INTEGER" />
+    <result column="buyer_credit_total_num" property="buyerCreditTotalNum" jdbcType="INTEGER" />
+    <result column="buyer_credit_good_num" property="buyerCreditGoodNum" jdbcType="INTEGER" />
+    <result column="seller_credit_level" property="sellerCreditLevel" jdbcType="TINYINT" />
+    <result column="seller_credit_score" property="sellerCreditScore" jdbcType="INTEGER" />
+    <result column="seller_credit_total_num" property="sellerCreditTotalNum" jdbcType="INTEGER" />
+    <result column="seller_credit_good_num" property="sellerCreditGoodNum" jdbcType="INTEGER" />
+    <result column="location_country" property="locationCountry" jdbcType="VARCHAR" />
+    <result column="location_state" property="locationState" jdbcType="VARCHAR" />
+    <result column="location_city" property="locationCity" jdbcType="VARCHAR" />
+    <result column="location_district" property="locationDistrict" jdbcType="VARCHAR" />
+    <result column="location_address" property="locationAddress" jdbcType="VARCHAR" />
+    <result column="location_zip" property="locationZip" jdbcType="VARCHAR" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="last_visit" property="lastVisit" jdbcType="TIMESTAMP" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="has_more_pic" property="hasMorePic" jdbcType="BIT" />
+    <result column="item_img_num" property="itemImgNum" jdbcType="INTEGER" />
+    <result column="item_img_size" property="itemImgSize" jdbcType="INTEGER" />
+    <result column="prop_img_num" property="propImgNum" jdbcType="INTEGER" />
+    <result column="prop_img_size" property="propImgSize" jdbcType="INTEGER" />
+    <result column="auto_repost" property="autoRepost" jdbcType="VARCHAR" />
+    <result column="promoted_type" property="promotedType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="alipay_bind" property="alipayBind" jdbcType="VARCHAR" />
+    <result column="consumer_protection" property="consumerProtection" jdbcType="BIT" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="liangpin" property="liangpin" jdbcType="BIT" />
+    <result column="sign_food_seller_promise" property="signFoodSellerPromise" jdbcType="BIT" />
+    <result column="has_shop" property="hasShop" jdbcType="BIT" />
+    <result column="is_lightning_consignment" property="isLightningConsignment" jdbcType="BIT" />
+    <result column="has_sub_stock" property="hasSubStock" jdbcType="BIT" />
+    <result column="is_golden_seller" property="isGoldenSeller" jdbcType="BIT" />
+    <result column="vip_info" property="vipInfo" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="magazine_subscribe" property="magazineSubscribe" jdbcType="BIT" />
+    <result column="vertical_market" property="verticalMarket" jdbcType="VARCHAR" />
+    <result column="online_gaming" property="onlineGaming" jdbcType="BIT" />
+    <result column="alipay_id" property="alipayId" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, uid, nick, sex, buyer_credit_level, buyer_credit_score, buyer_credit_total_num, 
+    buyer_credit_good_num, seller_credit_level, seller_credit_score, seller_credit_total_num, 
+    seller_credit_good_num, location_country, location_state, location_city, location_district, 
+    location_address, location_zip, created, last_visit, birthday, type, has_more_pic, 
+    item_img_num, item_img_size, prop_img_num, prop_img_size, auto_repost, promoted_type, 
+    status, alipay_bind, consumer_protection, avatar, liangpin, sign_food_seller_promise, 
+    has_shop, is_lightning_consignment, has_sub_stock, is_golden_seller, vip_info, email, 
+    magazine_subscribe, vertical_market, online_gaming, alipay_id, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from taobao_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from taobao_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from taobao_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoUserExample" >
+    delete from taobao_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoUser" >
+    insert into taobao_user (id, user_id, uid, 
+      nick, sex, buyer_credit_level, 
+      buyer_credit_score, buyer_credit_total_num, 
+      buyer_credit_good_num, seller_credit_level, 
+      seller_credit_score, seller_credit_total_num, 
+      seller_credit_good_num, location_country, location_state, 
+      location_city, location_district, location_address, 
+      location_zip, created, last_visit, 
+      birthday, type, has_more_pic, 
+      item_img_num, item_img_size, prop_img_num, 
+      prop_img_size, auto_repost, promoted_type, 
+      status, alipay_bind, consumer_protection, 
+      avatar, liangpin, sign_food_seller_promise, 
+      has_shop, is_lightning_consignment, has_sub_stock, 
+      is_golden_seller, vip_info, email, 
+      magazine_subscribe, vertical_market, online_gaming, 
+      alipay_id, add_time, upd_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{uid,jdbcType=VARCHAR}, 
+      #{nick,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{buyerCreditLevel,jdbcType=TINYINT}, 
+      #{buyerCreditScore,jdbcType=INTEGER}, #{buyerCreditTotalNum,jdbcType=INTEGER}, 
+      #{buyerCreditGoodNum,jdbcType=INTEGER}, #{sellerCreditLevel,jdbcType=TINYINT}, 
+      #{sellerCreditScore,jdbcType=INTEGER}, #{sellerCreditTotalNum,jdbcType=INTEGER}, 
+      #{sellerCreditGoodNum,jdbcType=INTEGER}, #{locationCountry,jdbcType=VARCHAR}, #{locationState,jdbcType=VARCHAR}, 
+      #{locationCity,jdbcType=VARCHAR}, #{locationDistrict,jdbcType=VARCHAR}, #{locationAddress,jdbcType=VARCHAR}, 
+      #{locationZip,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{lastVisit,jdbcType=TIMESTAMP}, 
+      #{birthday,jdbcType=DATE}, #{type,jdbcType=VARCHAR}, #{hasMorePic,jdbcType=BIT}, 
+      #{itemImgNum,jdbcType=INTEGER}, #{itemImgSize,jdbcType=INTEGER}, #{propImgNum,jdbcType=INTEGER}, 
+      #{propImgSize,jdbcType=INTEGER}, #{autoRepost,jdbcType=VARCHAR}, #{promotedType,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{alipayBind,jdbcType=VARCHAR}, #{consumerProtection,jdbcType=BIT}, 
+      #{avatar,jdbcType=VARCHAR}, #{liangpin,jdbcType=BIT}, #{signFoodSellerPromise,jdbcType=BIT}, 
+      #{hasShop,jdbcType=BIT}, #{isLightningConsignment,jdbcType=BIT}, #{hasSubStock,jdbcType=BIT}, 
+      #{isGoldenSeller,jdbcType=BIT}, #{vipInfo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{magazineSubscribe,jdbcType=BIT}, #{verticalMarket,jdbcType=VARCHAR}, #{onlineGaming,jdbcType=BIT}, 
+      #{alipayId,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoUser" >
+    insert into taobao_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="buyerCreditLevel != null" >
+        buyer_credit_level,
+      </if>
+      <if test="buyerCreditScore != null" >
+        buyer_credit_score,
+      </if>
+      <if test="buyerCreditTotalNum != null" >
+        buyer_credit_total_num,
+      </if>
+      <if test="buyerCreditGoodNum != null" >
+        buyer_credit_good_num,
+      </if>
+      <if test="sellerCreditLevel != null" >
+        seller_credit_level,
+      </if>
+      <if test="sellerCreditScore != null" >
+        seller_credit_score,
+      </if>
+      <if test="sellerCreditTotalNum != null" >
+        seller_credit_total_num,
+      </if>
+      <if test="sellerCreditGoodNum != null" >
+        seller_credit_good_num,
+      </if>
+      <if test="locationCountry != null" >
+        location_country,
+      </if>
+      <if test="locationState != null" >
+        location_state,
+      </if>
+      <if test="locationCity != null" >
+        location_city,
+      </if>
+      <if test="locationDistrict != null" >
+        location_district,
+      </if>
+      <if test="locationAddress != null" >
+        location_address,
+      </if>
+      <if test="locationZip != null" >
+        location_zip,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="lastVisit != null" >
+        last_visit,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="hasMorePic != null" >
+        has_more_pic,
+      </if>
+      <if test="itemImgNum != null" >
+        item_img_num,
+      </if>
+      <if test="itemImgSize != null" >
+        item_img_size,
+      </if>
+      <if test="propImgNum != null" >
+        prop_img_num,
+      </if>
+      <if test="propImgSize != null" >
+        prop_img_size,
+      </if>
+      <if test="autoRepost != null" >
+        auto_repost,
+      </if>
+      <if test="promotedType != null" >
+        promoted_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="alipayBind != null" >
+        alipay_bind,
+      </if>
+      <if test="consumerProtection != null" >
+        consumer_protection,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="liangpin != null" >
+        liangpin,
+      </if>
+      <if test="signFoodSellerPromise != null" >
+        sign_food_seller_promise,
+      </if>
+      <if test="hasShop != null" >
+        has_shop,
+      </if>
+      <if test="isLightningConsignment != null" >
+        is_lightning_consignment,
+      </if>
+      <if test="hasSubStock != null" >
+        has_sub_stock,
+      </if>
+      <if test="isGoldenSeller != null" >
+        is_golden_seller,
+      </if>
+      <if test="vipInfo != null" >
+        vip_info,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="magazineSubscribe != null" >
+        magazine_subscribe,
+      </if>
+      <if test="verticalMarket != null" >
+        vertical_market,
+      </if>
+      <if test="onlineGaming != null" >
+        online_gaming,
+      </if>
+      <if test="alipayId != null" >
+        alipay_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerCreditLevel != null" >
+        #{buyerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="buyerCreditScore != null" >
+        #{buyerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="buyerCreditTotalNum != null" >
+        #{buyerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="buyerCreditGoodNum != null" >
+        #{buyerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditLevel != null" >
+        #{sellerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="sellerCreditScore != null" >
+        #{sellerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditTotalNum != null" >
+        #{sellerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditGoodNum != null" >
+        #{sellerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="locationCountry != null" >
+        #{locationCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="locationState != null" >
+        #{locationState,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCity != null" >
+        #{locationCity,jdbcType=VARCHAR},
+      </if>
+      <if test="locationDistrict != null" >
+        #{locationDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="locationAddress != null" >
+        #{locationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="locationZip != null" >
+        #{locationZip,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastVisit != null" >
+        #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMorePic != null" >
+        #{hasMorePic,jdbcType=BIT},
+      </if>
+      <if test="itemImgNum != null" >
+        #{itemImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemImgSize != null" >
+        #{itemImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="propImgNum != null" >
+        #{propImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="propImgSize != null" >
+        #{propImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="autoRepost != null" >
+        #{autoRepost,jdbcType=VARCHAR},
+      </if>
+      <if test="promotedType != null" >
+        #{promotedType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayBind != null" >
+        #{alipayBind,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerProtection != null" >
+        #{consumerProtection,jdbcType=BIT},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="liangpin != null" >
+        #{liangpin,jdbcType=BIT},
+      </if>
+      <if test="signFoodSellerPromise != null" >
+        #{signFoodSellerPromise,jdbcType=BIT},
+      </if>
+      <if test="hasShop != null" >
+        #{hasShop,jdbcType=BIT},
+      </if>
+      <if test="isLightningConsignment != null" >
+        #{isLightningConsignment,jdbcType=BIT},
+      </if>
+      <if test="hasSubStock != null" >
+        #{hasSubStock,jdbcType=BIT},
+      </if>
+      <if test="isGoldenSeller != null" >
+        #{isGoldenSeller,jdbcType=BIT},
+      </if>
+      <if test="vipInfo != null" >
+        #{vipInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="magazineSubscribe != null" >
+        #{magazineSubscribe,jdbcType=BIT},
+      </if>
+      <if test="verticalMarket != null" >
+        #{verticalMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineGaming != null" >
+        #{onlineGaming,jdbcType=BIT},
+      </if>
+      <if test="alipayId != null" >
+        #{alipayId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoUserExample" resultType="java.lang.Integer" >
+    select count(*) from taobao_user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update taobao_user
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nick != null" >
+        nick = #{record.nick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        sex = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyerCreditLevel != null" >
+        buyer_credit_level = #{record.buyerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.buyerCreditScore != null" >
+        buyer_credit_score = #{record.buyerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.buyerCreditTotalNum != null" >
+        buyer_credit_total_num = #{record.buyerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.buyerCreditGoodNum != null" >
+        buyer_credit_good_num = #{record.buyerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sellerCreditLevel != null" >
+        seller_credit_level = #{record.sellerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="record.sellerCreditScore != null" >
+        seller_credit_score = #{record.sellerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="record.sellerCreditTotalNum != null" >
+        seller_credit_total_num = #{record.sellerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sellerCreditGoodNum != null" >
+        seller_credit_good_num = #{record.sellerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.locationCountry != null" >
+        location_country = #{record.locationCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationState != null" >
+        location_state = #{record.locationState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationCity != null" >
+        location_city = #{record.locationCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationDistrict != null" >
+        location_district = #{record.locationDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationAddress != null" >
+        location_address = #{record.locationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.locationZip != null" >
+        location_zip = #{record.locationZip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null" >
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastVisit != null" >
+        last_visit = #{record.lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hasMorePic != null" >
+        has_more_pic = #{record.hasMorePic,jdbcType=BIT},
+      </if>
+      <if test="record.itemImgNum != null" >
+        item_img_num = #{record.itemImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemImgSize != null" >
+        item_img_size = #{record.itemImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.propImgNum != null" >
+        prop_img_num = #{record.propImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.propImgSize != null" >
+        prop_img_size = #{record.propImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.autoRepost != null" >
+        auto_repost = #{record.autoRepost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotedType != null" >
+        promoted_type = #{record.promotedType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.alipayBind != null" >
+        alipay_bind = #{record.alipayBind,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consumerProtection != null" >
+        consumer_protection = #{record.consumerProtection,jdbcType=BIT},
+      </if>
+      <if test="record.avatar != null" >
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.liangpin != null" >
+        liangpin = #{record.liangpin,jdbcType=BIT},
+      </if>
+      <if test="record.signFoodSellerPromise != null" >
+        sign_food_seller_promise = #{record.signFoodSellerPromise,jdbcType=BIT},
+      </if>
+      <if test="record.hasShop != null" >
+        has_shop = #{record.hasShop,jdbcType=BIT},
+      </if>
+      <if test="record.isLightningConsignment != null" >
+        is_lightning_consignment = #{record.isLightningConsignment,jdbcType=BIT},
+      </if>
+      <if test="record.hasSubStock != null" >
+        has_sub_stock = #{record.hasSubStock,jdbcType=BIT},
+      </if>
+      <if test="record.isGoldenSeller != null" >
+        is_golden_seller = #{record.isGoldenSeller,jdbcType=BIT},
+      </if>
+      <if test="record.vipInfo != null" >
+        vip_info = #{record.vipInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.magazineSubscribe != null" >
+        magazine_subscribe = #{record.magazineSubscribe,jdbcType=BIT},
+      </if>
+      <if test="record.verticalMarket != null" >
+        vertical_market = #{record.verticalMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="record.onlineGaming != null" >
+        online_gaming = #{record.onlineGaming,jdbcType=BIT},
+      </if>
+      <if test="record.alipayId != null" >
+        alipay_id = #{record.alipayId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update taobao_user
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      uid = #{record.uid,jdbcType=VARCHAR},
+      nick = #{record.nick,jdbcType=VARCHAR},
+      sex = #{record.sex,jdbcType=VARCHAR},
+      buyer_credit_level = #{record.buyerCreditLevel,jdbcType=TINYINT},
+      buyer_credit_score = #{record.buyerCreditScore,jdbcType=INTEGER},
+      buyer_credit_total_num = #{record.buyerCreditTotalNum,jdbcType=INTEGER},
+      buyer_credit_good_num = #{record.buyerCreditGoodNum,jdbcType=INTEGER},
+      seller_credit_level = #{record.sellerCreditLevel,jdbcType=TINYINT},
+      seller_credit_score = #{record.sellerCreditScore,jdbcType=INTEGER},
+      seller_credit_total_num = #{record.sellerCreditTotalNum,jdbcType=INTEGER},
+      seller_credit_good_num = #{record.sellerCreditGoodNum,jdbcType=INTEGER},
+      location_country = #{record.locationCountry,jdbcType=VARCHAR},
+      location_state = #{record.locationState,jdbcType=VARCHAR},
+      location_city = #{record.locationCity,jdbcType=VARCHAR},
+      location_district = #{record.locationDistrict,jdbcType=VARCHAR},
+      location_address = #{record.locationAddress,jdbcType=VARCHAR},
+      location_zip = #{record.locationZip,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      last_visit = #{record.lastVisit,jdbcType=TIMESTAMP},
+      birthday = #{record.birthday,jdbcType=DATE},
+      type = #{record.type,jdbcType=VARCHAR},
+      has_more_pic = #{record.hasMorePic,jdbcType=BIT},
+      item_img_num = #{record.itemImgNum,jdbcType=INTEGER},
+      item_img_size = #{record.itemImgSize,jdbcType=INTEGER},
+      prop_img_num = #{record.propImgNum,jdbcType=INTEGER},
+      prop_img_size = #{record.propImgSize,jdbcType=INTEGER},
+      auto_repost = #{record.autoRepost,jdbcType=VARCHAR},
+      promoted_type = #{record.promotedType,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      alipay_bind = #{record.alipayBind,jdbcType=VARCHAR},
+      consumer_protection = #{record.consumerProtection,jdbcType=BIT},
+      avatar = #{record.avatar,jdbcType=VARCHAR},
+      liangpin = #{record.liangpin,jdbcType=BIT},
+      sign_food_seller_promise = #{record.signFoodSellerPromise,jdbcType=BIT},
+      has_shop = #{record.hasShop,jdbcType=BIT},
+      is_lightning_consignment = #{record.isLightningConsignment,jdbcType=BIT},
+      has_sub_stock = #{record.hasSubStock,jdbcType=BIT},
+      is_golden_seller = #{record.isGoldenSeller,jdbcType=BIT},
+      vip_info = #{record.vipInfo,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      magazine_subscribe = #{record.magazineSubscribe,jdbcType=BIT},
+      vertical_market = #{record.verticalMarket,jdbcType=VARCHAR},
+      online_gaming = #{record.onlineGaming,jdbcType=BIT},
+      alipay_id = #{record.alipayId,jdbcType=VARCHAR},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoUser" >
+    update taobao_user
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="buyerCreditLevel != null" >
+        buyer_credit_level = #{buyerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="buyerCreditScore != null" >
+        buyer_credit_score = #{buyerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="buyerCreditTotalNum != null" >
+        buyer_credit_total_num = #{buyerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="buyerCreditGoodNum != null" >
+        buyer_credit_good_num = #{buyerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditLevel != null" >
+        seller_credit_level = #{sellerCreditLevel,jdbcType=TINYINT},
+      </if>
+      <if test="sellerCreditScore != null" >
+        seller_credit_score = #{sellerCreditScore,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditTotalNum != null" >
+        seller_credit_total_num = #{sellerCreditTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="sellerCreditGoodNum != null" >
+        seller_credit_good_num = #{sellerCreditGoodNum,jdbcType=INTEGER},
+      </if>
+      <if test="locationCountry != null" >
+        location_country = #{locationCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="locationState != null" >
+        location_state = #{locationState,jdbcType=VARCHAR},
+      </if>
+      <if test="locationCity != null" >
+        location_city = #{locationCity,jdbcType=VARCHAR},
+      </if>
+      <if test="locationDistrict != null" >
+        location_district = #{locationDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="locationAddress != null" >
+        location_address = #{locationAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="locationZip != null" >
+        location_zip = #{locationZip,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastVisit != null" >
+        last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="hasMorePic != null" >
+        has_more_pic = #{hasMorePic,jdbcType=BIT},
+      </if>
+      <if test="itemImgNum != null" >
+        item_img_num = #{itemImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="itemImgSize != null" >
+        item_img_size = #{itemImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="propImgNum != null" >
+        prop_img_num = #{propImgNum,jdbcType=INTEGER},
+      </if>
+      <if test="propImgSize != null" >
+        prop_img_size = #{propImgSize,jdbcType=INTEGER},
+      </if>
+      <if test="autoRepost != null" >
+        auto_repost = #{autoRepost,jdbcType=VARCHAR},
+      </if>
+      <if test="promotedType != null" >
+        promoted_type = #{promotedType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="alipayBind != null" >
+        alipay_bind = #{alipayBind,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerProtection != null" >
+        consumer_protection = #{consumerProtection,jdbcType=BIT},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="liangpin != null" >
+        liangpin = #{liangpin,jdbcType=BIT},
+      </if>
+      <if test="signFoodSellerPromise != null" >
+        sign_food_seller_promise = #{signFoodSellerPromise,jdbcType=BIT},
+      </if>
+      <if test="hasShop != null" >
+        has_shop = #{hasShop,jdbcType=BIT},
+      </if>
+      <if test="isLightningConsignment != null" >
+        is_lightning_consignment = #{isLightningConsignment,jdbcType=BIT},
+      </if>
+      <if test="hasSubStock != null" >
+        has_sub_stock = #{hasSubStock,jdbcType=BIT},
+      </if>
+      <if test="isGoldenSeller != null" >
+        is_golden_seller = #{isGoldenSeller,jdbcType=BIT},
+      </if>
+      <if test="vipInfo != null" >
+        vip_info = #{vipInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="magazineSubscribe != null" >
+        magazine_subscribe = #{magazineSubscribe,jdbcType=BIT},
+      </if>
+      <if test="verticalMarket != null" >
+        vertical_market = #{verticalMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineGaming != null" >
+        online_gaming = #{onlineGaming,jdbcType=BIT},
+      </if>
+      <if test="alipayId != null" >
+        alipay_id = #{alipayId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoUser" >
+    update taobao_user
+    set user_id = #{userId,jdbcType=BIGINT},
+      uid = #{uid,jdbcType=VARCHAR},
+      nick = #{nick,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      buyer_credit_level = #{buyerCreditLevel,jdbcType=TINYINT},
+      buyer_credit_score = #{buyerCreditScore,jdbcType=INTEGER},
+      buyer_credit_total_num = #{buyerCreditTotalNum,jdbcType=INTEGER},
+      buyer_credit_good_num = #{buyerCreditGoodNum,jdbcType=INTEGER},
+      seller_credit_level = #{sellerCreditLevel,jdbcType=TINYINT},
+      seller_credit_score = #{sellerCreditScore,jdbcType=INTEGER},
+      seller_credit_total_num = #{sellerCreditTotalNum,jdbcType=INTEGER},
+      seller_credit_good_num = #{sellerCreditGoodNum,jdbcType=INTEGER},
+      location_country = #{locationCountry,jdbcType=VARCHAR},
+      location_state = #{locationState,jdbcType=VARCHAR},
+      location_city = #{locationCity,jdbcType=VARCHAR},
+      location_district = #{locationDistrict,jdbcType=VARCHAR},
+      location_address = #{locationAddress,jdbcType=VARCHAR},
+      location_zip = #{locationZip,jdbcType=VARCHAR},
+      created = #{created,jdbcType=TIMESTAMP},
+      last_visit = #{lastVisit,jdbcType=TIMESTAMP},
+      birthday = #{birthday,jdbcType=DATE},
+      type = #{type,jdbcType=VARCHAR},
+      has_more_pic = #{hasMorePic,jdbcType=BIT},
+      item_img_num = #{itemImgNum,jdbcType=INTEGER},
+      item_img_size = #{itemImgSize,jdbcType=INTEGER},
+      prop_img_num = #{propImgNum,jdbcType=INTEGER},
+      prop_img_size = #{propImgSize,jdbcType=INTEGER},
+      auto_repost = #{autoRepost,jdbcType=VARCHAR},
+      promoted_type = #{promotedType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      alipay_bind = #{alipayBind,jdbcType=VARCHAR},
+      consumer_protection = #{consumerProtection,jdbcType=BIT},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      liangpin = #{liangpin,jdbcType=BIT},
+      sign_food_seller_promise = #{signFoodSellerPromise,jdbcType=BIT},
+      has_shop = #{hasShop,jdbcType=BIT},
+      is_lightning_consignment = #{isLightningConsignment,jdbcType=BIT},
+      has_sub_stock = #{hasSubStock,jdbcType=BIT},
+      is_golden_seller = #{isGoldenSeller,jdbcType=BIT},
+      vip_info = #{vipInfo,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      magazine_subscribe = #{magazineSubscribe,jdbcType=BIT},
+      vertical_market = #{verticalMarket,jdbcType=VARCHAR},
+      online_gaming = #{onlineGaming,jdbcType=BIT},
+      alipay_id = #{alipayId,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

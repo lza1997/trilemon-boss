@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoSessionMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoSession" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="app_id" property="appId" jdbcType="INTEGER" />
+    <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
+    <result column="sign" property="sign" jdbcType="VARCHAR" />
+    <result column="ts" property="ts" jdbcType="TIMESTAMP" />
+    <result column="iframe" property="iframe" jdbcType="TINYINT" />
+    <result column="visitor_id" property="visitorId" jdbcType="BIGINT" />
+    <result column="visitor_nick" property="visitorNick" jdbcType="VARCHAR" />
+    <result column="expires_in" property="expiresIn" jdbcType="INTEGER" />
+    <result column="refresh_token" property="refreshToken" jdbcType="VARCHAR" />
+    <result column="re_expires_in" property="reExpiresIn" jdbcType="INTEGER" />
+    <result column="sub_visitor_id" property="subVisitorId" jdbcType="BIGINT" />
+    <result column="sub_taobao_user_nick" property="subTaobaoUserNick" jdbcType="VARCHAR" />
+    <result column="r1_expires_in" property="r1ExpiresIn" jdbcType="INTEGER" />
+    <result column="w1_expires_in" property="w1ExpiresIn" jdbcType="INTEGER" />
+    <result column="r2_expires_in" property="r2ExpiresIn" jdbcType="INTEGER" />
+    <result column="w2_expires_in" property="w2ExpiresIn" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shop_id, app_id, session_key, sign, ts, iframe, visitor_id, visitor_nick, expires_in, 
+    refresh_token, re_expires_in, sub_visitor_id, sub_taobao_user_nick, r1_expires_in, 
+    w1_expires_in, r2_expires_in, w2_expires_in, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoSessionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from taobao_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from taobao_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from taobao_session
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoSessionExample" >
+    delete from taobao_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoSession" >
+    insert into taobao_session (id, shop_id, app_id, 
+      session_key, sign, ts, 
+      iframe, visitor_id, visitor_nick, 
+      expires_in, refresh_token, re_expires_in, 
+      sub_visitor_id, sub_taobao_user_nick, r1_expires_in, 
+      w1_expires_in, r2_expires_in, w2_expires_in, 
+      add_time, upd_time)
+    values (#{id,jdbcType=INTEGER}, #{shopId,jdbcType=BIGINT}, #{appId,jdbcType=INTEGER}, 
+      #{sessionKey,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, #{ts,jdbcType=TIMESTAMP}, 
+      #{iframe,jdbcType=TINYINT}, #{visitorId,jdbcType=BIGINT}, #{visitorNick,jdbcType=VARCHAR}, 
+      #{expiresIn,jdbcType=INTEGER}, #{refreshToken,jdbcType=VARCHAR}, #{reExpiresIn,jdbcType=INTEGER}, 
+      #{subVisitorId,jdbcType=BIGINT}, #{subTaobaoUserNick,jdbcType=VARCHAR}, #{r1ExpiresIn,jdbcType=INTEGER}, 
+      #{w1ExpiresIn,jdbcType=INTEGER}, #{r2ExpiresIn,jdbcType=INTEGER}, #{w2ExpiresIn,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoSession" >
+    insert into taobao_session
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="sessionKey != null" >
+        session_key,
+      </if>
+      <if test="sign != null" >
+        sign,
+      </if>
+      <if test="ts != null" >
+        ts,
+      </if>
+      <if test="iframe != null" >
+        iframe,
+      </if>
+      <if test="visitorId != null" >
+        visitor_id,
+      </if>
+      <if test="visitorNick != null" >
+        visitor_nick,
+      </if>
+      <if test="expiresIn != null" >
+        expires_in,
+      </if>
+      <if test="refreshToken != null" >
+        refresh_token,
+      </if>
+      <if test="reExpiresIn != null" >
+        re_expires_in,
+      </if>
+      <if test="subVisitorId != null" >
+        sub_visitor_id,
+      </if>
+      <if test="subTaobaoUserNick != null" >
+        sub_taobao_user_nick,
+      </if>
+      <if test="r1ExpiresIn != null" >
+        r1_expires_in,
+      </if>
+      <if test="w1ExpiresIn != null" >
+        w1_expires_in,
+      </if>
+      <if test="r2ExpiresIn != null" >
+        r2_expires_in,
+      </if>
+      <if test="w2ExpiresIn != null" >
+        w2_expires_in,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionKey != null" >
+        #{sessionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="ts != null" >
+        #{ts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iframe != null" >
+        #{iframe,jdbcType=TINYINT},
+      </if>
+      <if test="visitorId != null" >
+        #{visitorId,jdbcType=BIGINT},
+      </if>
+      <if test="visitorNick != null" >
+        #{visitorNick,jdbcType=VARCHAR},
+      </if>
+      <if test="expiresIn != null" >
+        #{expiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="refreshToken != null" >
+        #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpiresIn != null" >
+        #{reExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="subVisitorId != null" >
+        #{subVisitorId,jdbcType=BIGINT},
+      </if>
+      <if test="subTaobaoUserNick != null" >
+        #{subTaobaoUserNick,jdbcType=VARCHAR},
+      </if>
+      <if test="r1ExpiresIn != null" >
+        #{r1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="w1ExpiresIn != null" >
+        #{w1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="r2ExpiresIn != null" >
+        #{r2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="w2ExpiresIn != null" >
+        #{w2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoSessionExample" resultType="java.lang.Integer" >
+    select count(*) from taobao_session
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update taobao_session
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=BIGINT},
+      </if>
+      <if test="record.appId != null" >
+        app_id = #{record.appId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sessionKey != null" >
+        session_key = #{record.sessionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sign != null" >
+        sign = #{record.sign,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ts != null" >
+        ts = #{record.ts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.iframe != null" >
+        iframe = #{record.iframe,jdbcType=TINYINT},
+      </if>
+      <if test="record.visitorId != null" >
+        visitor_id = #{record.visitorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.visitorNick != null" >
+        visitor_nick = #{record.visitorNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expiresIn != null" >
+        expires_in = #{record.expiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.refreshToken != null" >
+        refresh_token = #{record.refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reExpiresIn != null" >
+        re_expires_in = #{record.reExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.subVisitorId != null" >
+        sub_visitor_id = #{record.subVisitorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.subTaobaoUserNick != null" >
+        sub_taobao_user_nick = #{record.subTaobaoUserNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.r1ExpiresIn != null" >
+        r1_expires_in = #{record.r1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.w1ExpiresIn != null" >
+        w1_expires_in = #{record.w1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.r2ExpiresIn != null" >
+        r2_expires_in = #{record.r2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.w2ExpiresIn != null" >
+        w2_expires_in = #{record.w2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update taobao_session
+    set id = #{record.id,jdbcType=INTEGER},
+      shop_id = #{record.shopId,jdbcType=BIGINT},
+      app_id = #{record.appId,jdbcType=INTEGER},
+      session_key = #{record.sessionKey,jdbcType=VARCHAR},
+      sign = #{record.sign,jdbcType=VARCHAR},
+      ts = #{record.ts,jdbcType=TIMESTAMP},
+      iframe = #{record.iframe,jdbcType=TINYINT},
+      visitor_id = #{record.visitorId,jdbcType=BIGINT},
+      visitor_nick = #{record.visitorNick,jdbcType=VARCHAR},
+      expires_in = #{record.expiresIn,jdbcType=INTEGER},
+      refresh_token = #{record.refreshToken,jdbcType=VARCHAR},
+      re_expires_in = #{record.reExpiresIn,jdbcType=INTEGER},
+      sub_visitor_id = #{record.subVisitorId,jdbcType=BIGINT},
+      sub_taobao_user_nick = #{record.subTaobaoUserNick,jdbcType=VARCHAR},
+      r1_expires_in = #{record.r1ExpiresIn,jdbcType=INTEGER},
+      w1_expires_in = #{record.w1ExpiresIn,jdbcType=INTEGER},
+      r2_expires_in = #{record.r2ExpiresIn,jdbcType=INTEGER},
+      w2_expires_in = #{record.w2ExpiresIn,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoSession" >
+    update taobao_session
+    <set >
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=INTEGER},
+      </if>
+      <if test="sessionKey != null" >
+        session_key = #{sessionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null" >
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
+      <if test="ts != null" >
+        ts = #{ts,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iframe != null" >
+        iframe = #{iframe,jdbcType=TINYINT},
+      </if>
+      <if test="visitorId != null" >
+        visitor_id = #{visitorId,jdbcType=BIGINT},
+      </if>
+      <if test="visitorNick != null" >
+        visitor_nick = #{visitorNick,jdbcType=VARCHAR},
+      </if>
+      <if test="expiresIn != null" >
+        expires_in = #{expiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="refreshToken != null" >
+        refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      </if>
+      <if test="reExpiresIn != null" >
+        re_expires_in = #{reExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="subVisitorId != null" >
+        sub_visitor_id = #{subVisitorId,jdbcType=BIGINT},
+      </if>
+      <if test="subTaobaoUserNick != null" >
+        sub_taobao_user_nick = #{subTaobaoUserNick,jdbcType=VARCHAR},
+      </if>
+      <if test="r1ExpiresIn != null" >
+        r1_expires_in = #{r1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="w1ExpiresIn != null" >
+        w1_expires_in = #{w1ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="r2ExpiresIn != null" >
+        r2_expires_in = #{r2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="w2ExpiresIn != null" >
+        w2_expires_in = #{w2ExpiresIn,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoSession" >
+    update taobao_session
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      app_id = #{appId,jdbcType=INTEGER},
+      session_key = #{sessionKey,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
+      ts = #{ts,jdbcType=TIMESTAMP},
+      iframe = #{iframe,jdbcType=TINYINT},
+      visitor_id = #{visitorId,jdbcType=BIGINT},
+      visitor_nick = #{visitorNick,jdbcType=VARCHAR},
+      expires_in = #{expiresIn,jdbcType=INTEGER},
+      refresh_token = #{refreshToken,jdbcType=VARCHAR},
+      re_expires_in = #{reExpiresIn,jdbcType=INTEGER},
+      sub_visitor_id = #{subVisitorId,jdbcType=BIGINT},
+      sub_taobao_user_nick = #{subTaobaoUserNick,jdbcType=VARCHAR},
+      r1_expires_in = #{r1ExpiresIn,jdbcType=INTEGER},
+      w1_expires_in = #{w1ExpiresIn,jdbcType=INTEGER},
+      r2_expires_in = #{r2ExpiresIn,jdbcType=INTEGER},
+      w2_expires_in = #{w2ExpiresIn,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
