@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoApiMapper" >
-  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoApi" >
+<mapper namespace="com.trilemon.boss360.base.dao.TaobaoApiMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.boss360.base.model.TaobaoApi" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="serviceName" property="servicename" jdbcType="VARCHAR" />
-    <result column="serviceIp" property="serviceip" jdbcType="BIGINT" />
-    <result column="tapbap_app_key" property="tapbapAppKey" jdbcType="VARCHAR" />
+    <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+    <result column="service_id" property="serviceId" jdbcType="VARCHAR" />
+    <result column="taobao_app_key" property="taobaoAppKey" jdbcType="VARCHAR" />
     <result column="api_name" property="apiName" jdbcType="VARCHAR" />
     <result column="successful_call" property="successfulCall" jdbcType="BIGINT" />
     <result column="failed_call" property="failedCall" jdbcType="BIGINT" />
@@ -72,10 +72,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, serviceName, serviceIp, tapbap_app_key, api_name, successful_call, failed_call, 
+    id, service_name, service_id, taobao_app_key, api_name, successful_call, failed_call, 
     avg_exec_time, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.base.model.TaobaoApiExample" >
     select
     <if test="distinct" >
       distinct
@@ -99,36 +99,36 @@
     delete from taobao_api
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiExample" >
+  <delete id="deleteByExample" parameterType="com.trilemon.boss360.base.model.TaobaoApiExample" >
     delete from taobao_api
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoApi" >
-    insert into taobao_api (id, serviceName, serviceIp, 
-      tapbap_app_key, api_name, successful_call, 
+  <insert id="insert" parameterType="com.trilemon.boss360.base.model.TaobaoApi" >
+    insert into taobao_api (id, service_name, service_id, 
+      taobao_app_key, api_name, successful_call, 
       failed_call, avg_exec_time, add_time, 
       upd_time)
-    values (#{id,jdbcType=INTEGER}, #{servicename,jdbcType=VARCHAR}, #{serviceip,jdbcType=BIGINT}, 
-      #{tapbapAppKey,jdbcType=VARCHAR}, #{apiName,jdbcType=VARCHAR}, #{successfulCall,jdbcType=BIGINT}, 
+    values (#{id,jdbcType=INTEGER}, #{serviceName,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR}, 
+      #{taobaoAppKey,jdbcType=VARCHAR}, #{apiName,jdbcType=VARCHAR}, #{successfulCall,jdbcType=BIGINT}, 
       #{failedCall,jdbcType=BIGINT}, #{avgExecTime,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoApi" >
+  <insert id="insertSelective" parameterType="com.trilemon.boss360.base.model.TaobaoApi" >
     insert into taobao_api
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="servicename != null" >
-        serviceName,
+      <if test="serviceName != null" >
+        service_name,
       </if>
-      <if test="serviceip != null" >
-        serviceIp,
+      <if test="serviceId != null" >
+        service_id,
       </if>
-      <if test="tapbapAppKey != null" >
-        tapbap_app_key,
+      <if test="taobaoAppKey != null" >
+        taobao_app_key,
       </if>
       <if test="apiName != null" >
         api_name,
@@ -153,14 +153,14 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="servicename != null" >
-        #{servicename,jdbcType=VARCHAR},
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
       </if>
-      <if test="serviceip != null" >
-        #{serviceip,jdbcType=BIGINT},
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="tapbapAppKey != null" >
-        #{tapbapAppKey,jdbcType=VARCHAR},
+      <if test="taobaoAppKey != null" >
+        #{taobaoAppKey,jdbcType=VARCHAR},
       </if>
       <if test="apiName != null" >
         #{apiName,jdbcType=VARCHAR},
@@ -182,7 +182,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.trilemon.boss360.base.model.TaobaoApiExample" resultType="java.lang.Integer" >
     select count(*) from taobao_api
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -194,14 +194,14 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.servicename != null" >
-        serviceName = #{record.servicename,jdbcType=VARCHAR},
+      <if test="record.serviceName != null" >
+        service_name = #{record.serviceName,jdbcType=VARCHAR},
       </if>
-      <if test="record.serviceip != null" >
-        serviceIp = #{record.serviceip,jdbcType=BIGINT},
+      <if test="record.serviceId != null" >
+        service_id = #{record.serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="record.tapbapAppKey != null" >
-        tapbap_app_key = #{record.tapbapAppKey,jdbcType=VARCHAR},
+      <if test="record.taobaoAppKey != null" >
+        taobao_app_key = #{record.taobaoAppKey,jdbcType=VARCHAR},
       </if>
       <if test="record.apiName != null" >
         api_name = #{record.apiName,jdbcType=VARCHAR},
@@ -229,9 +229,9 @@
   <update id="updateByExample" parameterType="map" >
     update taobao_api
     set id = #{record.id,jdbcType=INTEGER},
-      serviceName = #{record.servicename,jdbcType=VARCHAR},
-      serviceIp = #{record.serviceip,jdbcType=BIGINT},
-      tapbap_app_key = #{record.tapbapAppKey,jdbcType=VARCHAR},
+      service_name = #{record.serviceName,jdbcType=VARCHAR},
+      service_id = #{record.serviceId,jdbcType=VARCHAR},
+      taobao_app_key = #{record.taobaoAppKey,jdbcType=VARCHAR},
       api_name = #{record.apiName,jdbcType=VARCHAR},
       successful_call = #{record.successfulCall,jdbcType=BIGINT},
       failed_call = #{record.failedCall,jdbcType=BIGINT},
@@ -242,17 +242,17 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoApi" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss360.base.model.TaobaoApi" >
     update taobao_api
     <set >
-      <if test="servicename != null" >
-        serviceName = #{servicename,jdbcType=VARCHAR},
+      <if test="serviceName != null" >
+        service_name = #{serviceName,jdbcType=VARCHAR},
       </if>
-      <if test="serviceip != null" >
-        serviceIp = #{serviceip,jdbcType=BIGINT},
+      <if test="serviceId != null" >
+        service_id = #{serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="tapbapAppKey != null" >
-        tapbap_app_key = #{tapbapAppKey,jdbcType=VARCHAR},
+      <if test="taobaoAppKey != null" >
+        taobao_app_key = #{taobaoAppKey,jdbcType=VARCHAR},
       </if>
       <if test="apiName != null" >
         api_name = #{apiName,jdbcType=VARCHAR},
@@ -275,11 +275,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoApi" >
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.base.model.TaobaoApi" >
     update taobao_api
-    set serviceName = #{servicename,jdbcType=VARCHAR},
-      serviceIp = #{serviceip,jdbcType=BIGINT},
-      tapbap_app_key = #{tapbapAppKey,jdbcType=VARCHAR},
+    set service_name = #{serviceName,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=VARCHAR},
+      taobao_app_key = #{taobaoAppKey,jdbcType=VARCHAR},
       api_name = #{apiName,jdbcType=VARCHAR},
       successful_call = #{successfulCall,jdbcType=BIGINT},
       failed_call = #{failedCall,jdbcType=BIGINT},

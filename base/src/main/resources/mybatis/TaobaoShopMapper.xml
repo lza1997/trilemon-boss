@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoShopMapper" >
-  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoShop" >
+<mapper namespace="com.trilemon.boss360.base.dao.TaobaoShopMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.boss360.base.model.TaobaoShop" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="cid" property="cid" jdbcType="BIGINT" />
@@ -84,7 +84,7 @@
     shop_score_item_score, shop_score_service_score, shop_score_delivery_score, remain_count, 
     all_count, used_count, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.base.model.TaobaoShopExample" >
     select
     <if test="distinct" >
       distinct
@@ -108,13 +108,13 @@
     delete from taobao_shop
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" >
+  <delete id="deleteByExample" parameterType="com.trilemon.boss360.base.model.TaobaoShopExample" >
     delete from taobao_shop
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+  <insert id="insert" parameterType="com.trilemon.boss360.base.model.TaobaoShop" >
     insert into taobao_shop (id, user_id, cid, 
       nick, title, description, 
       bulletin, pic_path, created, 
@@ -130,7 +130,7 @@
       #{usedCount,jdbcType=BIGINT}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+  <insert id="insertSelective" parameterType="com.trilemon.boss360.base.model.TaobaoShop" >
     insert into taobao_shop
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -245,7 +245,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoShopExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.trilemon.boss360.base.model.TaobaoShopExample" resultType="java.lang.Integer" >
     select count(*) from taobao_shop
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -337,7 +337,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss360.base.model.TaobaoShop" >
     update taobao_shop
     <set >
       <if test="userId != null" >
@@ -394,7 +394,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoShop" >
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.base.model.TaobaoShop" >
     update taobao_shop
     set user_id = #{userId,jdbcType=BIGINT},
       cid = #{cid,jdbcType=BIGINT},

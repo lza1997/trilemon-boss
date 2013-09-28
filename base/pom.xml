@@ -34,6 +34,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
@@ -83,11 +88,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>commons-dbcp</groupId>-->
-        <!--<artifactId>commons-dbcp</artifactId>-->
-        <!--</dependency>-->
-
         <!-- jdbc driver -->
         <dependency>
             <groupId>mysql</groupId>
@@ -353,8 +353,6 @@
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
         </dependency>
-
-
     </dependencies>
 
     <build>
