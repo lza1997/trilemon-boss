@@ -2,8 +2,9 @@ package com.trilemon.boss360.base.dao;
 
 import com.trilemon.boss360.base.model.TaobaoSession;
 import com.trilemon.boss360.base.model.TaobaoSessionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TaobaoSessionMapper {
     int countByExample(TaobaoSessionExample example);

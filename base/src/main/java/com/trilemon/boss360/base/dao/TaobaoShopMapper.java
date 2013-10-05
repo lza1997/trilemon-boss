@@ -2,8 +2,9 @@ package com.trilemon.boss360.base.dao;
 
 import com.trilemon.boss360.base.model.TaobaoShop;
 import com.trilemon.boss360.base.model.TaobaoShopExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TaobaoShopMapper {
     int countByExample(TaobaoShopExample example);

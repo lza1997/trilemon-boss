@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.trilemon.top.boss360.base.dao.TaobaoApiUsageMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.base.model.TaobaoApiUsage" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="service_name" property="serviceName" jdbcType="VARCHAR" />
+    <result column="service_id" property="serviceId" jdbcType="VARCHAR" />
+    <result column="taobao_app_key" property="taobaoAppKey" jdbcType="VARCHAR" />
+    <result column="api_name" property="apiName" jdbcType="VARCHAR" />
+    <result column="successful_call" property="successfulCall" jdbcType="BIGINT" />
+    <result column="failed_call" property="failedCall" jdbcType="BIGINT" />
+    <result column="avg_exec_time" property="avgExecTime" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, service_name, service_id, taobao_app_key, api_name, successful_call, failed_call, 
+    avg_exec_time, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from taobao_api_usage
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from taobao_api_usage
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from taobao_api_usage
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsageExample" >
+    delete from taobao_api_usage
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsage" >
+    insert into taobao_api_usage (id, service_name, service_id, 
+      taobao_app_key, api_name, successful_call, 
+      failed_call, avg_exec_time, add_time, 
+      upd_time)
+    values (#{id,jdbcType=INTEGER}, #{serviceName,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR}, 
+      #{taobaoAppKey,jdbcType=VARCHAR}, #{apiName,jdbcType=VARCHAR}, #{successfulCall,jdbcType=BIGINT}, 
+      #{failedCall,jdbcType=BIGINT}, #{avgExecTime,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsage" >
+    insert into taobao_api_usage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="serviceName != null" >
+        service_name,
+      </if>
+      <if test="serviceId != null" >
+        service_id,
+      </if>
+      <if test="taobaoAppKey != null" >
+        taobao_app_key,
+      </if>
+      <if test="apiName != null" >
+        api_name,
+      </if>
+      <if test="successfulCall != null" >
+        successful_call,
+      </if>
+      <if test="failedCall != null" >
+        failed_call,
+      </if>
+      <if test="avgExecTime != null" >
+        avg_exec_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="serviceName != null" >
+        #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceId != null" >
+        #{serviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="taobaoAppKey != null" >
+        #{taobaoAppKey,jdbcType=VARCHAR},
+      </if>
+      <if test="apiName != null" >
+        #{apiName,jdbcType=VARCHAR},
+      </if>
+      <if test="successfulCall != null" >
+        #{successfulCall,jdbcType=BIGINT},
+      </if>
+      <if test="failedCall != null" >
+        #{failedCall,jdbcType=BIGINT},
+      </if>
+      <if test="avgExecTime != null" >
+        #{avgExecTime,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsageExample" resultType="java.lang.Integer" >
+    select count(*) from taobao_api_usage
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update taobao_api_usage
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceName != null" >
+        service_name = #{record.serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceId != null" >
+        service_id = #{record.serviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taobaoAppKey != null" >
+        taobao_app_key = #{record.taobaoAppKey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apiName != null" >
+        api_name = #{record.apiName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.successfulCall != null" >
+        successful_call = #{record.successfulCall,jdbcType=BIGINT},
+      </if>
+      <if test="record.failedCall != null" >
+        failed_call = #{record.failedCall,jdbcType=BIGINT},
+      </if>
+      <if test="record.avgExecTime != null" >
+        avg_exec_time = #{record.avgExecTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.addTime != null" >
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update taobao_api_usage
+    set id = #{record.id,jdbcType=INTEGER},
+      service_name = #{record.serviceName,jdbcType=VARCHAR},
+      service_id = #{record.serviceId,jdbcType=VARCHAR},
+      taobao_app_key = #{record.taobaoAppKey,jdbcType=VARCHAR},
+      api_name = #{record.apiName,jdbcType=VARCHAR},
+      successful_call = #{record.successfulCall,jdbcType=BIGINT},
+      failed_call = #{record.failedCall,jdbcType=BIGINT},
+      avg_exec_time = #{record.avgExecTime,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsage" >
+    update taobao_api_usage
+    <set >
+      <if test="serviceName != null" >
+        service_name = #{serviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceId != null" >
+        service_id = #{serviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="taobaoAppKey != null" >
+        taobao_app_key = #{taobaoAppKey,jdbcType=VARCHAR},
+      </if>
+      <if test="apiName != null" >
+        api_name = #{apiName,jdbcType=VARCHAR},
+      </if>
+      <if test="successfulCall != null" >
+        successful_call = #{successfulCall,jdbcType=BIGINT},
+      </if>
+      <if test="failedCall != null" >
+        failed_call = #{failedCall,jdbcType=BIGINT},
+      </if>
+      <if test="avgExecTime != null" >
+        avg_exec_time = #{avgExecTime,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.base.model.TaobaoApiUsage" >
+    update taobao_api_usage
+    set service_name = #{serviceName,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=VARCHAR},
+      taobao_app_key = #{taobaoAppKey,jdbcType=VARCHAR},
+      api_name = #{apiName,jdbcType=VARCHAR},
+      successful_call = #{successfulCall,jdbcType=BIGINT},
+      failed_call = #{failedCall,jdbcType=BIGINT},
+      avg_exec_time = #{avgExecTime,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

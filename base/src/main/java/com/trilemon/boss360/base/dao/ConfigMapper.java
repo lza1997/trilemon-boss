@@ -2,8 +2,9 @@ package com.trilemon.boss360.base.dao;
 
 import com.trilemon.boss360.base.model.Config;
 import com.trilemon.boss360.base.model.ConfigExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ConfigMapper {
     int countByExample(ConfigExample example);

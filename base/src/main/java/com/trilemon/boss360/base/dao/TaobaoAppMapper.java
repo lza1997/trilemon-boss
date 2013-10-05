@@ -1,6 +1,5 @@
 package com.trilemon.boss360.base.dao;
 
-import com.trilemon.boss360.base.model.TaobaoApi;
 import com.trilemon.boss360.base.model.TaobaoApp;
 import com.trilemon.boss360.base.model.TaobaoAppExample;
 import org.apache.ibatis.annotations.Param;
@@ -31,6 +30,4 @@ public interface TaobaoAppMapper {
     int updateByPrimaryKey(TaobaoApp record);
 
     TaobaoApp selectByAppKey(String taobaoAppKey);
-
-    void batchInsert(List<TaobaoApi> taobaoApiList);
 }

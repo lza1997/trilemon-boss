@@ -1,0 +1,220 @@
+/*上下架*/
+.trilemon-shelf-plan-setting {
+    margin-top: 80px;
+    margin-left: 30px;
+}
+
+.trilemon-shelf-plan-setting .new .plan-name {
+    margin-bottom: 10px;
+}
+
+.trilemon-shelf-plan-setting .new .adjust-showcase {
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.trilemon-shelf-plan-setting .new .plan-name div {
+    padding-left: 0;
+}
+
+.trilemon-shelf-plan-setting .radio {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+}
+
+.trilemon-shelf-plan-setting .filter {
+    margin-left: 10px;
+}
+
+.trilemon-shelf-plan-setting .msg {
+    margin-top: 5px;
+    margin-left: 42px;
+}
+
+.trilemon-shelf-plan-setting .next-step {
+    margin-top: 30px;
+}
+
+.keyword-filter-modal .modal-dialog {
+    width: 50%;
+}
+
+.keyword-filter-modal .modal-body, #cid-filter-modal .modal-body {
+    margin-bottom: 0;
+    padding: 20px 20px 0;
+}
+
+.keyword-filter-modal .modal-footer, #cid-filter-modal .modal-footer {
+    margin-top: 0;
+}
+
+.keyword-filter-modal .modal-body .select2-container-multi .select2-choices .select2-search-choice {
+    padding-top: 8px;
+}
+
+.keyword-filter-modal .modal-body .select2-container-multi .select2-search-choice-close {
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+.keyword-filter-modal .modal-body .tip {
+    margin-top: 10px;
+}
+
+.keyword-filter-modal .modal-body .items {
+    margin-top: 20px;
+    margin-left: 17px;
+}
+
+.keyword-filter-modal .modal-body .items .item {
+    margin-bottom: 10px;
+}
+
+.keyword-filter-modal .modal-body .items .item .pic {
+    border: 1px solid #e5e5e5;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    float: left;
+    padding: 5px;
+}
+
+.keyword-filter-modal .modal-body .items .item .pic img {
+    vertical-align: middle;
+    width: auto;
+    height: auto;
+}
+
+.keyword-filter-modal .modal-body .items .item .summary {
+    text-align: left;
+    float: left;
+    width: 70%;
+}
+
+.keyword-filter-modal .modal-body .items .item .summary a {
+    color: #0063dc;
+    font-weight: normal;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.keyword-filter-modal .modal-body .items .item .price {
+    margin-left: 11px;
+}
+
+.keyword-filter-modal .modal-body .items .item .price span {
+    color: #ff2900;
+    font: bold 13px Arial;
+}
+
+.keyword-filter-modal .modal-body .items .item .price i {
+    color: #909090;
+}
+
+.keyword-filter-modal .modal-body .pagination {
+    margin-top: 0;
+    margin-left: 25%;
+}
+
+#cid-filter-modal .modal-body .cid {
+    margin-bottom: 15px;
+}
+
+#cid-filter-modal .modal-body .cid p {
+    font-size: 14px;
+    padding: 0;
+}
+
+#cid-filter-modal .modal-body .cid button {
+    width: 60px;
+}
+
+#cid-filter-modal .modal-body .pagination {
+    margin-top: 0;
+    margin-left: 25%;
+}
+
+.trilemon-shelf-plan-setting .prev-step {
+    margin-bottom: 30px;
+}
+
+.trilemon-shelf-plan-setting .auto {
+    margin-bottom: 15px;
+}
+
+.trilemon-shelf-plan-setting blockquote p {
+    font-size: 14px;
+}
+
+.trilemon-shelf-plan-setting .create-result {
+    margin-bottom: 30px;
+    font-size: 30px;
+    color: #47a447;
+}
+
+.trilemon-shelf-plan-setting .result-successful {
+    margin-right: 10px;
+    margin-top: 20px;
+}
+
+.trilemon-shelf-plan-setting .list-plan {
+    margin-right: 10px;
+}
+
+.trilemon-shelf-plan-setting table th {
+    text-align: left;
+    font-weight: bold;
+    background: #e9e9e9;
+}
+
+.trilemon-shelf-plan-setting .search-plan {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.trilemon-shelf-plan-setting .show table .item-name {
+    width: 300px;
+}
+
+.trilemon-shelf-plan-setting .home .overview {
+    margin-top: 50px;
+    margin-left: 0;
+    margin-bottom: 50px;
+}
+
+.trilemon-shelf-plan-setting .home .overview .score-box {
+    width: 320px;
+}
+
+.trilemon-shelf-plan-setting .home .overview .score-box .suggestion {
+    margin-left: 15px;
+    float: left;
+}
+
+.trilemon-shelf-plan-setting .home .overview .item-num, .trilemon-shelf-plan-setting .home .overview .plan-num {
+    font-size: 40px;
+    color: #000000;
+    float: left;
+}
+
+.trilemon-shelf-plan-setting .home .overview .item-num .panel-body, .trilemon-shelf-plan-setting .home .overview .plan-num .panel-body {
+    text-align: center;
+}
+
+.trilemon-shelf-plan-setting .home .overview .score-box .score {
+    font-size: 50px;
+    color: green;
+    float: left;
+    margin-left: 10px;
+}
+
+.trilemon-shelf-plan-setting .index .search-plan{
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.trilemon-shelf-plan-setting .index .chart{
+    margin-bottom: 20px;
+}
+

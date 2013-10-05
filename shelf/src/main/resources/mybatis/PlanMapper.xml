@@ -2,17 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.trilemon.top.boss360.shelf.dao.PlanMapper" >
   <resultMap id="BaseResultMap" type="com.trilemon.top.boss360.shelf.model.Plan" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="plan_setting_id" property="planSettingId" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="item_iid" property="itemIid" jdbcType="INTEGER" />
-    <result column="item_name" property="itemName" jdbcType="INTEGER" />
-    <result column="item_pic_url" property="itemPicUrl" jdbcType="INTEGER" />
-    <result column="state" property="state" jdbcType="INTEGER" />
-    <result column="plan_listing_time" property="planListingTime" jdbcType="INTEGER" />
-    <result column="listing_time" property="listingTime" jdbcType="INTEGER" />
-    <result column="add_time" property="addTime" jdbcType="INTEGER" />
-    <result column="upd_time" property="updTime" jdbcType="INTEGER" />
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="plan_setting_id" property="planSettingId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="item_iid" property="itemIid" jdbcType="BIGINT" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="plan_listing_time" property="planListingTime" jdbcType="TIMESTAMP" />
+    <result column="listing_time" property="listingTime" jdbcType="TIMESTAMP" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -73,7 +73,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_setting_id, user_id, item_iid, item_name, item_pic_url, state, plan_listing_time, 
+    id, plan_setting_id, user_id, item_iid, item_name, item_pic_url, status, plan_listing_time, 
     listing_time, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.top.boss360.shelf.model.PlanExample" >
@@ -90,15 +90,15 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
     from plan
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from plan
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.trilemon.top.boss360.shelf.model.PlanExample" >
     delete from plan
@@ -109,12 +109,12 @@
   <insert id="insert" parameterType="com.trilemon.top.boss360.shelf.model.Plan" >
     insert into plan (id, plan_setting_id, user_id, 
       item_iid, item_name, item_pic_url, 
-      state, plan_listing_time, listing_time, 
+      status, plan_listing_time, listing_time, 
       add_time, upd_time)
-    values (#{id,jdbcType=INTEGER}, #{planSettingId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      #{itemIid,jdbcType=INTEGER}, #{itemName,jdbcType=INTEGER}, #{itemPicUrl,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{planListingTime,jdbcType=INTEGER}, #{listingTime,jdbcType=INTEGER}, 
-      #{addTime,jdbcType=INTEGER}, #{updTime,jdbcType=INTEGER})
+    values (#{id,jdbcType=BIGINT}, #{planSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{itemIid,jdbcType=BIGINT}, #{itemName,jdbcType=VARCHAR}, #{itemPicUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{planListingTime,jdbcType=TIMESTAMP}, #{listingTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.top.boss360.shelf.model.Plan" >
     insert into plan
@@ -137,8 +137,8 @@
       <if test="itemPicUrl != null" >
         item_pic_url,
       </if>
-      <if test="state != null" >
-        state,
+      <if test="status != null" >
+        status,
       </if>
       <if test="planListingTime != null" >
         plan_listing_time,
@@ -155,37 +155,37 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="planSettingId != null" >
-        #{planSettingId,jdbcType=INTEGER},
+        #{planSettingId,jdbcType=BIGINT},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="itemIid != null" >
-        #{itemIid,jdbcType=INTEGER},
+        #{itemIid,jdbcType=BIGINT},
       </if>
       <if test="itemName != null" >
-        #{itemName,jdbcType=INTEGER},
+        #{itemName,jdbcType=VARCHAR},
       </if>
       <if test="itemPicUrl != null" >
-        #{itemPicUrl,jdbcType=INTEGER},
+        #{itemPicUrl,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
       <if test="planListingTime != null" >
-        #{planListingTime,jdbcType=INTEGER},
+        #{planListingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="listingTime != null" >
-        #{listingTime,jdbcType=INTEGER},
+        #{listingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="addTime != null" >
-        #{addTime,jdbcType=INTEGER},
+        #{addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updTime != null" >
-        #{updTime,jdbcType=INTEGER},
+        #{updTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -199,37 +199,37 @@
     update plan
     <set >
       <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
+        id = #{record.id,jdbcType=BIGINT},
       </if>
       <if test="record.planSettingId != null" >
-        plan_setting_id = #{record.planSettingId,jdbcType=INTEGER},
+        plan_setting_id = #{record.planSettingId,jdbcType=BIGINT},
       </if>
       <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=BIGINT},
       </if>
       <if test="record.itemIid != null" >
-        item_iid = #{record.itemIid,jdbcType=INTEGER},
+        item_iid = #{record.itemIid,jdbcType=BIGINT},
       </if>
       <if test="record.itemName != null" >
-        item_name = #{record.itemName,jdbcType=INTEGER},
+        item_name = #{record.itemName,jdbcType=VARCHAR},
       </if>
       <if test="record.itemPicUrl != null" >
-        item_pic_url = #{record.itemPicUrl,jdbcType=INTEGER},
+        item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
       </if>
-      <if test="record.state != null" >
-        state = #{record.state,jdbcType=INTEGER},
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
       </if>
       <if test="record.planListingTime != null" >
-        plan_listing_time = #{record.planListingTime,jdbcType=INTEGER},
+        plan_listing_time = #{record.planListingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.listingTime != null" >
-        listing_time = #{record.listingTime,jdbcType=INTEGER},
+        listing_time = #{record.listingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addTime != null" >
-        add_time = #{record.addTime,jdbcType=INTEGER},
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.updTime != null" >
-        upd_time = #{record.updTime,jdbcType=INTEGER},
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -238,17 +238,17 @@
   </update>
   <update id="updateByExample" parameterType="map" >
     update plan
-    set id = #{record.id,jdbcType=INTEGER},
-      plan_setting_id = #{record.planSettingId,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      item_iid = #{record.itemIid,jdbcType=INTEGER},
-      item_name = #{record.itemName,jdbcType=INTEGER},
-      item_pic_url = #{record.itemPicUrl,jdbcType=INTEGER},
-      state = #{record.state,jdbcType=INTEGER},
-      plan_listing_time = #{record.planListingTime,jdbcType=INTEGER},
-      listing_time = #{record.listingTime,jdbcType=INTEGER},
-      add_time = #{record.addTime,jdbcType=INTEGER},
-      upd_time = #{record.updTime,jdbcType=INTEGER}
+    set id = #{record.id,jdbcType=BIGINT},
+      plan_setting_id = #{record.planSettingId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      item_iid = #{record.itemIid,jdbcType=BIGINT},
+      item_name = #{record.itemName,jdbcType=VARCHAR},
+      item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      plan_listing_time = #{record.planListingTime,jdbcType=TIMESTAMP},
+      listing_time = #{record.listingTime,jdbcType=TIMESTAMP},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -257,50 +257,50 @@
     update plan
     <set >
       <if test="planSettingId != null" >
-        plan_setting_id = #{planSettingId,jdbcType=INTEGER},
+        plan_setting_id = #{planSettingId,jdbcType=BIGINT},
       </if>
       <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="itemIid != null" >
-        item_iid = #{itemIid,jdbcType=INTEGER},
+        item_iid = #{itemIid,jdbcType=BIGINT},
       </if>
       <if test="itemName != null" >
-        item_name = #{itemName,jdbcType=INTEGER},
+        item_name = #{itemName,jdbcType=VARCHAR},
       </if>
       <if test="itemPicUrl != null" >
-        item_pic_url = #{itemPicUrl,jdbcType=INTEGER},
+        item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
       </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
       </if>
       <if test="planListingTime != null" >
-        plan_listing_time = #{planListingTime,jdbcType=INTEGER},
+        plan_listing_time = #{planListingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="listingTime != null" >
-        listing_time = #{listingTime,jdbcType=INTEGER},
+        listing_time = #{listingTime,jdbcType=TIMESTAMP},
       </if>
       <if test="addTime != null" >
-        add_time = #{addTime,jdbcType=INTEGER},
+        add_time = #{addTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updTime != null" >
-        upd_time = #{updTime,jdbcType=INTEGER},
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.trilemon.top.boss360.shelf.model.Plan" >
     update plan
-    set plan_setting_id = #{planSettingId,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER},
-      item_iid = #{itemIid,jdbcType=INTEGER},
-      item_name = #{itemName,jdbcType=INTEGER},
-      item_pic_url = #{itemPicUrl,jdbcType=INTEGER},
-      state = #{state,jdbcType=INTEGER},
-      plan_listing_time = #{planListingTime,jdbcType=INTEGER},
-      listing_time = #{listingTime,jdbcType=INTEGER},
-      add_time = #{addTime,jdbcType=INTEGER},
-      upd_time = #{updTime,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+    set plan_setting_id = #{planSettingId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      item_iid = #{itemIid,jdbcType=BIGINT},
+      item_name = #{itemName,jdbcType=VARCHAR},
+      item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      plan_listing_time = #{planListingTime,jdbcType=TIMESTAMP},
+      listing_time = #{listingTime,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
