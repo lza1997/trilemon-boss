@@ -83,7 +83,7 @@
     padding: 0;
 }
 
-.keyword-filter-modal .modal-body .items .item .pic a{
+.keyword-filter-modal .modal-body .items .item .pic a {
     padding: 5px;
     display: table-cell;
     vertical-align: middle;
@@ -131,6 +131,7 @@
     margin-top: 0;
     margin-left: 25%;
 }
+
 #cid-filter-modal .modal-body .cids {
     margin-top: 20px;
 }
@@ -262,16 +263,61 @@
 .trilemon-shelf-plan-setting .new .item-filter-box:hover, .trilemon-shelf-plan-setting .new .adjust-intervals-box:hover {
     background-color: #eeeeee;
 }
-.trilemon-shelf-plan-setting .new .dropdown-menu{
-    width: 300px;
+
+.trilemon-shelf-plan-setting .new .dropdown-menu {
+    width: 250px;
 }
 
-.trilemon-shelf-plan-setting .new .adjust-intervals-time{
+.trilemon-shelf-plan-setting .new #myTabContent ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.trilemon-shelf-plan-setting .new #myTabContent ul li:hover{
+    background-color: #eeeeee;
+}
+
+.trilemon-shelf-plan-setting .new #myTabContent ul li{
+    margin-top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+.trilemon-shelf-plan-setting .new #myTabContent ul li small{
+    margin-top: 9px;
+    margin-left: 5px;
+}
+
+
+.trilemon-shelf-plan-setting .new .dropdown-menu > ul {
+    height: 32px;
+    padding-left: 10px;
+    padding-right: 10px;
+    list-style: none;
+}
+
+.trilemon-shelf-plan-setting .new .dropdown-menu ul li {
+    margin: 1px;
+}
+
+.trilemon-shelf-plan-setting .new .dropdown-menu li a {
+    margin: 4px;
+    font-size: 13px;
+    padding: 5px 5px 2px;
+}
+
+.trilemon-shelf-plan-setting .new .dropdown li {
+}
+
+.trilemon-shelf-plan-setting .new .adjust-intervals-time {
     margin-top: 6px;
+    margin-left: 10px;
+    width: 100px;
 }
 
-.trilemon-shelf-plan-setting .new .adjust-intervals-num{
+.trilemon-shelf-plan-setting .new .adjust-intervals-num {
     margin-left: 10px;
     width: 50px;
-
 }

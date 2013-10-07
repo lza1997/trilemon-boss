@@ -39,7 +39,12 @@ $(function () {
     $("[data-toggle=dropdown]").dropdown();
     $("[data-toggle=button]").button();
 
-    $('.dropdown-menu input, .dropdown-menu label').click(function(e) {
+    $('.dropdown-menu input, .dropdown-menu label,.dropdown-menu a').click(function(e) {
         e.stopPropagation();
     });
+
+    $('#myTab a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
 });

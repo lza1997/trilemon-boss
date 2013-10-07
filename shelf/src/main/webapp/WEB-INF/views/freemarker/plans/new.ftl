@@ -5,33 +5,119 @@
     <h4>计划名称</h4>
 
     <div class="dropdown">
-        <button data-toggle="dropdown" class="btn btn-default" href="#">Dropdown trigger</button>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li role="presentation">
-                <div class="adjust-intervals-time pull-left">
-                    <label>
-                        <input type="checkbox" name="options" id="option1"> Option 1
-                    </label>
+        <button data-toggle="dropdown" class="btn btn-default" href="#">周一</button>
+        <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <ul id="tab" class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">上午</a></li>
+                <li><a href="#profile" data-toggle="tab">下午</a></li>
+                <li><a href="#profile" data-toggle="tab">晚上</a></li>
+                <li><a href="#profile" data-toggle="tab">凌晨</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="home">
+                    <ul>
+                        <li role="presentation">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 6点 到 7点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation" class="text-muted">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 7点 到 8点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation" class="text-muted">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 8点 到 9点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation" class="text-muted">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 9点 到 10点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation" class="text-muted">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 10点 到 11点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation" class="text-muted">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 11点 到 12点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <small class="pull-left">宝贝数量</small>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="adjust-intervals-num  pull-left">
-                    <input type="number" class="form-control">
+                <div class="tab-pane fade" id="profile">
+                    <ul>
+                        <li role="presentation">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 18点 到 19点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                        <li role="presentation">
+                            <div class="adjust-intervals-time pull-left">
+                                <label>
+                                    <input type="checkbox" name="options" id="option1"> 18点 到 19点
+                                </label>
+                            </div>
+                            <div class="adjust-intervals-num  pull-left">
+                                <input type="number" class="form-control" min="1" max="999" value="1">
+                            </div>
+                            <div class="clearfix"></div>
+                        </li>
+                    </ul>
                 </div>
-                <div class="clearfix"></div>
-            </li>
-            <li role="presentation"><label>
-                <input type="checkbox" name="options" id="option1"> Option 1
-            </label>
-                <input type="number" class="form-control"></li>
-            <li role="presentation"><label>
-                <input type="checkbox" name="options" id="option1"> Option 1
-            </label>
-                <input type="number" class="form-control"></li>
-            <li role="presentation" class="divider"></li>
-            <li role="presentation"><label>
-                <input type="checkbox" name="options" id="option1"> Option 1
-            </label>
-                <input type="number" class="form-control"></li>
-        </ul>
+            </div>
+        </div>
     </div>
 
     <form>
@@ -425,20 +511,163 @@
                 手动选择时间段
             </label>
             <a type="button" class="filter btn btn-default btn-xs" data-toggle="modal"
-               href="#exclude-keyword-filter-modal" disabled="disabled">
+               href="#manual-adjust-intervals-modal" disabled="disabled">
                 <i class="icon-filter"></i> 筛选</a>
         </div>
         <blockquote class="msg">
-            <p>2013年10月1日 星期二 10点 - 11点 3个宝贝</p>
+            <p>星期二 10点 - 11点 3个宝贝</p>
 
-            <p>2013年10月1日 星期二 10点 - 11点 3个宝贝</p>
+            <p>星期二 10点 - 11点 3个宝贝</p>
 
-            <p>2013年10月1日 星期二 10点 - 11点 3个宝贝</p>
+            <p>星期二 10点 - 11点 3个宝贝</p>
 
-            <p>2013年10月1日 星期二 10点 - 11点 3个宝贝</p>
+            <p>星期二 10点 - 11点 3个宝贝</p>
 
-            <p>2013年10月1日 星期二 10点 - 11点 3个宝贝</p>
+            <p>星期二 10点 - 11点 3个宝贝</p>
         </blockquote>
+    </div>
+    <div class="modal" id="manual-adjust-intervals-modal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">选择上下架时间段</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="pagination pagination-sm">
+                        <li>
+                            <p style="float: left">周一</p>
+                            <div class="dropdown" style="float: left">
+                                <button data-toggle="dropdown" class="btn btn-default" href="#">请选择时间段</button>
+                                <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <ul id="tab" class="nav nav-tabs">
+                                        <li class="active"><a href="#home" data-toggle="tab">上午</a></li>
+                                        <li><a href="#profile" data-toggle="tab">下午</a></li>
+                                        <li><a href="#profile" data-toggle="tab">晚上</a></li>
+                                        <li><a href="#profile" data-toggle="tab">凌晨</a></li>
+                                    </ul>
+                                    <div id="myTabContent" class="tab-content">
+                                        <div class="tab-pane fade in active" id="home">
+                                            <ul>
+                                                <li role="presentation">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 6点 到 7点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation" class="text-muted">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 7点 到 8点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation" class="text-muted">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 8点 到 9点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation" class="text-muted">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 9点 到 10点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation" class="text-muted">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 10点 到 11点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation" class="text-muted">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 11点 到 12点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <small class="pull-left">宝贝数量</small>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane fade" id="profile">
+                                            <ul>
+                                                <li role="presentation">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 18点 到 19点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                                <li role="presentation">
+                                                    <div class="adjust-intervals-time pull-left">
+                                                        <label>
+                                                            <input type="checkbox" name="options" id="option1"> 18点 到 19点
+                                                        </label>
+                                                    </div>
+                                                    <div class="adjust-intervals-num  pull-left">
+                                                        <input type="number" class="form-control" min="1" max="999" value="1">
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li><p>周二</p></li>
+                        <li><p>周三</p></li>
+                        <li><p>周四</p></li>
+                        <li><p>周五</p></li>
+                        <li><p>周六</p></li>
+                        <li><p>周七</p></li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
