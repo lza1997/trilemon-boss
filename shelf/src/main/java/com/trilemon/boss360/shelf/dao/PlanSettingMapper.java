@@ -1,9 +1,10 @@
 package com.trilemon.boss360.shelf.dao;
 
-import com.trilemon.top.boss360.shelf.model.PlanSetting;
-import com.trilemon.top.boss360.shelf.model.PlanSettingExample;
-import java.util.List;
+import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.model.PlanSettingExample;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface PlanSettingMapper {
     int countByExample(PlanSettingExample example);

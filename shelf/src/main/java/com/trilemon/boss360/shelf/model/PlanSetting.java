@@ -1,42 +1,39 @@
 package com.trilemon.boss360.shelf.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class PlanSetting {
     private Long id;
-
     private Long userId;
-
+    @NotBlank
+    @Length(max = 32)
     private String name;
-
+    @NotBlank
     private String namePinyin;
-
+    @NotNull
     private Boolean planType;
-
     private Boolean adjustShowcase;
-
+    @Length(max = 1024)
     private String excludeKeywords;
-
+    @Length(max = 1024)
     private String excludeItemIids;
-
+    @Length(max = 1024)
     private String includeCids;
-
+    @Length(max = 1024)
     private String includeKeywords;
-
+    @Length(max = 1024)
     private String includeItemIids;
-
+    @Length(max = 1024)
     private String adjustIntervals;
-
     private Boolean adjustIntervalsType;
-
     private Integer status;
-
     private Integer lastAdjustItemNum;
-
     private Date lastAdjustTime;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {
