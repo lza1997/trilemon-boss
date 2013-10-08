@@ -109,5 +109,5 @@
         <property name="contentType" value="text/html;charset=UTF-8"></property>
     </bean>
 
-    <mvc:view-controller path="/" view-name="redirect:/plan_setting/new"/>
+    <mvc:view-controller path="/" view-name="redirect:/plans/"/>
 </beans>

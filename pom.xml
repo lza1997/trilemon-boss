@@ -26,7 +26,6 @@
         <module>shelf</module>
         <module>base</module>
         <module>base-client</module>
-        <module>commons</module>
         <module>trade</module>
     </modules>
 
