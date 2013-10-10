@@ -24,7 +24,7 @@
 
         <!--<dependency>-->
             <!--<groupId>com.trilemon.360boss</groupId>-->
-            <!--<artifactId>trilemon-360boss-base-client</artifactId>-->
+            <!--<artifactId>trilemon-360boss-infrastructure-base-client</artifactId>-->
         <!--</dependency>-->
 
         <dependency>
