@@ -44,7 +44,6 @@ public class TaobaoApiService {
     private Multimap<String, String> cacheKeys = HashMultimap.create();
     private TaobaoClient taobaoClient;
 
-    //TODO add to commons
     public static <T> List<Class<? extends T>> getSubTypesOf(String packageName, final Class<T> type) {
         List<Class<? extends T>> subTypes = Lists.newArrayList();
         for (Class<? extends T> subType : new Reflections(packageName).getSubTypesOf(type)) {
@@ -67,7 +66,7 @@ public class TaobaoApiService {
 
     private void initTaobaoClient() {
         //TaobaoApp taobaoApp = baseClient.getTaobaoApp(taobaoAppKey);
-        TaobaoApp taobaoApp =new TaobaoApp();
+        TaobaoApp taobaoApp = new TaobaoApp();
         taobaoApp.setAppCallbackUrl("http://boss.trilemon.com");
         taobaoApp.setAppKey("21635387");
         taobaoApp.setAppSecret("2535d805a5862eada6febca6eb91a427");
@@ -92,11 +91,11 @@ public class TaobaoApiService {
                 applicationService.getServiceName(), applicationService.getServiceId());
     }
 
-    public <REQ extends TaobaoRequest<RES>, RES extends TaobaoResponse> RES request(REQ req, String appKey) throws ApiException {
+    public <REQ extends TaobaoRequest<RES>, RES extends TaobaoResponse> RES request(REQ req, String appKey) throws EnhancedApiException {
         return request(req, appKey, null);
     }
 
-    public <REQ extends TaobaoRequest<RES>, RES extends TaobaoResponse> RES request(REQ req, String appKey, String sessionKey) throws ApiException {
+    public <REQ extends TaobaoRequest<RES>, RES extends TaobaoResponse> RES request(REQ req, String appKey, String sessionKey) throws EnhancedApiException {
         checkNotNull(taobaoClient);
 
         String apiName = req.getApiMethodName();
@@ -104,7 +103,12 @@ public class TaobaoApiService {
         String callDetailCacheKeyPrefix = getCacheKeyPrefix(appKey, apiName);
 
         final Stopwatch stopwatch = new Stopwatch().start();
-        RES response = taobaoClient.execute(req, sessionKey);
+        RES response;
+        try {
+            response = taobaoClient.execute(req, sessionKey);
+        } catch (ApiException e) {
+            throw new EnhancedApiException(e);
+        }
         if (!response.isSuccess()) {
             recordCall(callDetailCacheKeyPrefix, STATE_SUCCESSFUL);
         } else {
