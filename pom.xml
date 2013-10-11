@@ -24,7 +24,7 @@
     <modules>
         <module>parent</module>
         <module>shelf</module>
-        <module>static-resource</module>
+        <module>asset</module>
     </modules>
 
     <name>Trilemon-360boss</name>
