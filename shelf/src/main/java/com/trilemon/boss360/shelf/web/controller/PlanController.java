@@ -1,5 +1,6 @@
 package com.trilemon.boss360.shelf.web.controller;
 
+import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,11 @@ public class PlanController {
         if (result.hasErrors()) {
             return "/plans/new";
         } else {
-            planSettingService.savePlanSetting(planSetting);
+            try {
+                planSettingService.savePlanSetting(planSetting);
+            } catch (ShelfException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             return "/plans/" + planSetting.getId();
         }
     }

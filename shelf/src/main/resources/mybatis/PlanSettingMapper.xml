@@ -415,4 +415,10 @@
       upd_time = #{updTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from plan_setting
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

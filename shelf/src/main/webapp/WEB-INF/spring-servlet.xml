@@ -70,7 +70,7 @@
         <property name="httpSessionStore" ref="httpSessionStore"/>
     </bean>
 
-    <bean name="httpSessionStore" class="com.trilemon.commons.web.MemcachedHttpSessionStore">
+    <bean name="httpSessionStore" class="com.trilemon.commons.web.session.MemcachedHttpSessionStore">
         <property name="memcachedClient" ref="memcachedClient"/>
     </bean>
 
