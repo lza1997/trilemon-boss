@@ -1,8 +1,39 @@
 package com.trilemon.boss360.shelf.service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import com.taobao.api.ApiException;
+import com.taobao.api.domain.Item;
+import com.taobao.api.request.ItemsOnsaleGetRequest;
+import com.trilemon.boss360.infrastructure.base.client.BaseClient;
+import com.trilemon.boss360.infrastructure.base.serivce.TaobaoApiService;
+import com.trilemon.boss360.shelf.ShelfException;
+import com.trilemon.boss360.shelf.dao.PlanMapper;
+import com.trilemon.boss360.shelf.model.Plan;
+import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.commons.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.Interval;
+import org.joda.time.Seconds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author kevin
  */
+@Service
 public class PlanService {
 //    private final static Logger logger = LoggerFactory.getLogger(PlanService.class);
 //    @Autowired
@@ -11,8 +42,6 @@ public class PlanService {
 //    private PlanMapper planMapper;
 //    @Autowired
 //    private PlanSettingService planSettingService;
-//    @Autowired
-//    private UserService userService;
 //    @Autowired
 //    private BaseClient baseClient;
 //    private Ordering<Item> delistingOrdering = new Ordering<Item>() {
@@ -61,7 +90,7 @@ public class PlanService {
 //            if (sortedItems.size() >= itemNum) {
 //                // subItemList.addAll();
 //            }
-//            Iterable<List<Item>> dist = Iterables.partition(subItems, seconds.getSeconds()/2);
+//            Iterable<List<Item>> dist = Iterables.partition(subItems, seconds.getSeconds() / 2);
 //
 //            for (List<Item> partitionItems : dist) {
 //                for (Item item : partitionItems) {
@@ -116,9 +145,5 @@ public class PlanService {
 //    }
 //
 //    public void execPlan(Plan plan) {
-//        boolean auth = userService.auth(plan.getUserId());
-//        if (auth) {
-//
-//        }
 //    }
 }

@@ -8,21 +8,29 @@
     <packaging>war</packaging>
 
     <parent>
-        <groupId>com.trilemon.360boss</groupId>
-        <artifactId>trilemon-360boss-deps</artifactId>
+        <groupId>com.trilemon</groupId>
+        <artifactId>trilemon-commons-deps</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <properties>
+        <!-- 主要依赖库的版本定义 -->
+        <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
+        <trilemon.360boss.infrastructure.base.client>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client>
+    </properties>
 
     <!-- 依赖项定义 -->
     <dependencies>
         <dependency>
-            <groupId>com.trilemon.commons</groupId>
+            <groupId>com.trilemon</groupId>
             <artifactId>trilemon-commons</artifactId>
+            <version>${trilemon.commons.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.trilemon.360boss</groupId>
             <artifactId>trilemon-360boss-infrastructure-base-client</artifactId>
+            <version>${trilemon.360boss.infrastructure.base.client}</version>
         </dependency>
 
         <dependency>
