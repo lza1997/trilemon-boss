@@ -22,7 +22,7 @@
     <artifactId>trilemon-360boss</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>parent</module>
+        <module>deps</module>
         <module>shelf</module>
         <module>asset</module>
     </modules>
