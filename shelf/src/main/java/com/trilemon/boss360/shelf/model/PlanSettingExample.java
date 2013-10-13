@@ -365,66 +365,6 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanTypeIsNull() {
-            addCriterion("plan_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeIsNotNull() {
-            addCriterion("plan_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeEqualTo(Boolean value) {
-            addCriterion("plan_type =", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeNotEqualTo(Boolean value) {
-            addCriterion("plan_type <>", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeGreaterThan(Boolean value) {
-            addCriterion("plan_type >", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("plan_type >=", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeLessThan(Boolean value) {
-            addCriterion("plan_type <", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeLessThanOrEqualTo(Boolean value) {
-            addCriterion("plan_type <=", value, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeIn(List<Boolean> values) {
-            addCriterion("plan_type in", values, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeNotIn(List<Boolean> values) {
-            addCriterion("plan_type not in", values, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeBetween(Boolean value1, Boolean value2) {
-            addCriterion("plan_type between", value1, value2, "planType");
-            return (Criteria) this;
-        }
-
-        public Criteria andPlanTypeNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("plan_type not between", value1, value2, "planType");
-            return (Criteria) this;
-        }
-
         public Criteria andAdjustShowcaseIsNull() {
             addCriterion("adjust_showcase is null");
             return (Criteria) this;
@@ -482,76 +422,6 @@ public class PlanSettingExample {
 
         public Criteria andAdjustShowcaseNotBetween(Boolean value1, Boolean value2) {
             addCriterion("adjust_showcase not between", value1, value2, "adjustShowcase");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsIsNull() {
-            addCriterion("exclude_keywords is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsIsNotNull() {
-            addCriterion("exclude_keywords is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsEqualTo(String value) {
-            addCriterion("exclude_keywords =", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsNotEqualTo(String value) {
-            addCriterion("exclude_keywords <>", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsGreaterThan(String value) {
-            addCriterion("exclude_keywords >", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsGreaterThanOrEqualTo(String value) {
-            addCriterion("exclude_keywords >=", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsLessThan(String value) {
-            addCriterion("exclude_keywords <", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsLessThanOrEqualTo(String value) {
-            addCriterion("exclude_keywords <=", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsLike(String value) {
-            addCriterion("exclude_keywords like", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsNotLike(String value) {
-            addCriterion("exclude_keywords not like", value, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsIn(List<String> values) {
-            addCriterion("exclude_keywords in", values, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsNotIn(List<String> values) {
-            addCriterion("exclude_keywords not in", values, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsBetween(String value1, String value2) {
-            addCriterion("exclude_keywords between", value1, value2, "excludeKeywords");
-            return (Criteria) this;
-        }
-
-        public Criteria andExcludeKeywordsNotBetween(String value1, String value2) {
-            addCriterion("exclude_keywords not between", value1, value2, "excludeKeywords");
             return (Criteria) this;
         }
 
@@ -695,273 +565,133 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsIsNull() {
-            addCriterion("include_keywords is null");
+        public Criteria andIntervalsIsNull() {
+            addCriterion("intervals is null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsIsNotNull() {
-            addCriterion("include_keywords is not null");
+        public Criteria andIntervalsIsNotNull() {
+            addCriterion("intervals is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsEqualTo(String value) {
-            addCriterion("include_keywords =", value, "includeKeywords");
+        public Criteria andIntervalsEqualTo(String value) {
+            addCriterion("intervals =", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsNotEqualTo(String value) {
-            addCriterion("include_keywords <>", value, "includeKeywords");
+        public Criteria andIntervalsNotEqualTo(String value) {
+            addCriterion("intervals <>", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsGreaterThan(String value) {
-            addCriterion("include_keywords >", value, "includeKeywords");
+        public Criteria andIntervalsGreaterThan(String value) {
+            addCriterion("intervals >", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsGreaterThanOrEqualTo(String value) {
-            addCriterion("include_keywords >=", value, "includeKeywords");
+        public Criteria andIntervalsGreaterThanOrEqualTo(String value) {
+            addCriterion("intervals >=", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsLessThan(String value) {
-            addCriterion("include_keywords <", value, "includeKeywords");
+        public Criteria andIntervalsLessThan(String value) {
+            addCriterion("intervals <", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsLessThanOrEqualTo(String value) {
-            addCriterion("include_keywords <=", value, "includeKeywords");
+        public Criteria andIntervalsLessThanOrEqualTo(String value) {
+            addCriterion("intervals <=", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsLike(String value) {
-            addCriterion("include_keywords like", value, "includeKeywords");
+        public Criteria andIntervalsLike(String value) {
+            addCriterion("intervals like", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsNotLike(String value) {
-            addCriterion("include_keywords not like", value, "includeKeywords");
+        public Criteria andIntervalsNotLike(String value) {
+            addCriterion("intervals not like", value, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsIn(List<String> values) {
-            addCriterion("include_keywords in", values, "includeKeywords");
+        public Criteria andIntervalsIn(List<String> values) {
+            addCriterion("intervals in", values, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsNotIn(List<String> values) {
-            addCriterion("include_keywords not in", values, "includeKeywords");
+        public Criteria andIntervalsNotIn(List<String> values) {
+            addCriterion("intervals not in", values, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsBetween(String value1, String value2) {
-            addCriterion("include_keywords between", value1, value2, "includeKeywords");
+        public Criteria andIntervalsBetween(String value1, String value2) {
+            addCriterion("intervals between", value1, value2, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeKeywordsNotBetween(String value1, String value2) {
-            addCriterion("include_keywords not between", value1, value2, "includeKeywords");
+        public Criteria andIntervalsNotBetween(String value1, String value2) {
+            addCriterion("intervals not between", value1, value2, "intervals");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsIsNull() {
-            addCriterion("include_item_iids is null");
+        public Criteria andIntervalsTypeIsNull() {
+            addCriterion("intervals_type is null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsIsNotNull() {
-            addCriterion("include_item_iids is not null");
+        public Criteria andIntervalsTypeIsNotNull() {
+            addCriterion("intervals_type is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsEqualTo(String value) {
-            addCriterion("include_item_iids =", value, "includeItemIids");
+        public Criteria andIntervalsTypeEqualTo(Byte value) {
+            addCriterion("intervals_type =", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsNotEqualTo(String value) {
-            addCriterion("include_item_iids <>", value, "includeItemIids");
+        public Criteria andIntervalsTypeNotEqualTo(Byte value) {
+            addCriterion("intervals_type <>", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsGreaterThan(String value) {
-            addCriterion("include_item_iids >", value, "includeItemIids");
+        public Criteria andIntervalsTypeGreaterThan(Byte value) {
+            addCriterion("intervals_type >", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsGreaterThanOrEqualTo(String value) {
-            addCriterion("include_item_iids >=", value, "includeItemIids");
+        public Criteria andIntervalsTypeGreaterThanOrEqualTo(Byte value) {
+            addCriterion("intervals_type >=", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsLessThan(String value) {
-            addCriterion("include_item_iids <", value, "includeItemIids");
+        public Criteria andIntervalsTypeLessThan(Byte value) {
+            addCriterion("intervals_type <", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsLessThanOrEqualTo(String value) {
-            addCriterion("include_item_iids <=", value, "includeItemIids");
+        public Criteria andIntervalsTypeLessThanOrEqualTo(Byte value) {
+            addCriterion("intervals_type <=", value, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsLike(String value) {
-            addCriterion("include_item_iids like", value, "includeItemIids");
+        public Criteria andIntervalsTypeIn(List<Byte> values) {
+            addCriterion("intervals_type in", values, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsNotLike(String value) {
-            addCriterion("include_item_iids not like", value, "includeItemIids");
+        public Criteria andIntervalsTypeNotIn(List<Byte> values) {
+            addCriterion("intervals_type not in", values, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsIn(List<String> values) {
-            addCriterion("include_item_iids in", values, "includeItemIids");
+        public Criteria andIntervalsTypeBetween(Byte value1, Byte value2) {
+            addCriterion("intervals_type between", value1, value2, "intervalsType");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeItemIidsNotIn(List<String> values) {
-            addCriterion("include_item_iids not in", values, "includeItemIids");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeItemIidsBetween(String value1, String value2) {
-            addCriterion("include_item_iids between", value1, value2, "includeItemIids");
-            return (Criteria) this;
-        }
-
-        public Criteria andIncludeItemIidsNotBetween(String value1, String value2) {
-            addCriterion("include_item_iids not between", value1, value2, "includeItemIids");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsIsNull() {
-            addCriterion("adjust_intervals is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsIsNotNull() {
-            addCriterion("adjust_intervals is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsEqualTo(String value) {
-            addCriterion("adjust_intervals =", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsNotEqualTo(String value) {
-            addCriterion("adjust_intervals <>", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsGreaterThan(String value) {
-            addCriterion("adjust_intervals >", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsGreaterThanOrEqualTo(String value) {
-            addCriterion("adjust_intervals >=", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsLessThan(String value) {
-            addCriterion("adjust_intervals <", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsLessThanOrEqualTo(String value) {
-            addCriterion("adjust_intervals <=", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsLike(String value) {
-            addCriterion("adjust_intervals like", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsNotLike(String value) {
-            addCriterion("adjust_intervals not like", value, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsIn(List<String> values) {
-            addCriterion("adjust_intervals in", values, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsNotIn(List<String> values) {
-            addCriterion("adjust_intervals not in", values, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsBetween(String value1, String value2) {
-            addCriterion("adjust_intervals between", value1, value2, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsNotBetween(String value1, String value2) {
-            addCriterion("adjust_intervals not between", value1, value2, "adjustIntervals");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeIsNull() {
-            addCriterion("adjust_intervals_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeIsNotNull() {
-            addCriterion("adjust_intervals_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeEqualTo(Boolean value) {
-            addCriterion("adjust_intervals_type =", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeNotEqualTo(Boolean value) {
-            addCriterion("adjust_intervals_type <>", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeGreaterThan(Boolean value) {
-            addCriterion("adjust_intervals_type >", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("adjust_intervals_type >=", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeLessThan(Boolean value) {
-            addCriterion("adjust_intervals_type <", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeLessThanOrEqualTo(Boolean value) {
-            addCriterion("adjust_intervals_type <=", value, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeIn(List<Boolean> values) {
-            addCriterion("adjust_intervals_type in", values, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeNotIn(List<Boolean> values) {
-            addCriterion("adjust_intervals_type not in", values, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeBetween(Boolean value1, Boolean value2) {
-            addCriterion("adjust_intervals_type between", value1, value2, "adjustIntervalsType");
-            return (Criteria) this;
-        }
-
-        public Criteria andAdjustIntervalsTypeNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("adjust_intervals_type not between", value1, value2, "adjustIntervalsType");
+        public Criteria andIntervalsTypeNotBetween(Byte value1, Byte value2) {
+            addCriterion("intervals_type not between", value1, value2, "intervalsType");
             return (Criteria) this;
         }
 
@@ -975,52 +705,52 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andStatusEqualTo(Integer value) {
+        public Criteria andStatusEqualTo(Byte value) {
             addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
+        public Criteria andStatusNotEqualTo(Byte value) {
             addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
+        public Criteria andStatusGreaterThan(Byte value) {
             addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
             addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThan(Integer value) {
+        public Criteria andStatusLessThan(Byte value) {
             addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
             addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusIn(List<Integer> values) {
+        public Criteria andStatusIn(List<Byte> values) {
             addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
+        public Criteria andStatusNotIn(List<Byte> values) {
             addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
             addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
             addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }

@@ -1,39 +1,34 @@
 package com.trilemon.boss360.shelf.model;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class PlanSetting {
     private Long id;
+
     private Long userId;
-    @NotBlank
-    @Length(max = 32)
+
     private String name;
-    @NotBlank
+
     private String namePinyin;
-    @NotNull
-    private Boolean planType;
+
     private Boolean adjustShowcase;
-    @Length(max = 1024)
-    private String excludeKeywords;
-    @Length(max = 1024)
+
     private String excludeItemIids;
-    @Length(max = 1024)
+
     private String includeCids;
-    @Length(max = 1024)
-    private String includeKeywords;
-    @Length(max = 1024)
-    private String includeItemIids;
-    @Length(max = 1024)
-    private String adjustIntervals;
-    private Boolean adjustIntervalsType;
-    private Integer status;
+
+    private String intervals;
+
+    private Byte intervalsType;
+
+    private Byte status;
+
     private Integer lastAdjustItemNum;
+
     private Date lastAdjustTime;
+
     private Date addTime;
+
     private Date updTime;
 
     public Long getId() {
@@ -68,28 +63,12 @@ public class PlanSetting {
         this.namePinyin = namePinyin == null ? null : namePinyin.trim();
     }
 
-    public Boolean getPlanType() {
-        return planType;
-    }
-
-    public void setPlanType(Boolean planType) {
-        this.planType = planType;
-    }
-
     public Boolean getAdjustShowcase() {
         return adjustShowcase;
     }
 
     public void setAdjustShowcase(Boolean adjustShowcase) {
         this.adjustShowcase = adjustShowcase;
-    }
-
-    public String getExcludeKeywords() {
-        return excludeKeywords;
-    }
-
-    public void setExcludeKeywords(String excludeKeywords) {
-        this.excludeKeywords = excludeKeywords == null ? null : excludeKeywords.trim();
     }
 
     public String getExcludeItemIids() {
@@ -108,43 +87,27 @@ public class PlanSetting {
         this.includeCids = includeCids == null ? null : includeCids.trim();
     }
 
-    public String getIncludeKeywords() {
-        return includeKeywords;
+    public String getIntervals() {
+        return intervals;
     }
 
-    public void setIncludeKeywords(String includeKeywords) {
-        this.includeKeywords = includeKeywords == null ? null : includeKeywords.trim();
+    public void setIntervals(String intervals) {
+        this.intervals = intervals == null ? null : intervals.trim();
     }
 
-    public String getIncludeItemIids() {
-        return includeItemIids;
+    public Byte getIntervalsType() {
+        return intervalsType;
     }
 
-    public void setIncludeItemIids(String includeItemIids) {
-        this.includeItemIids = includeItemIids == null ? null : includeItemIids.trim();
+    public void setIntervalsType(Byte intervalsType) {
+        this.intervalsType = intervalsType;
     }
 
-    public String getAdjustIntervals() {
-        return adjustIntervals;
-    }
-
-    public void setAdjustIntervals(String adjustIntervals) {
-        this.adjustIntervals = adjustIntervals == null ? null : adjustIntervals.trim();
-    }
-
-    public Boolean getAdjustIntervalsType() {
-        return adjustIntervalsType;
-    }
-
-    public void setAdjustIntervalsType(Boolean adjustIntervalsType) {
-        this.adjustIntervalsType = adjustIntervalsType;
-    }
-
-    public Integer getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 

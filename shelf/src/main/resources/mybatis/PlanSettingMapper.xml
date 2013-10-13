@@ -6,16 +6,12 @@
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="name_pinyin" property="namePinyin" jdbcType="VARCHAR" />
-    <result column="plan_type" property="planType" jdbcType="BIT" />
     <result column="adjust_showcase" property="adjustShowcase" jdbcType="BIT" />
-    <result column="exclude_keywords" property="excludeKeywords" jdbcType="VARCHAR" />
     <result column="exclude_item_iids" property="excludeItemIids" jdbcType="VARCHAR" />
     <result column="include_cids" property="includeCids" jdbcType="VARCHAR" />
-    <result column="include_keywords" property="includeKeywords" jdbcType="VARCHAR" />
-    <result column="include_item_iids" property="includeItemIids" jdbcType="VARCHAR" />
-    <result column="adjust_intervals" property="adjustIntervals" jdbcType="VARCHAR" />
-    <result column="adjust_intervals_type" property="adjustIntervalsType" jdbcType="BIT" />
-    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="intervals" property="intervals" jdbcType="VARCHAR" />
+    <result column="intervals_type" property="intervalsType" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
     <result column="last_adjust_item_num" property="lastAdjustItemNum" jdbcType="INTEGER" />
     <result column="last_adjust_time" property="lastAdjustTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
@@ -80,9 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, name, name_pinyin, plan_type, adjust_showcase, exclude_keywords, exclude_item_iids, 
-    include_cids, include_keywords, include_item_iids, adjust_intervals, adjust_intervals_type, 
-    status, last_adjust_item_num, last_adjust_time, add_time, upd_time
+    id, user_id, name, name_pinyin, adjust_showcase, exclude_item_iids, include_cids, 
+    intervals, intervals_type, status, last_adjust_item_num, last_adjust_time, add_time, 
+    upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.shelf.model.PlanSettingExample" >
     select
@@ -116,19 +112,15 @@
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" >
     insert into plan_setting (id, user_id, name, 
-      name_pinyin, plan_type, adjust_showcase, 
-      exclude_keywords, exclude_item_iids, include_cids, 
-      include_keywords, include_item_iids, adjust_intervals, 
-      adjust_intervals_type, status, last_adjust_item_num, 
-      last_adjust_time, add_time, upd_time
-      )
+      name_pinyin, adjust_showcase, exclude_item_iids, 
+      include_cids, intervals, intervals_type, 
+      status, last_adjust_item_num, last_adjust_time, 
+      add_time, upd_time)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{namePinyin,jdbcType=VARCHAR}, #{planType,jdbcType=BIT}, #{adjustShowcase,jdbcType=BIT}, 
-      #{excludeKeywords,jdbcType=VARCHAR}, #{excludeItemIids,jdbcType=VARCHAR}, #{includeCids,jdbcType=VARCHAR}, 
-      #{includeKeywords,jdbcType=VARCHAR}, #{includeItemIids,jdbcType=VARCHAR}, #{adjustIntervals,jdbcType=VARCHAR}, 
-      #{adjustIntervalsType,jdbcType=BIT}, #{status,jdbcType=INTEGER}, #{lastAdjustItemNum,jdbcType=INTEGER}, 
-      #{lastAdjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
-      )
+      #{namePinyin,jdbcType=VARCHAR}, #{adjustShowcase,jdbcType=BIT}, #{excludeItemIids,jdbcType=VARCHAR}, 
+      #{includeCids,jdbcType=VARCHAR}, #{intervals,jdbcType=VARCHAR}, #{intervalsType,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{lastAdjustItemNum,jdbcType=INTEGER}, #{lastAdjustTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" >
     insert into plan_setting
@@ -145,14 +137,8 @@
       <if test="namePinyin != null" >
         name_pinyin,
       </if>
-      <if test="planType != null" >
-        plan_type,
-      </if>
       <if test="adjustShowcase != null" >
         adjust_showcase,
-      </if>
-      <if test="excludeKeywords != null" >
-        exclude_keywords,
       </if>
       <if test="excludeItemIids != null" >
         exclude_item_iids,
@@ -160,17 +146,11 @@
       <if test="includeCids != null" >
         include_cids,
       </if>
-      <if test="includeKeywords != null" >
-        include_keywords,
+      <if test="intervals != null" >
+        intervals,
       </if>
-      <if test="includeItemIids != null" >
-        include_item_iids,
-      </if>
-      <if test="adjustIntervals != null" >
-        adjust_intervals,
-      </if>
-      <if test="adjustIntervalsType != null" >
-        adjust_intervals_type,
+      <if test="intervalsType != null" >
+        intervals_type,
       </if>
       <if test="status != null" >
         status,
@@ -201,14 +181,8 @@
       <if test="namePinyin != null" >
         #{namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="planType != null" >
-        #{planType,jdbcType=BIT},
-      </if>
       <if test="adjustShowcase != null" >
         #{adjustShowcase,jdbcType=BIT},
-      </if>
-      <if test="excludeKeywords != null" >
-        #{excludeKeywords,jdbcType=VARCHAR},
       </if>
       <if test="excludeItemIids != null" >
         #{excludeItemIids,jdbcType=VARCHAR},
@@ -216,20 +190,14 @@
       <if test="includeCids != null" >
         #{includeCids,jdbcType=VARCHAR},
       </if>
-      <if test="includeKeywords != null" >
-        #{includeKeywords,jdbcType=VARCHAR},
+      <if test="intervals != null" >
+        #{intervals,jdbcType=VARCHAR},
       </if>
-      <if test="includeItemIids != null" >
-        #{includeItemIids,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustIntervals != null" >
-        #{adjustIntervals,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustIntervalsType != null" >
-        #{adjustIntervalsType,jdbcType=BIT},
+      <if test="intervalsType != null" >
+        #{intervalsType,jdbcType=TINYINT},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="lastAdjustItemNum != null" >
         #{lastAdjustItemNum,jdbcType=INTEGER},
@@ -266,14 +234,8 @@
       <if test="record.namePinyin != null" >
         name_pinyin = #{record.namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="record.planType != null" >
-        plan_type = #{record.planType,jdbcType=BIT},
-      </if>
       <if test="record.adjustShowcase != null" >
         adjust_showcase = #{record.adjustShowcase,jdbcType=BIT},
-      </if>
-      <if test="record.excludeKeywords != null" >
-        exclude_keywords = #{record.excludeKeywords,jdbcType=VARCHAR},
       </if>
       <if test="record.excludeItemIids != null" >
         exclude_item_iids = #{record.excludeItemIids,jdbcType=VARCHAR},
@@ -281,20 +243,14 @@
       <if test="record.includeCids != null" >
         include_cids = #{record.includeCids,jdbcType=VARCHAR},
       </if>
-      <if test="record.includeKeywords != null" >
-        include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
+      <if test="record.intervals != null" >
+        intervals = #{record.intervals,jdbcType=VARCHAR},
       </if>
-      <if test="record.includeItemIids != null" >
-        include_item_iids = #{record.includeItemIids,jdbcType=VARCHAR},
-      </if>
-      <if test="record.adjustIntervals != null" >
-        adjust_intervals = #{record.adjustIntervals,jdbcType=VARCHAR},
-      </if>
-      <if test="record.adjustIntervalsType != null" >
-        adjust_intervals_type = #{record.adjustIntervalsType,jdbcType=BIT},
+      <if test="record.intervalsType != null" >
+        intervals_type = #{record.intervalsType,jdbcType=TINYINT},
       </if>
       <if test="record.status != null" >
-        status = #{record.status,jdbcType=INTEGER},
+        status = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.lastAdjustItemNum != null" >
         last_adjust_item_num = #{record.lastAdjustItemNum,jdbcType=INTEGER},
@@ -319,16 +275,12 @@
       user_id = #{record.userId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       name_pinyin = #{record.namePinyin,jdbcType=VARCHAR},
-      plan_type = #{record.planType,jdbcType=BIT},
       adjust_showcase = #{record.adjustShowcase,jdbcType=BIT},
-      exclude_keywords = #{record.excludeKeywords,jdbcType=VARCHAR},
       exclude_item_iids = #{record.excludeItemIids,jdbcType=VARCHAR},
       include_cids = #{record.includeCids,jdbcType=VARCHAR},
-      include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
-      include_item_iids = #{record.includeItemIids,jdbcType=VARCHAR},
-      adjust_intervals = #{record.adjustIntervals,jdbcType=VARCHAR},
-      adjust_intervals_type = #{record.adjustIntervalsType,jdbcType=BIT},
-      status = #{record.status,jdbcType=INTEGER},
+      intervals = #{record.intervals,jdbcType=VARCHAR},
+      intervals_type = #{record.intervalsType,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
       last_adjust_item_num = #{record.lastAdjustItemNum,jdbcType=INTEGER},
       last_adjust_time = #{record.lastAdjustTime,jdbcType=TIMESTAMP},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -349,14 +301,8 @@
       <if test="namePinyin != null" >
         name_pinyin = #{namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="planType != null" >
-        plan_type = #{planType,jdbcType=BIT},
-      </if>
       <if test="adjustShowcase != null" >
         adjust_showcase = #{adjustShowcase,jdbcType=BIT},
-      </if>
-      <if test="excludeKeywords != null" >
-        exclude_keywords = #{excludeKeywords,jdbcType=VARCHAR},
       </if>
       <if test="excludeItemIids != null" >
         exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
@@ -364,20 +310,14 @@
       <if test="includeCids != null" >
         include_cids = #{includeCids,jdbcType=VARCHAR},
       </if>
-      <if test="includeKeywords != null" >
-        include_keywords = #{includeKeywords,jdbcType=VARCHAR},
+      <if test="intervals != null" >
+        intervals = #{intervals,jdbcType=VARCHAR},
       </if>
-      <if test="includeItemIids != null" >
-        include_item_iids = #{includeItemIids,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustIntervals != null" >
-        adjust_intervals = #{adjustIntervals,jdbcType=VARCHAR},
-      </if>
-      <if test="adjustIntervalsType != null" >
-        adjust_intervals_type = #{adjustIntervalsType,jdbcType=BIT},
+      <if test="intervalsType != null" >
+        intervals_type = #{intervalsType,jdbcType=TINYINT},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="lastAdjustItemNum != null" >
         last_adjust_item_num = #{lastAdjustItemNum,jdbcType=INTEGER},
@@ -399,26 +339,16 @@
     set user_id = #{userId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       name_pinyin = #{namePinyin,jdbcType=VARCHAR},
-      plan_type = #{planType,jdbcType=BIT},
       adjust_showcase = #{adjustShowcase,jdbcType=BIT},
-      exclude_keywords = #{excludeKeywords,jdbcType=VARCHAR},
       exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
       include_cids = #{includeCids,jdbcType=VARCHAR},
-      include_keywords = #{includeKeywords,jdbcType=VARCHAR},
-      include_item_iids = #{includeItemIids,jdbcType=VARCHAR},
-      adjust_intervals = #{adjustIntervals,jdbcType=VARCHAR},
-      adjust_intervals_type = #{adjustIntervalsType,jdbcType=BIT},
-      status = #{status,jdbcType=INTEGER},
+      intervals = #{intervals,jdbcType=VARCHAR},
+      intervals_type = #{intervalsType,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
       last_adjust_item_num = #{lastAdjustItemNum,jdbcType=INTEGER},
       last_adjust_time = #{lastAdjustTime,jdbcType=TIMESTAMP},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       upd_time = #{updTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-        select
-        <include refid="Base_Column_List" />
-        from plan_setting
-        where user_id = #{userId,jdbcType=BIGINT}
-    </select>
 </mapper>

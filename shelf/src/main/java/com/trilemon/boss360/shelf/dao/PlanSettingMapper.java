@@ -28,6 +28,4 @@ public interface PlanSettingMapper {
     int updateByPrimaryKeySelective(PlanSetting record);
 
     int updateByPrimaryKey(PlanSetting record);
-
-    PlanSetting selectByUserId(Long userId);
 }
