@@ -1,8 +1,8 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.taobao.api.domain.SellerCat;
-import com.trilemon.boss360.infrastructure.base.serivce.api.EnhancedApiException;
-import com.trilemon.boss360.infrastructure.base.serivce.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

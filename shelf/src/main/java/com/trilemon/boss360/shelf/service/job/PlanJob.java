@@ -1,6 +1,6 @@
 package com.trilemon.boss360.shelf.service.job;
 
-import com.trilemon.boss360.infrastructure.base.serivce.AbstractQueueService;
+import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
@@ -8,7 +8,6 @@ import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
