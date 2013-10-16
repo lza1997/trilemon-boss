@@ -18,13 +18,13 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellercats">
                 <label>
-                    <input type="checkbox" ng-click="toggleCategory(category)" value="{{sellercat.cid}}" />
-                    <span class="caret" ng-class="{'caret-right': !category.collapse}"></span>
+                    <input type="checkbox" ng-click="toggleCategory(sellercat)" value="{{sellercat.cid}}" />
+                    <span class="caret" ng-class="{'caret-right': !sellercat.collapse}"></span>
                     {{sellercat.name}}
                 </label>
-                <div class="checkbox" ng-show="category.collapse" ng-repeat="childCategory in category.children">
+                <div class="checkbox" ng-show="sellercat.collapse" ng-repeat="childCat in sellercat.children">
                     <label>
-                        <input type="checkbox"> {{childCategory.name}}
+                        <input type="checkbox"> {{childCat.name}}
                     </label>
                 </div>
             </div>

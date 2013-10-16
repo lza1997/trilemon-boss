@@ -1,10 +1,9 @@
 define(function (require, exports, module) {
 
     var NewController = ['$scope', 'Sellercat', function ($scope, Sellercat) {
-
         $scope.sellercats = [];
 
-        Sellercat.getList().then(function (data) {
+        Sellercat.getTree().then(function (data) {
             $scope.sellercats = data;
         });
 

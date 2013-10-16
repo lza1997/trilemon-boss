@@ -15,10 +15,10 @@
     </tr>
     </thead>
     <tr ng-repeat="item in items">
-        <td>{{ item.name }}</td>
+        <td><img ng-src="{{item.picUrl}}_sum.jpg" /></td>
         <td>{{ item.title }}</td>
         <td>
-            <a class="btn btn-default edit" ng-click="edit(category)">修改</a>
+            <a class="btn btn-default edit" ng-click="edit(category)">取消选择</a>
         </td>
     </tr>
 </table>
