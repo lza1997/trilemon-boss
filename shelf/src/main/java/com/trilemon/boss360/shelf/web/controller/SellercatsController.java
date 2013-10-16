@@ -9,23 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
  * @author kevin
  */
 @Controller
-@RequestMapping("/sellercats")
-public class SellercatsController {
+@RequestMapping("/test")
+public class TestController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
-
     @ResponseBody
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public Collection getSellerCats() throws EnhancedApiException {
+    @RequestMapping(value = "/sellercats", method = RequestMethod.GET)
+    Map<SellerCat, Long> getSellerCats() throws EnhancedApiException {
         Map<SellerCat, Long> map=taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
-
-        return map.keySet();
+        return map;
     }
 }
