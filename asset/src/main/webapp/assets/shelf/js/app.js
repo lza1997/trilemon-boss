@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular']);
+var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap.dropdownToggle']);
 
 app.factory('ajaxSpinner', ['$rootScope', '$q', function ($rootScope, $q) {
     return {
@@ -19,6 +19,10 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', function (
     $routeProvider
         .when('/plan/new', SeajsRoute.createRoute({
             controller: 'plan.new',
+            module: 'shelf_js/plan/index'
+        }))
+        .when('/plan/filter', SeajsRoute.createRoute({
+            controller: 'plan.filter',
             module: 'shelf_js/plan/index'
         }))
         .otherwise({redirectTo: '/plan/new'});
