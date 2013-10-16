@@ -6,14 +6,14 @@
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="name_pinyin" property="namePinyin" jdbcType="VARCHAR" />
-    <result column="adjust_showcase" property="adjustShowcase" jdbcType="BIT" />
-    <result column="exclude_item_iids" property="excludeItemIids" jdbcType="VARCHAR" />
     <result column="include_cids" property="includeCids" jdbcType="VARCHAR" />
-    <result column="intervals" property="intervals" jdbcType="VARCHAR" />
-    <result column="intervals_type" property="intervalsType" jdbcType="TINYINT" />
+    <result column="is_auto_add_new_items" property="isAutoAddNewItems" jdbcType="BIT" />
+    <result column="exclude_item_iids" property="excludeItemIids" jdbcType="VARCHAR" />
+    <result column="distribution" property="distribution" jdbcType="VARCHAR" />
+    <result column="distribution_type" property="distributionType" jdbcType="TINYINT" />
+    <result column="before_adjust_distribution" property="beforeAdjustDistribution" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="TINYINT" />
-    <result column="last_adjust_item_num" property="lastAdjustItemNum" jdbcType="INTEGER" />
-    <result column="last_adjust_time" property="lastAdjustTime" jdbcType="TIMESTAMP" />
+    <result column="next_plan_time" property="nextPlanTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -76,9 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, name, name_pinyin, adjust_showcase, exclude_item_iids, include_cids, 
-    intervals, intervals_type, status, last_adjust_item_num, last_adjust_time, add_time, 
-    upd_time
+    id, user_id, name, name_pinyin, include_cids, is_auto_add_new_items, exclude_item_iids, 
+    distribution, distribution_type, before_adjust_distribution, status, next_plan_time, 
+    add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.shelf.model.PlanSettingExample" >
     select
@@ -112,14 +112,14 @@
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" >
     insert into plan_setting (id, user_id, name, 
-      name_pinyin, adjust_showcase, exclude_item_iids, 
-      include_cids, intervals, intervals_type, 
-      status, last_adjust_item_num, last_adjust_time, 
+      name_pinyin, include_cids, is_auto_add_new_items, 
+      exclude_item_iids, distribution, distribution_type, 
+      before_adjust_distribution, status, next_plan_time, 
       add_time, upd_time)
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
-      #{namePinyin,jdbcType=VARCHAR}, #{adjustShowcase,jdbcType=BIT}, #{excludeItemIids,jdbcType=VARCHAR}, 
-      #{includeCids,jdbcType=VARCHAR}, #{intervals,jdbcType=VARCHAR}, #{intervalsType,jdbcType=TINYINT}, 
-      #{status,jdbcType=TINYINT}, #{lastAdjustItemNum,jdbcType=INTEGER}, #{lastAdjustTime,jdbcType=TIMESTAMP}, 
+      #{namePinyin,jdbcType=VARCHAR}, #{includeCids,jdbcType=VARCHAR}, #{isAutoAddNewItems,jdbcType=BIT}, 
+      #{excludeItemIids,jdbcType=VARCHAR}, #{distribution,jdbcType=VARCHAR}, #{distributionType,jdbcType=TINYINT}, 
+      #{beforeAdjustDistribution,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{nextPlanTime,jdbcType=TIMESTAMP}, 
       #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" >
@@ -137,29 +137,29 @@
       <if test="namePinyin != null" >
         name_pinyin,
       </if>
-      <if test="adjustShowcase != null" >
-        adjust_showcase,
+      <if test="includeCids != null" >
+        include_cids,
+      </if>
+      <if test="isAutoAddNewItems != null" >
+        is_auto_add_new_items,
       </if>
       <if test="excludeItemIids != null" >
         exclude_item_iids,
       </if>
-      <if test="includeCids != null" >
-        include_cids,
+      <if test="distribution != null" >
+        distribution,
       </if>
-      <if test="intervals != null" >
-        intervals,
+      <if test="distributionType != null" >
+        distribution_type,
       </if>
-      <if test="intervalsType != null" >
-        intervals_type,
+      <if test="beforeAdjustDistribution != null" >
+        before_adjust_distribution,
       </if>
       <if test="status != null" >
         status,
       </if>
-      <if test="lastAdjustItemNum != null" >
-        last_adjust_item_num,
-      </if>
-      <if test="lastAdjustTime != null" >
-        last_adjust_time,
+      <if test="nextPlanTime != null" >
+        next_plan_time,
       </if>
       <if test="addTime != null" >
         add_time,
@@ -181,29 +181,29 @@
       <if test="namePinyin != null" >
         #{namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="adjustShowcase != null" >
-        #{adjustShowcase,jdbcType=BIT},
+      <if test="includeCids != null" >
+        #{includeCids,jdbcType=VARCHAR},
+      </if>
+      <if test="isAutoAddNewItems != null" >
+        #{isAutoAddNewItems,jdbcType=BIT},
       </if>
       <if test="excludeItemIids != null" >
         #{excludeItemIids,jdbcType=VARCHAR},
       </if>
-      <if test="includeCids != null" >
-        #{includeCids,jdbcType=VARCHAR},
+      <if test="distribution != null" >
+        #{distribution,jdbcType=VARCHAR},
       </if>
-      <if test="intervals != null" >
-        #{intervals,jdbcType=VARCHAR},
+      <if test="distributionType != null" >
+        #{distributionType,jdbcType=TINYINT},
       </if>
-      <if test="intervalsType != null" >
-        #{intervalsType,jdbcType=TINYINT},
+      <if test="beforeAdjustDistribution != null" >
+        #{beforeAdjustDistribution,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
       </if>
-      <if test="lastAdjustItemNum != null" >
-        #{lastAdjustItemNum,jdbcType=INTEGER},
-      </if>
-      <if test="lastAdjustTime != null" >
-        #{lastAdjustTime,jdbcType=TIMESTAMP},
+      <if test="nextPlanTime != null" >
+        #{nextPlanTime,jdbcType=TIMESTAMP},
       </if>
       <if test="addTime != null" >
         #{addTime,jdbcType=TIMESTAMP},
@@ -234,29 +234,29 @@
       <if test="record.namePinyin != null" >
         name_pinyin = #{record.namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="record.adjustShowcase != null" >
-        adjust_showcase = #{record.adjustShowcase,jdbcType=BIT},
+      <if test="record.includeCids != null" >
+        include_cids = #{record.includeCids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isAutoAddNewItems != null" >
+        is_auto_add_new_items = #{record.isAutoAddNewItems,jdbcType=BIT},
       </if>
       <if test="record.excludeItemIids != null" >
         exclude_item_iids = #{record.excludeItemIids,jdbcType=VARCHAR},
       </if>
-      <if test="record.includeCids != null" >
-        include_cids = #{record.includeCids,jdbcType=VARCHAR},
+      <if test="record.distribution != null" >
+        distribution = #{record.distribution,jdbcType=VARCHAR},
       </if>
-      <if test="record.intervals != null" >
-        intervals = #{record.intervals,jdbcType=VARCHAR},
+      <if test="record.distributionType != null" >
+        distribution_type = #{record.distributionType,jdbcType=TINYINT},
       </if>
-      <if test="record.intervalsType != null" >
-        intervals_type = #{record.intervalsType,jdbcType=TINYINT},
+      <if test="record.beforeAdjustDistribution != null" >
+        before_adjust_distribution = #{record.beforeAdjustDistribution,jdbcType=VARCHAR},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
       </if>
-      <if test="record.lastAdjustItemNum != null" >
-        last_adjust_item_num = #{record.lastAdjustItemNum,jdbcType=INTEGER},
-      </if>
-      <if test="record.lastAdjustTime != null" >
-        last_adjust_time = #{record.lastAdjustTime,jdbcType=TIMESTAMP},
+      <if test="record.nextPlanTime != null" >
+        next_plan_time = #{record.nextPlanTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.addTime != null" >
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -275,14 +275,14 @@
       user_id = #{record.userId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       name_pinyin = #{record.namePinyin,jdbcType=VARCHAR},
-      adjust_showcase = #{record.adjustShowcase,jdbcType=BIT},
-      exclude_item_iids = #{record.excludeItemIids,jdbcType=VARCHAR},
       include_cids = #{record.includeCids,jdbcType=VARCHAR},
-      intervals = #{record.intervals,jdbcType=VARCHAR},
-      intervals_type = #{record.intervalsType,jdbcType=TINYINT},
+      is_auto_add_new_items = #{record.isAutoAddNewItems,jdbcType=BIT},
+      exclude_item_iids = #{record.excludeItemIids,jdbcType=VARCHAR},
+      distribution = #{record.distribution,jdbcType=VARCHAR},
+      distribution_type = #{record.distributionType,jdbcType=TINYINT},
+      before_adjust_distribution = #{record.beforeAdjustDistribution,jdbcType=VARCHAR},
       status = #{record.status,jdbcType=TINYINT},
-      last_adjust_item_num = #{record.lastAdjustItemNum,jdbcType=INTEGER},
-      last_adjust_time = #{record.lastAdjustTime,jdbcType=TIMESTAMP},
+      next_plan_time = #{record.nextPlanTime,jdbcType=TIMESTAMP},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       upd_time = #{record.updTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -301,29 +301,29 @@
       <if test="namePinyin != null" >
         name_pinyin = #{namePinyin,jdbcType=VARCHAR},
       </if>
-      <if test="adjustShowcase != null" >
-        adjust_showcase = #{adjustShowcase,jdbcType=BIT},
+      <if test="includeCids != null" >
+        include_cids = #{includeCids,jdbcType=VARCHAR},
+      </if>
+      <if test="isAutoAddNewItems != null" >
+        is_auto_add_new_items = #{isAutoAddNewItems,jdbcType=BIT},
       </if>
       <if test="excludeItemIids != null" >
         exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
       </if>
-      <if test="includeCids != null" >
-        include_cids = #{includeCids,jdbcType=VARCHAR},
+      <if test="distribution != null" >
+        distribution = #{distribution,jdbcType=VARCHAR},
       </if>
-      <if test="intervals != null" >
-        intervals = #{intervals,jdbcType=VARCHAR},
+      <if test="distributionType != null" >
+        distribution_type = #{distributionType,jdbcType=TINYINT},
       </if>
-      <if test="intervalsType != null" >
-        intervals_type = #{intervalsType,jdbcType=TINYINT},
+      <if test="beforeAdjustDistribution != null" >
+        before_adjust_distribution = #{beforeAdjustDistribution,jdbcType=VARCHAR},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
       </if>
-      <if test="lastAdjustItemNum != null" >
-        last_adjust_item_num = #{lastAdjustItemNum,jdbcType=INTEGER},
-      </if>
-      <if test="lastAdjustTime != null" >
-        last_adjust_time = #{lastAdjustTime,jdbcType=TIMESTAMP},
+      <if test="nextPlanTime != null" >
+        next_plan_time = #{nextPlanTime,jdbcType=TIMESTAMP},
       </if>
       <if test="addTime != null" >
         add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -339,14 +339,14 @@
     set user_id = #{userId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       name_pinyin = #{namePinyin,jdbcType=VARCHAR},
-      adjust_showcase = #{adjustShowcase,jdbcType=BIT},
-      exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
       include_cids = #{includeCids,jdbcType=VARCHAR},
-      intervals = #{intervals,jdbcType=VARCHAR},
-      intervals_type = #{intervalsType,jdbcType=TINYINT},
+      is_auto_add_new_items = #{isAutoAddNewItems,jdbcType=BIT},
+      exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
+      distribution = #{distribution,jdbcType=VARCHAR},
+      distribution_type = #{distributionType,jdbcType=TINYINT},
+      before_adjust_distribution = #{beforeAdjustDistribution,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
-      last_adjust_item_num = #{lastAdjustItemNum,jdbcType=INTEGER},
-      last_adjust_time = #{lastAdjustTime,jdbcType=TIMESTAMP},
+      next_plan_time = #{nextPlanTime,jdbcType=TIMESTAMP},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       upd_time = #{updTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

@@ -11,21 +11,21 @@ public class PlanSetting {
 
     private String namePinyin;
 
-    private Boolean adjustShowcase;
+    private String includeCids;
+
+    private Boolean isAutoAddNewItems;
 
     private String excludeItemIids;
 
-    private String includeCids;
+    private String distribution;
 
-    private String intervals;
+    private Byte distributionType;
 
-    private Byte intervalsType;
+    private String beforeAdjustDistribution;
 
     private Byte status;
 
-    private Integer lastAdjustItemNum;
-
-    private Date lastAdjustTime;
+    private Date nextPlanTime;
 
     private Date addTime;
 
@@ -63,12 +63,20 @@ public class PlanSetting {
         this.namePinyin = namePinyin == null ? null : namePinyin.trim();
     }
 
-    public Boolean getAdjustShowcase() {
-        return adjustShowcase;
+    public String getIncludeCids() {
+        return includeCids;
     }
 
-    public void setAdjustShowcase(Boolean adjustShowcase) {
-        this.adjustShowcase = adjustShowcase;
+    public void setIncludeCids(String includeCids) {
+        this.includeCids = includeCids == null ? null : includeCids.trim();
+    }
+
+    public Boolean getIsAutoAddNewItems() {
+        return isAutoAddNewItems;
+    }
+
+    public void setIsAutoAddNewItems(Boolean isAutoAddNewItems) {
+        this.isAutoAddNewItems = isAutoAddNewItems;
     }
 
     public String getExcludeItemIids() {
@@ -79,28 +87,28 @@ public class PlanSetting {
         this.excludeItemIids = excludeItemIids == null ? null : excludeItemIids.trim();
     }
 
-    public String getIncludeCids() {
-        return includeCids;
+    public String getDistribution() {
+        return distribution;
     }
 
-    public void setIncludeCids(String includeCids) {
-        this.includeCids = includeCids == null ? null : includeCids.trim();
+    public void setDistribution(String distribution) {
+        this.distribution = distribution == null ? null : distribution.trim();
     }
 
-    public String getIntervals() {
-        return intervals;
+    public Byte getDistributionType() {
+        return distributionType;
     }
 
-    public void setIntervals(String intervals) {
-        this.intervals = intervals == null ? null : intervals.trim();
+    public void setDistributionType(Byte distributionType) {
+        this.distributionType = distributionType;
     }
 
-    public Byte getIntervalsType() {
-        return intervalsType;
+    public String getBeforeAdjustDistribution() {
+        return beforeAdjustDistribution;
     }
 
-    public void setIntervalsType(Byte intervalsType) {
-        this.intervalsType = intervalsType;
+    public void setBeforeAdjustDistribution(String beforeAdjustDistribution) {
+        this.beforeAdjustDistribution = beforeAdjustDistribution == null ? null : beforeAdjustDistribution.trim();
     }
 
     public Byte getStatus() {
@@ -111,20 +119,12 @@ public class PlanSetting {
         this.status = status;
     }
 
-    public Integer getLastAdjustItemNum() {
-        return lastAdjustItemNum;
+    public Date getNextPlanTime() {
+        return nextPlanTime;
     }
 
-    public void setLastAdjustItemNum(Integer lastAdjustItemNum) {
-        this.lastAdjustItemNum = lastAdjustItemNum;
-    }
-
-    public Date getLastAdjustTime() {
-        return lastAdjustTime;
-    }
-
-    public void setLastAdjustTime(Date lastAdjustTime) {
-        this.lastAdjustTime = lastAdjustTime;
+    public void setNextPlanTime(Date nextPlanTime) {
+        this.nextPlanTime = nextPlanTime;
     }
 
     public Date getAddTime() {

@@ -11,15 +11,19 @@ public class Plan {
 
     private Long itemIid;
 
-    private String itemName;
+    private Boolean isNewItem;
+
+    private String itemTitle;
+
+    private String itemTitlePinyin;
 
     private String itemPicUrl;
 
-    private Integer status;
+    private Byte status;
 
-    private Date planListingTime;
+    private Date planAdjustTime;
 
-    private Date listingTime;
+    private Date adjustTime;
 
     private Date addTime;
 
@@ -57,12 +61,28 @@ public class Plan {
         this.itemIid = itemIid;
     }
 
-    public String getItemName() {
-        return itemName;
+    public Boolean getIsNewItem() {
+        return isNewItem;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName == null ? null : itemName.trim();
+    public void setIsNewItem(Boolean isNewItem) {
+        this.isNewItem = isNewItem;
+    }
+
+    public String getItemTitle() {
+        return itemTitle;
+    }
+
+    public void setItemTitle(String itemTitle) {
+        this.itemTitle = itemTitle == null ? null : itemTitle.trim();
+    }
+
+    public String getItemTitlePinyin() {
+        return itemTitlePinyin;
+    }
+
+    public void setItemTitlePinyin(String itemTitlePinyin) {
+        this.itemTitlePinyin = itemTitlePinyin == null ? null : itemTitlePinyin.trim();
     }
 
     public String getItemPicUrl() {
@@ -73,28 +93,28 @@ public class Plan {
         this.itemPicUrl = itemPicUrl == null ? null : itemPicUrl.trim();
     }
 
-    public Integer getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
-    public Date getPlanListingTime() {
-        return planListingTime;
+    public Date getPlanAdjustTime() {
+        return planAdjustTime;
     }
 
-    public void setPlanListingTime(Date planListingTime) {
-        this.planListingTime = planListingTime;
+    public void setPlanAdjustTime(Date planAdjustTime) {
+        this.planAdjustTime = planAdjustTime;
     }
 
-    public Date getListingTime() {
-        return listingTime;
+    public Date getAdjustTime() {
+        return adjustTime;
     }
 
-    public void setListingTime(Date listingTime) {
-        this.listingTime = listingTime;
+    public void setAdjustTime(Date adjustTime) {
+        this.adjustTime = adjustTime;
     }
 
     public Date getAddTime() {

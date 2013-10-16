@@ -17,6 +17,7 @@
         <!-- 主要依赖库的版本定义 -->
         <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
         <trilemon.360boss.infrastructure.base.client>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client>
+        <trilemon.360boss.infrastructure.base.client.ext>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client.ext>
     </properties>
 
     <!-- 依赖项定义 -->
@@ -31,6 +32,60 @@
             <groupId>com.trilemon.360boss</groupId>
             <artifactId>trilemon-360boss-infrastructure-base-client</artifactId>
             <version>${trilemon.360boss.infrastructure.base.client}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.trilemon.360boss</groupId>
+            <artifactId>trilemon-360boss-infrastructure-base-client-ext</artifactId>
+            <version>${trilemon.360boss.infrastructure.base.client.ext}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -386,7 +441,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
                     <stopKey>trilemon</stopKey>
-                    <stopPort>9999</stopPort>
+                    <stopPort>9998</stopPort>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
                             <port>8082</port>

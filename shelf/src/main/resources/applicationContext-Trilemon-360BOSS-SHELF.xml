@@ -21,4 +21,5 @@
     <description>导入applicationContext文件列表</description>
 
     <import resource="schedule/applicationContext-spring-scheduler.xml"/>
+    <import resource="dubbo/dubbo-provider.xml"/>
 </beans>

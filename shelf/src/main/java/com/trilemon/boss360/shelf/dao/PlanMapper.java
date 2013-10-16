@@ -28,4 +28,12 @@ public interface PlanMapper {
     int updateByPrimaryKeySelective(Plan record);
 
     int updateByPrimaryKey(Plan record);
+
+    List<Plan> selectByPlanSettingId(Long planSettingId);
+
+    void batchInsert(List<Plan> plans);
+
+    void deleteByPlanSettingId(Long planSettingId);
+
+    void batchDeleteByNumIid(List<Long> numIids);
 }

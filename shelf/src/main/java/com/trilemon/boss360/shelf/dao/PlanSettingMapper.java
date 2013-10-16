@@ -4,6 +4,7 @@ import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.model.PlanSettingExample;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PlanSettingMapper {
@@ -29,5 +30,9 @@ public interface PlanSettingMapper {
 
     int updateByPrimaryKey(PlanSetting record);
 
-    PlanSetting selectByUserId(Long userId);
+    List<PlanSetting> selectByUserId(Long userId);
+
+    List<PlanSetting> selectByUserIdAndStatus( @Param("userId") Long userId, @Param("status") byte status);
+
+    Collection<PlanSetting> paginationByStatus(int offset, int size, byte status);
 }
