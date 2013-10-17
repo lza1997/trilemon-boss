@@ -10,7 +10,7 @@
         <label for="inputEmail1" class="col-md-1 control-label">宝贝分类</label>
 
         <div class="col-md-6">
-            <p class="form-control-static">共{{categoris.length}}个分类，{{categoris.length}}个子分类</p>
+            <p class="form-control-static">共{{sellercatsNum}}个分类，{{sellercatsChildNum}}个子分类</p>
         </div>
     </div>
     <div class="form-group">
@@ -18,11 +18,11 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellercats">
                 <label>
-                    <input type="checkbox" ng-click="toggleCategory(sellercat)" value="{{sellercat.cid}}" />
-                    <span class="caret" ng-class="{'caret-right': !sellercat.collapse}"></span>
-                    {{sellercat.name}}
+                    <input type="checkbox" value="{{sellercat.cid}}" ng-click="toggleCategory(sellercat)" />
+                    <span class="caret" ng-class="{'caret-right': !sellercat.expand}"></span>
+                    {{sellercat.name}} ({{sellercat.itemNum}})
                 </label>
-                <div class="checkbox" ng-show="sellercat.collapse" ng-repeat="childCat in sellercat.children">
+                <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellercat.children">
                     <label>
                         <input type="checkbox"> {{childCat.name}}
                     </label>

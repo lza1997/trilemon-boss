@@ -20,7 +20,10 @@ define(function (require, exports, module) {
                     cat.children = _.where(data, {parentCid: cat.cid});
                 });
 
-                defer.resolve(cats);
+                defer.resolve({
+                    tree:cats,
+                    list:data
+                });
             });
             return defer.promise;
         };
