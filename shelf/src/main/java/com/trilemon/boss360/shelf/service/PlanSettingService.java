@@ -34,7 +34,7 @@ public class PlanSettingService {
     private PlanMapper planMapper;
     @Autowired
     private PlanService planService;
-    @Autowired
+    //@Autowired
     private PlanJob planJob;
 
     public void createPlanSetting(PlanSetting planSetting) throws ShelfException {
@@ -42,7 +42,7 @@ public class PlanSettingService {
             String hanYuPinyin = Languages.getHanYuPinyin(planSetting.getName());
             planSetting.setNamePinyin(hanYuPinyin);
             planSettingMapper.insertSelective(planSetting);
-            planJob.fillQueue(planSetting);
+            //planJob.fillQueue(planSetting);
         } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
             logger.error("save plan setting error.", badHanyuPinyinOutputFormatCombination);
             throw new ShelfException(badHanyuPinyinOutputFormatCombination);
