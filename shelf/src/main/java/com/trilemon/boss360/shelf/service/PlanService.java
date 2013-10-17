@@ -10,6 +10,7 @@ import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.util.TopApiUtils;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.ShelfUtils;
@@ -89,7 +90,7 @@ public class PlanService {
         List<Item> onSalePlans = null;
         try {
             onSalePlans = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
-                    ShelfUtils.getSellerCidList(planSetting.getIncludeCids()));
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()),ShelfConstants.ITEM_FIELDS);
         } catch (EnhancedApiException e) {
             new ShelfException(e);
         }
@@ -175,7 +176,7 @@ public class PlanService {
         List<Item> items = null;
         try {
             items = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
-                    ShelfUtils.getSellerCidList(planSetting.getIncludeCids()));
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()),ShelfConstants.ITEM_FIELDS);
         } catch (EnhancedApiException e) {
             throw new ShelfException(e);
         }

@@ -1,8 +1,6 @@
 package com.trilemon.boss360.shelf;
 
-import com.google.common.base.Splitter;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -151,13 +149,5 @@ public class ShelfUtils {
                     + "] error", e);
         }
         return plan;
-    }
-
-    public static List<Long> getSellerCidList(String sellerCidsStr) {
-        List<Long> sellerCidList = Lists.newArrayList();
-        for (String sellerCidStr : Splitter.on(",").split(sellerCidsStr)) {
-            sellerCidList.add(Long.valueOf(sellerCidStr));
-        }
-        return sellerCidList;
     }
 }
