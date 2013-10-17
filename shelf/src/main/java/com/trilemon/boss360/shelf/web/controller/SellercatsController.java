@@ -6,6 +6,7 @@ import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.shelf.ShelfConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class SellercatsController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public Set<SellerCat> index() throws EnhancedApiException {
-        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
+        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L, ShelfConstants.ITEM_FIELDS);
         return map.keySet();
     }
 
@@ -45,7 +46,7 @@ public class SellercatsController {
 
             }
         });
-        List<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList);
+        List<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList,ShelfConstants.ITEM_FIELDS);
         return items;
     }
 }
