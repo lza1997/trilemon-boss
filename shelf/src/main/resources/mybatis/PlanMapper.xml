@@ -5,8 +5,9 @@
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="plan_setting_id" property="planSettingId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="item_iid" property="itemIid" jdbcType="BIGINT" />
+    <result column="item_num_iid" property="itemNumIid" jdbcType="BIGINT" />
     <result column="is_new_item" property="isNewItem" jdbcType="BIT" />
+    <result column="item_seller_cid" property="itemSellerCid" jdbcType="BIGINT" />
     <result column="item_title" property="itemTitle" jdbcType="VARCHAR" />
     <result column="item_title_pinyin" property="itemTitlePinyin" jdbcType="VARCHAR" />
     <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR" />
@@ -75,8 +76,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, plan_setting_id, user_id, item_iid, is_new_item, item_title, item_title_pinyin, 
-    item_pic_url, status, plan_adjust_time, adjust_time, add_time, upd_time
+    id, plan_setting_id, user_id, item_num_iid, is_new_item, item_seller_cid, item_title, 
+    item_title_pinyin, item_pic_url, status, plan_adjust_time, adjust_time, add_time, 
+    upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.shelf.model.PlanExample" >
     select
@@ -99,8 +101,8 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from plan
-    where id = #{id,jdbcType=BIGINT}
+    DELETE FROM plan
+    WHERE id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.trilemon.boss360.shelf.model.PlanExample" >
     delete from plan
@@ -109,16 +111,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.Plan" >
-    insert into plan (id, plan_setting_id, user_id, 
-      item_iid, is_new_item, item_title, 
-      item_title_pinyin, item_pic_url, status, 
-      plan_adjust_time, adjust_time, add_time, 
-      upd_time)
-    values (#{id,jdbcType=BIGINT}, #{planSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{itemIid,jdbcType=BIGINT}, #{isNewItem,jdbcType=BIT}, #{itemTitle,jdbcType=VARCHAR}, 
-      #{itemTitlePinyin,jdbcType=VARCHAR}, #{itemPicUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
-      #{planAdjustTime,jdbcType=TIMESTAMP}, #{adjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{updTime,jdbcType=TIMESTAMP})
+    INSERT INTO plan (id, plan_setting_id, user_id,
+      item_num_iid, is_new_item, item_seller_cid, 
+      item_title, item_title_pinyin, item_pic_url, 
+      status, plan_adjust_time, adjust_time, 
+      add_time, upd_time)
+    VALUES (#{id,jdbcType=BIGINT}, #{planSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+      #{itemNumIid,jdbcType=BIGINT}, #{isNewItem,jdbcType=BIT}, #{itemSellerCid,jdbcType=BIGINT}, 
+      #{itemTitle,jdbcType=VARCHAR}, #{itemTitlePinyin,jdbcType=VARCHAR}, #{itemPicUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{planAdjustTime,jdbcType=TIMESTAMP}, #{adjustTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.Plan" >
     insert into plan
@@ -132,11 +134,14 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="itemIid != null" >
-        item_iid,
+      <if test="itemNumIid != null" >
+        item_num_iid,
       </if>
       <if test="isNewItem != null" >
         is_new_item,
+      </if>
+      <if test="itemSellerCid != null" >
+        item_seller_cid,
       </if>
       <if test="itemTitle != null" >
         item_title,
@@ -173,11 +178,14 @@
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
       </if>
-      <if test="itemIid != null" >
-        #{itemIid,jdbcType=BIGINT},
+      <if test="itemNumIid != null" >
+        #{itemNumIid,jdbcType=BIGINT},
       </if>
       <if test="isNewItem != null" >
         #{isNewItem,jdbcType=BIT},
+      </if>
+      <if test="itemSellerCid != null" >
+        #{itemSellerCid,jdbcType=BIGINT},
       </if>
       <if test="itemTitle != null" >
         #{itemTitle,jdbcType=VARCHAR},
@@ -223,11 +231,14 @@
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=BIGINT},
       </if>
-      <if test="record.itemIid != null" >
-        item_iid = #{record.itemIid,jdbcType=BIGINT},
+      <if test="record.itemNumIid != null" >
+        item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
       </if>
       <if test="record.isNewItem != null" >
         is_new_item = #{record.isNewItem,jdbcType=BIT},
+      </if>
+      <if test="record.itemSellerCid != null" >
+        item_seller_cid = #{record.itemSellerCid,jdbcType=BIGINT},
       </if>
       <if test="record.itemTitle != null" >
         item_title = #{record.itemTitle,jdbcType=VARCHAR},
@@ -263,8 +274,9 @@
     set id = #{record.id,jdbcType=BIGINT},
       plan_setting_id = #{record.planSettingId,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
-      item_iid = #{record.itemIid,jdbcType=BIGINT},
+      item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
       is_new_item = #{record.isNewItem,jdbcType=BIT},
+      item_seller_cid = #{record.itemSellerCid,jdbcType=BIGINT},
       item_title = #{record.itemTitle,jdbcType=VARCHAR},
       item_title_pinyin = #{record.itemTitlePinyin,jdbcType=VARCHAR},
       item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
@@ -286,11 +298,14 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=BIGINT},
       </if>
-      <if test="itemIid != null" >
-        item_iid = #{itemIid,jdbcType=BIGINT},
+      <if test="itemNumIid != null" >
+        item_num_iid = #{itemNumIid,jdbcType=BIGINT},
       </if>
       <if test="isNewItem != null" >
         is_new_item = #{isNewItem,jdbcType=BIT},
+      </if>
+      <if test="itemSellerCid != null" >
+        item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
       </if>
       <if test="itemTitle != null" >
         item_title = #{itemTitle,jdbcType=VARCHAR},
@@ -320,11 +335,12 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.shelf.model.Plan" >
-    update plan
-    set plan_setting_id = #{planSettingId,jdbcType=BIGINT},
+    UPDATE plan
+    SET plan_setting_id = #{planSettingId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
-      item_iid = #{itemIid,jdbcType=BIGINT},
+      item_num_iid = #{itemNumIid,jdbcType=BIGINT},
       is_new_item = #{isNewItem,jdbcType=BIT},
+      item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
       item_title = #{itemTitle,jdbcType=VARCHAR},
       item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
       item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
@@ -333,6 +349,16 @@
       adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       upd_time = #{updTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    WHERE id = #{id,jdbcType=BIGINT}
   </update>
+    <select id="selectByPlanSettingId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from plan
+        where plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPlanSettingId" parameterType="java.lang.Long" >
+        DELETE FROM plan
+        WHERE plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+    </delete>
 </mapper>

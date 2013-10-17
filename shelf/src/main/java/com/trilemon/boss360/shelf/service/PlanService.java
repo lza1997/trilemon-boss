@@ -67,7 +67,7 @@ public class PlanService {
      * @param userId
      */
     public void updatePlans(Long userId) {
-        List<PlanSetting> planSettings = planSettingMapper.selectByUserIdAndStatus(userId, PLAN_SETTING_STATUS_RUNNING);
+        List<PlanSetting> planSettings = planSettingMapper.selectByUserIdAndStatus(userId, ImmutableList.of(PLAN_SETTING_STATUS_RUNNING));
         if (CollectionUtils.isNotEmpty(planSettings)) {
             for (PlanSetting planSetting : planSettings) {
                 try {
@@ -90,7 +90,7 @@ public class PlanService {
         List<Item> onSalePlans = null;
         try {
             onSalePlans = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()),ShelfConstants.ITEM_FIELDS);
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()), ShelfConstants.ITEM_FIELDS);
         } catch (EnhancedApiException e) {
             new ShelfException(e);
         }
@@ -108,7 +108,7 @@ public class PlanService {
             @Nullable
             @Override
             public Long apply(@Nullable Plan input) {
-                return input.getItemIid();
+                return input.getItemNumIid();
             }
         });
 
@@ -136,7 +136,7 @@ public class PlanService {
                         new Predicate<Plan>() {
                             @Override
                             public boolean apply(@Nullable Plan input) {
-                                return runningPlanNumIids.contains(input.getItemIid());
+                                return runningPlanNumIids.contains(input.getItemNumIid());
                             }
                         });
         Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validRunningPlans);
@@ -176,7 +176,7 @@ public class PlanService {
         List<Item> items = null;
         try {
             items = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()),ShelfConstants.ITEM_FIELDS);
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()), ShelfConstants.ITEM_FIELDS);
         } catch (EnhancedApiException e) {
             throw new ShelfException(e);
         }

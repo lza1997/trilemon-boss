@@ -435,63 +435,63 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsIsNull() {
-            addCriterion("is_auto_add_new_items is null");
+        public Criteria andAutoAddNewItemsIsNull() {
+            addCriterion("auto_add_new_items is null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsIsNotNull() {
-            addCriterion("is_auto_add_new_items is not null");
+        public Criteria andAutoAddNewItemsIsNotNull() {
+            addCriterion("auto_add_new_items is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsEqualTo(Boolean value) {
-            addCriterion("is_auto_add_new_items =", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsEqualTo(Boolean value) {
+            addCriterion("auto_add_new_items =", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsNotEqualTo(Boolean value) {
-            addCriterion("is_auto_add_new_items <>", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsNotEqualTo(Boolean value) {
+            addCriterion("auto_add_new_items <>", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsGreaterThan(Boolean value) {
-            addCriterion("is_auto_add_new_items >", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsGreaterThan(Boolean value) {
+            addCriterion("auto_add_new_items >", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("is_auto_add_new_items >=", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("auto_add_new_items >=", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsLessThan(Boolean value) {
-            addCriterion("is_auto_add_new_items <", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsLessThan(Boolean value) {
+            addCriterion("auto_add_new_items <", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsLessThanOrEqualTo(Boolean value) {
-            addCriterion("is_auto_add_new_items <=", value, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsLessThanOrEqualTo(Boolean value) {
+            addCriterion("auto_add_new_items <=", value, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsIn(List<Boolean> values) {
-            addCriterion("is_auto_add_new_items in", values, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsIn(List<Boolean> values) {
+            addCriterion("auto_add_new_items in", values, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsNotIn(List<Boolean> values) {
-            addCriterion("is_auto_add_new_items not in", values, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsNotIn(List<Boolean> values) {
+            addCriterion("auto_add_new_items not in", values, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_auto_add_new_items between", value1, value2, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsBetween(Boolean value1, Boolean value2) {
+            addCriterion("auto_add_new_items between", value1, value2, "autoAddNewItems");
             return (Criteria) this;
         }
 
-        public Criteria andIsAutoAddNewItemsNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_auto_add_new_items not between", value1, value2, "isAutoAddNewItems");
+        public Criteria andAutoAddNewItemsNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("auto_add_new_items not between", value1, value2, "autoAddNewItems");
             return (Criteria) this;
         }
 

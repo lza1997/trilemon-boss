@@ -1,5 +1,8 @@
 package com.trilemon.boss360.shelf.service.job;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
@@ -10,7 +13,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
+import javax.annotation.concurrent.Immutable;
 
 /**
  * 根据{@link PlanSetting}生成计划。
@@ -39,8 +42,8 @@ public class PlanJob extends AbstractQueueService<PlanSetting> {
     public void fillQueue() {
         int offset = 0;
         while (true) {
-            Collection<PlanSetting> tradeAsyncList = planSettingMapper.paginationByStatus(offset,
-                    100, ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
+            List<PlanSetting> tradeAsyncList = planSettingMapper.paginationByStatus(offset,
+                    100, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN));
             if (CollectionUtils.isEmpty(tradeAsyncList)) {
                 break;
             } else {

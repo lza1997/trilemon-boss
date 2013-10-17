@@ -13,7 +13,7 @@ public class PlanSetting {
 
     private String includeCids;
 
-    private Boolean isAutoAddNewItems;
+    private Boolean autoAddNewItems;
 
     private String excludeItemIids;
 
@@ -71,12 +71,12 @@ public class PlanSetting {
         this.includeCids = includeCids == null ? null : includeCids.trim();
     }
 
-    public Boolean getIsAutoAddNewItems() {
-        return isAutoAddNewItems;
+    public Boolean getAutoAddNewItems() {
+        return autoAddNewItems;
     }
 
-    public void setIsAutoAddNewItems(Boolean isAutoAddNewItems) {
-        this.isAutoAddNewItems = isAutoAddNewItems;
+    public void setAutoAddNewItems(Boolean autoAddNewItems) {
+        this.autoAddNewItems = autoAddNewItems;
     }
 
     public String getExcludeItemIids() {

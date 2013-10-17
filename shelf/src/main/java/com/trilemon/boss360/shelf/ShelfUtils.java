@@ -133,7 +133,7 @@ public class ShelfUtils {
     public static Plan buildPlan(Item item, DateTime planListingDateTime, boolean isNew) throws ShelfException {
         Plan plan = new Plan();
         plan.setAdjustTime(planListingDateTime.toDate());
-        plan.setItemIid(item.getNumIid());
+        plan.setItemNumIid(item.getNumIid());
         plan.setItemTitle(item.getTitle());
         plan.setItemPicUrl(item.getPicUrl());
         plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);

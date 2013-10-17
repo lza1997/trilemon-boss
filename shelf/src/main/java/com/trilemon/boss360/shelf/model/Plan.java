@@ -9,9 +9,11 @@ public class Plan {
 
     private Long userId;
 
-    private Long itemIid;
+    private Long itemNumIid;
 
     private Boolean isNewItem;
+
+    private Long itemSellerCid;
 
     private String itemTitle;
 
@@ -53,12 +55,12 @@ public class Plan {
         this.userId = userId;
     }
 
-    public Long getItemIid() {
-        return itemIid;
+    public Long getItemNumIid() {
+        return itemNumIid;
     }
 
-    public void setItemIid(Long itemIid) {
-        this.itemIid = itemIid;
+    public void setItemNumIid(Long itemNumIid) {
+        this.itemNumIid = itemNumIid;
     }
 
     public Boolean getIsNewItem() {
@@ -67,6 +69,14 @@ public class Plan {
 
     public void setIsNewItem(Boolean isNewItem) {
         this.isNewItem = isNewItem;
+    }
+
+    public Long getItemSellerCid() {
+        return itemSellerCid;
+    }
+
+    public void setItemSellerCid(Long itemSellerCid) {
+        this.itemSellerCid = itemSellerCid;
     }
 
     public String getItemTitle() {
