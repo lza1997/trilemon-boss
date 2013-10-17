@@ -1,8 +1,11 @@
 package com.trilemon.boss360.shelf.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Plan {
+    @JsonProperty
     private Long id;
 
     private Long planSettingId;

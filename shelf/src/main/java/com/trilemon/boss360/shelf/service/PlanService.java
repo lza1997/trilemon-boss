@@ -18,6 +18,7 @@ import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.service.job.PlanJob;
 import com.trilemon.commons.LocalTimeInterval;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -71,7 +72,7 @@ public class PlanService {
         if (CollectionUtils.isNotEmpty(planSettings)) {
             for (PlanSetting planSetting : planSettings) {
                 try {
-                    updatePlan(planSetting);
+                    updatePlan(userId,planSetting);
                 } catch (ShelfException e) {
                     logger.error("update plan error, planSettingId[{}] userId[{}]", planSetting.getId(), userId);
                 }
@@ -85,11 +86,11 @@ public class PlanService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void updatePlan(PlanSetting planSetting) throws ShelfException {
+    public void updatePlan(Long userId,PlanSetting planSetting) throws ShelfException {
         //所有在售宝贝
         List<Item> onSalePlans = null;
         try {
-            onSalePlans = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
+            onSalePlans = taobaoApiShopService.getOnSaleItems(userId,
                     TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()), ShelfConstants.ITEM_FIELDS);
         } catch (EnhancedApiException e) {
             new ShelfException(e);

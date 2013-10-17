@@ -42,7 +42,7 @@ public class PlanController {
             return "/plans/new";
         } else {
             try {
-                planSettingService.savePlanSetting(planSetting);
+                planSettingService.createPlanSetting(planSetting);
             } catch (ShelfException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }

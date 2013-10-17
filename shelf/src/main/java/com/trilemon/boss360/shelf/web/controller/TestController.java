@@ -1,5 +1,6 @@
 package com.trilemon.boss360.shelf.web.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
@@ -17,15 +18,14 @@ import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
 import com.trilemon.commons.DateUtils;
+import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,6 +38,8 @@ import java.util.Map;
 @RequestMapping("/test")
 public class TestController {
     @Autowired
+    AppService appService;
+    @Autowired
     private TaobaoApiShopService taobaoApiShopService;
     @Autowired
     private BaseClient baseClient;
@@ -47,8 +49,17 @@ public class TestController {
     private TaobaoApiItemService taobaoApiItemService;
     @Autowired
     private PlanSettingService planSettingService;
-    @Autowired
-    AppService appService;
+
+    /**
+     * json 到对象
+     * @param args
+     */
+    public static void main(String[] args) {
+        String json = "{\"delistTime\":1382430509000,\"numIid\":19491833743,\"picUrl\":\"http://img04.taobaocdn.com/bao/uploaded/i4/12708025971010288/T1lj89FdxdXXXXXXXX_!!0-item_pic.jpg\",\"sellerCids\":\"809023016,\",\"title\":\"勤茂micro/usb黑莓三星小米诺基亚安卓机中兴华为加长数据充电线\"}";
+        JsonMapper jsonMapper = new JsonMapper();
+        Item item =jsonMapper.fromJson( JsonMapper.normalizeJson(json),Item.class);
+        System.out.println(ToStringBuilder.reflectionToString(item));
+    }
 
     /**
      * 获取类目对应宝贝个数
@@ -235,14 +246,30 @@ public class TestController {
     }
 
     /**
+     * 展示 json 用法
+     *
+     * @return
+     * @throws EnhancedApiException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/items/{numIid}", method = RequestMethod.GET)
+    public String searchOnSaleItem(@PathVariable String numIid) throws
+            EnhancedApiException {
+        Item item = taobaoApiItemService.getItem(56912708L, Long.valueOf(numIid), ShelfConstants.ITEM_FIELDS);
+        JsonMapper jsonMapper = new JsonMapper(JsonInclude.Include.NON_NULL);
+        return jsonMapper.toJson(item);
+    }
+
+    /**
      * 创建计划
+     *
      * @return
      * @throws ShelfException
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.GET)
     public String savePlanSetting() throws ShelfException {
-        PlanSetting planSetting=new PlanSetting();
+        PlanSetting planSetting = new PlanSetting();
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSetting.setAutoAddNewItems(true);
         planSetting.setBeforeAdjustDistribution("test");
@@ -254,12 +281,13 @@ public class TestController {
         planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
         planSetting.setNextPlanTime(appService.getLocalSystemTime().plusDays(7).toDate());
         planSetting.setUserId(56912708L);
-        planSettingService.savePlanSetting(planSetting);
+        planSettingService.createPlanSetting(planSetting);
         return "success";
     }
 
     /**
      * 查询所有计划
+     *
      * @return
      * @throws ShelfException
      */
@@ -268,8 +296,10 @@ public class TestController {
     public List<PlanSetting> getPlanSettings() throws ShelfException {
         return planSettingService.getPlanSettings(56912708L);
     }
+
     /**
      * 查询特定计划
+     *
      * @return
      * @throws ShelfException
      */
@@ -278,8 +308,10 @@ public class TestController {
     public PlanSetting getPlanSetting() throws ShelfException {
         return planSettingService.getPlanSetting(4L);
     }
+
     /**
      * 翻页计划
+     *
      * @return
      * @throws ShelfException
      */
@@ -291,6 +323,7 @@ public class TestController {
 
     /**
      * 删除计划
+     *
      * @return
      * @throws ShelfException
      */
@@ -299,15 +332,4 @@ public class TestController {
     public boolean deletePlan(@RequestParam long planSettingId) throws ShelfException {
         return planSettingService.deletePlanSetting(planSettingId);
     }
-//
-//    /**
-//     * 翻页计划
-//     * @return
-//     * @throws ShelfException
-//     */
-//    @ResponseBody
-//    @RequestMapping(value = "/deletePlanSetting", method = RequestMethod.GET)
-//    public boolean pausePlan(@RequestParam long planSettingId) throws ShelfException {
-//        return planSettingService.(planSettingId);
-//    }
 }

@@ -150,4 +150,8 @@ public class ShelfUtils {
         }
         return plan;
     }
+
+    public static void main(String[] args){
+
+    }
 }

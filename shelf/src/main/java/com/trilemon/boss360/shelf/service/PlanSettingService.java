@@ -6,6 +6,7 @@ import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.service.job.PlanJob;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -33,12 +34,15 @@ public class PlanSettingService {
     private PlanMapper planMapper;
     @Autowired
     private PlanService planService;
+    @Autowired
+    private PlanJob planJob;
 
-    public void savePlanSetting(PlanSetting planSetting) throws ShelfException {
+    public void createPlanSetting(PlanSetting planSetting) throws ShelfException {
         try {
             String hanYuPinyin = Languages.getHanYuPinyin(planSetting.getName());
             planSetting.setNamePinyin(hanYuPinyin);
             planSettingMapper.insertSelective(planSetting);
+            planJob.fillQueue(planSetting);
         } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
             logger.error("save plan setting error.", badHanyuPinyinOutputFormatCombination);
             throw new ShelfException(badHanyuPinyinOutputFormatCombination);
@@ -63,6 +67,11 @@ public class PlanSettingService {
         }
     }
 
+    /**
+     * 考虑只更新名字的情况
+     * @param planSetting
+     * @throws ShelfException
+     */
     public void updatePlanSetting(PlanSetting planSetting) throws ShelfException {
         planSettingMapper.updateByPrimaryKeySelective(planSetting);
         planMapper.deleteByPlanSettingId(planSetting.getId());
