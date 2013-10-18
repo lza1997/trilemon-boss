@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
+import com.trilemon.boss360.infrastructure.base.BaseConstants;
 import com.trilemon.boss360.infrastructure.base.client.BaseClient;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoApp;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
@@ -113,14 +114,14 @@ public class TestController {
     @RequestMapping(value = "/onSaleItems", method = RequestMethod.GET)
     Page<Item> getOnSaleItems(@RequestParam int pageNum) throws EnhancedApiException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
+        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
             @Override
             public Long apply(@Nullable SellerCat input) {
                 return input.getCid();
             }
         });
-        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS,
+        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, ShelfConstants.ITEM_FIELDS, sellerCats,
                 pageNum, 1);
         return items;
     }
@@ -134,15 +135,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/allOnSaleItems", method = RequestMethod.GET)
     List<Item> getAllOnSaleItems() throws EnhancedApiException {
-        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable SellerCat input) {
-                return input.getCid();
-            }
-        });
-        List<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS);
+        List<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, ShelfConstants.ITEM_FIELDS);
         return items;
     }
 
@@ -176,7 +169,8 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/tradeNumFromTop", method = RequestMethod.GET)
     long getTradeNumFromTop() throws EnhancedApiException {
-        long num = taobaoApiShopService.getTradeNumFromTop(56912708L, DateUtils.startOfNDaysBefore(90).toDate(),
+        long num = taobaoApiShopService.getTradeNumFromTop(56912708L, BaseConstants.TRADE_TYPES,
+                DateUtils.startOfNDaysBefore(90).toDate(),
                 DateUtils.endOfNDaysBefore(1).toDate());
         return num;
     }
@@ -229,6 +223,7 @@ public class TestController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     Page<Item> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
             EnhancedApiException {
+        //首先判断是否可以按照 numiid 查询
         if (NumberUtils.isNumber(query)) {
             Item item = taobaoApiItemService.getItem(56912708L, Long.valueOf(query), ShelfConstants.ITEM_FIELDS);
             if (null != item) {
@@ -236,14 +231,14 @@ public class TestController {
             }
         }
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
+        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
             @Override
             public Long apply(@Nullable SellerCat input) {
                 return input.getCid();
             }
         });
-        return taobaoApiShopService.searchOnSaleItems(56912708L, query, cidList, ShelfConstants.ITEM_FIELDS,
+        return taobaoApiShopService.searchOnSaleItems(56912708L, query, ShelfConstants.ITEM_FIELDS, sellerCats,
                 pageNum, 1);
     }
 
@@ -318,9 +313,9 @@ public class TestController {
      * @throws ShelfException
      */
     @ResponseBody
-    @RequestMapping(value = "/paginationPlanSettings", method = RequestMethod.GET)
-    public Page<PlanSetting> paginationPlanSettings(@RequestParam int pageNum) throws ShelfException {
-        return planSettingService.paginationPlanSettings(56912708L, pageNum, 1);
+    @RequestMapping(value = "/paginatePlanSettings", method = RequestMethod.GET)
+    public Page<PlanSetting> paginatePlanSettings(@RequestParam int pageNum) throws ShelfException {
+        return planSettingService.paginatePlanSettings(56912708L, pageNum, 1);
     }
 
     /**

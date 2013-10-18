@@ -18,7 +18,6 @@ import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
-import com.trilemon.boss360.shelf.service.job.PlanJob;
 import com.trilemon.commons.LocalTimeInterval;
 import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
@@ -72,7 +71,7 @@ public class PlanService {
         if (CollectionUtils.isNotEmpty(planSettings)) {
             for (PlanSetting planSetting : planSettings) {
                 try {
-                    updatePlan(userId,planSetting);
+                    updatePlan(userId, planSetting);
                 } catch (ShelfException e) {
                     logger.error("update plan error, planSettingId[{}] userId[{}]", planSetting.getId(), userId);
                 }
@@ -86,12 +85,12 @@ public class PlanService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void updatePlan(Long userId,PlanSetting planSetting) throws ShelfException {
+    public void updatePlan(Long userId, PlanSetting planSetting) throws ShelfException {
         //所有在售宝贝
         List<Item> onSalePlans = null;
         try {
-            onSalePlans = taobaoApiShopService.getOnSaleItems(userId,
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()), ShelfConstants.ITEM_FIELDS);
+            onSalePlans = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
         } catch (EnhancedApiException e) {
             new ShelfException(e);
         }
@@ -176,8 +175,8 @@ public class PlanService {
     public void plan(PlanSetting planSetting) throws ShelfException {
         List<Item> items = null;
         try {
-            items = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(),
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()), ShelfConstants.ITEM_FIELDS);
+            items = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), ShelfConstants.ITEM_FIELDS,
+                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
         } catch (EnhancedApiException e) {
             throw new ShelfException(e);
         }

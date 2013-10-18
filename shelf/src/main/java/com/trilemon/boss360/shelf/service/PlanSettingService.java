@@ -54,7 +54,7 @@ public class PlanSettingService {
     }
 
     @NotNull
-    public Page<PlanSetting> paginationPlanSettings(Long userId, int pageNum, int pageSize) {
+    public Page<PlanSetting> paginatePlanSettings(Long userId, int pageNum, int pageSize) {
         List<Byte> statusList = ImmutableList.of(PLAN_SETTING_STATUS_RUNNING, PLAN_SETTING_STATUS_WAITING_PLAN);
         int totalSize = planSettingMapper.countByUserIdAndStatus(userId, statusList);
         List<PlanSetting> planSettings = planSettingMapper.paginationByUserIdAndStatus(userId, (pageNum - 1) * pageSize,
