@@ -3,6 +3,7 @@ package com.trilemon.boss360.shelf;
 import com.google.common.base.Function;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -162,5 +163,9 @@ public class ShelfUtils {
                 return input.getItemNumIid();
             }
         });
+    }
+
+    public static Multimap<Integer, LocalTimeInterval> getTimeOfDistribution(Iterable<Plan> plans) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 }

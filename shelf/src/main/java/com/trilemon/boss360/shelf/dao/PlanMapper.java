@@ -1,5 +1,6 @@
 package com.trilemon.boss360.shelf.dao;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanExample;
 import org.apache.ibatis.annotations.Param;
@@ -40,4 +41,6 @@ public interface PlanMapper {
     void deleteByUserIdAndPlanSettingId(Long userId, Long planSettingId);
 
     List<Plan> selectByUserIdAndPlanSettingId(Long userId, Long planSettingId);
+
+    List<Plan> selectByPlanSettingIdAndStatus(Long planSettingId, ImmutableList<Byte> status);
 }

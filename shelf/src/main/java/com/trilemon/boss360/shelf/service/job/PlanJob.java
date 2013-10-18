@@ -53,6 +53,6 @@ public class PlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void process(PlanSetting planSetting) throws Exception {
-        planService.plan(planSetting.getUserId(),planSetting);
+        planService.createPlan(planSetting.getUserId(), planSetting);
     }
 }

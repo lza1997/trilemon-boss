@@ -38,7 +38,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/test")
-public class TestController {
+public class TestController{
     @Autowired
     AppService appService;
     @Autowired
@@ -283,18 +283,6 @@ public class TestController {
     }
 
     /**
-     * 查询所有计划
-     *
-     * @return
-     * @throws ShelfException
-     */
-    @ResponseBody
-    @RequestMapping(value = "/planSettings", method = RequestMethod.GET)
-    public List<PlanSetting> getPlanSettings() throws ShelfException {
-        return planSettingService.getPlanSettings(56912708L);
-    }
-
-    /**
      * 查询特定计划
      *
      * @return
@@ -329,4 +317,11 @@ public class TestController {
     public boolean deletePlan(@RequestParam long planSettingId) throws ShelfException {
         return planSettingService.deletePlanSetting(56912708L,planSettingId);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/testException", method = RequestMethod.GET)
+    public boolean testException() throws ShelfException {
+        throw new ShelfException("test exception");
+    }
+
 }

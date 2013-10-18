@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.trilemon.boss360.shelf.ShelfUtils.buildPlan;
 
 /**
@@ -71,8 +72,9 @@ public class PlanService {
             onSaleItems = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
                     TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
         } catch (EnhancedApiException e) {
-            new ShelfException("update plan error, userId[" + userId + "], PlanSetting[" + ToStringBuilder.reflectionToString
-                    (planSetting) + "]", e);
+            ShelfException shelfException = new ShelfException("update createPlan error, userId[" + userId + "], " +
+                    "PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]", e);
+            throw shelfException;
         }
         Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
 
@@ -111,7 +113,7 @@ public class PlanService {
         //为新添宝贝安排具体的调整时间
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, currDistribution);
         //安排计划
-        List<Plan> plans = plan(planSetting, assignTable);
+        List<Plan> plans = plan(planSetting, assignTable, ShelfUtils.getTimeOfDistribution(validRunningPlans));
         planMapper.batchInsert(plans);
     }
 
@@ -121,16 +123,19 @@ public class PlanService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void plan(Long userId, PlanSetting planSetting) throws ShelfException {
+    public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException {
+        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
+                userId, planSetting.getUserId());
         try {
             List<Item> items = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
                     TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
-            //确保是这个用户的计划设置
-            planSetting.setUserId(userId);
             List<Plan> plans = plan(planSetting, items);
+            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
+                    planSetting.getId());
             planMapper.batchInsert(plans);
         } catch (EnhancedApiException e) {
-            throw new ShelfException(e);
+            throw new ShelfException("create plan error, userId[" + userId + "], " +
+                    "planSettingId[" + planSetting.getId() + "]", e);
         }
     }
 
@@ -153,18 +158,17 @@ public class PlanService {
                 break;
         }
         if (null == assignTable) {
-            throw new ShelfException("plan for userId[" + planSetting.getUserId() + "] planSettingId[" + planSetting.getId() + "] " +
-                    "error, assign table is null.");
+            throw new ShelfException("plan for userId[" + planSetting.getUserId() + "], planSettingId[" + planSetting
+                    .getId() + "] error, assign table is null.");
         }
-        return plan(planSetting, assignTable);
+        //获取当前已经安排的计划时间
+        List<Plan> runningPlans = planMapper.selectByPlanSettingIdAndStatus(planSetting.getId(),
+                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST, ShelfConstants.PLAN_STATUS_SUCCESSFUL));
+        Multimap<Integer, LocalTimeInterval> runningPlanTimeOfDistribution = ShelfUtils.getTimeOfDistribution(runningPlans);
+        return plan(planSetting, assignTable, runningPlanTimeOfDistribution);
     }
 
-    /**
-     * @param planSetting
-     * @param assignTable
-     * @return
-     */
-    private List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable) {
+    private List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable, Multimap<Integer, LocalTimeInterval> runningPlanTimeOfDistribution) {
         List<Plan> plans = Lists.newArrayList();
 
         DateTime now = applicationService.getLocalSystemTime();
@@ -193,7 +197,7 @@ public class PlanService {
                             Plan plan = buildPlan(item, planListingDateTime, false);
                             plans.add(plan);
                         } catch (ShelfException e) {
-                            logger.error("plan error, planSettingID[" + planSetting.getId() + "]", e);
+                            logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
                         }
                     }
                 } else {
@@ -208,7 +212,7 @@ public class PlanService {
                                 Plan plan = buildPlan(item, planListingDateTime, false);
                                 plans.add(plan);
                             } catch (ShelfException e) {
-                                logger.error("plan error, planSettingID[" + planSetting.getId() + "]", e);
+                                logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
                             }
                         }
                     }
@@ -268,16 +272,8 @@ public class PlanService {
     public void execPlan(Long userId, Long planSettingId) {
     }
 
-    public List<Plan> searchPlanItem(Long userId, String keyword) {
+    public List<Plan> searchPlanItem(Long userId, Long planSettingId, String keyword) {
         return null;
-    }
-
-    public void pausePlan(Long userId, Long planSettingId) {
-
-    }
-
-    public void resumePlan(Long userId, Long planSettingId) {
-
     }
 
     @Transactional

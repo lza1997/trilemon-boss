@@ -55,7 +55,7 @@ public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
     public void process(PlanSetting planSetting) throws Exception {
         List<Plan> plans = planMapper.selectByPlanSettingId(planSetting.getId());
         for (Plan plan : plans) {
-            //planService.execPlan(plan);
+            //planService.execPlan(createPlan);
         }
     }
 }
