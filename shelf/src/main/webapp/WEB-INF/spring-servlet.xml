@@ -39,6 +39,13 @@
             <!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="prettyPrint" value="true"/>
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="serializationInclusion">
+                            <value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+                        </property>
+                    </bean>
+                </property>
             </bean>
             <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
         </mvc:message-converters>

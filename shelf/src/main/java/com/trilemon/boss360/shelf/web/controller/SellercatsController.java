@@ -7,7 +7,7 @@ import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.shelf.ShelfConstants;
-import org.apache.commons.lang3.tuple.Pair;
+import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,17 +32,33 @@ public class SellercatsController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public List<SellerCatDTO> index() throws EnhancedApiException {
-        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L, ShelfConstants.ITEM_FIELDS);
+        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
 
         // map -> list , use DTO to transfer
         List<SellerCatDTO> list = new ArrayList<SellerCatDTO>();
         for (SellerCat sellerCat : map.keySet()) {
-            SellerCatDTO sellerCatDTO =new SellerCatDTO(sellerCat);
+            SellerCatDTO sellerCatDTO = new SellerCatDTO(sellerCat);
             sellerCatDTO.setItemNum(map.get(sellerCat));
             list.add(sellerCatDTO);
         }
 
         return list;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/items", method = RequestMethod.GET)
+    public Page<Item> getSellerCats3(@RequestParam int pageNum) throws EnhancedApiException {
+        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
+        List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable SellerCat input) {
+                return input.getCid();
+            }
+        });
+        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS,
+                pageNum, 1);
+        return items;
     }
 
     public static class SellerCatDTO extends SellerCat {
@@ -66,21 +82,5 @@ public class SellercatsController {
         public void setItemNum(Long itemNum) {
             this.itemNum = itemNum;
         }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/items", method = RequestMethod.GET)
-    public Pair<List<Item>, Long> getSellerCats3(@RequestParam int pageNum) throws EnhancedApiException {
-        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable SellerCat input) {
-                return input.getCid();
-            }
-        });
-        Pair<List<Item>, Long> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS,
-                pageNum, 1);
-        return items;
     }
 }

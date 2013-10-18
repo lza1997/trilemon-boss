@@ -2,6 +2,7 @@ package com.trilemon.boss360.shelf.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
@@ -22,7 +23,6 @@ import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author kevin
@@ -52,12 +53,13 @@ public class TestController {
 
     /**
      * json 到对象
+     *
      * @param args
      */
     public static void main(String[] args) {
         String json = "{\"delistTime\":1382430509000,\"numIid\":19491833743,\"picUrl\":\"http://img04.taobaocdn.com/bao/uploaded/i4/12708025971010288/T1lj89FdxdXXXXXXXX_!!0-item_pic.jpg\",\"sellerCids\":\"809023016,\",\"title\":\"勤茂micro/usb黑莓三星小米诺基亚安卓机中兴华为加长数据充电线\"}";
         JsonMapper jsonMapper = new JsonMapper();
-        Item item =jsonMapper.fromJson( JsonMapper.normalizeJson(json),Item.class);
+        Item item = jsonMapper.fromJson(JsonMapper.normalizeJson(json), Item.class);
         System.out.println(ToStringBuilder.reflectionToString(item));
     }
 
@@ -69,9 +71,9 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCatAndOnSaleItemNum", method = RequestMethod.GET)
-    Map<SellerCat, Long> getSellerCatAndOnSaleItemNum() throws EnhancedApiException {
-        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L, ShelfConstants.ITEM_FIELDS);
-        return map;
+    Set<SellerCat> getSellerCatAndOnSaleItemNum() throws EnhancedApiException {
+        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
+        return map.keySet();
     }
 
     /**
@@ -109,7 +111,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/onSaleItems", method = RequestMethod.GET)
-    Pair<List<Item>, Long> getOnSaleItems(@RequestParam int pageNum) throws EnhancedApiException {
+    Page<Item> getOnSaleItems(@RequestParam int pageNum) throws EnhancedApiException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -118,7 +120,7 @@ public class TestController {
                 return input.getCid();
             }
         });
-        Pair<List<Item>, Long> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS,
+        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, cidList, ShelfConstants.ITEM_FIELDS,
                 pageNum, 1);
         return items;
     }
@@ -161,7 +163,7 @@ public class TestController {
                 return input.getCid();
             }
         });
-        long num = taobaoApiShopService.getOnSaleItemNum(56912708L, cidList, ShelfConstants.ITEM_FIELDS);
+        long num = taobaoApiShopService.getOnSaleItemNum(56912708L, cidList);
         return num;
     }
 
@@ -225,12 +227,12 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    Pair<? extends List<Item>, Long> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
+    Page<Item> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
             EnhancedApiException {
         if (NumberUtils.isNumber(query)) {
             Item item = taobaoApiItemService.getItem(56912708L, Long.valueOf(query), ShelfConstants.ITEM_FIELDS);
             if (null != item) {
-                return Pair.of(Lists.newArrayList(item), 1L);
+                return Page.create(1, 1, 1, ImmutableList.of(item));
             }
         }
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
