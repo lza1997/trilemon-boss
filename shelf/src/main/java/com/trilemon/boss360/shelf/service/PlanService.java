@@ -1,6 +1,5 @@
 package com.trilemon.boss360.shelf.service;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.common.math.IntMath;
@@ -19,7 +18,7 @@ import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.commons.LocalTimeInterval;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -31,13 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.trilemon.boss360.shelf.ShelfConstants.PLAN_SETTING_STATUS_RUNNING;
 import static com.trilemon.boss360.shelf.ShelfUtils.buildPlan;
 
 /**
@@ -62,57 +59,28 @@ public class PlanService {
     private TaobaoApiShopService taobaoApiShopService;
 
     /**
-     * 更新计划 <ul> <li>宝贝从计划中移除或者下架后，删除此宝贝计划</li> <li>新加入宝贝在原来的分布上平均分配</li> </ul>
-     *
-     * @param userId
-     */
-    public void updatePlans(Long userId) {
-        List<PlanSetting> planSettings = planSettingMapper.selectByUserIdAndStatus(userId, ImmutableList.of(PLAN_SETTING_STATUS_RUNNING));
-        if (CollectionUtils.isNotEmpty(planSettings)) {
-            for (PlanSetting planSetting : planSettings) {
-                try {
-                    updatePlan(userId, planSetting);
-                } catch (ShelfException e) {
-                    logger.error("update plan error, planSettingId[{}] userId[{}]", planSetting.getId(), userId);
-                }
-            }
-        }
-    }
-
-    /**
-     * 更新某一个计划。
+     * 更新一个计划。
      *
      * @param planSetting
      * @throws ShelfException
      */
     public void updatePlan(Long userId, PlanSetting planSetting) throws ShelfException {
         //所有在售宝贝
-        List<Item> onSalePlans = null;
+        List<Item> onSaleItems = null;
         try {
-            onSalePlans = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
+            onSaleItems = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
                     TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
         } catch (EnhancedApiException e) {
-            new ShelfException(e);
+            new ShelfException("update plan error, userId[" + userId + "], PlanSetting[" + ToStringBuilder.reflectionToString
+                    (planSetting) + "]", e);
         }
-        Set<Long> onSaleNumIids = Sets.newHashSet(Lists.transform(onSalePlans, new Function<Item, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable Item input) {
-                return input.getNumIid();
-            }
-        }));
+        Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
 
         //所有计划中宝贝
-        List<Plan> runningPlans = planMapper.selectByPlanSettingId(planSetting.getId());
-        final List<Long> runningPlanNumIids = Lists.transform(runningPlans, new Function<Plan, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable Plan input) {
-                return input.getItemNumIid();
-            }
-        });
+        List<Plan> runningPlans = planMapper.selectByUserIdAndPlanSettingId(userId, planSetting.getId());
+        final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
 
-        //已经计划的并且有效的宝贝NumIid
+        //正在运行的的并且有效的宝贝NumIid
         Set<Long> validItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
                 Sets.newHashSet(runningPlanNumIids));
 
@@ -123,13 +91,13 @@ public class PlanService {
         onSaleNumIids.removeAll(validItemNumIids);
         //需要加入计划的新加入宝贝
         List<Item> newItems = Lists.newArrayList();
-        for (Item item : onSalePlans) {
+        for (Item item : onSaleItems) {
             if (onSaleNumIids.contains(item.getNumIid())) {
                 newItems.add(item);
             }
         }
         //删除计划中失效宝贝
-        planMapper.batchDeleteByNumIid(runningPlanNumIids);
+        planMapper.batchDeleteByNumIid(userId, planSetting.getId(), runningPlanNumIids);
         //更新调整分布
         Iterable<Plan> validRunningPlans = Iterables.filter
                 (runningPlans,
@@ -148,40 +116,22 @@ public class PlanService {
     }
 
     /**
-     * 安排某个用户的所有计划
-     *
-     * @param userId 用户的淘宝 id
-     * @throws ShelfException
-     */
-    public void planAll(Long userId) {
-        List<PlanSetting> planSettings = planSettingMapper.selectByUserId(userId);
-        if (CollectionUtils.isNotEmpty(planSettings)) {
-            for (PlanSetting planSetting : planSettings) {
-                try {
-                    plan(planSetting);
-                } catch (ShelfException e) {
-                    logger.error("plan error, planSettingId[{}] userId[{}]", planSetting.getId(), userId);
-                }
-            }
-        }
-    }
-
-    /**
      * 安排单个计划并保存
      *
      * @param planSetting
      * @throws ShelfException
      */
-    public void plan(PlanSetting planSetting) throws ShelfException {
-        List<Item> items = null;
+    public void plan(Long userId, PlanSetting planSetting) throws ShelfException {
         try {
-            items = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), ShelfConstants.ITEM_FIELDS,
+            List<Item> items = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
                     TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
+            //确保是这个用户的计划设置
+            planSetting.setUserId(userId);
+            List<Plan> plans = plan(planSetting, items);
+            planMapper.batchInsert(plans);
         } catch (EnhancedApiException e) {
             throw new ShelfException(e);
         }
-        List<Plan> plans = plan(planSetting, items);
-        planMapper.batchInsert(plans);
     }
 
     /**
@@ -191,7 +141,6 @@ public class PlanService {
      * @param items
      * @return 不会返回 null，如果没有计划，返回一个空的集合
      */
-    @NotNull
     private List<Plan> plan(PlanSetting planSetting, List<Item> items) throws ShelfException {
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = null;
         switch (planSetting.getDistributionType()) {
@@ -293,7 +242,7 @@ public class PlanService {
      * @return
      */
     private Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) {
-        Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.parseDistribution(planSetting
+        Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
                 .getDistribution());
         return assignItems(items, distribution);
     }
@@ -316,26 +265,24 @@ public class PlanService {
         return assignTable;
     }
 
-//    public void execPlan(Plan plan) {
-//        ShelfUtils.delistItem(plan);
-//        ShelfUtils.listItem(plan);
-//    }
+    public void execPlan(Long userId, Long planSettingId) {
+    }
 
-    public List<Plan> searchPlan(String keyword) {
+    public List<Plan> searchPlanItem(Long userId, String keyword) {
         return null;
     }
 
-    public void pausePlan(Long planSettingId) {
+    public void pausePlan(Long userId, Long planSettingId) {
 
     }
 
-    public void resumePlan(Long planSettingId) {
+    public void resumePlan(Long userId, Long planSettingId) {
 
     }
 
     @Transactional
-    public void deletePlan(Long planSettingId) {
-        planMapper.deleteByPlanSettingId(planSettingId);
-        planSettingMapper.deleteByPrimaryKey(planSettingId);
+    public void deletePlan(Long userId, Long planSettingId) {
+        planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
+        planSettingMapper.deleteByPrimaryKeyAndUserId(planSettingId, userId);
     }
 }

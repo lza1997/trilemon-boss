@@ -11,12 +11,12 @@ import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 import static com.trilemon.boss360.shelf.ShelfConstants.PLAN_SETTING_STATUS_RUNNING;
@@ -37,27 +37,42 @@ public class PlanSettingService {
     //@Autowired
     private PlanJob planJob;
 
-    public void createPlanSetting(PlanSetting planSetting) throws ShelfException {
+    /**
+     * 创建计划设置
+     * @param planSetting
+     * @throws ShelfException
+     */
+    public void createPlanSetting(Long userId,PlanSetting planSetting) throws ShelfException {
         try {
             String hanYuPinyin = Languages.getHanYuPinyin(planSetting.getName());
+            planSetting.setUserId(userId);
             planSetting.setNamePinyin(hanYuPinyin);
             planSettingMapper.insertSelective(planSetting);
             //planJob.fillQueue(planSetting);
         } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
-            logger.error("save plan setting error.", badHanyuPinyinOutputFormatCombination);
-            throw new ShelfException(badHanyuPinyinOutputFormatCombination);
+            throw new ShelfException("create plan setting error, planSetting[" + ToStringBuilder.reflectionToString(planSetting) + "].",
+                    badHanyuPinyinOutputFormatCombination);
         }
     }
 
+    /**
+     * 获取用户所有的计划设置
+     * @param userId
+     * @return
+     */
     public List<PlanSetting> getPlanSettings(Long userId) {
         return planSettingMapper.selectByUserId(userId);
     }
 
-    @NotNull
+    /**
+     * 翻页获取用户计划设置
+     * @param userId
+     * @return
+     */
     public Page<PlanSetting> paginatePlanSettings(Long userId, int pageNum, int pageSize) {
         List<Byte> statusList = ImmutableList.of(PLAN_SETTING_STATUS_RUNNING, PLAN_SETTING_STATUS_WAITING_PLAN);
         int totalSize = planSettingMapper.countByUserIdAndStatus(userId, statusList);
-        List<PlanSetting> planSettings = planSettingMapper.paginationByUserIdAndStatus(userId, (pageNum - 1) * pageSize,
+        List<PlanSetting> planSettings = planSettingMapper.paginateByUserIdAndStatus(userId, (pageNum - 1) * pageSize,
                 pageSize, statusList);
         if (CollectionUtils.isEmpty(planSettings)) {
             return Page.create(totalSize, pageNum, pageSize, Lists.<PlanSetting>newArrayList());
@@ -68,22 +83,34 @@ public class PlanSettingService {
     }
 
     /**
-     * 考虑只更新名字的情况
+     * TODO 考虑只更新名字的情况
+     * 更新计划
+     *
      * @param planSetting
      * @throws ShelfException
      */
-    public void updatePlanSetting(PlanSetting planSetting) throws ShelfException {
-        planSettingMapper.updateByPrimaryKeySelective(planSetting);
-        planMapper.deleteByPlanSettingId(planSetting.getId());
-        planService.plan(planSetting);
+    public void updatePlanSetting(Long userId,PlanSetting planSetting) throws ShelfException {
+        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting,userId);
+        planMapper.deleteByUserIdAndPlanSettingId(userId,planSetting.getId());
+        planService.plan(userId,planSetting);
     }
 
-    public PlanSetting getPlanSetting(Long planSettingId) {
-        return planSettingMapper.selectByPrimaryKey(planSettingId);
+    /**
+     * 获取计划设置
+     * @param planSettingId
+     * @return
+     */
+    public PlanSetting getPlanSetting(Long userId,Long planSettingId) {
+        return planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId,userId);
     }
 
-    public boolean deletePlanSetting(Long planSettingId) {
-        int rows = planSettingMapper.deleteByPrimaryKey(planSettingId);
+    /**
+     * 删除计划设置
+     * @param planSettingId
+     * @return
+     */
+    public boolean deletePlanSetting(Long userId,Long planSettingId) {
+        int rows = planSettingMapper.deleteByPrimaryKeyAndUserId(planSettingId, userId);
         return rows > 0;
     }
 }

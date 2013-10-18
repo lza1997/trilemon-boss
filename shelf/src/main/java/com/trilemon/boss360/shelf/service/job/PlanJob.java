@@ -13,7 +13,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.concurrent.Immutable;
 
 /**
  * 根据{@link PlanSetting}生成计划。
@@ -42,7 +41,7 @@ public class PlanJob extends AbstractQueueService<PlanSetting> {
     public void fillQueue() {
         int offset = 0;
         while (true) {
-            List<PlanSetting> tradeAsyncList = planSettingMapper.paginationByStatus(offset,
+            List<PlanSetting> tradeAsyncList = planSettingMapper.paginateByStatus(offset,
                     100, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN));
             if (CollectionUtils.isEmpty(tradeAsyncList)) {
                 break;
@@ -54,6 +53,6 @@ public class PlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void process(PlanSetting planSetting) throws Exception {
-        planService.plan(planSetting);
+        planService.plan(planSetting.getUserId(),planSetting);
     }
 }

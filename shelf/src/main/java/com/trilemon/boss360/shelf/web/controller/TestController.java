@@ -278,7 +278,7 @@ public class TestController {
         planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
         planSetting.setNextPlanTime(appService.getLocalSystemTime().plusDays(7).toDate());
         planSetting.setUserId(56912708L);
-        planSettingService.createPlanSetting(planSetting);
+        planSettingService.createPlanSetting(56912708L,planSetting);
         return "success";
     }
 
@@ -303,7 +303,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/planSetting", method = RequestMethod.GET)
     public PlanSetting getPlanSetting() throws ShelfException {
-        return planSettingService.getPlanSetting(4L);
+        return planSettingService.getPlanSetting(56912708L,4L);
     }
 
     /**
@@ -327,6 +327,6 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/deletePlanSetting", method = RequestMethod.GET)
     public boolean deletePlan(@RequestParam long planSettingId) throws ShelfException {
-        return planSettingService.deletePlanSetting(planSettingId);
+        return planSettingService.deletePlanSetting(56912708L,planSettingId);
     }
 }

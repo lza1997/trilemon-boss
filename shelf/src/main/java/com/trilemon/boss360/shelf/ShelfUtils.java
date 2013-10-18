@@ -1,6 +1,8 @@
 package com.trilemon.boss360.shelf;
 
+import com.google.common.base.Function;
 import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -10,6 +12,7 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -24,7 +27,7 @@ public class ShelfUtils {
      * @return
      */
     public static Table<Integer, LocalTimeInterval, Integer> getDistribution(Iterable<Plan> plans) {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create(7, 23);
+        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
         for (Plan plan : plans) {
             DateTime adjustDateTime = new DateTime(plan.getAdjustTime());
             int dayOfWeek = adjustDateTime.getDayOfWeek();
@@ -45,8 +48,8 @@ public class ShelfUtils {
      * @param distribution
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, Integer> parseDistribution(String distribution) {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create(7, 23);
+    public static Table<Integer, LocalTimeInterval, Integer> parseAndFillZeroDistribution(String distribution) {
+        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
         for (String interval : distribution.split("\\|\\|")) {
             String[] segments = interval.split("\\|");
             //解析|分隔符
@@ -151,7 +154,13 @@ public class ShelfUtils {
         return plan;
     }
 
-    public static void main(String[] args){
-
+    public static List<Long> getPlanNumIids(List<Plan> plans) {
+        return Lists.transform(plans, new Function<Plan, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable Plan input) {
+                return input.getItemNumIid();
+            }
+        });
     }
 }

@@ -42,7 +42,7 @@ public class PlanController {
             return "/plans/new";
         } else {
             try {
-                planSettingService.createPlanSetting(planSetting);
+                planSettingService.createPlanSetting(56912708L,planSetting);
             } catch (ShelfException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -53,7 +53,7 @@ public class PlanController {
     @RequestMapping(value = "/{planSettingId}", method = RequestMethod.GET)
     public ModelAndView show(@PathVariable Long planSettingId) {
         ModelAndView modelAndView = new ModelAndView("/plans/show");
-        PlanSetting planSetting = planSettingService.getPlanSetting(planSettingId);
+        PlanSetting planSetting = planSettingService.getPlanSetting(56912708L,planSettingId);
         modelAndView.addObject("planSetting", planSetting);
         return modelAndView;
     }

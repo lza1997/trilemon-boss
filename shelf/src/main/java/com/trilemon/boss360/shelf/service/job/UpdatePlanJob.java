@@ -11,7 +11,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.concurrent.Immutable;
 import java.util.Collection;
 
 /**
@@ -41,7 +40,7 @@ public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
     public void fillQueue() {
         int offset = 0;
         while (true) {
-            Collection<PlanSetting> planSettings = planSettingMapper.paginationByStatus(offset,
+            Collection<PlanSetting> planSettings = planSettingMapper.paginateByStatus(offset,
                     100, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
             if (CollectionUtils.isEmpty(planSettings)) {
                 break;
