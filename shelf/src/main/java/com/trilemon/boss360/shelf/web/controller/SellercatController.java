@@ -1,21 +1,15 @@
 package com.trilemon.boss360.shelf.web.controller;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
-import com.trilemon.boss360.shelf.ShelfConstants;
-import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +18,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/sellercats")
-public class SellercatsController {
+public class SellercatController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
 
@@ -42,22 +36,6 @@ public class SellercatsController {
         }
 
         return list;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/items", method = RequestMethod.GET)
-    public Page<Item> getSellerCats3(@RequestParam int pageNum) throws EnhancedApiException {
-        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable SellerCat input) {
-                return input.getCid();
-            }
-        });
-        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, ShelfConstants.ITEM_FIELDS, sellerCats,
-                pageNum, 1);
-        return items;
     }
 
     public static class SellerCatDTO extends SellerCat {

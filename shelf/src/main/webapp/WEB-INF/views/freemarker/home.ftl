@@ -35,6 +35,7 @@
     <script src="${asset}/base/js/angular-dropdown.js"></script>
 
     <script src="${asset}/shelf/js/app.js"></script>
+    <script src="${asset}/shelf/js/common/pagination.js"></script>
 
     <script>
         seajs.config({
@@ -80,6 +81,10 @@
         </div>
     </div>
 </header>
+
+<div class="ajax-spinner fade" ng-class="{'in':ajaxing}">
+    <i class="icon-spinner icon-spin"></i> 载入中...
+</div>
 
 <div class="container" ng-view>
 

@@ -20,12 +20,6 @@ body {
     color: #000;
     font-size: 18px; }
 
-.caret-right {
-  border-left: 4px solid #000;
-  border-right: 0;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent; }
-
 .shelf-form .control-label {
   width: 9%; }
 .shelf-form .form-action {
@@ -34,6 +28,27 @@ body {
 .shelf-filter-form {
   width: 400px;
   margin-bottom: 20px; }
+
+.fade {
+  filter: alpha(opacity=0); }
+
+.ajax-spinner {
+  position: fixed;
+  left: 50%;
+  top: 100px;
+  width: 300px;
+  margin-left: -150px;
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+  padding: 5px 0; }
+
+.icon-spinner {
+  -webkit-animation: spin 1s infinite linear;
+  -moz-animation: spin 1s infinite linear;
+  animation: spin 1s infinite linear; }
 
 footer {
   margin-top: 50px;

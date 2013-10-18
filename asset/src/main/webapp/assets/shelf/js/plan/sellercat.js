@@ -27,11 +27,6 @@ define(function (require, exports, module) {
             });
             return defer.promise;
         };
-
-//        Model.getList = function () {
-//
-//        };
-
         return Model;
     }];
 

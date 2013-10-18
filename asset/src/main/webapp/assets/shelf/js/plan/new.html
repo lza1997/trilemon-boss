@@ -18,8 +18,10 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellercats">
                 <label>
-                    <input type="checkbox" value="{{sellercat.cid}}" ng-click="toggleCategory(sellercat)" />
-                    <span class="caret" ng-class="{'caret-right': !sellercat.expand}"></span>
+                    <input type="checkbox" value="{{sellercat.cid}}" />
+                </label>
+                <label ng-click="toggleCategory(sellercat)" >
+                    <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
                     {{sellercat.name}} ({{sellercat.itemNum}})
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellercat.children">
@@ -44,7 +46,7 @@
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
             <button type="submit" class="btn btn-primary btn-md">创建计划</button>
-            <a>或筛选宝贝</a>
+            <a href="#/plan/filter">或筛选宝贝</a>
         </div>
     </div>
 </form>

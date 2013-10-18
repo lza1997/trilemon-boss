@@ -1,12 +1,14 @@
 <div class="input-group shelf-filter-form">
-    <input type="text" class="form-control" name="name" placeholder="宝贝标题、编号" maxlength="20" ng-model="newCategory.name"/>
+    <input type="text" class="form-control" name="name" placeholder="宝贝标题、编号" maxlength="20"
+           ng-model="newCategory.name"/>
     <span class="input-group-btn">
         <button class="btn btn-primary" type="submit">搜 索</button>
     </span>
 </div>
 <table class="table table-hover">
-    <col width="20%"/>
-    <col width="30%"/>
+    <col width="15%"/>
+    <col />
+    <col width="15%"/>
     <thead>
     <tr>
         <th>图片</th>
@@ -14,11 +16,19 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="item in items">
-        <td><img ng-src="{{item.picUrl}}_sum.jpg" /></td>
+    <tr ng-repeat="item in items" ng-class="{danger:item.exclude}">
+        <td><img ng-src="{{item.picUrl}}_sum.jpg"/></td>
         <td>{{ item.title }}</td>
         <td>
-            <a class="btn btn-default edit" ng-click="edit(category)">取消选择</a>
+            <a ng-if="!item.exclude" href="" ng-click="setExclude(item, true)">排除</a>
+            <div ng-if="item.exclude">
+                已排除
+                <a href="" ng-click="setExclude(item, false)">恢复</a>
+            </div>
+
         </td>
     </tr>
 </table>
+<div class="pull-right">
+    <pagination items="items" pager-click="jumpPage(page)"></pagination>
+</div>
