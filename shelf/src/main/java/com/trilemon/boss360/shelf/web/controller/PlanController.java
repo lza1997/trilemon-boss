@@ -2,12 +2,11 @@ package com.trilemon.boss360.shelf.web.controller;
 
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
+import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -21,10 +20,10 @@ public class PlanController {
     @Autowired
     private PlanSettingService planSettingService;
 
-    @RequestMapping("")
-    public ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("/plans/index");
-        return modelAndView;
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseBody
+    public Page<PlanSetting> index(@RequestParam(value = "page_num", defaultValue = "1") int pageNum) {
+        return planSettingService.paginatePlanSettings(56912708L, pageNum, 1);
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)

@@ -1,0 +1,32 @@
+<table class="table table-hover">
+    <col width="15%"/>
+    <col />
+    <col width="15%"/>
+    <thead>
+    <tr>
+        <th>计划名称</th>
+        <th>宝贝数量</th>
+        <th>新上架宝贝</th>
+        <th>进度</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="plan in plans">
+        <td>{{ plan.name }}</td>
+        <td>{{ plan.title }}</td>
+        <td>{{ plan.title }}</td>
+        <td>{{ plan.title }}</td>
+        <td>
+            <a ng-if="!item.exclude" href="" ng-click="setExclude(item, true)">排除</a>
+            <div ng-if="item.exclude">
+                已排除
+                <a href="" ng-click="setExclude(item, false)">恢复</a>
+            </div>
+
+        </td>
+    </tr>
+</table>
+<div class="pull-right">
+    <pagination items="items" pager-click="jumpPage(page)"></pagination>
+</div>

@@ -2,7 +2,7 @@
  * 卖家的类目
  */
 define(function (require, exports, module) {
-    var URL = 'trilemon-360boss-shelf/sellercats';
+    var URL = 'shelf/sellercats';
 
     var Sellercat = ['Restangular', '$q', function (Restangular, $q) {
 

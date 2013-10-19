@@ -1,8 +1,9 @@
 define(function (require, exports, module) {
-    var NewController = require('./new-controller');
-    var FilterController = require('./filter-controller');
-    var Sellercat = require('./sellercat');
-    var Item = require('./item');
+    var NewController = require('./controller/new-controller');
+    var FilterController = require('./controller/filter-controller');
+    var Sellercat = require('./model/sellercat');
+    var Item = require('./model/item');
+    var Plan = require('./model/plan');
 
     module.exports = {
         controllers: {
@@ -11,7 +12,8 @@ define(function (require, exports, module) {
         },
         factories: {
             'Sellercat': Sellercat,
-            'Item': Item
+            'Item': Item,
+            'Plan': Plan
         }
     };
 });

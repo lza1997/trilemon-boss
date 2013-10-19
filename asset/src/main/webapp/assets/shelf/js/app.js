@@ -28,7 +28,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', function (
         .otherwise({redirectTo: '/plan/new'});
 
 
-    RestangularProvider.setRequestSuffix('.json');
+    //RestangularProvider.setRequestSuffix('.json');
     RestangularProvider.setMethodOverriders(['post', 'delete']);
 
     $httpProvider.interceptors.push('ajaxSpinner');

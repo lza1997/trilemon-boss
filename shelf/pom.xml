@@ -467,7 +467,7 @@
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
-                        <contextPath>/${project.artifactId}</contextPath>
+                        <contextPath>/shelf</contextPath>
                     </webAppConfig>
                 </configuration>
             </plugin>

@@ -1,9 +1,9 @@
 <form class="form-horizontal shelf-form" role="form">
     <div class="form-group">
-        <label for="inputEmail1" class="col-md-1 control-label">计划名称</label>
+        <label class="col-md-1 control-label">计划名称</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" id="inputEmail1" />
+            <input type="text" class="form-control" ng-model="plan.title" />
         </div>
     </div>
     <div class="form-group">
@@ -18,15 +18,15 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellercats">
                 <label>
-                    <input type="checkbox" value="{{sellercat.cid}}" />
+                    <input type="checkbox" ng-model="sellerCatIds[sellercat.cid]" ng-change="selectSellerCat(sellercat)" />
                 </label>
-                <label ng-click="toggleCategory(sellercat)" >
+                <label ng-click="toggleSellerCat(sellercat)" >
                     <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
                     {{sellercat.name}} ({{sellercat.itemNum}})
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellercat.children">
                     <label>
-                        <input type="checkbox"> {{childCat.name}}
+                        <input type="checkbox" ng-model="sellerCatIds[childCat.cid]" /> {{childCat.name}}
                     </label>
                 </div>
             </div>
@@ -38,15 +38,16 @@
         <div class="col-md-6">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="sb" value="option1" checked> 自动加入
+                    <input type="checkbox" ng-model="plan.auto" checked /> 自动加入
                 </label>
             </div>
         </div>
     </div>
+    {{sellerCatIds }}
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
             <button type="submit" class="btn btn-primary btn-md">创建计划</button>
-            <a href="#/plan/filter">或筛选宝贝</a>
+            <a href="" ng-click="gotoFilter()">或筛选宝贝</a>
         </div>
     </div>
 </form>

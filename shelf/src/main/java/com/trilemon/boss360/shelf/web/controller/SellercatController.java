@@ -22,6 +22,12 @@ public class SellercatController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
 
+    /**
+     * 获取卖家的目录
+     *
+     * @return
+     * @throws EnhancedApiException
+     */
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public List<SellerCatDTO> index() throws EnhancedApiException {

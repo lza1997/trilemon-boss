@@ -31,6 +31,9 @@ public class PlanSetting {
 
     private Date updTime;
 
+    private int itemNum; // 宝贝数量
+    private int newItemNum; // 新上架宝贝数量
+
     public Long getId() {
         return id;
     }
@@ -141,5 +144,21 @@ public class PlanSetting {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public int getItemNum() {
+        return itemNum;
+    }
+
+    public void setItemNum(int itemNum) {
+        this.itemNum = itemNum;
+    }
+
+    public int getNewItemNum() {
+        return newItemNum;
+    }
+
+    public void setNewItemNum(int newItemNum) {
+        this.newItemNum = newItemNum;
     }
 }

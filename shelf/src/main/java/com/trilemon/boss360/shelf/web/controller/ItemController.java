@@ -1,9 +1,6 @@
 package com.trilemon.boss360.shelf.web.controller;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
-import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -15,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Nullable;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author edokeh
@@ -29,18 +25,17 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    Page<Item> index(@RequestParam(value = "page_num", defaultValue = "1") int pageNum) throws EnhancedApiException {
-        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
-        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable SellerCat input) {
-                return input.getCid();
-            }
-        });
-        Page<Item> items = taobaoApiShopService.paginateOnSaleItems(56912708L, null, ShelfConstants.ITEM_FIELDS,
-                sellerCats,
-                pageNum, 2, false);
+    Page<Item> index(String key, Long[] cids, @RequestParam(defaultValue = "1") int page) throws EnhancedApiException {
+        //List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
+//        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
+//            @Nullable
+//            @Override
+//            public Long apply(@Nullable SellerCat input) {
+//                return input.getCid();
+//            }
+//        });
+        Page<Item> items = taobaoApiShopService.paginateOnSaleItems(56912708L, key, ShelfConstants.ITEM_FIELDS, Arrays.asList(cids),
+                page, 2,true);
         return items;
     }
 }
