@@ -66,55 +66,55 @@ public class PlanService {
      * @throws ShelfException
      */
     public void updatePlan(Long userId, PlanSetting planSetting) throws ShelfException {
-        //所有在售宝贝
-        List<Item> onSaleItems = null;
-        try {
-            onSaleItems = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
-        } catch (EnhancedApiException e) {
-            ShelfException shelfException = new ShelfException("update createPlan error, userId[" + userId + "], " +
-                    "PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]", e);
-            throw shelfException;
-        }
-        Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
-
-        //所有计划中宝贝
-        List<Plan> runningPlans = planMapper.selectByUserIdAndPlanSettingId(userId, planSetting.getId());
-        final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
-
-        //正在运行的的并且有效的宝贝NumIid
-        Set<Long> validItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
-                Sets.newHashSet(runningPlanNumIids));
-
-        //计划中失效宝贝NumIid
-        runningPlanNumIids.removeAll(validItemNumIids);
-
-        //需要加入计划的新加入宝贝NumIid
-        onSaleNumIids.removeAll(validItemNumIids);
-        //需要加入计划的新加入宝贝
-        List<Item> newItems = Lists.newArrayList();
-        for (Item item : onSaleItems) {
-            if (onSaleNumIids.contains(item.getNumIid())) {
-                newItems.add(item);
-            }
-        }
-        //删除计划中失效宝贝
-        planMapper.batchDeleteByNumIid(userId, planSetting.getId(), runningPlanNumIids);
-        //更新调整分布
-        Iterable<Plan> validRunningPlans = Iterables.filter
-                (runningPlans,
-                        new Predicate<Plan>() {
-                            @Override
-                            public boolean apply(@Nullable Plan input) {
-                                return runningPlanNumIids.contains(input.getItemNumIid());
-                            }
-                        });
-        Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validRunningPlans);
-        //为新添宝贝安排具体的调整时间
-        Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, currDistribution);
-        //安排计划
-        List<Plan> plans = plan(planSetting, assignTable, ShelfUtils.getTimeOfDistribution(validRunningPlans));
-        planMapper.batchInsert(plans);
+//        //所有在售宝贝
+//        List<Item> onSaleItems = null;
+//        try {
+//            onSaleItems = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
+//                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
+//        } catch (EnhancedApiException e) {
+//            ShelfException shelfException = new ShelfException("update createPlan error, userId[" + userId + "], " +
+//                    "PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]", e);
+//            throw shelfException;
+//        }
+//        Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
+//
+//        //所有计划中宝贝
+//        List<Plan> runningPlans = planMapper.selectByUserIdAndPlanSettingId(userId, planSetting.getId());
+//        final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
+//
+//        //正在运行的的并且有效的宝贝NumIid
+//        Set<Long> validItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
+//                Sets.newHashSet(runningPlanNumIids));
+//
+//        //计划中失效宝贝NumIid
+//        runningPlanNumIids.removeAll(validItemNumIids);
+//
+//        //需要加入计划的新加入宝贝NumIid
+//        onSaleNumIids.removeAll(validItemNumIids);
+//        //需要加入计划的新加入宝贝
+//        List<Item> newItems = Lists.newArrayList();
+//        for (Item item : onSaleItems) {
+//            if (onSaleNumIids.contains(item.getNumIid())) {
+//                newItems.add(item);
+//            }
+//        }
+//        //删除计划中失效宝贝
+//        planMapper.batchDeleteByNumIid(userId, planSetting.getId(), runningPlanNumIids);
+//        //更新调整分布
+//        Iterable<Plan> validRunningPlans = Iterables.filter
+//                (runningPlans,
+//                        new Predicate<Plan>() {
+//                            @Override
+//                            public boolean apply(@Nullable Plan input) {
+//                                return runningPlanNumIids.contains(input.getItemNumIid());
+//                            }
+//                        });
+//        Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validRunningPlans);
+//        //为新添宝贝安排具体的调整时间
+//        Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, currDistribution);
+//        //安排计划
+//        List<Plan> plans = plan(planSetting, assignTable, ShelfUtils.getTimeOfDistribution(validRunningPlans));
+//        planMapper.batchInsert(plans);
     }
 
     /**
@@ -124,19 +124,19 @@ public class PlanService {
      * @throws ShelfException
      */
     public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException {
-        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
-                userId, planSetting.getUserId());
-        try {
-            List<Item> items = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
-                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
-            List<Plan> plans = plan(planSetting, items);
-            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
-                    planSetting.getId());
-            planMapper.batchInsert(plans);
-        } catch (EnhancedApiException e) {
-            throw new ShelfException("create plan error, userId[" + userId + "], " +
-                    "planSettingId[" + planSetting.getId() + "]", e);
-        }
+//        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
+//                userId, planSetting.getUserId());
+//        try {
+//            List<Item> items = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
+//                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
+//            List<Plan> plans = plan(planSetting, items);
+//            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
+//                    planSetting.getId());
+//            planMapper.batchInsert(plans);
+//        } catch (EnhancedApiException e) {
+//            throw new ShelfException("create plan error, userId[" + userId + "], " +
+//                    "planSettingId[" + planSetting.getId() + "]", e);
+//        }
     }
 
     /**

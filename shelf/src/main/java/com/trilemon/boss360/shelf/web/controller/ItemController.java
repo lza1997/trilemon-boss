@@ -29,7 +29,7 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    Page<Item> index(@RequestParam(value="page_num", defaultValue = "1") int pageNum) throws EnhancedApiException {
+    Page<Item> index(@RequestParam(value = "page_num", defaultValue = "1") int pageNum) throws EnhancedApiException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -38,8 +38,9 @@ public class ItemController {
                 return input.getCid();
             }
         });
-        Page<Item> items = taobaoApiShopService.getOnSaleItems(56912708L, ShelfConstants.ITEM_FIELDS, sellerCats,
-                pageNum, 2);
+        Page<Item> items = taobaoApiShopService.paginateOnSaleItems(56912708L, null, ShelfConstants.ITEM_FIELDS,
+                sellerCats,
+                pageNum, 2, false);
         return items;
     }
 }
