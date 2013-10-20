@@ -4,29 +4,9 @@
 define(function (require, exports, module) {
     var URL = 'shelf/sellercats';
 
-    var Sellercat = ['Restangular', '$q', function (Restangular, $q) {
-
+    var Sellercat = ['Restangular', function (Restangular) {
         var Model = Restangular.all(URL);
 
-        // 服务器的列表转换成树状结构
-        Model.getTree = function () {
-            var defer = $q.defer();
-            Model.getList().then(function (data) {
-                // 一级目录
-                var cats = _.where(data, {parentCid: 0});
-
-                // 补充二级目录
-                _.each(cats, function (cat) {
-                    cat.children = _.where(data, {parentCid: cat.cid});
-                });
-
-                defer.resolve({
-                    tree:cats,
-                    list:data
-                });
-            });
-            return defer.promise;
-        };
         return Model;
     }];
 

@@ -36,6 +36,7 @@
 
     <script src="${asset}/shelf/js/app.js"></script>
     <script src="${asset}/shelf/js/common/pagination.js"></script>
+    <script src="${asset}/shelf/js/common/flash.js"></script>
 
     <script>
         seajs.config({
@@ -71,11 +72,11 @@
                         <li><a href="#">Separated link</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#">创建计划</a>
+                <li ng-class="{active: navClass == 'planIndex'}">
+                    <a href="#/plan">计划列表</a>
                 </li>
-                <li>
-                    <a href="#">计划列表</a>
+                <li ng-class="{active: navClass == 'planNew'}">
+                    <a href="#/plan/new">创建计划</a>
                 </li>
             </ul>
         </div>

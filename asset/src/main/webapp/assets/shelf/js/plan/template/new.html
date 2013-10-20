@@ -3,30 +3,31 @@
         <label class="col-md-1 control-label">计划名称</label>
 
         <div class="col-md-6">
-            <input type="text" class="form-control" ng-model="plan.title" />
+            <input type="text" class="form-control" ng-model="plan.name" />
         </div>
     </div>
     <div class="form-group">
         <label for="inputEmail1" class="col-md-1 control-label">宝贝分类</label>
 
         <div class="col-md-6">
-            <p class="form-control-static">共{{sellercatsNum}}个分类，{{sellercatsChildNum}}个子分类</p>
+            <p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length}}个子分类</p>
         </div>
     </div>
     <div class="form-group">
         <label class="col-md-1 control-label"></label>
         <div class="col-md-6">
-            <div class="checkbox" ng-repeat="sellercat in sellercats">
+            <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}">
                 <label>
-                    <input type="checkbox" ng-model="sellerCatIds[sellercat.cid]" ng-change="selectSellerCat(sellercat)" />
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="changeSelected(sellercat)" />
                 </label>
                 <label ng-click="toggleSellerCat(sellercat)" >
                     <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
                     {{sellercat.name}} ({{sellercat.itemNum}})
                 </label>
-                <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellercat.children">
+                <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}">
                     <label>
-                        <input type="checkbox" ng-model="sellerCatIds[childCat.cid]" /> {{childCat.name}}
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="changeSelected(childCat)" />
+                        {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>
             </div>
@@ -38,15 +39,14 @@
         <div class="col-md-6">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" ng-model="plan.auto" checked /> 自动加入
+                    <input type="checkbox" ng-model="plan.autoAddNewItems" /> 自动加入
                 </label>
             </div>
         </div>
     </div>
-    {{sellerCatIds }}
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
-            <button type="submit" class="btn btn-primary btn-md">创建计划</button>
+            <button type="submit" class="btn btn-primary btn-md" ng-click="save()">创建计划</button>
             <a href="" ng-click="gotoFilter()">或筛选宝贝</a>
         </div>
     </div>

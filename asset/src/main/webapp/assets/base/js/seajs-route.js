@@ -20,6 +20,7 @@ SeajsRoute.prototype.getTemplate = function ($q, $rootScope) {
     if (this.templates) {
         this.tplDefer.resolve(this.templates[this.options.controller]);
         $rootScope.title = this.titles[this.options.controller];
+        $rootScope.navClass = this.navClass[this.options.controller];
     }
     return this.tplDefer.promise;
 };
@@ -36,6 +37,7 @@ SeajsRoute.prototype.delay = function ($q, $rootScope) {
 
             _this.tplDefer.resolve(_this.templates[_this.options.controller]);
             $rootScope.title = _this.titles[_this.options.controller];
+            $rootScope.navClass = _this.navClass[_this.options.controller];
             defer.resolve();
         });
     }
@@ -57,9 +59,11 @@ SeajsRoute.prototype.handleModule = function (module) {
 
     this.templates = {};
     this.titles = {};
+    this.navClass = {};
     angular.forEach(module.controllers, function (controller, name) {
         this.templates[name] = controller.template;
         this.titles[name] = controller.title;
+        this.navClass[name] = controller.navClass;
     }, this);
 
     for (var i = queueLen; i < queue.length; i++) {

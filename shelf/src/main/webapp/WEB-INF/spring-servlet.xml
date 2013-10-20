@@ -51,11 +51,11 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <mvc:interceptors>
-        <bean class="com.trilemon.commons.web.spring.csrf.CsrfHandlerInterceptor">
-            <property name="csrfTokenManager" ref="csrfTokenManager"/>
-        </bean>
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--<bean class="com.trilemon.commons.web.spring.csrf.CsrfHandlerInterceptor">-->
+            <!--<property name="csrfTokenManager" ref="csrfTokenManager"/>-->
+        <!--</bean>-->
+    <!--</mvc:interceptors>-->
 
     <!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
@@ -67,15 +67,15 @@
         </property>
     </bean>
 
-    <bean name="requestDataValueProcessor"
-          class="com.trilemon.commons.web.spring.csrf.CsrfAndXssRequestDataValueProcessor">
-        <property name="csrfTokenManager" ref="csrfTokenManager"/>
-    </bean>
+    <!--<bean name="requestDataValueProcessor"-->
+          <!--class="com.trilemon.commons.web.spring.csrf.CsrfAndXssRequestDataValueProcessor">-->
+        <!--<property name="csrfTokenManager" ref="csrfTokenManager"/>-->
+    <!--</bean>-->
 
-    <bean name="csrfTokenManager"
-          class="com.trilemon.commons.web.spring.csrf.CsrfTokenManager">
-        <property name="httpSessionStore" ref="httpSessionStore"/>
-    </bean>
+    <!--<bean name="csrfTokenManager"-->
+          <!--class="com.trilemon.commons.web.spring.csrf.CsrfTokenManager">-->
+        <!--<property name="httpSessionStore" ref="httpSessionStore"/>-->
+    <!--</bean>-->
 
     <bean name="httpSessionStore" class="com.trilemon.commons.web.session.MemcachedHttpSessionStore">
         <property name="memcachedClient" ref="memcachedClient"/>
@@ -95,7 +95,7 @@
     <!--</bean>-->
 
     <!-- freemarker config -->
-    <bean id="freemarkerConfig" class="com.trilemon.commons.freemarker.ExtFreeMarkerConfigurer">
+    <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/views/freemarker"/>
         <property name="freemarkerSettings">
             <props>
@@ -107,8 +107,10 @@
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="requestContextAttribute" value="requestContext"/>
+        <!--<property name="viewClass"-->
+                  <!--value="com.trilemon.commons.web.spring.csrf.CsrfFreeMarkerView"/>-->
         <property name="viewClass"
-                  value="com.trilemon.commons.web.spring.csrf.CsrfFreeMarkerView"/>
+        value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
         <property name="cache" value="true"/>
         <property name="prefix" value=""/>
         <property name="suffix" value=".ftl"/>

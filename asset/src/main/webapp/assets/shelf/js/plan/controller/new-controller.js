@@ -1,54 +1,64 @@
-define(function (require, exports, module) {
+define(function(require, exports, module) {
 
-    var NewController = ['$scope', 'Sellercat', 'Plan', '$location', function ($scope, Sellercat, Plan, $location) {
-        $scope.sellercats = [];
+    var NewController = ['$scope', 'Sellercat', 'Plan', '$location', 'Flash', function($scope, Sellercat, Plan, $location, Flash) {
+        $scope.sellerCats = [];
+        $scope.plan = {autoAddNewItems: true};
 
-        $scope.plan = {sellerCatIds: []};
-        $scope.sellerCatIds = {};
-
-        Sellercat.getTree().then(function (result) {
-            $scope.sellercats = result.tree;
-            $scope.sellercatsNum = result.list.length;
-            $scope.sellercatsChildNum = result.list.length - result.tree.length;
-
-            _.each(result.list, function (cat) {
-                $scope.sellerCatIds[cat.cid] = false;
-            })
-
-            // 展开第一个有子类的分类
-            var firstCat = _.find(result.tree, function (cat) {
-                return cat.children.length > 0;
-            });
-            firstCat.expand = true;
+        Sellercat.getList().then(function(data) {
+            $scope.sellerCats = data;
         });
 
+        $scope.planNewUrl = true;
+
         // 父子联动选择
-        $scope.selectSellerCat = function (sellercat) {
-            _.each(sellercat.children, function (childSellerCat) {
-                $scope.sellerCatIds[childSellerCat.cid] = $scope.sellerCatIds[sellercat.cid];
-            });
+        $scope.changeSelected = function(sellerCat) {
+            // 联动所有子分类
+            if (sellerCat.parentCid === 0) {
+                _.chain($scope.sellerCats).where({parentCid: sellerCat.cid}).each(function(childSellerCat) {
+                    childSellerCat.selected = sellerCat.selected;
+                });
+            }
+            // 联动父分类，所有兄弟都选中时才选中父分类
+            else {
+                var parentCat = _.findWhere($scope.sellerCats, {cid: sellerCat.parentCid});
+                var childCats = _.where($scope.sellerCats, {parentCid: sellerCat.parentCid});
+                parentCat.selected = _.every(childCats, function(cat) {
+                    return cat.selected;
+                });
+            }
         };
 
         // 展开或折叠父分类
-        $scope.toggleSellerCat = function (sellercat) {
+        $scope.toggleSellerCat = function(sellercat) {
             sellercat.expand = !sellercat.expand;
         };
 
-        // 跳转至筛选页面
-        $scope.gotoFilter = function () {
-            _.each($scope.sellerCatIds, function (v, k) {
-                if (v) {
-                    $scope.plan.sellerCatIds.push(k);
-                }
+        // 保存计划
+        $scope.save = function() {
+            saveCatIds();
+            Plan.post($scope.plan).then(function() {
+                Flash.success('计划 ' + $scope.plan.name + ' 创建成功！');
+                $location.url('/plan');
             });
+        };
 
-            Plan.save($scope.plan);
+        // 跳转至筛选页面
+        $scope.gotoFilter = function() {
+            saveCatIds();
+            Plan.tmpSave($scope.plan);
             $location.url('/plan/filter');
         };
+
+        // 将选中分类的id写入 plan 对象
+        function saveCatIds() {
+            var selectedCids = _.chain($scope.sellerCats).where({selected: true}).pluck('cid').value();
+            $scope.plan.includeCids = selectedCids.join(',');
+        }
     }];
 
     NewController.template = require('../template/new.html');
     NewController.title = "创建计划";
+    NewController.navClass = "planNew";
 
     module.exports = NewController;
 });

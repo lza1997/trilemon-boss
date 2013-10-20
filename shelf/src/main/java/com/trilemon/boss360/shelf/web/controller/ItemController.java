@@ -25,7 +25,7 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    Page<Item> index(String key, Long[] cids, @RequestParam(defaultValue = "1") int page) throws EnhancedApiException {
+    Page<Item> index(String key, @RequestParam(defaultValue = "[]") Long[] cids, @RequestParam(defaultValue = "1") int page) throws EnhancedApiException {
         //List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
 //        List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
 //            @Nullable

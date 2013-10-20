@@ -1,4 +1,8 @@
-angular.module('common', []).directive('pagination', function () {
+/**
+ * 分页组件
+ * <pagination items="xxx" pagerClick="goto(page)"></pagination>
+ */
+angular.module('common').directive('pagination', function () {
     var WINDOW_SIZE = 2;
     var OMIT_STR = '...';
 
@@ -48,8 +52,7 @@ angular.module('common', []).directive('pagination', function () {
                     return;
                 }
                 scope.pagerClick({page: page});
-            }
+            };
         }
-    }
-})
-;
+    };
+});
