@@ -1,9 +1,10 @@
 @charset "utf-8";
 
 body {
-  font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
 }
 
+// banner
 .trilemon-banner {
   background: #563d7c;
   border-bottom: 1px solid #463265;
@@ -21,6 +22,7 @@ body {
   }
 }
 
+// 导航
 .trilemon-navbar {
   margin-bottom: 50px;
 
@@ -30,16 +32,18 @@ body {
   }
 }
 
-.shelf-form {
+// 计划的表单
+.plan-form {
   .control-label {
     width: 9%
   }
-  .form-action {
-    margin-top: 30px;
-  }
 }
 
-// 宝贝筛选的表单
+.form-action {
+  margin-top: 30px;
+}
+
+// 筛选宝贝的搜索表单
 .shelf-filter-form {
   width: 400px;
   margin-bottom: 20px;
@@ -50,13 +54,13 @@ body {
 }
 
 .ajax-spinner {
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 100px;
   width: 300px;
   margin-left: -150px;
-  background: rgba(0,0,0,0.4);
-  box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   color: white;
   text-align: center;
@@ -69,10 +73,9 @@ body {
   animation: spin 1s infinite linear;
 }
 
-//.ajax-spinner.in {
-//  opacity: 0.2;
-//  filter: alpha(opacity=30);
-//}
+.ajax-spinner.in {
+  filter: alpha(opacity=30);
+}
 
 footer {
   margin-top: 50px;

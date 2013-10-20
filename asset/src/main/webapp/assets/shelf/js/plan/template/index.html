@@ -1,8 +1,11 @@
-<div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}</div>
+<div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}。系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
 <table class="table table-hover">
     <col width="15%"/>
     <col />
-    <col width="15%"/>
+    <col />
+    <col />
+    <col />
+    <col width="20%"/>
     <thead>
     <tr>
         <th>计划名称</th>
@@ -22,7 +25,10 @@
             {{ plan.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
         <td>
-
+            <a href="">暂停</a>
+            <a href="">删除</a>
+            <a href="">查看编辑</a>
+            <a href="">展开宝贝</a>
         </td>
     </tr>
 </table>
