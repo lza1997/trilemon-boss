@@ -448,4 +448,33 @@
             </foreach>
         </if>
     </delete>
+    <select id="countByUserIdAndPlanSettingIdAndStatus" parameterType="map" resultType="java.lang.Integer">
+        select count(*) from plan
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+            and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+            and
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <foreach collection="statusList" item="status" separator="or">
+                    `status` = #{status,jdbcType=TINYINT}
+                </foreach>
+            </trim>
+        </where>
+    </select>
+    <select id="paginateByUserIdAndPlanSettingIdAndStatus" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from plan
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+            and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+            <if test="statusList != null and statusList.size()>0">
+                and
+                <foreach collection="statusList" item="status" separator="or">
+                    `status` = #{status,jdbcType=TINYINT}
+                </foreach>
+            </if>
+        </where>
+        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </select>
 </mapper>

@@ -44,7 +44,8 @@ public interface PlanMapper {
     List<Plan> selectByPlanSettingIdAndStatus(@Param("planSettingId")Long planSettingId,
                                               @Param("statusList")List<Byte> statusList);
 
-    int countByUserIdAndPlanSettingIdAndStatus(Long userId, Long planSettingId, List<Byte> statusList);
-
-    List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(Long userId, Long planSettingId, List<Byte> statusList, int i, int pageSize);
+    int countByUserIdAndPlanSettingIdAndStatus(@Param("userId")Long userId,@Param("planSettingId")  Long planSettingId, @Param("statusList") List<Byte> statusList);
+    List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(@Param("userId")Long userId,
+                                                         @Param("planSettingId") Long planSettingId,
+                                                         @Param("statusList") List<Byte> statusList,@Param("offset") Integer offset, @Param("limit") Integer limit);
 }

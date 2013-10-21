@@ -53,7 +53,7 @@ public interface PlanSettingMapper {
     int countByUserId(Long userId);
 
     List<PlanSetting> paginateByUserIdAndName(@Param("userId") Long userId, @Param("query") String query,
-                                              @Param("offset") int offset, @Param("limit") int limit);
+                                              @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int countByUserIdAndName(@Param("userId") Long userId, @Param("query") String query);
 }

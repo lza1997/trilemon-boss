@@ -52,6 +52,6 @@ public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void process(PlanSetting planSetting) throws Exception {
-        planService.updatePlan(planSetting.getUserId(),planSetting);
+        //planService.updatePlan(planSetting.getUserId(),planSetting);
     }
 }

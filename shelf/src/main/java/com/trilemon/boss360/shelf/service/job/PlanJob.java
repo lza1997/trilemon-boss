@@ -1,7 +1,5 @@
 package com.trilemon.boss360.shelf.service.job;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -13,6 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * 根据{@link PlanSetting}生成计划。

@@ -15,6 +15,7 @@ import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
+import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
 import com.trilemon.commons.DateUtils;
@@ -330,10 +331,10 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/updatePlanSetting", method = RequestMethod.GET)
     public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException {
-        PlanSetting planSetting=new PlanSetting();
+        PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setName("更新的计划");
-        planSettingService.updatePlanSetting(56912708L,planSetting);
+        planSettingService.updatePlanSetting(56912708L, planSetting);
         return "success";
     }
 
@@ -346,17 +347,28 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/updatePlanSettingName", method = RequestMethod.GET)
     public String updatePlanSettingName(@RequestParam long planSettingId) throws ShelfException {
-        planSettingService.updatePlanSettingName(56912708L,planSettingId,"caocao");
+        planSettingService.updatePlanSettingName(56912708L, planSettingId, "caocao");
         return "success";
     }
 
+    /**
+     * 更新做筛选的时候需要获取的宝贝列表
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getPlanOnUpdate", method = RequestMethod.GET)
+    public Page<Plan> getPlanOnUpdate(@RequestParam long planSettingId, @RequestParam int pageNum) throws
+            ShelfException {
+        return planSettingService.paginatePlans(56912708L, planSettingId, pageNum, 1);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/testException", method = RequestMethod.GET)
     public boolean testException() throws ShelfException {
         throw new ShelfException("test exception");
     }
-
 
 
 }
