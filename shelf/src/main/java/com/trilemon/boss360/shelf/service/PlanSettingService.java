@@ -9,6 +9,7 @@ import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.service.vo.PlanStatus;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -73,6 +74,19 @@ public class PlanSettingService {
         if (CollectionUtils.isEmpty(planSettings)) {
             return Page.create(totalSize, pageNum, pageSize, Lists.<PlanSetting>newArrayList());
         } else {
+            //处理额外字段（总共需要调整宝贝数量，新加入宝贝数量，待调整宝贝数量）
+            for (PlanSetting planSetting : planSettings) {
+                PlanStatus planStatus = planMapper.calcPlanStatus(planSetting.getId(), planSetting.getLastPlanTime());
+                if (null != planStatus) {
+                    planSetting.setItemNum(planStatus.getItemNum());
+                    planSetting.setNewItemNum(planStatus.getNewItemNum());
+                    planSetting.setWaitAdjustItemNum(planStatus.getWaitAdjustItemNum());
+                } else {
+                    planSetting.setItemNum(0);
+                    planSetting.setNewItemNum(0);
+                    planSetting.setWaitAdjustItemNum(0);
+                }
+            }
             return Page.create(totalSize, pageNum, pageSize, planSettings);
         }
     }

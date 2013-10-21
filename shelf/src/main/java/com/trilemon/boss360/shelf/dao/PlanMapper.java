@@ -2,8 +2,10 @@ package com.trilemon.boss360.shelf.dao;
 
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanExample;
+import com.trilemon.boss360.shelf.service.vo.PlanStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PlanMapper {
@@ -48,4 +50,6 @@ public interface PlanMapper {
     List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(@Param("userId")Long userId,
                                                          @Param("planSettingId") Long planSettingId,
                                                          @Param("statusList") List<Byte> statusList,@Param("offset") Integer offset, @Param("limit") Integer limit);
+
+    PlanStatus calcPlanStatus( @Param("planSettingId")Long planSettingId, @Param("lastPlanTime") Date lastPlanTime);
 }

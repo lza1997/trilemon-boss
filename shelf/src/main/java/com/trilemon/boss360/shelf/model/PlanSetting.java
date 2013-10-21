@@ -33,6 +33,7 @@ public class PlanSetting {
 
     private int itemNum; // 宝贝数量
     private int newItemNum; // 新上架宝贝数量
+    private int waitAdjustItemNum; // 待调整宝贝数量
 
     public Long getId() {
         return id;
@@ -160,5 +161,12 @@ public class PlanSetting {
 
     public void setNewItemNum(int newItemNum) {
         this.newItemNum = newItemNum;
+    }
+    public int getWaitAdjustItemNum() {
+        return waitAdjustItemNum;
+    }
+
+    public void setWaitAdjustItemNum(int waitAdjustItemNum) {
+        this.waitAdjustItemNum = waitAdjustItemNum;
     }
 }

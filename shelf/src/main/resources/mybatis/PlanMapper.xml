@@ -19,6 +19,14 @@
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <resultMap id="PlanStatusResultMap" type="com.trilemon.boss360.shelf.service.vo.PlanStatus">
+        <result column="item_num" property="itemNum" jdbcType="INTEGER"/>
+        <result column="new_item_num" property="newItemNum" jdbcType="INTEGER"/>
+        <result column="wait_adjust_item_num" property="waitAdjustItemNum" jdbcType="INTEGER"/>
+    </resultMap>
+
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -476,5 +484,12 @@
             </if>
         </where>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </select>
+    <select id="calcPlanStatus" resultMap="PlanStatusResultMap" parameterType="map">
+        select SUM(if(add_time >= #{lastPlanTime,jdbcType=TIMESTAMP}, 1, 0)) as new_item_num,
+               SUM(if(status in (0,1), 1, 0)) as item_num,
+               SUM(if(status in (0), 1, 0)) as wait_adjust_item_num
+        from plan
+        where plan_setting_id = #{planSettingId,jdbcType=BIGINT}
     </select>
 </mapper>
