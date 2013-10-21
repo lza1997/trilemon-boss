@@ -1,11 +1,8 @@
 package com.trilemon.boss360.shelf.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Date;
 
 public class Plan {
-    @JsonProperty
     private Long id;
 
     private Long planSettingId;
@@ -13,8 +10,6 @@ public class Plan {
     private Long userId;
 
     private Long itemNumIid;
-
-    private Boolean isNewItem;
 
     private Long itemSellerCid;
 
@@ -26,7 +21,13 @@ public class Plan {
 
     private Byte status;
 
-    private Date planAdjustTime;
+    private String failedCause;
+
+    private Date planAdjustDay;
+
+    private Date planAdjustStartTime;
+
+    private Date planAdjustEndTime;
 
     private Date adjustTime;
 
@@ -64,14 +65,6 @@ public class Plan {
 
     public void setItemNumIid(Long itemNumIid) {
         this.itemNumIid = itemNumIid;
-    }
-
-    public Boolean getIsNewItem() {
-        return isNewItem;
-    }
-
-    public void setIsNewItem(Boolean isNewItem) {
-        this.isNewItem = isNewItem;
     }
 
     public Long getItemSellerCid() {
@@ -114,12 +107,36 @@ public class Plan {
         this.status = status;
     }
 
-    public Date getPlanAdjustTime() {
-        return planAdjustTime;
+    public String getFailedCause() {
+        return failedCause;
     }
 
-    public void setPlanAdjustTime(Date planAdjustTime) {
-        this.planAdjustTime = planAdjustTime;
+    public void setFailedCause(String failedCause) {
+        this.failedCause = failedCause == null ? null : failedCause.trim();
+    }
+
+    public Date getPlanAdjustDay() {
+        return planAdjustDay;
+    }
+
+    public void setPlanAdjustDay(Date planAdjustDay) {
+        this.planAdjustDay = planAdjustDay;
+    }
+
+    public Date getPlanAdjustStartTime() {
+        return planAdjustStartTime;
+    }
+
+    public void setPlanAdjustStartTime(Date planAdjustStartTime) {
+        this.planAdjustStartTime = planAdjustStartTime;
+    }
+
+    public Date getPlanAdjustEndTime() {
+        return planAdjustEndTime;
+    }
+
+    public void setPlanAdjustEndTime(Date planAdjustEndTime) {
+        this.planAdjustEndTime = planAdjustEndTime;
     }
 
     public Date getAdjustTime() {

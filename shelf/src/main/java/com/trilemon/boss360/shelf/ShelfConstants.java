@@ -14,7 +14,7 @@ public interface ShelfConstants {
     //status
     byte PLAN_SETTING_STATUS_WAITING_PLAN = 0;
     byte PLAN_SETTING_STATUS_RUNNING = 1;
-    byte PLAN_SETTING_STATUS_PAUSE = 2;
+    byte PLAN_SETTING_STATUS_PAUSED = 2;
     //createPlan status
     byte PLAN_STATUS_WAITING_ADJUST = 0;
     byte PLAN_STATUS_SUCCESSFUL = 1;

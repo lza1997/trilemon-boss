@@ -825,63 +825,63 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeIsNull() {
-            addCriterion("next_plan_time is null");
+        public Criteria andLastPlanTimeIsNull() {
+            addCriterion("last_plan_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeIsNotNull() {
-            addCriterion("next_plan_time is not null");
+        public Criteria andLastPlanTimeIsNotNull() {
+            addCriterion("last_plan_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeEqualTo(Date value) {
-            addCriterion("next_plan_time =", value, "nextPlanTime");
+        public Criteria andLastPlanTimeEqualTo(Date value) {
+            addCriterion("last_plan_time =", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeNotEqualTo(Date value) {
-            addCriterion("next_plan_time <>", value, "nextPlanTime");
+        public Criteria andLastPlanTimeNotEqualTo(Date value) {
+            addCriterion("last_plan_time <>", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeGreaterThan(Date value) {
-            addCriterion("next_plan_time >", value, "nextPlanTime");
+        public Criteria andLastPlanTimeGreaterThan(Date value) {
+            addCriterion("last_plan_time >", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("next_plan_time >=", value, "nextPlanTime");
+        public Criteria andLastPlanTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("last_plan_time >=", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeLessThan(Date value) {
-            addCriterion("next_plan_time <", value, "nextPlanTime");
+        public Criteria andLastPlanTimeLessThan(Date value) {
+            addCriterion("last_plan_time <", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeLessThanOrEqualTo(Date value) {
-            addCriterion("next_plan_time <=", value, "nextPlanTime");
+        public Criteria andLastPlanTimeLessThanOrEqualTo(Date value) {
+            addCriterion("last_plan_time <=", value, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeIn(List<Date> values) {
-            addCriterion("next_plan_time in", values, "nextPlanTime");
+        public Criteria andLastPlanTimeIn(List<Date> values) {
+            addCriterion("last_plan_time in", values, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeNotIn(List<Date> values) {
-            addCriterion("next_plan_time not in", values, "nextPlanTime");
+        public Criteria andLastPlanTimeNotIn(List<Date> values) {
+            addCriterion("last_plan_time not in", values, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeBetween(Date value1, Date value2) {
-            addCriterion("next_plan_time between", value1, value2, "nextPlanTime");
+        public Criteria andLastPlanTimeBetween(Date value1, Date value2) {
+            addCriterion("last_plan_time between", value1, value2, "lastPlanTime");
             return (Criteria) this;
         }
 
-        public Criteria andNextPlanTimeNotBetween(Date value1, Date value2) {
-            addCriterion("next_plan_time not between", value1, value2, "nextPlanTime");
+        public Criteria andLastPlanTimeNotBetween(Date value1, Date value2) {
+            addCriterion("last_plan_time not between", value1, value2, "lastPlanTime");
             return (Criteria) this;
         }
 

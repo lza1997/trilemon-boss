@@ -1,6 +1,5 @@
 package com.trilemon.boss360.shelf.dao;
 
-import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanExample;
 import org.apache.ibatis.annotations.Param;
@@ -36,11 +35,16 @@ public interface PlanMapper {
 
     void deleteByPlanSettingId(Long planSettingId);
 
-    void batchDeleteByNumIid(Long userId, Long id, List<Long> numIids);
+    void deleteByUserIdAndNumIids(@Param("userId") Long userId, @Param("numIids") List<Long> numIids);
 
-    void deleteByUserIdAndPlanSettingId(Long userId, Long planSettingId);
+    void deleteByUserIdAndPlanSettingId(@Param("userId") Long userId, @Param("planSettingId") Long planSettingId);
 
-    List<Plan> selectByUserIdAndPlanSettingId(Long userId, Long planSettingId);
+    List<Plan> selectByUserIdAndPlanSettingId(@Param("userId")Long userId,@Param("planSettingId") Long planSettingId);
 
-    List<Plan> selectByPlanSettingIdAndStatus(Long planSettingId, ImmutableList<Byte> status);
+    List<Plan> selectByPlanSettingIdAndStatus(@Param("planSettingId")Long planSettingId,
+                                              @Param("statusList")List<Byte> statusList);
+
+    int countByUserIdAndPlanSettingIdAndStatus(Long userId, Long planSettingId, List<Byte> statusList);
+
+    List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(Long userId, Long planSettingId, List<Byte> statusList, int i, int pageSize);
 }

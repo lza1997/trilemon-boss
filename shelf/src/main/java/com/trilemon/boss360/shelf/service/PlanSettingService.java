@@ -3,11 +3,12 @@ package com.trilemon.boss360.shelf.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
+import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
-import com.trilemon.boss360.shelf.service.job.PlanJob;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -37,15 +38,13 @@ public class PlanSettingService {
     private PlanService planService;
     @Autowired
     private AppService appService;
-    //@Autowired
-    private PlanJob planJob;
 
     /**
      * 创建计划设置
      *
      * @param planSetting
      */
-    public void createPlanSetting(Long userId, PlanSetting planSetting) {
+    public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException {
         planSetting.setUserId(userId);
         planSetting.setStatus(PLAN_SETTING_STATUS_WAITING_PLAN);
         try {
@@ -57,8 +56,7 @@ public class PlanSettingService {
         }
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSettingMapper.insertSelective(planSetting);
-        //放置到计划生成队列
-        //planJob.fillQueue(planSetting);
+        planService.createPlan(userId, planSetting);
     }
 
     /**
@@ -68,7 +66,7 @@ public class PlanSettingService {
      * @return
      */
     public Page<PlanSetting> paginatePlanSettings(Long userId, int pageNum, int pageSize) {
-        List<Byte> statusList = ImmutableList.of(PLAN_SETTING_STATUS_RUNNING, PLAN_SETTING_STATUS_WAITING_PLAN, PLAN_SETTING_STATUS_PAUSE);
+        List<Byte> statusList = ImmutableList.of(PLAN_SETTING_STATUS_RUNNING, PLAN_SETTING_STATUS_WAITING_PLAN, PLAN_SETTING_STATUS_PAUSED);
         int totalSize = planSettingMapper.countByUserIdAndStatus(userId, statusList);
         List<PlanSetting> planSettings = planSettingMapper.paginateByUserIdAndStatus(userId, (pageNum - 1) * pageSize,
                 pageSize, statusList);
@@ -84,9 +82,10 @@ public class PlanSettingService {
      * @throws ShelfException
      */
     public void updatePlanSetting(Long userId, PlanSetting planSetting) throws ShelfException {
-        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting, userId);
+        planSetting.setUserId(userId);
+        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
-        planService.createPlan(userId, planSetting);
+        planService.updatePlan(userId, planSetting.getId());
     }
 
     /**
@@ -101,6 +100,7 @@ public class PlanSettingService {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setName(name);
+        planSetting.setUserId(userId);
         try {
             String hanYuPinyin = Languages.getHanYuPinyin(planSetting.getName());
             planSetting.setNamePinyin(hanYuPinyin);
@@ -108,9 +108,7 @@ public class PlanSettingService {
             logger.error("create createPlan setting error, planSetting[" + ToStringBuilder.reflectionToString(planSetting) + "].",
                     badHanyuPinyinOutputFormatCombination);
         }
-        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting, userId);
-        planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
-        planService.createPlan(userId, planSetting);
+        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
     }
 
     /**
@@ -132,19 +130,50 @@ public class PlanSettingService {
     @Transactional
     public boolean deletePlanSetting(Long userId, Long planSettingId) {
         int rows = planSettingMapper.deleteByPrimaryKeyAndUserId(planSettingId, userId);
-        //TODO 还要删除 createPlan
+        planService.deletePlan(userId, planSettingId);
         return rows > 0;
     }
 
-    public void pausePlanSetting(Long userId, Long planSettingId) {
-
+    public boolean pausePlanSetting(Long userId, Long planSettingId) {
+        PlanSetting planSetting = new PlanSetting();
+        planSetting.setUserId(userId);
+        planSetting.setId(planSettingId);
+        planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_PAUSED);
+        int rows = planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
+        return rows > 0;
     }
 
-    public void resumePlanSetting(Long userId, Long planSettingId) {
-
+    public boolean resumePlanSetting(Long userId, Long planSettingId) {
+        PlanSetting planSetting = new PlanSetting();
+        planSetting.setUserId(userId);
+        planSetting.setId(planSettingId);
+        planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_RUNNING);
+        int rows = planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
+        return rows > 0;
     }
 
-    public Page<PlanSetting> searchPlanSettings(Long userId, String query) {
-        return null;
+    public Page<PlanSetting> searchPlanSettings(Long userId, String query, int pageNum, int pageSize) {
+        int totalSize = planSettingMapper.countByUserIdAndName(userId, query);
+        List<PlanSetting> planSettings = planSettingMapper.paginateByUserIdAndName(userId,
+                query, (pageNum - 1) * pageSize,
+                pageSize);
+        if (CollectionUtils.isEmpty(planSettings)) {
+            return Page.create(totalSize, pageNum, pageSize, Lists.<PlanSetting>newArrayList());
+        } else {
+            return Page.create(totalSize, pageNum, pageSize, planSettings);
+        }
+    }
+
+    public Page<Plan> paginatePlans(Long userId, Long planSettingId, int pageNum, int pageSize) {
+        List<Byte> statusList = ImmutableList.of(PLAN_STATUS_SUCCESSFUL, PLAN_STATUS_WAITING_ADJUST);
+        int totalSize = planMapper.countByUserIdAndPlanSettingIdAndStatus(userId, planSettingId, statusList);
+        List<Plan> plans = planMapper.paginateByUserIdAndPlanSettingIdAndStatus(userId,
+                planSettingId, statusList, (pageNum - 1) * pageSize,
+                pageSize);
+        if (CollectionUtils.isEmpty(plans)) {
+            return Page.create(totalSize, pageNum, pageSize, Lists.<Plan>newArrayList());
+        } else {
+            return Page.create(totalSize, pageNum, pageSize, plans);
+        }
     }
 }

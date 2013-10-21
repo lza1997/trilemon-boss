@@ -44,9 +44,16 @@ public interface PlanSettingMapper {
                                        @Param("limit") Integer limit,
                                        @Param("statusList") List<Byte> statusList);
 
-    int deleteByPrimaryKeyAndUserId(@Param("id") Long planSettingId,@Param("userId")  Long userId);
+    int deleteByPrimaryKeyAndUserId(@Param("id") Long planSettingId, @Param("userId") Long userId);
 
-    void updateByPrimaryKeyAndUserIdSelective(PlanSetting planSetting, Long userId);
+    int updateByPrimaryKeyAndUserIdSelective(PlanSetting planSetting);
 
-    PlanSetting selectByPrimaryKeyAndUserId(Long planSettingId, Long userId);
+    PlanSetting selectByPrimaryKeyAndUserId(@Param("id") Long id, @Param("userId") Long userId);
+
+    int countByUserId(Long userId);
+
+    List<PlanSetting> paginateByUserIdAndName(@Param("userId") Long userId, @Param("query") String query,
+                                              @Param("offset") int offset, @Param("limit") int limit);
+
+    int countByUserIdAndName(@Param("userId") Long userId, @Param("query") String query);
 }

@@ -239,11 +239,11 @@ public class TestController {
         planSetting.setBeforeAdjustDistribution("test");
         planSetting.setDistribution("test");
         planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
-        planSetting.setExcludeItemIids("19491833743,19440841598");
+        planSetting.setExcludeItemIids("19491833743");
         planSetting.setIncludeCids("791686717,809023016,804731967");
-        planSetting.setName("我的测试计划");
+        planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
+        planSetting.setName("你和我的测试计划");
         planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
-        planSetting.setNextPlanTime(appService.getLocalSystemTime().plusDays(7).toDate());
         planSetting.setUserId(56912708L);
         planSettingService.createPlanSetting(56912708L, planSetting);
         return "success";
@@ -257,8 +257,8 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/planSetting", method = RequestMethod.GET)
-    public PlanSetting getPlanSetting() throws ShelfException {
-        return planSettingService.getPlanSetting(56912708L, 4L);
+    public PlanSetting getPlanSetting(@RequestParam long planSettingId) throws ShelfException {
+        return planSettingService.getPlanSetting(56912708L, planSettingId);
     }
 
     /**
@@ -285,10 +285,78 @@ public class TestController {
         return planSettingService.deletePlanSetting(56912708L, planSettingId);
     }
 
+    /**
+     * 暂停计划
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/pausePlanSetting", method = RequestMethod.GET)
+    public boolean pause(@RequestParam long planSettingId) throws ShelfException {
+        return planSettingService.pausePlanSetting(56912708L, planSettingId);
+    }
+
+    /**
+     * 恢复计划
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/resumePlanSetting", method = RequestMethod.GET)
+    public boolean resume(@RequestParam long planSettingId) throws ShelfException {
+        return planSettingService.resumePlanSetting(56912708L, planSettingId);
+    }
+
+    /**
+     * 恢复计划
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/searchPlanSetting", method = RequestMethod.GET)
+    public Page<PlanSetting> searchPlanSetting(@RequestParam String query, @RequestParam Integer pageNum) throws ShelfException {
+        return planSettingService.searchPlanSettings(56912708L, query, pageNum, 2);
+    }
+
+    /**
+     * 更新计划
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updatePlanSetting", method = RequestMethod.GET)
+    public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException {
+        PlanSetting planSetting=new PlanSetting();
+        planSetting.setId(planSettingId);
+        planSetting.setName("更新的计划");
+        planSettingService.updatePlanSetting(56912708L,planSetting);
+        return "success";
+    }
+
+    /**
+     * 更新计划名字
+     *
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updatePlanSettingName", method = RequestMethod.GET)
+    public String updatePlanSettingName(@RequestParam long planSettingId) throws ShelfException {
+        planSettingService.updatePlanSettingName(56912708L,planSettingId,"caocao");
+        return "success";
+    }
+
+
     @ResponseBody
     @RequestMapping(value = "/testException", method = RequestMethod.GET)
     public boolean testException() throws ShelfException {
         throw new ShelfException("test exception");
     }
+
+
 
 }

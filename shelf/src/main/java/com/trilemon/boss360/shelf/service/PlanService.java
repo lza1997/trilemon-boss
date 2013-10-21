@@ -1,12 +1,12 @@
 package com.trilemon.boss360.shelf.service;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.collect.*;
-import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
-import com.trilemon.boss360.infrastructure.base.client.BaseClient;
+import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
-import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
 import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.infrastructure.base.util.TopApiUtils;
@@ -17,12 +17,15 @@ import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.commons.Exceptions;
 import com.trilemon.commons.LocalTimeInterval;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
-import org.joda.time.Seconds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +33,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.trilemon.boss360.shelf.ShelfUtils.buildPlan;
 
 /**
@@ -45,98 +48,129 @@ import static com.trilemon.boss360.shelf.ShelfUtils.buildPlan;
 public class PlanService {
     private final static Logger logger = LoggerFactory.getLogger(PlanService.class);
     @Autowired
-    private TaobaoApiService taobaoApiService;
-    @Autowired
     private PlanMapper planMapper;
     @Autowired
     private PlanSettingMapper planSettingMapper;
     @Autowired
-    private PlanSettingService planSettingService;
-    @Autowired
-    private AppService applicationService;
-    @Autowired
-    private BaseClient baseClient;
+    private AppService appService;
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
 
     /**
      * 更新一个计划。
      *
-     * @param planSetting
      * @throws ShelfException
      */
-    public void updatePlan(Long userId, PlanSetting planSetting) throws ShelfException {
-//        //所有在售宝贝
-//        List<Item> onSaleItems = null;
-//        try {
-//            onSaleItems = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
-//                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
-//        } catch (EnhancedApiException e) {
-//            ShelfException shelfException = new ShelfException("update createPlan error, userId[" + userId + "], " +
-//                    "PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]", e);
-//            throw shelfException;
-//        }
-//        Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
-//
-//        //所有计划中宝贝
-//        List<Plan> runningPlans = planMapper.selectByUserIdAndPlanSettingId(userId, planSetting.getId());
-//        final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
-//
-//        //正在运行的的并且有效的宝贝NumIid
-//        Set<Long> validItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
-//                Sets.newHashSet(runningPlanNumIids));
-//
-//        //计划中失效宝贝NumIid
-//        runningPlanNumIids.removeAll(validItemNumIids);
-//
-//        //需要加入计划的新加入宝贝NumIid
-//        onSaleNumIids.removeAll(validItemNumIids);
-//        //需要加入计划的新加入宝贝
-//        List<Item> newItems = Lists.newArrayList();
-//        for (Item item : onSaleItems) {
-//            if (onSaleNumIids.contains(item.getNumIid())) {
-//                newItems.add(item);
-//            }
-//        }
-//        //删除计划中失效宝贝
-//        planMapper.batchDeleteByNumIid(userId, planSetting.getId(), runningPlanNumIids);
-//        //更新调整分布
-//        Iterable<Plan> validRunningPlans = Iterables.filter
-//                (runningPlans,
-//                        new Predicate<Plan>() {
-//                            @Override
-//                            public boolean apply(@Nullable Plan input) {
-//                                return runningPlanNumIids.contains(input.getItemNumIid());
-//                            }
-//                        });
-//        Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validRunningPlans);
-//        //为新添宝贝安排具体的调整时间
-//        Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, currDistribution);
-//        //安排计划
-//        List<Plan> plans = plan(planSetting, assignTable, ShelfUtils.getTimeOfDistribution(validRunningPlans));
-//        planMapper.batchInsert(plans);
+    public void updatePlan(Long userId, Long planSettingId) throws ShelfException {
+        PlanSetting planSetting = planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
+        checkNotNull(planSetting, "planSetting is null, userId[%s], planSetting[%s]", userId, planSetting.getUserId());
+        //所有在售宝贝
+        Pair<List<Item>, Long> onSaleItemResult = null;
+        try {
+            ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
+            request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
+            request.setSellerCids(planSetting.getIncludeCids());
+            onSaleItemResult = taobaoApiShopService.getOnSaleItems(userId, request);
+        } catch (EnhancedApiException e) {
+            ShelfException shelfException = new ShelfException("get onSaleItemPage error during plan, userId[" + userId + "], PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]", e);
+            Exceptions.logAndThrow(logger, shelfException);
+        }
+
+        List<Item> onSaleItems = onSaleItemResult.getKey();
+
+        if (null == onSaleItemResult || null == onSaleItems) {
+            ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +
+                    "userId[" + userId + "], PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]");
+            Exceptions.logAndThrow(logger, shelfException);
+        }
+
+        Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
+
+        //移除排除商品
+        if (null != planSetting.getExcludeItemIids()) {
+            Iterable<Long> excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemIids
+                    ()),
+                    new Function<String, Long>() {
+                        @Nullable
+                        @Override
+                        public Long apply(@Nullable String input) {
+                            return Long.valueOf(input);
+                        }
+                    });
+            Iterables.removeAll(onSaleNumIids, Lists.newArrayList(excludeItemNumIids));
+        }
+
+        onSaleItems = ShelfUtils.getItems(onSaleItems, onSaleNumIids);
+
+        //所有计划中宝贝
+        List<Plan> runningPlans = planMapper.selectByPlanSettingId(planSetting.getId());
+        final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
+
+        //正在运行的的并且在售的宝贝NumIid
+        Set<Long> existAndOnSaleItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
+                Sets.newHashSet(runningPlanNumIids));
+
+        //计划中失效宝贝NumIid
+        List<Long> invalidPlanItemNumIids = ListUtils.removeAll(runningPlanNumIids,
+                existAndOnSaleItemNumIids);
+        //需要加入计划的新加入宝贝NumIid
+        List<Long> newItemNumIids = ListUtils.removeAll(onSaleNumIids, existAndOnSaleItemNumIids);
+        //需要加入计划的新加入宝贝
+        List<Item> newItems = ShelfUtils.getItems(onSaleItems, newItemNumIids);
+
+        //1. 删除计划中失效宝贝
+        if (CollectionUtils.isNotEmpty(invalidPlanItemNumIids)) {
+            planMapper.deleteByUserIdAndNumIids(userId, invalidPlanItemNumIids);
+        }
+
+        //2. 加入新宝贝
+        if (CollectionUtils.isEmpty(newItems)) {
+            return;
+        }
+        List<Plan> validPlans = ShelfUtils.getPlans(runningPlans, existAndOnSaleItemNumIids);
+        Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validPlans);
+        //为新添宝贝安排具体的调整时间
+        Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, planSetting,
+                currDistribution);
+        //安排计划
+        List<Plan> plans = plan(planSetting, assignTable);
+        savePlan(planSetting.getId(), plans);
     }
 
     /**
-     * 安排单个计划并保存
+     * 安排计划并保存
      *
      * @param planSetting
      * @throws ShelfException
      */
     public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException {
-//        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
-//                userId, planSetting.getUserId());
-//        try {
-//            List<Item> items = taobaoApiShopService.getOnSaleItems(userId, ShelfConstants.ITEM_FIELDS,
-//                    TopApiUtils.getSellerCatIds(planSetting.getIncludeCids()));
-//            List<Plan> plans = plan(planSetting, items);
-//            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
-//                    planSetting.getId());
-//            planMapper.batchInsert(plans);
-//        } catch (EnhancedApiException e) {
-//            throw new ShelfException("create plan error, userId[" + userId + "], " +
-//                    "planSettingId[" + planSetting.getId() + "]", e);
-//        }
+        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
+                userId, planSetting.getUserId());
+        try {
+            ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
+            request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
+            request.setSellerCids(planSetting.getIncludeCids());
+            Pair<List<Item>, Long> result = taobaoApiShopService.getOnSaleItems(userId, request);
+
+            List<Plan> plans = plan(planSetting, result.getKey());
+            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
+                    planSetting.getId());
+            savePlan(planSetting.getId(), plans);
+        } catch (EnhancedApiException e) {
+            ShelfException shelfException = new ShelfException("create plan error, userId[" + userId + "], " +
+                    "planSettingId[" + planSetting.getId() + "]", e);
+            Exceptions.logAndThrow(logger, shelfException);
+        }
+    }
+
+    @Transactional
+    private void savePlan(Long planSettingId, List<Plan> plans) {
+        planMapper.batchInsert(plans);
+        PlanSetting planSetting = new PlanSetting();
+        planSetting.setId(planSettingId);
+        planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_RUNNING);
+        planSetting.setLastPlanTime(appService.getLocalSystemTime().toDate());
+        planSettingMapper.updateByPrimaryKeySelective(planSetting);
     }
 
     /**
@@ -161,60 +195,44 @@ public class PlanService {
             throw new ShelfException("plan for userId[" + planSetting.getUserId() + "], planSettingId[" + planSetting
                     .getId() + "] error, assign table is null.");
         }
-        //获取当前已经安排的计划时间
-        List<Plan> runningPlans = planMapper.selectByPlanSettingIdAndStatus(planSetting.getId(),
-                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST, ShelfConstants.PLAN_STATUS_SUCCESSFUL));
-        Multimap<Integer, LocalTimeInterval> runningPlanTimeOfDistribution = ShelfUtils.getTimeOfDistribution(runningPlans);
-        return plan(planSetting, assignTable, runningPlanTimeOfDistribution);
+        return plan(planSetting, assignTable);
     }
 
-    private List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable, Multimap<Integer, LocalTimeInterval> runningPlanTimeOfDistribution) {
+    /**
+     * 将新加入宝贝纳入计划
+     *
+     * @param planSetting 计划设置
+     * @param assignTable 需要加入计划的宝贝的<周几，时段，宝贝>
+     * @return
+     */
+    private List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable) {
         List<Plan> plans = Lists.newArrayList();
 
-        DateTime now = applicationService.getLocalSystemTime();
+        DateTime now = appService.getLocalSystemTime();
         DateTime tomorrow = now.plusDays(1).withTimeAtStartOfDay();
+        //第一次调整是周几
         DateTime firstAdjustDay = now;
-        //如果离第二天小于15分钟，就把首次调整计划安排到第二天
-        if (Minutes.minutesBetween(now, tomorrow).getMinutes() >= 15) {
+        //如果离第二天小于10分钟，就把首次调整计划安排到第二天
+        if (Minutes.minutesBetween(now, tomorrow).getMinutes() < 10) {
             firstAdjustDay = now.plusDays(1);
         }
         int firstAdjustDayOfWeek = firstAdjustDay.getDayOfWeek();
-        for (Map.Entry<Integer, Map<LocalTimeInterval, List<Item>>> intervalDay : assignTable.rowMap().entrySet()) {
-            for (Map.Entry<LocalTimeInterval, List<Item>> intervalHour : intervalDay.getValue().entrySet()) {
-                LocalTimeInterval localTimeInterval = intervalHour.getKey();
-                List<Item> items = intervalHour.getValue();
-                int intervalSeconds = Seconds.secondsBetween(localTimeInterval.getFrom(), localTimeInterval.getTo()).getSeconds();
-
-                //1 宝贝数量小于时间间隔的总秒数：最快1秒钟上下架一个宝贝 2 宝贝数量大于时间间隔的总秒数，则一秒钟上下架多个宝贝
-                if (items.size() <= intervalSeconds) {
-                    int segmentSeconds = IntMath.divide(intervalSeconds, items.size(), RoundingMode.CEILING);
-                    LocalTime index;
-                    for (Item item : items) {
-                        DateTime planListingDateTime = firstAdjustDay.plusDays(Math.abs(intervalDay.getKey() - firstAdjustDayOfWeek));
-                        index = localTimeInterval.getFrom().plusSeconds(segmentSeconds);
-                        planListingDateTime = planListingDateTime.withMillisOfDay(index.getMillisOfDay());
-                        try {
-                            Plan plan = buildPlan(item, planListingDateTime, false);
-                            plans.add(plan);
-                        } catch (ShelfException e) {
-                            logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
-                        }
+        for (Map.Entry<Integer, Map<LocalTimeInterval, List<Item>>> assignDay : assignTable.rowMap().entrySet()) {
+            for (Map.Entry<LocalTimeInterval, List<Item>> assignHour : assignDay.getValue().entrySet()) {
+                LocalTimeInterval assignHourTimeInterval = assignHour.getKey();
+                List<Item> items = assignHour.getValue();
+                for (Item item : items) {
+                    int planListingDayOffset = assignDay.getKey() - firstAdjustDayOfWeek;
+                    if (planListingDayOffset < 0) {
+                        planListingDayOffset += 7;
                     }
-                } else {
-                    Iterable<List<Item>> itemsPartitionList = Iterables.partition(items, intervalSeconds);
-                    LocalTime index;
-                    for (List<Item> itemPartition : itemsPartitionList) {
-                        DateTime planListingDateTime = firstAdjustDay.plusDays(Math.abs(intervalDay.getKey() - firstAdjustDayOfWeek));
-                        index = localTimeInterval.getFrom().plusSeconds(1);
-                        planListingDateTime = planListingDateTime.withMillisOfDay(index.getMillisOfDay());
-                        for (Item item : itemPartition) {
-                            try {
-                                Plan plan = buildPlan(item, planListingDateTime, false);
-                                plans.add(plan);
-                            } catch (ShelfException e) {
-                                logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
-                            }
-                        }
+                    DateTime planListingDateTime = firstAdjustDay.plusDays(planListingDayOffset);
+                    try {
+                        Plan plan = buildPlan(planSetting, item, planListingDateTime.withTimeAtStartOfDay(),
+                                assignHourTimeInterval);
+                        plans.add(plan);
+                    } catch (ShelfException e) {
+                        logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
                     }
                 }
             }
@@ -222,8 +240,25 @@ public class PlanService {
         return plans;
     }
 
-    private Table<Integer, LocalTimeInterval, List<Item>> avgAssignNewItems(List<Item> items, Table<Integer, LocalTimeInterval, Integer> currDistribution) {
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = ShelfUtils.getNewItemDistribution(items, currDistribution);
+    private Table<Integer, LocalTimeInterval, List<Item>> avgAssignNewItems(List<Item> items,
+                                                                            PlanSetting planSetting, Table<Integer,
+            LocalTimeInterval, Integer> currDistribution) throws ShelfException {
+        Table<Integer, LocalTimeInterval, Integer> planDistribution = null;
+        switch (planSetting.getDistributionType()) {
+            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
+                planDistribution = ShelfUtils.getDefaultZeroFilledDistribution();
+                break;
+            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
+                planDistribution = ShelfUtils.parseAndFillZeroDistribution
+                        (planSetting.getDistribution());
+                break;
+        }
+        if (null == planDistribution) {
+            throw new ShelfException("planDistribution is null, itemSize[" + items.size() + "], " +
+                    "planSettingId[" + planSetting.getId() + "].");
+        }
+        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = ShelfUtils.getNewItemDistribution(items.size(),
+                planDistribution, currDistribution);
         return assignItems(items, newItemDistribution);
     }
 
@@ -255,15 +290,15 @@ public class PlanService {
      * 把宝贝平均的安排到计划时间段
      *
      * @param items
-     * @param intervals
+     * @param distribution
      * @return
      */
-    private Table<Integer, LocalTimeInterval, List<Item>> assignItems(List<Item> items, Table<Integer, LocalTimeInterval, Integer> intervals) {
+    private Table<Integer, LocalTimeInterval, List<Item>> assignItems(List<Item> items, Table<Integer, LocalTimeInterval, Integer> distribution) {
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = HashBasedTable.create();
         int fromIndex = 0;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : intervals.cellSet()) {
+        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
             assignTable.put(cell.getRowKey(), cell.getColumnKey(),
-                    items.subList(fromIndex, fromIndex + (cell.getValue() - 1)));
+                    items.subList(fromIndex, fromIndex + cell.getValue()));
             fromIndex += cell.getValue();
         }
         return assignTable;
@@ -272,13 +307,15 @@ public class PlanService {
     public void execPlan(Long userId, Long planSettingId) {
     }
 
-    public List<Plan> searchPlanItem(Long userId, Long planSettingId, String keyword) {
+    public List<Plan> searchPlanItem(Long userId, Long planSettingId, String query, boolean fuzzy) {
+        if (fuzzy && NumberUtils.isNumber(query)) {
+            //按宝贝 id 搜索
+        }
+        //搜索宝贝 title
         return null;
     }
 
-    @Transactional
     public void deletePlan(Long userId, Long planSettingId) {
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
-        planSettingMapper.deleteByPrimaryKeyAndUserId(planSettingId, userId);
     }
 }

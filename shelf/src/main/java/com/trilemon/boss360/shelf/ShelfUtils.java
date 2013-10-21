@@ -3,17 +3,21 @@ package com.trilemon.boss360.shelf;
 import com.google.common.base.Function;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Table;
+import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
+import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
 import javax.annotation.Nullable;
+import java.math.RoundingMode;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,21 +34,24 @@ public class ShelfUtils {
     public static Table<Integer, LocalTimeInterval, Integer> getDistribution(Iterable<Plan> plans) {
         Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
         for (Plan plan : plans) {
-            DateTime adjustDateTime = new DateTime(plan.getAdjustTime());
-            int dayOfWeek = adjustDateTime.getDayOfWeek();
-            int hourOfDay = adjustDateTime.getHourOfDay();
-            Integer itemNum = table.get(dayOfWeek, hourOfDay + 1);
+            DateTime adjustDay = new DateTime(plan.getPlanAdjustDay());
+            int dayOfWeek = adjustDay.getDayOfWeek();
+            DateTime startHour = new DateTime(plan.getPlanAdjustStartTime());
+            DateTime endHour = new DateTime(plan.getPlanAdjustEndTime());
+            LocalTimeInterval localTimeInterval = new LocalTimeInterval(new LocalTime(startHour.getHourOfDay(),
+                    startHour.getMinuteOfHour()), new LocalTime(endHour.getHourOfDay(), endHour.getMinuteOfHour()));
+            Integer itemNum = table.get(dayOfWeek, localTimeInterval);
             if (null == itemNum) {
-                table.put(dayOfWeek, new LocalTimeInterval(hourOfDay, hourOfDay + 1), 1);
+                table.put(dayOfWeek, localTimeInterval, 1);
             } else {
-                table.put(dayOfWeek, new LocalTimeInterval(hourOfDay, hourOfDay + 1), itemNum + 1);
+                table.put(dayOfWeek, localTimeInterval, itemNum + 1);
             }
         }
         return table;
     }
 
     /**
-     * distribution 的格式约定为 <code> week|hour|宝贝个数||week|hour|宝贝个数</code>； 例如<code>1|9:00-10:00||1|10:00-12:00</code>。
+     * distribution 的格式约定为 <code> week|hour||week|hour</code>； 例如<code>1|9:00-10:00||1|10:00-12:00</code>。
      *
      * @param distribution
      * @return
@@ -78,74 +85,105 @@ public class ShelfUtils {
      */
     public static Table<Integer, LocalTimeInterval, Integer> getDefaultDistribution(int itemNum) {
         Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
-        int cellDivision = itemNum / (7 * (23 - 9));
-        int cellMod = itemNum % (7 * (23 - 9));
+        int cellDivision = IntMath.divide(itemNum, 7 * (23 - 9), RoundingMode.CEILING);
         for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
             for (int hourOfDay = 9; hourOfDay <= 23; hourOfDay++) {
                 if (itemNum == 0) {
                     break;
-                } else {
-                    LocalTime startHour = new LocalTime(hourOfDay, 0);
-                    LocalTime endHour = new LocalTime(hourOfDay + 1, 0);
-                    if (cellMod == 0) {
-                        table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), cellDivision + 1);
-                    } else {
-                        table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), cellDivision);
-                        cellMod--;
-                    }
-                    hourOfDay += 2;
-                    itemNum -= cellDivision;
                 }
+                LocalTime startHour = new LocalTime(hourOfDay, 0);
+                LocalTime endHour = new LocalTime(hourOfDay + 1, 0);
+                table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), cellDivision);
+                itemNum -= cellDivision;
+            }
+            if (itemNum == 0) {
+                break;
             }
         }
         return table;
     }
 
-    public static Table.Cell<Integer, LocalTimeInterval, Integer> findDistributionFloorCell(Table<Integer,
-            LocalTimeInterval, Integer> distribution) {
-        Integer floor = Integer.MAX_VALUE;
-        Table.Cell<Integer, LocalTimeInterval, Integer> floorCell = null;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
-            if ((null != cell.getValue()) && (cell.getValue() < floor)) {
-                floor = cell.getValue();
-                floorCell = cell;
+    public static Table<Integer, LocalTimeInterval, Integer> getDefaultZeroFilledDistribution() {
+        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
+        for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
+            for (int hourOfDay = 9; hourOfDay <= 23; hourOfDay++) {
+                LocalTime startHour = new LocalTime(hourOfDay, 0);
+                int endHourInt = hourOfDay + 1;
+                LocalTime endHour = new LocalTime(endHourInt == 24 ? 0 : endHourInt, 0);
+                table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), 0);
             }
         }
-        return floorCell;
+
+        return table;
     }
 
-    public static Table<Integer, LocalTimeInterval, Integer> getNewItemDistribution(List<Item> items,
-                                                                                    Table<Integer, LocalTimeInterval, Integer>
-                                                                                            currDistribution) {
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = HashBasedTable.create();
-        for (Item item : items) {
-            Table.Cell<Integer, LocalTimeInterval, Integer> floorCell = ShelfUtils.findDistributionFloorCell(currDistribution);
-            currDistribution.put(floorCell.getRowKey(), floorCell.getColumnKey(), floorCell.getValue() + 1);
-
+    public static Table.Cell<Integer, LocalTimeInterval, Integer> findMinCellOfDistribution(Table<Integer,
+            LocalTimeInterval, Integer> distribution) {
+        Integer minCellValue = Integer.MAX_VALUE;
+        Table.Cell<Integer, LocalTimeInterval, Integer> minCell = null;
+        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
+            if ((null == cell.getValue()) || cell.getValue() == 0) {
+                return cell;
+            } else {
+                if (cell.getValue() < minCellValue) {
+                    minCellValue = cell.getValue();
+                    minCell = cell;
+                }
+            }
         }
-        return null;
+        return minCell;
     }
 
-    public static void listItem(Item item) throws ShelfException {
-
+    public static Table<Integer, LocalTimeInterval, Integer> getNewItemDistribution(int itemNum,
+                                                                                    Table<Integer, LocalTimeInterval, Integer> planDistribution,
+                                                                                    Table<Integer, LocalTimeInterval, Integer> currDistribution) {
+        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = combineDistribution(planDistribution, currDistribution);
+        for (int index = 0; index < itemNum; index++) {
+            Table.Cell<Integer, LocalTimeInterval, Integer> minCell = ShelfUtils.findMinCellOfDistribution(combinedDistribution);
+            //对新的安排表赋值
+            Integer newCellValue = newItemDistribution.get(minCell.getRowKey(), minCell.getColumnKey());
+            newItemDistribution.put(minCell.getRowKey(), minCell.getColumnKey(), null == newCellValue ? 1 : (newCellValue += 1));
+            //更新全计划表
+            Integer cellValue = combinedDistribution.get(minCell.getRowKey(), minCell.getColumnKey());
+            combinedDistribution.put(minCell.getRowKey(), minCell.getColumnKey(), null == cellValue ? 1 : (cellValue += 1));
+        }
+        return newItemDistribution;
     }
 
-    public static void delistItem(Item item) throws ShelfException {
-
+    private static Table<Integer, LocalTimeInterval, Integer> combineDistribution(Table<Integer, LocalTimeInterval,
+            Integer>... distributions) {
+        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = HashBasedTable.create();
+        for (Table<Integer, LocalTimeInterval, Integer> distribution : distributions) {
+            for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
+                if (null != cell.getValue()) {
+                    Integer cellValue = combinedDistribution.get(cell.getRowKey(), cell.getColumnKey());
+                    if (null == cellValue || cellValue == 0) {
+                        combinedDistribution.put(cell.getRowKey(), cell.getColumnKey(), cell.getValue());
+                    } else {
+                        combinedDistribution.put(cell.getRowKey(), cell.getColumnKey(), cell.getValue() + cellValue);
+                    }
+                }
+            }
+        }
+        return combinedDistribution;
     }
 
-    public static Plan buildPlan(Item item, DateTime planListingDateTime, boolean isNew) throws ShelfException {
+    public static Plan buildPlan(PlanSetting planSetting, Item item, DateTime planListingDay, LocalTimeInterval hourInterval) throws
+            ShelfException {
         Plan plan = new Plan();
-        plan.setAdjustTime(planListingDateTime.toDate());
+        plan.setPlanSettingId(planSetting.getId());
+        plan.setUserId(planSetting.getUserId());
+        plan.setPlanAdjustDay(planListingDay.toDate());
+        plan.setPlanAdjustStartTime(hourInterval.getFrom().toDateTimeToday().toDate());
+        plan.setPlanAdjustEndTime(hourInterval.getTo().toDateTimeToday().toDate());
         plan.setItemNumIid(item.getNumIid());
         plan.setItemTitle(item.getTitle());
         plan.setItemPicUrl(item.getPicUrl());
-        plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
-        if (isNew) {
-            plan.setIsNewItem(true);
-        } else {
-            plan.setIsNewItem(false);
+        if (null != item.getSellerCids()) {
+            plan.setItemSellerCid(Long.valueOf(StringUtils.remove(item.getSellerCids(), ",")));
         }
+        plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
         try {
             plan.setItemTitlePinyin(Languages.getHanYuPinyin(item.getTitle()));
         } catch (BadHanyuPinyinOutputFormatCombination e) {
@@ -165,7 +203,26 @@ public class ShelfUtils {
         });
     }
 
-    public static Multimap<Integer, LocalTimeInterval> getTimeOfDistribution(Iterable<Plan> plans) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    public static List<Item> getItems(List<Item> items, Collection<Long> numIids) {
+        List<Item> filterItems = Lists.newArrayList();
+
+        for (Item item : items) {
+            if (numIids.contains(item.getNumIid())) {
+                filterItems.add(item);
+            }
+        }
+        return filterItems;
     }
+
+    public static List<Plan> getPlans(List<Plan> plans, Collection<Long> numIids) {
+        List<Plan> filerPlans = Lists.newArrayList();
+
+        for (Plan plan : plans) {
+            if (numIids.contains(plan.getItemNumIid())) {
+                filerPlans.add(plan);
+            }
+        }
+        return filerPlans;
+    }
+
 }

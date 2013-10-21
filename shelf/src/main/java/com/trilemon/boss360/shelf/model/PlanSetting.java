@@ -25,7 +25,7 @@ public class PlanSetting {
 
     private Byte status;
 
-    private Date nextPlanTime;
+    private Date lastPlanTime;
 
     private Date addTime;
 
@@ -122,12 +122,12 @@ public class PlanSetting {
         this.status = status;
     }
 
-    public Date getNextPlanTime() {
-        return nextPlanTime;
+    public Date getLastPlanTime() {
+        return lastPlanTime;
     }
 
-    public void setNextPlanTime(Date nextPlanTime) {
-        this.nextPlanTime = nextPlanTime;
+    public void setLastPlanTime(Date lastPlanTime) {
+        this.lastPlanTime = lastPlanTime;
     }
 
     public Date getAddTime() {

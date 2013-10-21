@@ -13,7 +13,7 @@
         <result column="distribution_type" property="distributionType" jdbcType="TINYINT"/>
         <result column="before_adjust_distribution" property="beforeAdjustDistribution" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
-        <result column="next_plan_time" property="nextPlanTime" jdbcType="TIMESTAMP"/>
+        <result column="last_plan_time" property="lastPlanTime" jdbcType="TIMESTAMP"/>
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -79,7 +79,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, user_id, name, name_pinyin, include_cids, auto_add_new_items, exclude_item_iids,
-        distribution, distribution_type, before_adjust_distribution, status, next_plan_time,
+        distribution, distribution_type, before_adjust_distribution, status, last_plan_time,
         add_time, upd_time
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
@@ -114,18 +114,19 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
-        INSERT INTO plan_setting (id, user_id, name,
+        INSERT INTO plan_setting (id, user_id, `name`,
                                   name_pinyin, include_cids, auto_add_new_items,
                                   exclude_item_iids, distribution, distribution_type,
-                                  before_adjust_distribution, status, next_plan_time,
+                                  before_adjust_distribution, `status`, last_plan_time,
                                   add_time, upd_time)
             VALUES (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
                     #{namePinyin,jdbcType=VARCHAR}, #{includeCids,jdbcType=VARCHAR}, #{autoAddNewItems,jdbcType=BIT},
                     #{excludeItemIids,jdbcType=VARCHAR}, #{distribution,jdbcType=VARCHAR}, #{distributionType,jdbcType=TINYINT},
-                    #{beforeAdjustDistribution,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{nextPlanTime,jdbcType=TIMESTAMP},
+                    #{beforeAdjustDistribution,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{lastPlanTime,jdbcType=TIMESTAMP},
                     #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
+    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" useGeneratedKeys="true"
+            keyColumn="id" keyProperty="id">
         insert into plan_setting
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -161,8 +162,8 @@
             <if test="status != null">
                 status,
             </if>
-            <if test="nextPlanTime != null">
-                next_plan_time,
+            <if test="lastPlanTime != null">
+                last_plan_time,
             </if>
             <if test="addTime != null">
                 add_time,
@@ -205,8 +206,8 @@
             <if test="status != null">
                 #{status,jdbcType=TINYINT},
             </if>
-            <if test="nextPlanTime != null">
-                #{nextPlanTime,jdbcType=TIMESTAMP},
+            <if test="lastPlanTime != null">
+                #{lastPlanTime,jdbcType=TIMESTAMP},
             </if>
             <if test="addTime != null">
                 #{addTime,jdbcType=TIMESTAMP},
@@ -259,8 +260,8 @@
             <if test="record.status != null">
                 status = #{record.status,jdbcType=TINYINT},
             </if>
-            <if test="record.nextPlanTime != null">
-                next_plan_time = #{record.nextPlanTime,jdbcType=TIMESTAMP},
+            <if test="record.lastPlanTime != null">
+                last_plan_time = #{record.lastPlanTime,jdbcType=TIMESTAMP},
             </if>
             <if test="record.addTime != null">
                 add_time = #{record.addTime,jdbcType=TIMESTAMP},
@@ -277,7 +278,7 @@
         update plan_setting
         set id = #{record.id,jdbcType=BIGINT},
         user_id = #{record.userId,jdbcType=BIGINT},
-        name = #{record.name,jdbcType=VARCHAR},
+        `name` = #{record.name,jdbcType=VARCHAR},
         name_pinyin = #{record.namePinyin,jdbcType=VARCHAR},
         include_cids = #{record.includeCids,jdbcType=VARCHAR},
         auto_add_new_items = #{record.autoAddNewItems,jdbcType=BIT},
@@ -285,8 +286,8 @@
         distribution = #{record.distribution,jdbcType=VARCHAR},
         distribution_type = #{record.distributionType,jdbcType=TINYINT},
         before_adjust_distribution = #{record.beforeAdjustDistribution,jdbcType=VARCHAR},
-        status = #{record.status,jdbcType=TINYINT},
-        next_plan_time = #{record.nextPlanTime,jdbcType=TIMESTAMP},
+        `status` = #{record.status,jdbcType=TINYINT},
+        last_plan_time = #{record.lastPlanTime,jdbcType=TIMESTAMP},
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
         upd_time = #{record.updTime,jdbcType=TIMESTAMP}
         <if test="_parameter != null">
@@ -326,8 +327,8 @@
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},
             </if>
-            <if test="nextPlanTime != null">
-                next_plan_time = #{nextPlanTime,jdbcType=TIMESTAMP},
+            <if test="lastPlanTime != null">
+                last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
             </if>
             <if test="addTime != null">
                 add_time = #{addTime,jdbcType=TIMESTAMP},
@@ -341,7 +342,7 @@
     <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
         UPDATE plan_setting
         SET user_id = #{userId,jdbcType=BIGINT},
-            name = #{name,jdbcType=VARCHAR},
+            `name` = #{name,jdbcType=VARCHAR},
             name_pinyin = #{namePinyin,jdbcType=VARCHAR},
             include_cids = #{includeCids,jdbcType=VARCHAR},
             auto_add_new_items = #{autoAddNewItems,jdbcType=BIT},
@@ -349,12 +350,80 @@
             distribution = #{distribution,jdbcType=VARCHAR},
             distribution_type = #{distributionType,jdbcType=TINYINT},
             before_adjust_distribution = #{beforeAdjustDistribution,jdbcType=VARCHAR},
-            status = #{status,jdbcType=TINYINT},
-            next_plan_time = #{nextPlanTime,jdbcType=TIMESTAMP},
+            `status` = #{status,jdbcType=TINYINT},
+            last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
             add_time = #{addTime,jdbcType=TIMESTAMP},
             upd_time = #{updTime,jdbcType=TIMESTAMP}
         WHERE id = #{id,jdbcType=BIGINT}
     </update>
+
+    <delete id="deleteByPrimaryKeyAndUserId" parameterType="java.lang.Long">
+        DELETE FROM plan_setting
+        WHERE id = #{id,jdbcType=BIGINT} AND user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+
+    <update id="updateByPrimaryKeyAndUserIdSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
+        update plan_setting
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="namePinyin != null">
+                name_pinyin = #{namePinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="includeCids != null">
+                include_cids = #{includeCids,jdbcType=VARCHAR},
+            </if>
+            <if test="autoAddNewItems != null">
+                auto_add_new_items = #{autoAddNewItems,jdbcType=BIT},
+            </if>
+            <if test="excludeItemIids != null">
+                exclude_item_iids = #{excludeItemIids,jdbcType=VARCHAR},
+            </if>
+            <if test="distribution != null">
+                distribution = #{distribution,jdbcType=VARCHAR},
+            </if>
+            <if test="distributionType != null">
+                distribution_type = #{distributionType,jdbcType=TINYINT},
+            </if>
+            <if test="beforeAdjustDistribution != null">
+                before_adjust_distribution = #{beforeAdjustDistribution,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="lastPlanTime != null">
+                last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updTime != null">
+                upd_time = #{updTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="countByUserIdAndStatus" parameterType="map" resultType="java.lang.Integer">
+        select count(*) from plan_setting
+        <where>
+            user_id = #{userId,jdbcType=BIGINT} and
+            <trim prefix="(" suffix=")" prefixOverrides="and">
+                <foreach collection="statusList" item="status" separator="or">
+                    `status` = #{status,jdbcType=TINYINT}
+                </foreach>
+            </trim>
+        </where>
+    </select>
+    <select id="countByUserId" parameterType="long" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM plan_setting
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+    </select>
     <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
@@ -365,65 +434,68 @@
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        where user_id = #{userId,jdbcType=BIGINT} and
-        <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="statusList" item="status" separator="or">
-                #{status}
-            </foreach>
-        </trim>
-    </select>
-    <select id="paginationByUserIdAndStatus" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from plan_setting
-        where user_id = #{userId,jdbcType=BIGINT} and
-        <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="statusList" item="status" separator="or">
-                #{status}
-            </foreach>
-        </trim>
-        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
-    </select>
-    <select id="countByUserIdAndStatus" parameterType="map"
-            resultType="java.lang.Integer">
-        select count(*) from plan_setting
-        where user_id = #{userId,jdbcType=BIGINT} and
-        <trim prefix="(" suffix=")" prefixOverrides="and">
-            <foreach collection="statusList" item="status" separator="or">
-                #{status}
-            </foreach>
-        </trim>
-    </select>
-    <select id="paginationByStatus" resultMap="BaseResultMap" parameterType="map">
-        select
-        <include refid="Base_Column_List"/>
-        from plan_setting
         <where>
+            user_id = #{userId,jdbcType=BIGINT}
             <trim prefix="(" suffix=")" prefixOverrides="and">
                 <foreach collection="statusList" item="status" separator="or">
-                    #{status}
+                    `status` = #{status,jdbcType=TINYINT}
                 </foreach>
             </trim>
         </where>
-        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKeyAndUserId" parameterType="map">
-        DELETE FROM plan_setting
-        WHERE id = #{id,jdbcType=BIGINT} AND user_id = #{userId,jdbcType=BIGINT}
-    </delete>
-
     <select id="paginateByUserIdAndStatus" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan_setting
         <where>
-            user_id = #{userId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
+            user_id = #{userId,jdbcType=BIGINT}
+            <if test="statusList != null and statusList.size()>0">
+                and
                 <foreach collection="statusList" item="status" separator="or">
-                    #{status}
+                    `status` = #{status,jdbcType=TINYINT}
                 </foreach>
-            </trim>
+            </if>
         </where>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </select>
+    <select id="paginateByStatus" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from plan_setting
+        <where>
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </where>
+        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </select>
+    <select id="paginateByUserIdAndName" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from plan_setting
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+            <if test="query">
+                and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
+            </if>
+        </where>
+        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+    </select>
+    <select id="selectByPrimaryKeyAndUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from plan_setting
+        where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="countByUserIdAndName" parameterType="long" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM plan_setting
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+            <if test="query">
+                and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
+            </if>
+        </where>
     </select>
 </mapper>
