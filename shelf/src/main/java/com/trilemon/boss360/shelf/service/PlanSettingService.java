@@ -99,7 +99,7 @@ public class PlanSettingService {
         planSetting.setUserId(userId);
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
-        planService.updatePlan(userId, planSetting.getId());
+        planService.updatePlan(planSetting.getId());
     }
 
     /**

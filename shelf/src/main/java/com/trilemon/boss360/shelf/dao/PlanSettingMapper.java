@@ -56,4 +56,6 @@ public interface PlanSettingMapper {
                                               @Param("offset") Integer offset, @Param("limit") Integer limit);
 
     int countByUserIdAndName(@Param("userId") Long userId, @Param("query") String query);
+
+    List<PlanSetting> paginateAutoAddItemPlanSettings(@Param("offset") Integer offset, @Param("limit") Integer limit);
 }

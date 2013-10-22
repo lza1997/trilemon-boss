@@ -486,10 +486,23 @@
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
     <select id="calcPlanStatus" resultMap="PlanStatusResultMap" parameterType="map">
-        select SUM(if(add_time >= #{lastPlanTime,jdbcType=TIMESTAMP}, 1, 0)) as new_item_num,
-               SUM(if(status in (0,1), 1, 0)) as item_num,
-               SUM(if(status in (0), 1, 0)) as wait_adjust_item_num
+        SELECT SUM(if(add_time >= #{lastPlanTime,jdbcType=TIMESTAMP}, 1, 0)) AS new_item_num,
+               SUM(if(status IN (0,1), 1, 0)) AS item_num,
+               SUM(if(status IN (0), 1, 0)) AS wait_adjust_item_num
+        FROM plan
+        WHERE plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByPlanSettingIdAndStatusAndPlanTime" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
         from plan
-        where plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+        <where>
+            plan_setting_id = #{planSettingId,jdbcType=BIGINT} and
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+            and plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP}
+            and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME},
+        </where>
     </select>
 </mapper>

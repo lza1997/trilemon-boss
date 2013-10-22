@@ -1,5 +1,6 @@
 package com.trilemon.boss360.shelf.dao;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanExample;
 import com.trilemon.boss360.shelf.service.vo.PlanStatus;
@@ -41,15 +42,21 @@ public interface PlanMapper {
 
     void deleteByUserIdAndPlanSettingId(@Param("userId") Long userId, @Param("planSettingId") Long planSettingId);
 
-    List<Plan> selectByUserIdAndPlanSettingId(@Param("userId")Long userId,@Param("planSettingId") Long planSettingId);
+    List<Plan> selectByUserIdAndPlanSettingId(@Param("userId") Long userId, @Param("planSettingId") Long planSettingId);
 
-    List<Plan> selectByPlanSettingIdAndStatus(@Param("planSettingId")Long planSettingId,
-                                              @Param("statusList")List<Byte> statusList);
+    List<Plan> selectByPlanSettingIdAndStatus(@Param("planSettingId") Long planSettingId,
+                                              @Param("statusList") List<Byte> statusList);
 
-    int countByUserIdAndPlanSettingIdAndStatus(@Param("userId")Long userId,@Param("planSettingId")  Long planSettingId, @Param("statusList") List<Byte> statusList);
-    List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(@Param("userId")Long userId,
+    int countByUserIdAndPlanSettingIdAndStatus(@Param("userId") Long userId, @Param("planSettingId") Long planSettingId, @Param("statusList") List<Byte> statusList);
+
+    List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(@Param("userId") Long userId,
                                                          @Param("planSettingId") Long planSettingId,
-                                                         @Param("statusList") List<Byte> statusList,@Param("offset") Integer offset, @Param("limit") Integer limit);
+                                                         @Param("statusList") List<Byte> statusList, @Param("offset") Integer offset, @Param("limit") Integer limit);
 
-    PlanStatus calcPlanStatus( @Param("planSettingId")Long planSettingId, @Param("lastPlanTime") Date lastPlanTime);
+    PlanStatus calcPlanStatus(@Param("planSettingId") Long planSettingId, @Param("lastPlanTime") Date lastPlanTime);
+
+    List<Plan> selectByPlanSettingIdAndStatusAndPlanTime(@Param("planSettingId") Long planSettingId,
+                                                         @Param("statusList") ImmutableList<Byte> statusList,
+                                                         @Param("planAdjustDay") Date planAdjustDay,
+                                                         @Param("planAdjustEndTime") Date planAdjustEndTime);
 }

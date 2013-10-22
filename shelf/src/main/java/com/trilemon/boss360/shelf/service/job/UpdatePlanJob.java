@@ -1,14 +1,15 @@
 package com.trilemon.boss360.shelf.service.job;
 
-import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
-import com.trilemon.boss360.shelf.ShelfConstants;
-import com.trilemon.boss360.shelf.dao.PlanMapper;
+import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
@@ -18,18 +19,22 @@ import java.util.Collection;
  *
  * @author kevin
  */
+@Service
 public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
+    private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private PlanService planService;
     @Autowired
-    private PlanMapper planMapper;
-    @Autowired
     private PlanSettingMapper planSettingMapper;
+    @Autowired
+    private AppService appService;
 
     @PostConstruct
     public void init() {
         reboot();
         startPoll();
+        appService.addThreads(getThreadPoolExecutorMap());
+        logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());
     }
 
     @Override
@@ -38,20 +43,22 @@ public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void fillQueue() {
+        logger.info("start to fill queue.");
+        //自动纳入宝贝的才更新
         int offset = 0;
         while (true) {
-            Collection<PlanSetting> planSettings = planSettingMapper.paginateByStatus(offset,
-                    100, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+            Collection<PlanSetting> planSettings = planSettingMapper.paginateAutoAddItemPlanSettings(offset, 500);
             if (CollectionUtils.isEmpty(planSettings)) {
                 break;
             } else {
                 fillQueue(planSettings);
             }
         }
+        logger.info("end to fill queue[{}].", getQueue().size());
     }
 
     @Override
     public void process(PlanSetting planSetting) throws Exception {
-        //planService.updatePlan(planSetting.getUserId(),planSetting);
+        planService.updatePlan(planSetting.getId());
     }
 }

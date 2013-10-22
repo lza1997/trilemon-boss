@@ -489,7 +489,7 @@
     </select>
     <select id="countByUserIdAndName" parameterType="long" resultType="java.lang.Integer">
         SELECT
-            count(*)
+        count(*)
         FROM plan_setting
         <where>
             user_id = #{userId,jdbcType=BIGINT}
@@ -497,5 +497,14 @@
                 and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
             </if>
         </where>
+    </select>
+    <select id="paginateAutoAddItemPlanSettings" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from plan_setting
+        where
+        auto_add_new_items = 1 and `status`=1
+        where
+        LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
 </mapper>

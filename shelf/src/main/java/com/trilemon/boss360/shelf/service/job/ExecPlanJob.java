@@ -2,14 +2,16 @@ package com.trilemon.boss360.shelf.service.job;
 
 import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
+import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.shelf.ShelfConstants;
-import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
-import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -19,18 +21,22 @@ import java.util.List;
  *
  * @author kevin
  */
+@Service
 public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
+    private final static Logger logger = LoggerFactory.getLogger(ExecPlanJob.class);
     @Autowired
     private PlanService planService;
     @Autowired
-    private PlanMapper planMapper;
-    @Autowired
     private PlanSettingMapper planSettingMapper;
+    @Autowired
+    private AppService appService;
 
     @PostConstruct
     public void init() {
         reboot();
         startPoll();
+        appService.addThreads(getThreadPoolExecutorMap());
+        logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());
     }
 
     @Override
@@ -39,23 +45,22 @@ public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void fillQueue() {
+        logger.info("start to fill queue.");
         int offset = 0;
         while (true) {
             List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(offset,
-                    100, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+                    500, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
             if (CollectionUtils.isEmpty(planSettings)) {
                 break;
             } else {
                 fillQueue(planSettings);
             }
         }
+        logger.info("end to fill queue[{}].", getQueue().size());
     }
 
     @Override
     public void process(PlanSetting planSetting) throws Exception {
-        List<Plan> plans = planMapper.selectByPlanSettingId(planSetting.getId());
-        for (Plan plan : plans) {
-            //planService.execPlan(createPlan);
-        }
+        planService.execPlan(planSetting.getId());
     }
 }
