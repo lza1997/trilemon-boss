@@ -2,9 +2,9 @@
  * 商品（宝贝）
  */
 define(function(require, exports, module) {
-    var URL = 'shelf/plans';
+    var URL = 'shelf/plan-settings';
 
-    var Plan = ['RestPageangular', function(RestPageangular) {
+    var PlanSetting = ['RestPageangular', function(RestPageangular) {
         var Model = RestPageangular.all(URL);
 
         // 临时保存，在筛选页面会取出
@@ -15,5 +15,5 @@ define(function(require, exports, module) {
         return Model;
     }];
 
-    module.exports = Plan;
+    module.exports = PlanSetting;
 });

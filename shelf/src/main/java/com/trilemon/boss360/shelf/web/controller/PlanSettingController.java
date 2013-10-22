@@ -19,8 +19,8 @@ import javax.validation.Valid;
  * @author kevin
  */
 @Controller
-@RequestMapping("/plans")
-public class PlanController {
+@RequestMapping("/plan-settings")
+public class PlanSettingController {
     @Autowired
     AppService appService;
     @Autowired
@@ -30,14 +30,6 @@ public class PlanController {
     @ResponseBody
     public Page<PlanSetting> index(@RequestParam(defaultValue = "1") int page) {
         return planSettingService.paginatePlanSettings(56912708L, page, 5);
-    }
-
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public ModelAndView _new() {
-        ModelAndView modelAndView = new ModelAndView("/plans/new");
-        PlanSetting planSetting = new PlanSetting();
-        modelAndView.addObject("planSetting", planSetting);
-        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.POST)

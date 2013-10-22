@@ -15,8 +15,9 @@
     "browser": true,
 
     "globals": {
-        '_': true,
-        'angular': true,
-        'seajs': true
+        "_": true,
+        "angular": true,
+        "seajs": true,
+        "define": true
     }
 }

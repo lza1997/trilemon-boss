@@ -1,4 +1,4 @@
-<div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}。系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
+<div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
 <table class="table table-hover">
     <col width="15%"/>
     <col />
@@ -16,13 +16,13 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="plan in plans">
-        <td>{{ plan.name }}</td>
-        <td>{{ plan.itemNum }}</td>
-        <td>{{ plan.newItemNum }} 个宝贝自动加入</td>
-        <td>{{ plan.waitAdjustItemNum }} 个宝贝等待调整</td>
+    <tr ng-repeat="planSetting in planSettings">
+        <td>{{ planSetting.name }}</td>
+        <td>{{ planSetting.itemNum }}</td>
+        <td>{{ planSetting.newItemNum }} 个宝贝自动加入</td>
+        <td>{{ planSetting.waitAdjustItemNum }} 个宝贝等待调整</td>
         <td>
-            {{ plan.addTime | date:'yyyy-MM-dd HH:ss' }}
+            {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
         <td>
             <a href="">暂停</a>
@@ -33,5 +33,5 @@
     </tr>
 </table>
 <div class="pull-right">
-    <pagination items="plans" pager-click="jumpPage(page)"></pagination>
+    <pagination items="planSettings" pager-click="jumpPage(page)"></pagination>
 </div>

@@ -1,8 +1,8 @@
 define(function(require, exports, module) {
 
-    var NewController = ['$scope', 'Sellercat', 'Plan', '$location', 'Flash', function($scope, Sellercat, Plan, $location, Flash) {
+    var NewController = ['$scope', 'Sellercat', 'PlanSetting', '$location', 'Flash', function($scope, Sellercat, PlanSetting, $location, Flash) {
         $scope.sellerCats = [];
-        $scope.plan = {autoAddNewItems: true};
+        $scope.planSetting = {autoAddNewItems: true};
 
         Sellercat.getList().then(function(data) {
             $scope.sellerCats = data;
@@ -36,23 +36,23 @@ define(function(require, exports, module) {
         // 保存计划
         $scope.save = function() {
             saveCatIds();
-            Plan.post($scope.plan).then(function() {
-                Flash.success('计划 ' + $scope.plan.name + ' 创建成功！');
-                $location.url('/plan');
+            PlanSetting.post($scope.planSetting).then(function() {
+                Flash.success('计划 ' + $scope.planSetting.name + ' 创建成功！');
+                $location.url('/plan-setting');
             });
         };
 
         // 跳转至筛选页面
         $scope.gotoFilter = function() {
             saveCatIds();
-            Plan.tmpSave($scope.plan);
-            $location.url('/plan/filter');
+            PlanSetting.tmpSave($scope.planSetting);
+            $location.url('/plan-setting/filter');
         };
 
-        // 将选中分类的id写入 plan 对象
+        // 将选中分类的id写入 planSetting 对象
         function saveCatIds() {
             var selectedCids = _.chain($scope.sellerCats).where({selected: true}).pluck('cid').value();
-            $scope.plan.includeCids = selectedCids.join(',');
+            $scope.planSetting.includeCids = selectedCids.join(',');
         }
     }];
 

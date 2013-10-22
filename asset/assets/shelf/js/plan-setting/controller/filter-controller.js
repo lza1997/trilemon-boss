@@ -1,10 +1,10 @@
 define(function(require, exports, module) {
-    var FilterController = ['$scope', 'Item', 'Plan', '$location', 'Flash', function($scope, Item, Plan, $location, Flash) {
+    var FilterController = ['$scope', 'Item', 'PlanSetting', '$location', 'Flash', function($scope, Item, PlanSetting, $location, Flash) {
 
         // 初始化
         $scope.init = function() {
             // 没有临时的 Plan 数据时跳回页面
-            if (!Plan.tmpData) {
+            if (!PlanSetting.tmpData) {
                 $location.url('/plan/new');
             }
 
@@ -38,9 +38,9 @@ define(function(require, exports, module) {
         };
 
         $scope.save = function() {
-            Plan.tmpData.excludeItemIids = $scope.excludeIds.join(',');
-            Plan.post(Plan.tmpData).then(function() {
-                Flash.success('计划 ' + Plan.tmpData.name + ' 创建成功！');
+            PlanSetting.tmpData.excludeItemIids = $scope.excludeIds.join(',');
+            PlanSetting.post(PlanSetting.tmpData).then(function() {
+                Flash.success('计划 ' + PlanSetting.tmpData.name + ' 创建成功！');
                 $location.url('/plan');
             });
         };
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         // 获取宝贝列表，可以传入关键词、页码等
         function getItems(options) {
             options = options || {};
-            options.cids = Plan.tmpData.includeCids.split(',');  // 上一步选中的分类
+            options.cids = PlanSetting.tmpData.includeCids.split(',');  // 上一步选中的分类
 
             Item.getList(options).then(function(data) {
                 // 将临时保存的被排除宝贝数据合并

@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap.dropdownToggle', 'common']);
+var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap.dropdownToggle', 'common', 'seajs']);
 
 app.factory('ajaxSpinner', ['$rootScope', '$q', function($rootScope, $q) {
     return {
@@ -29,26 +29,24 @@ app.factory('RestPageangular', function(Restangular) {
         });
     });
 });
-SeajsRoute.setApp(app);
 
-app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', function($routeProvider, RestangularProvider, $httpProvider) {
+app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider) {
+
+    SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
+    var planSetting = SeajsLazyModuleProvider.create('shelf_js/plan-setting/index');
+
     $routeProvider
-        .when('/plan/new', SeajsRoute.createRoute({
-            controller: 'plan.new',
-            module: 'shelf_js/plan/index'
-        }))
-        .when('/plan/filter', SeajsRoute.createRoute({
-            controller: 'plan.filter',
-            module: 'shelf_js/plan/index'
-        }))
-        .when('/plan', SeajsRoute.createRoute({
-            controller: 'plan.index',
-            module: 'shelf_js/plan/index'
-        }))
-        .otherwise({redirectTo: '/plan/new'});
+        .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
+        .when('/plan-setting/filter', planSetting.routeFor('planSetting.filter'))
+        .when('/plan-setting', planSetting.routeFor('planSetting.index'))
+        .otherwise({redirectTo: '/plan-setting'});
 
 
     RestangularProvider.setMethodOverriders(['post', 'delete']);
 
     $httpProvider.interceptors.push('ajaxSpinner');
+}]);
+
+app.run(['SeajsLazyModule',function(SeajsLazyModule){
+    SeajsLazyModule.init();
 }]);

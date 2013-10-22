@@ -1,9 +1,9 @@
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'Item', 'Plan', 'Flash', function($scope, Item, Plan, Flash) {
+    var IndexController = ['$scope', 'Item', 'PlanSetting', 'Flash', function($scope, Item, PlanSetting, Flash) {
 
         // 初始化
         $scope.init = function() {
-            $scope.plans = [];
+            $scope.planSettings = [];
             $scope.flashSuccess = Flash.success();
             $scope.planIndexUrl = true;
             getPlans();
@@ -16,8 +16,8 @@ define(function(require, exports, module) {
 
         function getPlans(options) {
             options = options || {page: 1};
-            Plan.getList(options).then(function(data) {
-                $scope.plans = data;
+            PlanSetting.getList(options).then(function(data) {
+                $scope.planSettings = data;
             });
         }
 

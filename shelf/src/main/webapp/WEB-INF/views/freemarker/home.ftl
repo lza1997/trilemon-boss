@@ -24,7 +24,6 @@
     <![endif]-->
 
     <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
-    <script src="${asset}/base/js/seajs-route.js"></script>
     <script src="${asset}/base/js/underscore.js"></script>
     <script src="${asset}/base/js/jquery.js"></script>
     <script src="${asset}/base/js/angular.js"></script>
@@ -33,8 +32,10 @@
     <script src="${asset}/base/js/angular-route.js"></script>
     <script src="${asset}/base/js/restangular.js"></script>
     <script src="${asset}/base/js/angular-dropdown.js"></script>
+    <script src="${asset}/base/js/seajs-lazy-module.js"></script>
 
     <script src="${asset}/shelf/js/app.js"></script>
+    <script src="${asset}/shelf/js/common/index.js"></script>
     <script src="${asset}/shelf/js/common/pagination.js"></script>
     <script src="${asset}/shelf/js/common/flash.js"></script>
 
@@ -73,10 +74,10 @@
                     </ul>
                 </li>
                 <li ng-class="{active: navClass == 'planIndex'}">
-                    <a href="#/plan">计划列表</a>
+                    <a href="#/plan-setting">计划列表</a>
                 </li>
                 <li ng-class="{active: navClass == 'planNew'}">
-                    <a href="#/plan/new">创建计划</a>
+                    <a href="#/plan-setting/new">创建计划</a>
                 </li>
             </ul>
         </div>
