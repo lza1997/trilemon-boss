@@ -25,6 +25,7 @@
         <module>shelf</module>
         <module>asset</module>
         <module>showcase</module>
+        <module>home</module>
     </modules>
 
     <name>Trilemon-360boss</name>
