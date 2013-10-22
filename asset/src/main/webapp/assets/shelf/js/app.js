@@ -1,4 +1,3 @@
-var common = angular.module('common', []);
 var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap.dropdownToggle', 'common']);
 
 app.factory('ajaxSpinner', ['$rootScope', '$q', function($rootScope, $q) {

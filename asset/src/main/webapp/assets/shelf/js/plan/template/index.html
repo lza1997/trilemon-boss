@@ -18,9 +18,9 @@
     </thead>
     <tr ng-repeat="plan in plans">
         <td>{{ plan.name }}</td>
-        <td>{{ plan.title }}</td>
-        <td>{{ plan.title }}</td>
-        <td>{{ plan.title }}</td>
+        <td>{{ plan.itemNum }}</td>
+        <td>{{ plan.newItemNum }} 个宝贝自动加入</td>
+        <td>{{ plan.waitAdjustItemNum }} 个宝贝等待调整</td>
         <td>
             {{ plan.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
