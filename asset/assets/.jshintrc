@@ -13,6 +13,7 @@
     "expr": true,
     "loopfunc": true,
     "browser": true,
+    "laxbreak": true,
 
     "globals": {
         "_": true,

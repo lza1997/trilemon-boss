@@ -31,12 +31,14 @@
     <script src="${asset}/base/js/angular-resource.js"></script>
     <script src="${asset}/base/js/angular-route.js"></script>
     <script src="${asset}/base/js/restangular.js"></script>
-    <script src="${asset}/base/js/angular-dropdown.js"></script>
+    <script src="${asset}/base/js/bootstrap/index.js"></script>
+    <script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>
+    <script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>
+    <script src="${asset}/base/js/bootstrap/angular-modal.js"></script>
     <script src="${asset}/base/js/seajs-lazy-module.js"></script>
 
     <script src="${asset}/shelf/js/app.js"></script>
     <script src="${asset}/shelf/js/common/index.js"></script>
-    <script src="${asset}/shelf/js/common/pagination.js"></script>
     <script src="${asset}/shelf/js/common/flash.js"></script>
 
     <script>

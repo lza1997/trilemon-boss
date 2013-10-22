@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap.dropdownToggle', 'common', 'seajs']);
+var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap', 'common', 'seajs']);
 
 app.factory('ajaxSpinner', ['$rootScope', '$q', function($rootScope, $q) {
     return {
