@@ -86,7 +86,7 @@
     </div>
 </header>
 
-<div class="ajax-spinner fade" ng-class="{'in':ajaxing}">
+<div class="ajax-spinner fade" ng-class="{'in':ajaxing}" ng-if="ajaxing">
     <i class="icon-spinner icon-spin"></i> 载入中...
 </div>
 

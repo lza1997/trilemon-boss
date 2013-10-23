@@ -38,11 +38,12 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
     $routeProvider
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
         .when('/plan-setting/filter', planSetting.routeFor('planSetting.filter'))
+        .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
         .when('/plan-setting', planSetting.routeFor('planSetting.index'))
         .otherwise({redirectTo: '/plan-setting'});
 
 
-    RestangularProvider.setMethodOverriders(['post', 'delete']);
+    RestangularProvider.setMethodOverriders(['put', 'delete']);
 
     $httpProvider.interceptors.push('ajaxSpinner');
 }]);

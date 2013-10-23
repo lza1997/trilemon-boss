@@ -10,6 +10,7 @@ import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
+import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -17,6 +18,7 @@ import org.joda.time.LocalTime;
 
 import javax.annotation.Nullable;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -225,4 +227,25 @@ public class ShelfUtils {
         return filerPlans;
     }
 
+    public static Page<Item> planToItem(Page<Plan> plans) {
+        List<Plan> list = plans.getItems();
+        List<Item> items = new ArrayList<Item>();
+
+        for (Plan plan : list) {
+            Item item = new Item();
+            item.setPicUrl(plan.getItemPicUrl());
+            item.setNumIid(plan.getItemNumIid());
+            item.setTitle(plan.getItemTitle());
+            items.add(item);
+        }
+
+        Page<Item> pageItems = Page.empty();
+
+        pageItems.setItems(items);
+        pageItems.setPageNum(plans.getPageNum());
+        pageItems.setPageSize(plans.getPageSize());
+        pageItems.setTotalSize(plans.getTotalSize());
+
+        return pageItems;
+    }
 }

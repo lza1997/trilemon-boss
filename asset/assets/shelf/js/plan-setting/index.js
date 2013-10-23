@@ -1,23 +1,27 @@
 define(function(require, exports, module) {
     var NewController = require('./controller/new-controller');
     var FilterController = require('./controller/filter-controller');
+    var EditController = require('./controller/edit-controller');
     var IndexController = require('./controller/index-controller');
-    var Sellercat = require('./model/sellercat');
-    var Item = require('./model/item');
-    var PlanSetting = require('./model/plan-setting');
+    var SellerCat = require('./service/seller-cat');
+    var Item = require('./service/item');
+    var PlanSetting = require('./service/plan-setting');
     var ItemFilter = require('./service/item-filter');
+    var PlanSettingForm = require('./service/plan-setting-form');
 
     module.exports = {
         controllers: {
             'planSetting.new': NewController,
             'planSetting.filter': FilterController,
-            'planSetting.index': IndexController
+            'planSetting.index': IndexController,
+            'planSetting.edit': EditController
         },
         factories: {
-            'Sellercat': Sellercat,
+            'SellerCat': SellerCat,
             'Item': Item,
             'PlanSetting': PlanSetting,
-            'ItemFilter': ItemFilter
+            'ItemFilter': ItemFilter,
+            'PlanSettingForm': PlanSettingForm
         }
     };
 });

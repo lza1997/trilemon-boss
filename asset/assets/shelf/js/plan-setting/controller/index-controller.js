@@ -1,5 +1,9 @@
 define(function(require, exports, module) {
     var modalTemplate = require('../template/modal.html');
+    var filterTemplate = require('../template/filter.html');
+
+    modalTemplate = modalTemplate.replace('<!-- content -->', filterTemplate);
+
 
     var IndexController = ['$scope', 'Item', 'PlanSetting', 'Flash', '$modal', function($scope, Item, PlanSetting, Flash, $modal) {
 
@@ -16,6 +20,14 @@ define(function(require, exports, module) {
             getPlans({page: page});
         };
 
+        $scope.delete = function(planSetting) {
+            if (confirm('确定删除“' + planSetting.name + '”？')) {
+                planSetting.remove().then(function() {
+                    getPlans({page: $scope.planSettings.currPage});
+                });
+            }
+        };
+
         $scope.showFilterModal = function(planSetting) {
             ModalController.planSetting = planSetting;
             $modal.open({
@@ -24,6 +36,7 @@ define(function(require, exports, module) {
             });
         };
 
+        // 获取 plan
         function getPlans(options) {
             options = options || {page: 1};
             PlanSetting.getList(options).then(function(data) {
@@ -33,8 +46,6 @@ define(function(require, exports, module) {
 
         $scope.init();
     }];
-
-    var FilterController = require('./filter-controller');
 
     var ModalController = ['$scope', 'ItemFilter', '$modalInstance', function($scope, ItemFilter, $modalInstance) {
         ItemFilter.initScope($scope, ModalController.planSetting);

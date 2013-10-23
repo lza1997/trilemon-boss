@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -51,10 +50,26 @@ public class PlanSettingController {
     }
 
     @RequestMapping(value = "/{planSettingId}", method = RequestMethod.GET)
-    public ModelAndView show(@PathVariable Long planSettingId) {
-        ModelAndView modelAndView = new ModelAndView("/plans/show");
-        PlanSetting planSetting = planSettingService.getPlanSetting(56912708L, planSettingId);
-        modelAndView.addObject("planSetting", planSetting);
-        return modelAndView;
+    @ResponseBody
+    public PlanSetting show(@PathVariable Long planSettingId) {
+        return planSettingService.getPlanSetting(56912708L, planSettingId);
+    }
+
+    @RequestMapping(value = "/{planSettingId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Object update(@PathVariable Long planSettingId, @RequestBody @Valid PlanSetting planSetting, BindingResult result) {
+        try {
+            planSetting.setId(planSettingId);
+            planSettingService.updatePlanSetting(56912708L, planSetting);
+            return planSetting;
+        } catch (ShelfException e) {
+            return e;
+        }
+    }
+
+    @RequestMapping(value = "/{planSettingId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public boolean delete(@PathVariable Long planSettingId) {
+        return planSettingService.deletePlanSetting(56912708L, planSettingId);
     }
 }
