@@ -8,7 +8,7 @@ define(function(require, exports, module) {
         PlanSettingForm.initScope($scope, planSetting);
     }];
 
-    NewController.template = require('../template/new.html');
+    NewController.template = require('../template/form.html');
     NewController.title = "创建计划";
     NewController.navClass = "planNew";
 

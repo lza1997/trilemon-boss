@@ -2,7 +2,7 @@
  * 新建或修改计划，用于 Controller 的复用
  */
 define(function(require, exports, module) {
-    module.exports = ['SellerCat', 'Flash', '$location', function(SellerCat, Flash, $location) {
+    module.exports = ['Restangular', 'URL', 'Flash', '$location', function(Restangular, URL, Flash, $location) {
 
         return {
             // 向 controller 的 scope 注入方法与数据
@@ -10,7 +10,21 @@ define(function(require, exports, module) {
                 $scope.sellerCats = [];
                 $scope.planSetting = planSetting;
 
-                SellerCat.getList().then(function(data) {
+                // 获取卖家的宝贝分类
+                Restangular.all(URL.SELLER_CAT).getList().then(function(data) {
+                    // 展开第一个有子分类的
+                    var firstChild = _.find(data, function(cat) {
+                        return cat.parentCid !== 0;
+                    });
+                    _.findWhere(data, {cid: firstChild.parentCid}).expand = true;
+
+                    // 修改时回填
+                    _.each(data, function(cat) {
+                        if (_.include($scope.includeCids, cat.cid + '')) {
+                            cat.selected = true;
+                        }
+                    });
+
                     $scope.sellerCats = data;
                 });
 
@@ -57,7 +71,7 @@ define(function(require, exports, module) {
                 // 跳转至筛选页面
                 $scope.gotoFilter = function() {
                     saveCatIds();
-                    PlanSetting.tmpSave($scope.planSetting);
+                    Flash.tmp($scope.planSetting);
                     $location.url('/plan-setting/filter');
                 };
 

@@ -18,6 +18,9 @@ body { font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "
 
 .icon-spinner { -webkit-animation: spin 1s infinite linear; -moz-animation: spin 1s infinite linear; animation: spin 1s infinite linear; }
 
+.confirm-dialog { width: 300px; padding-top: 60px; }
+.confirm-dialog .modal-footer { padding: 14px 20px 15px; }
+
 footer { margin-top: 50px; border-top: 1px solid #eee; }
 
 footer .container { margin: 40px auto; }

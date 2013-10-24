@@ -6,7 +6,7 @@ angular.module('common').factory('Flash', function() {
     var flashMsg = {};
 
     // getter/setter
-    _.each(['success', 'error'], function(key) {
+    _.each(['success', 'error', 'tmp'], function(key) {
         Flash[key] = function(value) {
             if (value) {
                 flashMsg[key] = value;

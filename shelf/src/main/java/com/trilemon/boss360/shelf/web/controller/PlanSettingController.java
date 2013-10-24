@@ -67,9 +67,39 @@ public class PlanSettingController {
         }
     }
 
+    /**
+     * 删除计划
+     * @param planSettingId
+     * @return
+     */
     @RequestMapping(value = "/{planSettingId}", method = RequestMethod.DELETE)
     @ResponseBody
     public boolean delete(@PathVariable Long planSettingId) {
         return planSettingService.deletePlanSetting(56912708L, planSettingId);
     }
+
+    /**
+     * 暂停计划
+     * @param planSettingId
+     * @return
+     */
+    @RequestMapping(value = "/{planSettingId}/pause", method = RequestMethod.POST)
+    @ResponseBody
+    public byte pause(@PathVariable Long planSettingId) {
+        planSettingService.pausePlanSetting(56912708L, planSettingId);
+        return ShelfConstants.PLAN_SETTING_STATUS_PAUSED;
+    }
+
+    /**
+     * 继续计划
+     * @param planSettingId
+     * @return
+     */
+    @RequestMapping(value = "/{planSettingId}/pause", method = RequestMethod.DELETE)
+    @ResponseBody
+    public byte resume(@PathVariable Long planSettingId) {
+        planSettingService.resumePlanSetting(56912708L, planSettingId);
+        return ShelfConstants.PLAN_SETTING_STATUS_RUNNING;
+    }
+
 }

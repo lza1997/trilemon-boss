@@ -48,6 +48,19 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
     $httpProvider.interceptors.push('ajaxSpinner');
 }]);
 
-app.run(['SeajsLazyModule',function(SeajsLazyModule){
+// REST 接口的 URL 常量
+app.constant('URL', {
+    ITEM: 'shelf/items',
+    SELLER_CAT: 'shelf/sellercats',
+    PLAN_SETTING: 'shelf/plan-settings'
+});
+
+app.constant('PLAN_STATUS', {
+    WAITING: 0,
+    RUNNING: 1,
+    PAUSED: 2
+});
+
+app.run(['SeajsLazyModule', function(SeajsLazyModule) {
     SeajsLazyModule.init();
 }]);

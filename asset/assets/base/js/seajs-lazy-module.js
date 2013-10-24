@@ -95,8 +95,8 @@ angular.module('seajs', []).config(['$controllerProvider', '$compileProvider', '
         registerModule: function(route, module) {
             this.modules[route.moduleUrl] = module;
 
-            this.register.controller(module.controllers);
-            this.register.factory(module.factories);
+            this.register.controller(module.controllers || {});
+            this.register.factory(module.factories || {});
         },
 
         resolveModule: function(module, controller) {

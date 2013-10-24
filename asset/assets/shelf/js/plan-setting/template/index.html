@@ -1,10 +1,10 @@
 <div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
 <table class="table table-hover">
     <col width="15%"/>
-    <col />
-    <col />
-    <col />
-    <col />
+    <col/>
+    <col/>
+    <col/>
+    <col/>
     <col width="20%"/>
     <thead>
     <tr>
@@ -16,7 +16,7 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="planSetting in planSettings">
+    <tr ng-repeat="planSetting in planSettings" ng-class="{danger: (planSetting.status === PLAN_STATUS.PAUSED)}">
         <td>{{ planSetting.name }}</td>
         <td>{{ planSetting.itemNum }}</td>
         <td>{{ planSetting.newItemNum }} 个宝贝自动加入</td>
@@ -25,7 +25,8 @@
             {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
         <td>
-            <a href="">暂停</a>
+            <a href="" ng-click="pause(planSetting, true)" ng-if="planSetting.status === PLAN_STATUS.RUNNING">暂停</a>
+            <a href="" ng-click="pause(planSetting, false)" ng-if="planSetting.status === PLAN_STATUS.PAUSED">继续</a>
             <a href="" ng-click="delete(planSetting)">删除</a>
             <a ng-href="#/plan-setting/{{planSetting.id}}/edit">查看编辑</a>
             <a href="" ng-click="showFilterModal(planSetting)">筛选宝贝</a>

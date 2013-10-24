@@ -2,7 +2,7 @@
  * 排除商品，用于几处 Controller 的复用
  */
 define(function(require, exports, module) {
-    module.exports = ['Item', 'PlanSetting', function(Item, PlanSetting) {
+    module.exports = ['RestPageangular', 'URL', function(RestPageangular,URL) {
 
         // 获取宝贝列表，可以传入关键词、页码等
         function getItems($scope, planSetting, options) {
@@ -14,7 +14,7 @@ define(function(require, exports, module) {
                 options.cids = planSetting.includeCids.split(',');  // 用于创建，上一步选中的分类
             }
 
-            Item.getList(options).then(function(data) {
+            RestPageangular.all(URL.ITEM).getList(options).then(function(data) {
                 // 将临时保存的被排除宝贝数据合并
                 _.each(data, function(item) {
                     item.exclude = _.contains($scope.excludeIds, item.numIid);
@@ -71,7 +71,7 @@ define(function(require, exports, module) {
                         return planSetting.put();
                     }
                     else {
-                        return PlanSetting.post(planSetting);
+                        return planSetting.post();
                     }
                 };
             }

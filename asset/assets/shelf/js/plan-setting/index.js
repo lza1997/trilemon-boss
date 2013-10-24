@@ -3,11 +3,10 @@ define(function(require, exports, module) {
     var FilterController = require('./controller/filter-controller');
     var EditController = require('./controller/edit-controller');
     var IndexController = require('./controller/index-controller');
-    var SellerCat = require('./service/seller-cat');
-    var Item = require('./service/item');
-    var PlanSetting = require('./service/plan-setting');
+
     var ItemFilter = require('./service/item-filter');
     var PlanSettingForm = require('./service/plan-setting-form');
+    var Confirm = require('./service/confirm');
 
     module.exports = {
         controllers: {
@@ -17,11 +16,9 @@ define(function(require, exports, module) {
             'planSetting.edit': EditController
         },
         factories: {
-            'SellerCat': SellerCat,
-            'Item': Item,
-            'PlanSetting': PlanSetting,
             'ItemFilter': ItemFilter,
-            'PlanSettingForm': PlanSettingForm
+            'PlanSettingForm': PlanSettingForm,
+            'Confirm': Confirm
         }
     };
 });
