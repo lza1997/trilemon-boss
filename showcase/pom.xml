@@ -17,6 +17,7 @@
         <!-- 主要依赖库的版本定义 -->
         <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
         <trilemon.360boss.infrastructure.base.client>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client>
+        <trilemon.360boss.center.client>1.0-SNAPSHOT</trilemon.360boss.center.client>
     </properties>
 
     <!-- 依赖项定义 -->
@@ -31,6 +32,12 @@
             <groupId>com.trilemon.360boss</groupId>
             <artifactId>trilemon-360boss-infrastructure-base-client</artifactId>
             <version>${trilemon.360boss.infrastructure.base.client}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.trilemon.360boss</groupId>
+            <artifactId>trilemon-360boss-center-client</artifactId>
+            <version>${trilemon.360boss.center.client}</version>
         </dependency>
 
         <dependency>
@@ -434,11 +441,12 @@
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <configuration>
+                    <scanIntervalSeconds>0</scanIntervalSeconds>
                     <stopKey>trilemon</stopKey>
-                    <stopPort>9997</stopPort>
+                    <stopPort>9996</stopPort>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8083</port>
+                            <port>8084</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>
@@ -464,8 +472,6 @@
                     </webAppConfig>
                 </configuration>
             </plugin>
-
-
             <!-- enforcer, 规则统一定义在parent -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -476,6 +482,20 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dbunit-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <version>1.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

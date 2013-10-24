@@ -36,7 +36,12 @@ public class ItemController {
                     page, 2, true);
         } else {
             Page<Plan> plans = planSettingService.paginatePlans(56912708L, pid, page, 2);
-            return ShelfUtils.planToItem(plans);
+            Page<Item> itemPage = Page.empty();
+            itemPage.setTotalSize(plans.getTotalSize());
+            itemPage.setPageSize(plans.getPageSize());
+            itemPage.setPageNum(plans.getPageNum());
+            itemPage.setItems(ShelfUtils.planToItem(plans.getItems()));
+            return itemPage;
         }
     }
 }

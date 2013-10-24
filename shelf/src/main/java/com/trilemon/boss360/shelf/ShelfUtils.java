@@ -151,7 +151,7 @@ public class ShelfUtils {
         return newItemDistribution;
     }
 
-    private static Table<Integer, LocalTimeInterval, Integer> combineDistribution(Table<Integer, LocalTimeInterval,
+    public static Table<Integer, LocalTimeInterval, Integer> combineDistribution(Table<Integer, LocalTimeInterval,
             Integer>... distributions) {
         Table<Integer, LocalTimeInterval, Integer> combinedDistribution = HashBasedTable.create();
         for (Table<Integer, LocalTimeInterval, Integer> distribution : distributions) {
@@ -225,4 +225,15 @@ public class ShelfUtils {
         return filerPlans;
     }
 
+    public static List<Item> planToItem(List<Plan> plans) {
+        List<Item> items = Lists.newArrayList();
+        for (Plan plan : plans) {
+            Item item = new Item();
+            item.setTitle(plan.getItemTitle());
+            item.setNumIid(plan.getItemNumIid());
+            item.setPicUrl(plan.getItemPicUrl());
+            items.add(item);
+        }
+        return items;
+    }
 }
