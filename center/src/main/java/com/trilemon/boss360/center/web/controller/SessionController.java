@@ -1,7 +1,7 @@
 package com.trilemon.boss360.center.web.controller;
 
-import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm;
 import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthenticationToken;
+import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ public class SessionController {
             ShiroTaobaoAuthenticationToken token=new ShiroTaobaoAuthenticationToken("","1231455","","","","","","","");
             currentUser.login(token);
         }
-        System.out.println(((ShiroTaobaoAuthorizingRealm.ShiroTaobaoUser)currentUser.getPrincipal())
+        System.out.println(((ShiroTaobaoUser) currentUser.getPrincipal())
                 .getTaobaoUserNick());
     }
 }
