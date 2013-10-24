@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 body {
-  font-family: Helvetica, Tahoma, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
+  font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
 }
 
 // banner
@@ -49,9 +49,9 @@ body {
   margin-bottom: 20px;
 }
 
-.fade {
-  filter: alpha(opacity=0);
-}
+//.fade {
+//  filter: alpha(opacity=0);
+//}
 
 .ajax-spinner {
   position: absolute;
@@ -73,9 +73,9 @@ body {
   animation: spin 1s infinite linear;
 }
 
-.ajax-spinner.in {
-  filter: alpha(opacity=30);
-}
+//.ajax-spinner.in {
+//  filter: alpha(opacity=30);
+//}
 
 footer {
   margin-top: 50px;

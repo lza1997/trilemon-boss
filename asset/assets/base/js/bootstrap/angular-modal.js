@@ -89,8 +89,7 @@ angular.module('ui.bootstrap.modal', [])
             },
             replace: true,
             transclude: true,
-            template: '<div class="modal fade {{ windowClass }}" ng-class="{in: animate}" ng-style="{\'z-index\': 1050 + index*10}" style="display:block">'
-                + '<div class="modal-dialog"><div class="modal-content" ng-transclude></div></div></div>',
+            template: '<div class="modal fade {{ windowClass }}" ng-class="{in: animate}" ng-style="{\'z-index\': 1050 + index*10}" style="display:block"  ng-transclude></div>',
             link: function(scope, element, attrs) {
                 scope.windowClass = attrs.windowClass || '';
 
