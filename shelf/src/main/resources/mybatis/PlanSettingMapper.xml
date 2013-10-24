@@ -451,9 +451,11 @@
             user_id = #{userId,jdbcType=BIGINT}
             <if test="statusList != null and statusList.size()>0">
                 and
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
+                <trim prefix="(" suffix=")" prefixOverrides="and">
+                    <foreach collection="statusList" item="status" separator="or">
+                        `status` = #{status,jdbcType=TINYINT}
+                    </foreach>
+                </trim>
             </if>
         </where>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
