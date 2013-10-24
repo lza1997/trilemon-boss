@@ -53,6 +53,9 @@ define(function(require, exports, module) {
 
                 // 保存计划
                 $scope.save = function() {
+                    if(!$scope.form.$valid){
+                        return;
+                    }
                     saveCatIds();
                     if ($scope.planSetting.id) {
                         $scope.planSetting.put().then(function() {

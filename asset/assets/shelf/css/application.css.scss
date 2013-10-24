@@ -39,6 +39,17 @@ body {
   }
 }
 
+.error {
+  display: none;
+  color: red;
+}
+
+.has-error {
+  .error {
+    display: block;
+  }
+}
+
 .form-action {
   margin-top: 30px;
 }

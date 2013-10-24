@@ -10,6 +10,10 @@ body { font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "
 
 .plan-form .control-label { width: 9%; }
 
+.error { display: none; color: red; }
+
+.has-error .error { display: block; }
+
 .form-action { margin-top: 30px; }
 
 .shelf-filter-form { width: 400px; margin-bottom: 20px; }

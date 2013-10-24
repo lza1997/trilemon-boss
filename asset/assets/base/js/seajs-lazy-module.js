@@ -19,11 +19,15 @@ angular.module('seajs', []).config(['$controllerProvider', '$compileProvider', '
         // 快捷方法，用于创建一个 module 的配置
         this.create = function(moduleUrl) {
             return {
-                routeFor: function(controllerName) {
-                    return {
+                routeFor: function(controllerName, options) {
+                    var obj = {
                         moduleUrl: moduleUrl,
                         controller: controllerName
                     };
+                    for (var key in options || {}) {
+                        obj[key] = options[key];
+                    }
+                    return obj;
                 }
             };
         };

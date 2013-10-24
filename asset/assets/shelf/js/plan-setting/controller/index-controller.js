@@ -4,8 +4,8 @@ define(function(require, exports, module) {
 
     modalTemplate = modalTemplate.replace('<!-- content -->', filterTemplate);
 
-    var IndexController = ['$scope', 'RestPageangular', 'URL', 'Flash', 'PLAN_STATUS', '$modal', 'Confirm',
-        function($scope, RestPageangular, URL, Flash, PLAN_STATUS, $modal, Confirm) {
+    var IndexController = ['$scope', 'RestPageangular', 'URL', 'Flash', 'PLAN_STATUS', '$modal', 'Confirm', '$location', '$routeParams',
+        function($scope, RestPageangular, URL, Flash, PLAN_STATUS, $modal, Confirm, $location, $routeParams) {
 
             // 初始化
             $scope.init = function() {
@@ -13,7 +13,7 @@ define(function(require, exports, module) {
                 $scope.flashSuccess = Flash.success();
                 $scope.planIndexUrl = true;
                 $scope.PLAN_STATUS = PLAN_STATUS;
-                getPlans();
+                $scope.jumpPage($routeParams.page);
             };
 
             // 暂停或继续
@@ -28,13 +28,18 @@ define(function(require, exports, module) {
             $scope.delete = function(planSetting) {
                 Confirm.open('确定要删除“' + planSetting.name + '”？').then(function() {
                     planSetting.remove().then(function() {
-                        getPlans({page: $scope.planSettings.currPage}).then(function(data) {
+                        $scope.jumpPage($scope.planSettings.currPage).then(function(data) {
                             if (data.length === 0) {
                                 $scope.jumpPage($scope.planSettings.currPage - 1);
                             }
                         });
                     });
                 });
+            };
+
+            $scope.edit = function(planSetting) {
+                $location.url('/plan-settings/ ' + planSetting.id + '/edit');
+                Flash.tmp($scope.planSettings.currPage);
             };
 
             // 筛选
@@ -48,31 +53,16 @@ define(function(require, exports, module) {
 
             // 处理分页
             $scope.jumpPage = function(page) {
-                getPlans({page: page});
-            };
-
-            // 获取 plan
-            function getPlans(options) {
-                options = options || {page: 1};
-                var promise = RestPageangular.all(URL.PLAN_SETTING).getList(options);
+                $location.search('page', page);
+                var promise = RestPageangular.all(URL.PLAN_SETTING).getList({page: page || 1 });
                 promise.then(function(data) {
                     $scope.planSettings = data;
                 });
                 return promise;
-            }
+            };
 
             $scope.init();
         }];
-
-    var ConfirmController = ['$scope', '$modalInstance', function($scope, $modalInstance) {
-        $scope.dismiss = function() {
-            $modalInstance.dismiss();
-        };
-
-        $scope.submit = function() {
-            $modalInstance.close();
-        };
-    }];
 
     var ModalController = ['$scope', 'ItemFilter', '$modalInstance', function($scope, ItemFilter, $modalInstance) {
         ItemFilter.initScope($scope, ModalController.planSetting);

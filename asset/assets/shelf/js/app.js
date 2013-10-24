@@ -39,7 +39,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
         .when('/plan-setting/filter', planSetting.routeFor('planSetting.filter'))
         .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
-        .when('/plan-setting', planSetting.routeFor('planSetting.index'))
+        .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
         .otherwise({redirectTo: '/plan-setting'});
 
 
