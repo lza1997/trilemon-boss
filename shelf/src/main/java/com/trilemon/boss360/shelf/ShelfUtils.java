@@ -236,4 +236,17 @@ public class ShelfUtils {
         }
         return items;
     }
+
+    public static List<Item> normalizeItem(List<Item> items) {
+        return Lists.transform(items, new Function<Item, Item>() {
+            @Nullable
+            @Override
+            public Item apply(@Nullable Item input) {
+                if (null != input.getSellerCids() && input.getSellerCids().equals("-1")) {
+                    input.setSellerCids("0");
+                }
+                return input;
+            }
+        });
+    }
 }

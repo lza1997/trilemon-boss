@@ -29,7 +29,9 @@ import com.trilemon.commons.Exceptions;
 import com.trilemon.commons.LocalTimeInterval;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
@@ -90,6 +92,7 @@ public class PlanService {
         }
 
         List<Item> onSaleItems = onSaleItemResult.getKey();
+        onSaleItems=ShelfUtils.normalizeItem(onSaleItems);
 
         if (null == onSaleItemResult || null == onSaleItems) {
             ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +
@@ -104,7 +107,7 @@ public class PlanService {
         //所有需要排除宝贝
         Iterable<Long> excludeItemNumIids = null;
 
-        if (null != planSetting.getExcludeItemIids()) {
+        if (StringUtils.isNotBlank(planSetting.getExcludeItemIids())) {
             excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemIids
                     ()),
                     new Function<String, Long>() {
@@ -380,5 +383,21 @@ public class PlanService {
 
     public void deletePlan(Long userId, Long planSettingId) {
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
+    }
+
+    public void excludeItem(Long planSettingId,Long numIid){
+        Plan plan =new Plan();
+        plan.setPlanSettingId(planSettingId);
+        plan.setItemNumIid(numIid);
+        plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
+        planMapper.updateByPlanSettingIdAndNumIid(plan);
+    }
+
+    public void includeItem(Long planSettingId,Long numIid){
+        Plan plan =new Plan();
+        plan.setPlanSettingId(planSettingId);
+        plan.setItemNumIid(numIid);
+        plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
+        planMapper.updateByPlanSettingIdAndNumIid(plan);
     }
 }
