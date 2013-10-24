@@ -486,9 +486,10 @@
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
     <select id="calcPlanStatus" resultMap="PlanStatusResultMap" parameterType="map">
-        SELECT SUM(if(add_time >= #{lastPlanTime,jdbcType=TIMESTAMP}, 1, 0)) AS new_item_num,
-               SUM(if(status IN (0,1), 1, 0)) AS item_num,
-               SUM(if(status IN (0), 1, 0)) AS wait_adjust_item_num
+        SELECT
+            SUM(if(add_time >= #{lastPlanTime,jdbcType=TIMESTAMP}, 1, 0)) AS new_item_num,
+            SUM(if(status IN (0, 1), 1, 0))                               AS item_num,
+            SUM(if(status IN (0), 1, 0))                                  AS wait_adjust_item_num
         FROM plan
         WHERE plan_setting_id = #{planSettingId,jdbcType=BIGINT}
     </select>
@@ -505,4 +506,55 @@
             and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME},
         </where>
     </select>
+    <update id="updateByPlanSettingIdAndNumIid" parameterType="com.trilemon.boss360.shelf.model.Plan">
+        update plan
+        <set>
+            <if test="planSettingId != null">
+                plan_setting_id = #{planSettingId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="itemNumIid != null">
+                item_num_iid = #{itemNumIid,jdbcType=BIGINT},
+            </if>
+            <if test="itemSellerCid != null">
+                item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitlePinyin != null">
+                item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPicUrl != null">
+                item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="failedCause != null">
+                failed_cause = #{failedCause,jdbcType=VARCHAR},
+            </if>
+            <if test="planAdjustDay != null">
+                plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planAdjustStartTime != null">
+                plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
+            </if>
+            <if test="planAdjustEndTime != null">
+                plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
+            </if>
+            <if test="adjustTime != null">
+                adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updTime != null">
+                upd_time = #{updTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where plan_setting_id = #{planSettingId,jdbcType=BIGINT} and item_num_iid = #{itemNumIid,jdbcType=BIGINT}
+    </update>
 </mapper>

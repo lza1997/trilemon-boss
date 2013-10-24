@@ -5,7 +5,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
-import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm;
 import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthenticationToken;
 import com.trilemon.boss360.infrastructure.base.BaseConstants;
 import com.trilemon.boss360.infrastructure.base.client.BaseClient;
@@ -19,6 +18,7 @@ import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.service.PlanService;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.JsonMapper;
@@ -51,6 +51,8 @@ public class TestController {
     private TaobaoApiService taobaoApiService;
     @Autowired
     private PlanSettingService planSettingService;
+    @Autowired
+    private PlanService planService;
 
     /**
      * json 到对象
@@ -388,5 +390,21 @@ public class TestController {
 //        Long taobaoUserId = ((ShiroTaobaoAuthorizingRealm.ShiroTaobaoUser) currentUser.getPrincipal())
 //                .getTaobaoUserId();
 //        System.out.println(taobaoUserId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/excludeItem", method = RequestMethod.GET)
+    public String excludeItem(@RequestParam long planSettingId, @RequestParam long numIid) throws
+            ShelfException {
+        planService.excludeItem(planSettingId, numIid);
+        return "success";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/includeItem", method = RequestMethod.GET)
+    public String includeItem(@RequestParam long planSettingId, @RequestParam long numIid) throws
+            ShelfException {
+        planService.includeItem(planSettingId, numIid);
+        return "success";
     }
 }

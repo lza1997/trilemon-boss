@@ -59,4 +59,6 @@ public interface PlanMapper {
                                                          @Param("statusList") ImmutableList<Byte> statusList,
                                                          @Param("planAdjustDay") Date planAdjustDay,
                                                          @Param("planAdjustEndTime") Date planAdjustEndTime);
+
+    void updateByPlanSettingIdAndNumIid(Plan plan);
 }
