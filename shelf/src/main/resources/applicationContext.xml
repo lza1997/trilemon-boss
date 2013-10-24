@@ -51,6 +51,39 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc_url}"/>
+        <property name="username" value="${jdbc_user}"/>
+        <property name="password" value="${jdbc_password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="20"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat"/>
+    </bean>
+
     <!-- 使用annotation定义事务 -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 
@@ -69,57 +102,6 @@
         <context:property-placeholder ignore-resource-not-found="true"
                                       location="classpath*:/application.properties,
           			  classpath*:/application.production.properties"/>
-
-        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-            <!-- 基本属性 url、user、password -->
-            <property name="url" value="${jdbc_url}"/>
-            <property name="username" value="${jdbc_user}"/>
-            <property name="password" value="${jdbc_password}"/>
-
-            <!-- 配置初始化大小、最小、最大 -->
-            <property name="initialSize" value="1"/>
-            <property name="minIdle" value="1"/>
-            <property name="maxActive" value="20"/>
-
-            <!-- 配置获取连接等待超时的时间 -->
-            <property name="maxWait" value="60000"/>
-
-            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-
-            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-            <property name="minEvictableIdleTimeMillis" value="300000"/>
-
-            <property name="validationQuery" value="SELECT 'x'"/>
-            <property name="testWhileIdle" value="true"/>
-            <property name="testOnBorrow" value="false"/>
-            <property name="testOnReturn" value="false"/>
-
-            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-            <property name="poolPreparedStatements" value="true"/>
-            <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
-
-            <!-- 配置监控统计拦截的filters -->
-            <property name="filters" value="stat"/>
-        </bean>
-
-        <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
-            <property name="servers" value="${memcached_address}"/>
-            <property name="protocol" value="BINARY"/>
-            <property name="transcoder">
-                <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
-                    <property name="compressionThreshold" value="1024"/>
-                </bean>
-            </property>
-            <property name="opTimeout" value="1000"/>
-            <property name="timeoutExceptionThreshold" value="1998"/>
-            <property name="hashAlg">
-                <value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
-            </property>
-            <property name="locatorType" value="CONSISTENT"/>
-            <property name="failureMode" value="Redistribute"/>
-            <property name="useNagleAlgorithm" value="false"/>
-        </bean>
     </beans>
 
     <!-- local development环境 -->
@@ -127,197 +109,5 @@
         <context:property-placeholder ignore-resource-not-found="true"
                                       location="classpath*:/application.properties,
           			  classpath*:/application.development.properties"/>
-
-        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-            <!-- 基本属性 url、user、password -->
-            <property name="url" value="${jdbc_url}"/>
-            <property name="username" value="${jdbc_user}"/>
-            <property name="password" value="${jdbc_password}"/>
-
-            <!-- 配置初始化大小、最小、最大 -->
-            <property name="initialSize" value="1"/>
-            <property name="minIdle" value="1"/>
-            <property name="maxActive" value="20"/>
-
-            <!-- 配置获取连接等待超时的时间 -->
-            <property name="maxWait" value="60000"/>
-
-            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-
-            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-            <property name="minEvictableIdleTimeMillis" value="300000"/>
-
-            <property name="validationQuery" value="SELECT 'x'"/>
-            <property name="testWhileIdle" value="true"/>
-            <property name="testOnBorrow" value="false"/>
-            <property name="testOnReturn" value="false"/>
-
-            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-            <property name="poolPreparedStatements" value="false"/>
-            <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
-
-            <!-- 配置监控统计拦截的filters -->
-            <property name="filters" value="stat"/>
-        </bean>
-
-        <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
-            <property name="servers" value="${memcached_address}"/>
-            <property name="protocol" value="BINARY"/>
-            <property name="transcoder">
-                <bean class="net.spy.memcached.transcoders.SerializingTranscoder">
-                    <property name="compressionThreshold" value="1024"/>
-                </bean>
-            </property>
-            <property name="opTimeout" value="1000"/>
-            <property name="timeoutExceptionThreshold" value="1998"/>
-            <property name="hashAlg">
-                <value type="net.spy.memcached.DefaultHashAlgorithm">KETAMA_HASH</value>
-            </property>
-            <property name="locatorType" value="CONSISTENT"/>
-            <property name="failureMode" value="Redistribute"/>
-            <property name="useNagleAlgorithm" value="false"/>
-        </bean>
-    </beans>
-
-    <!-- test环境 -->
-    <beans profile="test">
-        <context:property-placeholder ignore-resource-not-found="true"
-                                      location="classpath*:/application.properties,
-          			  classpath*:/application.test.properties"/>
-
-        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-            <!-- 基本属性 url、user、password -->
-            <property name="url" value="${jdbc_url}"/>
-            <property name="username" value="${jdbc_user}"/>
-            <property name="password" value="${jdbc_password}"/>
-
-            <!-- 配置初始化大小、最小、最大 -->
-            <property name="initialSize" value="1"/>
-            <property name="minIdle" value="1"/>
-            <property name="maxActive" value="20"/>
-
-            <!-- 配置获取连接等待超时的时间 -->
-            <property name="maxWait" value="60000"/>
-
-            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-
-            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-            <property name="minEvictableIdleTimeMillis" value="300000"/>
-
-            <property name="validationQuery" value="SELECT 'x'"/>
-            <property name="testWhileIdle" value="true"/>
-            <property name="testOnBorrow" value="false"/>
-            <property name="testOnReturn" value="false"/>
-
-            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-            <property name="poolPreparedStatements" value="false"/>
-            <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
-
-            <!-- 配置监控统计拦截的filters -->
-            <property name="filters" value="stat"/>
-        </bean>
-    </beans>
-
-    <!-- local-unit-test环境 -->
-    <beans profile="local-unit-test">
-        <context:property-placeholder ignore-resource-not-found="true"
-                                      location="classpath*:/application.properties,
-          			  classpath*:/application.local-unit-test.properties"/>
-
-        <bean id="datatypeFactory" class="org.dbunit.ext.mysql.MySqlDataTypeFactory"/>
-        <bean id="dbUnitDatabaseConfig" class="com.github.springtestdbunit.bean.DatabaseConfigBean">
-            <property name="datatypeFactory" ref="datatypeFactory"/>
-        </bean>
-
-        <bean id="dbUnitDatabaseConnection"
-              class="com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean">
-            <property name="databaseConfig" ref="dbUnitDatabaseConfig"/>
-            <property name="dataSource" ref="dataSource"/>
-        </bean>
-
-        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-            <!-- 基本属性 url、user、password -->
-            <property name="url" value="${jdbc_url}"/>
-            <property name="username" value="${jdbc_user}"/>
-            <property name="password" value="${jdbc_password}"/>
-
-            <!-- 配置初始化大小、最小、最大 -->
-            <property name="initialSize" value="1"/>
-            <property name="minIdle" value="1"/>
-            <property name="maxActive" value="20"/>
-
-            <!-- 配置获取连接等待超时的时间 -->
-            <property name="maxWait" value="60000"/>
-
-            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-
-            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-            <property name="minEvictableIdleTimeMillis" value="300000"/>
-
-            <property name="validationQuery" value="SELECT 'x'"/>
-            <property name="testWhileIdle" value="true"/>
-            <property name="testOnBorrow" value="false"/>
-            <property name="testOnReturn" value="false"/>
-
-            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-            <property name="poolPreparedStatements" value="false"/>
-            <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
-
-            <!-- 配置监控统计拦截的filters -->
-            <property name="filters" value="stat"/>
-        </bean>
-    </beans>
-
-    <!-- jekins-unit-test环境 -->
-    <beans profile="jekins-unit-test">
-        <context:property-placeholder ignore-resource-not-found="true"
-                                      location="classpath*:/application.properties,
-          			  classpath*:/application.jekins-unit-test.properties"/>
-
-        <bean id="datatypeFactory" class="org.dbunit.ext.mysql.MySqlDataTypeFactory"/>
-        <bean id="dbUnitDatabaseConfig" class="com.github.springtestdbunit.bean.DatabaseConfigBean">
-            <property name="datatypeFactory" ref="datatypeFactory"/>
-        </bean>
-
-        <bean id="dbUnitDatabaseConnection"
-              class="com.github.springtestdbunit.bean.DatabaseDataSourceConnectionFactoryBean">
-            <property name="databaseConfig" ref="dbUnitDatabaseConfig"/>
-            <property name="dataSource" ref="dataSource"/>
-        </bean>
-        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-            <!-- 基本属性 url、user、password -->
-            <property name="url" value="${jdbc_url}"/>
-            <property name="username" value="${jdbc_user}"/>
-            <property name="password" value="${jdbc_password}"/>
-
-            <!-- 配置初始化大小、最小、最大 -->
-            <property name="initialSize" value="1"/>
-            <property name="minIdle" value="1"/>
-            <property name="maxActive" value="20"/>
-
-            <!-- 配置获取连接等待超时的时间 -->
-            <property name="maxWait" value="60000"/>
-
-            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-
-            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-            <property name="minEvictableIdleTimeMillis" value="300000"/>
-
-            <property name="validationQuery" value="SELECT 'x'"/>
-            <property name="testWhileIdle" value="true"/>
-            <property name="testOnBorrow" value="false"/>
-            <property name="testOnReturn" value="false"/>
-
-            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-            <property name="poolPreparedStatements" value="false"/>
-            <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
-
-            <!-- 配置监控统计拦截的filters -->
-            <property name="filters" value="stat"/>
-        </bean>
     </beans>
 </beans>

@@ -17,7 +17,7 @@
         <!-- 主要依赖库的版本定义 -->
         <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
         <trilemon.360boss.infrastructure.base.client>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client>
-        <trilemon.360boss.infrastructure.base.client.ext>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client.ext>
+        <trilemon.360boss.center.client>1.0-SNAPSHOT</trilemon.360boss.center.client>
     </properties>
 
     <!-- 依赖项定义 -->
@@ -33,10 +33,11 @@
             <artifactId>trilemon-360boss-infrastructure-base-client</artifactId>
             <version>${trilemon.360boss.infrastructure.base.client}</version>
         </dependency>
+
         <dependency>
             <groupId>com.trilemon.360boss</groupId>
-            <artifactId>trilemon-360boss-infrastructure-base-client-ext</artifactId>
-            <version>${trilemon.360boss.infrastructure.base.client.ext}</version>
+            <artifactId>trilemon-360boss-center-client</artifactId>
+            <version>${trilemon.360boss.center.client}</version>
         </dependency>
 
         <dependency>
@@ -442,10 +443,10 @@
                 <configuration>
                     <scanIntervalSeconds>0</scanIntervalSeconds>
                     <stopKey>trilemon</stopKey>
-                    <stopPort>9998</stopPort>
+                    <stopPort>9997</stopPort>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8082</port>
+                            <port>8083</port>
                             <maxIdleTime>60000</maxIdleTime>
                         </connector>
                     </connectors>
@@ -467,7 +468,7 @@
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
-                        <contextPath>/shelf</contextPath>
+                        <contextPath>/center</contextPath>
                     </webAppConfig>
                 </configuration>
             </plugin>

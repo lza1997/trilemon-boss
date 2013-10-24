@@ -5,6 +5,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
+import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm;
+import com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthenticationToken;
 import com.trilemon.boss360.infrastructure.base.BaseConstants;
 import com.trilemon.boss360.infrastructure.base.client.BaseClient;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoApp;
@@ -22,6 +24,8 @@ import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -370,5 +374,19 @@ public class TestController {
         throw new ShelfException("test exception");
     }
 
-
+    @RequestMapping(value = "/testSignIn", method = RequestMethod.GET)
+    public void testSignIn() throws ShelfException {
+        Subject currentUser = SecurityUtils.getSubject();
+        if (!currentUser.isAuthenticated()) {
+            //collect user principals and credentials in a gui specific manner
+            //such as username/password html form, X509 certificate, OpenID, etc.
+            //We'll use the username/password example here since it is the most common.
+            //(do you know what movie this is from? ;)
+            ShiroTaobaoAuthenticationToken token = new ShiroTaobaoAuthenticationToken("", "1231455", "", "", "", "", "", "", "");
+            currentUser.login(token);
+        }
+//        Long taobaoUserId = ((ShiroTaobaoAuthorizingRealm.ShiroTaobaoUser) currentUser.getPrincipal())
+//                .getTaobaoUserId();
+//        System.out.println(taobaoUserId);
+    }
 }

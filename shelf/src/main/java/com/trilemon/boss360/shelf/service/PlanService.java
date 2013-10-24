@@ -101,9 +101,11 @@ public class PlanService {
 
         Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
 
-        //移除排除商品
+        //所有需要排除宝贝
+        Iterable<Long> excludeItemNumIids = null;
+
         if (null != planSetting.getExcludeItemIids()) {
-            Iterable<Long> excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemIids
+            excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemIids
                     ()),
                     new Function<String, Long>() {
                         @Nullable
@@ -112,24 +114,23 @@ public class PlanService {
                             return Long.valueOf(input);
                         }
                     });
-            Iterables.removeAll(onSaleNumIids, Lists.newArrayList(excludeItemNumIids));
         }
-
-        onSaleItems = ShelfUtils.getItems(onSaleItems, onSaleNumIids);
 
         //所有计划中宝贝
         List<Plan> runningPlans = planMapper.selectByPlanSettingId(planSetting.getId());
         final List<Long> runningPlanNumIids = ShelfUtils.getPlanNumIids(runningPlans);
 
-        //正在运行的的并且在售的宝贝NumIid
+        //正在计划中的并且在售的宝贝NumIid
         Set<Long> existAndOnSaleItemNumIids = Sets.intersection(Sets.newHashSet(onSaleNumIids),
                 Sets.newHashSet(runningPlanNumIids));
 
         //计划中失效宝贝NumIid
         List<Long> invalidPlanItemNumIids = ListUtils.removeAll(runningPlanNumIids,
                 existAndOnSaleItemNumIids);
+
         //需要加入计划的新加入宝贝NumIid
         List<Long> newItemNumIids = ListUtils.removeAll(onSaleNumIids, existAndOnSaleItemNumIids);
+
         //需要加入计划的新加入宝贝
         List<Item> newItems = ShelfUtils.getItems(onSaleItems, newItemNumIids);
 
@@ -149,6 +150,15 @@ public class PlanService {
                 currDistribution);
         //安排计划
         List<Plan> plans = plan(planSetting, assignTable);
+
+        //为排除宝贝计划生成标志位
+        if (null != excludeItemNumIids) {
+            for (Plan plan : plans) {
+                if (Iterables.contains(excludeItemNumIids, plan.getItemNumIid())) {
+                    plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
+                }
+            }
+        }
         savePlan(planSetting.getId(), plans);
     }
 
@@ -344,12 +354,12 @@ public class PlanService {
         TaobaoSession taobaoSession = baseClient.getTaobaoSession(plan.getUserId(), taobaoApiService.getAppKey());
         try {
             ItemUpdateDelistingResponse delistingResponse = taobaoApiService.request(request,
-                    taobaoSession.getSessionKey());
+                    taobaoSession.getAccessToken());
             if (delistingResponse.isSuccess()) {
                 ItemUpdateListingRequest listingRequest = new ItemUpdateListingRequest();
                 listingRequest.setNumIid(1000231L);
                 ItemUpdateListingResponse listingResponse = taobaoApiService.request(listingRequest,
-                        taobaoApiService.getAppKey(), taobaoSession.getSessionKey());
+                        taobaoApiService.getAppKey(), taobaoSession.getAccessToken());
                 if (listingResponse.isSuccess()) {
                     planResult.setStatus(ShelfConstants.PLAN_STATUS_SUCCESSFUL);
                     planResult.setAdjustTime(appService.getLocalSystemTime().toDate());

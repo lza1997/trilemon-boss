@@ -25,7 +25,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath*:/applicationContext.xml
-            classpath*:/applicationContext-Trilemon-360BOSS-SHELF.xml
+            classpath*:/applicationContext-Trilemon-360Boss-Shelf.xml
         </param-value>
     </context-param>
 
@@ -96,6 +96,17 @@
     <filter-mapping>
         <filter-name>SecurityResponseHeaderFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
     <!-- SiteMesh Web-Page Layout filter-->
