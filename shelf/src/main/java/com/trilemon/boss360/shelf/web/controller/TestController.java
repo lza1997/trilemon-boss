@@ -246,8 +246,8 @@ public class TestController {
         planSetting.setBeforeAdjustDistribution("test");
         planSetting.setDistribution("test");
         planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
-        planSetting.setExcludeItemIids("19491833743");
-        planSetting.setIncludeCids("791686717,809023016,804731967");
+        planSetting.setExcludeItemNumIids("19491833743");
+        planSetting.setIncludeSellerCids("791686717,809023016,804731967");
         planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
         planSetting.setName("你和我的测试计划");
         planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);

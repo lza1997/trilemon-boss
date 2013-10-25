@@ -11,11 +11,11 @@ public class PlanSetting {
 
     private String namePinyin;
 
-    private String includeCids;
+    private String includeSellerCids;
 
     private Boolean autoAddNewItems;
 
-    private String excludeItemIids;
+    private String excludeItemNumIids;
 
     private String distribution;
 
@@ -67,12 +67,12 @@ public class PlanSetting {
         this.namePinyin = namePinyin == null ? null : namePinyin.trim();
     }
 
-    public String getIncludeCids() {
-        return includeCids;
+    public String getIncludeSellerCids() {
+        return includeSellerCids;
     }
 
-    public void setIncludeCids(String includeCids) {
-        this.includeCids = includeCids == null ? null : includeCids.trim();
+    public void setIncludeSellerCids(String includeSellerCids) {
+        this.includeSellerCids = includeSellerCids == null ? null : includeSellerCids.trim();
     }
 
     public Boolean getAutoAddNewItems() {
@@ -83,12 +83,12 @@ public class PlanSetting {
         this.autoAddNewItems = autoAddNewItems;
     }
 
-    public String getExcludeItemIids() {
-        return excludeItemIids;
+    public String getExcludeItemNumIids() {
+        return excludeItemNumIids;
     }
 
-    public void setExcludeItemIids(String excludeItemIids) {
-        this.excludeItemIids = excludeItemIids == null ? null : excludeItemIids.trim();
+    public void setExcludeItemNumIids(String excludeItemNumIids) {
+        this.excludeItemNumIids = excludeItemNumIids == null ? null : excludeItemNumIids.trim();
     }
 
     public String getDistribution() {
@@ -162,6 +162,7 @@ public class PlanSetting {
     public void setNewItemNum(int newItemNum) {
         this.newItemNum = newItemNum;
     }
+
     public int getWaitAdjustItemNum() {
         return waitAdjustItemNum;
     }

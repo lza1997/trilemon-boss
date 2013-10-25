@@ -82,7 +82,7 @@ public class PlanService {
         try {
             ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
             request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
-            request.setSellerCids(planSetting.getIncludeCids());
+            request.setSellerCids(planSetting.getIncludeSellerCids());
             onSaleItemResult = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), request);
         } catch (EnhancedApiException e) {
             ShelfException shelfException = new ShelfException("get onSaleItemPage error during plan, " +
@@ -107,8 +107,8 @@ public class PlanService {
         //所有需要排除宝贝
         Iterable<Long> excludeItemNumIids = null;
 
-        if (StringUtils.isNotBlank(planSetting.getExcludeItemIids())) {
-            excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemIids
+        if (StringUtils.isNotBlank(planSetting.getExcludeItemNumIids())) {
+            excludeItemNumIids = Iterables.transform(Splitter.on(",").split(planSetting.getExcludeItemNumIids
                     ()),
                     new Function<String, Long>() {
                         @Nullable
@@ -177,7 +177,7 @@ public class PlanService {
         try {
             ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
             request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
-            request.setSellerCids(planSetting.getIncludeCids());
+            request.setSellerCids(planSetting.getIncludeSellerCids());
             Pair<List<Item>, Long> result = taobaoApiShopService.getOnSaleItems(userId, request);
 
             List<Plan> plans = plan(planSetting, result.getKey());

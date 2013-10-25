@@ -365,73 +365,73 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsIsNull() {
-            addCriterion("include_cids is null");
+        public Criteria andIncludeSellerCidsIsNull() {
+            addCriterion("include_seller_cids is null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsIsNotNull() {
-            addCriterion("include_cids is not null");
+        public Criteria andIncludeSellerCidsIsNotNull() {
+            addCriterion("include_seller_cids is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsEqualTo(String value) {
-            addCriterion("include_cids =", value, "includeCids");
+        public Criteria andIncludeSellerCidsEqualTo(String value) {
+            addCriterion("include_seller_cids =", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsNotEqualTo(String value) {
-            addCriterion("include_cids <>", value, "includeCids");
+        public Criteria andIncludeSellerCidsNotEqualTo(String value) {
+            addCriterion("include_seller_cids <>", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsGreaterThan(String value) {
-            addCriterion("include_cids >", value, "includeCids");
+        public Criteria andIncludeSellerCidsGreaterThan(String value) {
+            addCriterion("include_seller_cids >", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsGreaterThanOrEqualTo(String value) {
-            addCriterion("include_cids >=", value, "includeCids");
+        public Criteria andIncludeSellerCidsGreaterThanOrEqualTo(String value) {
+            addCriterion("include_seller_cids >=", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsLessThan(String value) {
-            addCriterion("include_cids <", value, "includeCids");
+        public Criteria andIncludeSellerCidsLessThan(String value) {
+            addCriterion("include_seller_cids <", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsLessThanOrEqualTo(String value) {
-            addCriterion("include_cids <=", value, "includeCids");
+        public Criteria andIncludeSellerCidsLessThanOrEqualTo(String value) {
+            addCriterion("include_seller_cids <=", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsLike(String value) {
-            addCriterion("include_cids like", value, "includeCids");
+        public Criteria andIncludeSellerCidsLike(String value) {
+            addCriterion("include_seller_cids like", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsNotLike(String value) {
-            addCriterion("include_cids not like", value, "includeCids");
+        public Criteria andIncludeSellerCidsNotLike(String value) {
+            addCriterion("include_seller_cids not like", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsIn(List<String> values) {
-            addCriterion("include_cids in", values, "includeCids");
+        public Criteria andIncludeSellerCidsIn(List<String> values) {
+            addCriterion("include_seller_cids in", values, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsNotIn(List<String> values) {
-            addCriterion("include_cids not in", values, "includeCids");
+        public Criteria andIncludeSellerCidsNotIn(List<String> values) {
+            addCriterion("include_seller_cids not in", values, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsBetween(String value1, String value2) {
-            addCriterion("include_cids between", value1, value2, "includeCids");
+        public Criteria andIncludeSellerCidsBetween(String value1, String value2) {
+            addCriterion("include_seller_cids between", value1, value2, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeCidsNotBetween(String value1, String value2) {
-            addCriterion("include_cids not between", value1, value2, "includeCids");
+        public Criteria andIncludeSellerCidsNotBetween(String value1, String value2) {
+            addCriterion("include_seller_cids not between", value1, value2, "includeSellerCids");
             return (Criteria) this;
         }
 
@@ -495,73 +495,73 @@ public class PlanSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsIsNull() {
-            addCriterion("exclude_item_iids is null");
+        public Criteria andExcludeItemNumIidsIsNull() {
+            addCriterion("exclude_item_num_iids is null");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsIsNotNull() {
-            addCriterion("exclude_item_iids is not null");
+        public Criteria andExcludeItemNumIidsIsNotNull() {
+            addCriterion("exclude_item_num_iids is not null");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsEqualTo(String value) {
-            addCriterion("exclude_item_iids =", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsEqualTo(String value) {
+            addCriterion("exclude_item_num_iids =", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsNotEqualTo(String value) {
-            addCriterion("exclude_item_iids <>", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsNotEqualTo(String value) {
+            addCriterion("exclude_item_num_iids <>", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsGreaterThan(String value) {
-            addCriterion("exclude_item_iids >", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsGreaterThan(String value) {
+            addCriterion("exclude_item_num_iids >", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsGreaterThanOrEqualTo(String value) {
-            addCriterion("exclude_item_iids >=", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsGreaterThanOrEqualTo(String value) {
+            addCriterion("exclude_item_num_iids >=", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsLessThan(String value) {
-            addCriterion("exclude_item_iids <", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsLessThan(String value) {
+            addCriterion("exclude_item_num_iids <", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsLessThanOrEqualTo(String value) {
-            addCriterion("exclude_item_iids <=", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsLessThanOrEqualTo(String value) {
+            addCriterion("exclude_item_num_iids <=", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsLike(String value) {
-            addCriterion("exclude_item_iids like", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsLike(String value) {
+            addCriterion("exclude_item_num_iids like", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsNotLike(String value) {
-            addCriterion("exclude_item_iids not like", value, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsNotLike(String value) {
+            addCriterion("exclude_item_num_iids not like", value, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsIn(List<String> values) {
-            addCriterion("exclude_item_iids in", values, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsIn(List<String> values) {
+            addCriterion("exclude_item_num_iids in", values, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsNotIn(List<String> values) {
-            addCriterion("exclude_item_iids not in", values, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsNotIn(List<String> values) {
+            addCriterion("exclude_item_num_iids not in", values, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsBetween(String value1, String value2) {
-            addCriterion("exclude_item_iids between", value1, value2, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsBetween(String value1, String value2) {
+            addCriterion("exclude_item_num_iids between", value1, value2, "excludeItemNumIids");
             return (Criteria) this;
         }
 
-        public Criteria andExcludeItemIidsNotBetween(String value1, String value2) {
-            addCriterion("exclude_item_iids not between", value1, value2, "excludeItemIids");
+        public Criteria andExcludeItemNumIidsNotBetween(String value1, String value2) {
+            addCriterion("exclude_item_num_iids not between", value1, value2, "excludeItemNumIids");
             return (Criteria) this;
         }
 

@@ -1,4 +1,4 @@
-package com.trilemon.boss360.shelf.service.job;
+package com.trilemon.boss360.shelf.job;
 
 import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
