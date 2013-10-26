@@ -1,8 +1,9 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.taobao.api.domain.Item;
-import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfUtils;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -30,7 +31,9 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    Page<Item> index(String key, @RequestParam(defaultValue = "") Long[] cids, @RequestParam(defaultValue = "1") int page, @RequestParam(required = false) Long pid) throws EnhancedApiException {
+    Page<Item> index(String key, @RequestParam(defaultValue = "") Long[] cids, @RequestParam(defaultValue = "1") int
+            page, @RequestParam(required = false) Long pid) throws TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException {
         if (pid == null) {
             return taobaoApiShopService.paginateOnSaleItems(56912708L, key, ShelfConstants.ITEM_FIELDS, Arrays.asList(cids),
                     page, 2, true);

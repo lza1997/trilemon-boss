@@ -12,8 +12,9 @@ import com.trilemon.boss360.infrastructure.base.model.TaobaoApp;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
-import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -70,11 +71,11 @@ public class TestController {
      * 获取类目对应宝贝个数
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCatAndOnSaleItemNum", method = RequestMethod.GET)
-    Set<SellerCat> getSellerCatAndOnSaleItemNum() throws EnhancedApiException {
+    Set<SellerCat> getSellerCatAndOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
         return map.keySet();
     }
@@ -83,11 +84,11 @@ public class TestController {
      * 获取类目
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCats", method = RequestMethod.GET)
-    List<SellerCat> getSellerCats() throws EnhancedApiException {
+    List<SellerCat> getSellerCats() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         return cids;
     }
@@ -96,11 +97,11 @@ public class TestController {
      * 获取类目 id
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCatsByNick", method = RequestMethod.GET)
-    List<SellerCat> getSellerCatsByNick() throws EnhancedApiException {
+    List<SellerCat> getSellerCatsByNick() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats("gymitat");
         return cids;
     }
@@ -110,11 +111,11 @@ public class TestController {
      *
      * @param pageNum
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/onSaleItems", method = RequestMethod.GET)
-    Page<Item> getOnSaleItems(@RequestParam int pageNum) throws EnhancedApiException {
+    Page<Item> getOnSaleItems(@RequestParam int pageNum) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -132,11 +133,11 @@ public class TestController {
      * 获取所有在售宝贝数量
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/allOnSaleItemNum", method = RequestMethod.GET)
-    long getAllOnSaleItemNum() throws EnhancedApiException {
+    long getAllOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -153,11 +154,11 @@ public class TestController {
      * 获取已经出售订单数量
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/tradeNumFromTop", method = RequestMethod.GET)
-    long getTradeNumFromTop() throws EnhancedApiException {
+    long getTradeNumFromTop() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         long num = taobaoApiShopService.getTradeNumFromTop(56912708L, BaseConstants.TRADE_TYPES,
                 DateUtils.startOfNDaysBefore(90).toDate(),
                 DateUtils.endOfNDaysBefore(1).toDate());
@@ -168,11 +169,11 @@ public class TestController {
      * 根据 use_id 获取 nick
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/nick", method = RequestMethod.GET)
-    String getNick() throws EnhancedApiException {
+    String getNick() throws TaobaoEnhancedApiException {
         return baseClient.getNick(56912708L);
     }
 
@@ -180,11 +181,11 @@ public class TestController {
      * 获取{@link TaobaoApp}
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/taobaoApp", method = RequestMethod.GET)
-    TaobaoApp getTaobaoApp() throws EnhancedApiException {
+    TaobaoApp getTaobaoApp() throws TaobaoEnhancedApiException {
         return baseClient.getTaobaoApp(taobaoApiService.getAppKey());
     }
 
@@ -192,11 +193,11 @@ public class TestController {
      * 获取{@link TaobaoSession}
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/taobaoSession", method = RequestMethod.GET)
-    TaobaoSession getTaobaoSession() throws EnhancedApiException {
+    TaobaoSession getTaobaoSession() throws TaobaoEnhancedApiException {
         return baseClient.getTaobaoSession(56912708L, taobaoApiService.getAppKey());
     }
 
@@ -206,12 +207,12 @@ public class TestController {
      * @param query
      * @param pageNum
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     Page<Item> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
-            EnhancedApiException {
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         return taobaoApiShopService.paginateOnSaleItems(56912708L, query, ShelfConstants.ITEM_FIELDS, null,
                 pageNum, 1, true);
     }
@@ -220,12 +221,12 @@ public class TestController {
      * 展示 json 用法
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(value = "/items/{numIid}", method = RequestMethod.GET)
     public String searchOnSaleItem(@PathVariable String numIid) throws
-            EnhancedApiException {
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         Item item = taobaoApiShopService.getItem(56912708L, Long.valueOf(numIid), ShelfConstants.ITEM_FIELDS);
         JsonMapper jsonMapper = new JsonMapper(JsonInclude.Include.NON_NULL);
         return jsonMapper.toJson(item);
@@ -239,7 +240,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public String savePlanSetting() throws ShelfException {
+    public String savePlanSetting() throws ShelfException, TaobaoSessionExpiredException {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSetting.setAutoAddNewItems(true);
@@ -336,7 +337,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/updatePlanSetting", method = RequestMethod.GET)
-    public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException {
+    public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException, TaobaoSessionExpiredException {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setName("更新的计划");

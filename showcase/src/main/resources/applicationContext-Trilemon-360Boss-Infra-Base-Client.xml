@@ -23,7 +23,7 @@
 
     <description>base-client公共配置</description>
 
-    <bean class="com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService">
+    <bean id="taobaoApiShopService" class="com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService">
         <property name="taobaoApiService" ref="taobaoApiService"/>
         <property name="baseClient" ref="baseClient"/>
     </bean>

@@ -2,8 +2,9 @@ package com.trilemon.boss360.shelf.web.controller;
 
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.SellerCat;
-import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,11 @@ public class SellercatController {
      * 获取卖家的目录
      *
      * @return
-     * @throws EnhancedApiException
+     * @throws TaobaoEnhancedApiException
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public List<SellerCatDTO> index() throws EnhancedApiException {
+    public List<SellerCatDTO> index() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
 
         // map -> list , use DTO to transfer

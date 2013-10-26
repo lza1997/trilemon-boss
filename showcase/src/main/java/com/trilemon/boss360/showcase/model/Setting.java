@@ -6,7 +6,7 @@ import java.util.Date;
 public class Setting {
     private Integer id;
 
-    private Integer userId;
+    private Long userId;
 
     private Byte status;
 
@@ -23,6 +23,8 @@ public class Setting {
     private String includeKeywords;
 
     private String includeSellerCids;
+
+    private Integer includeItemNumIids;
 
     private Integer excludeItemDelistingWithin;
 
@@ -42,11 +44,11 @@ public class Setting {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -112,6 +114,14 @@ public class Setting {
 
     public void setIncludeSellerCids(String includeSellerCids) {
         this.includeSellerCids = includeSellerCids == null ? null : includeSellerCids.trim();
+    }
+
+    public Integer getIncludeItemNumIids() {
+        return includeItemNumIids;
+    }
+
+    public void setIncludeItemNumIids(Integer includeItemNumIids) {
+        this.includeItemNumIids = includeItemNumIids;
     }
 
     public Integer getExcludeItemDelistingWithin() {

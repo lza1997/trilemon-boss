@@ -3,6 +3,7 @@ package com.trilemon.boss360.shelf.service;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
@@ -45,7 +46,7 @@ public class PlanSettingService {
      *
      * @param planSetting
      */
-    public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException {
+    public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException {
         planSetting.setUserId(userId);
         planSetting.setStatus(PLAN_SETTING_STATUS_WAITING_PLAN);
         try {
@@ -95,7 +96,8 @@ public class PlanSettingService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void updatePlanSetting(Long userId, PlanSetting planSetting) throws ShelfException {
+    public void updatePlanSetting(Long userId, PlanSetting planSetting) throws ShelfException,
+            TaobaoSessionExpiredException {
         planSetting.setUserId(userId);
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());

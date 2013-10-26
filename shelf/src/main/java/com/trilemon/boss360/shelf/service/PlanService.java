@@ -14,8 +14,9 @@ import com.trilemon.boss360.infrastructure.base.client.BaseClient;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
-import com.trilemon.boss360.infrastructure.base.service.api.EnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import com.trilemon.boss360.infrastructure.base.util.TopApiUtils;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
@@ -31,7 +32,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
@@ -74,7 +74,7 @@ public class PlanService {
      *
      * @throws ShelfException
      */
-    public void updatePlan(Long planSettingId) throws ShelfException {
+    public void updatePlan(Long planSettingId) throws ShelfException, TaobaoSessionExpiredException {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKey(planSettingId);
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
         //所有在售宝贝
@@ -84,15 +84,17 @@ public class PlanService {
             request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
             request.setSellerCids(planSetting.getIncludeSellerCids());
             onSaleItemResult = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), request);
-        } catch (EnhancedApiException e) {
+        } catch (TaobaoEnhancedApiException e) {
             ShelfException shelfException = new ShelfException("get onSaleItemPage error during plan, " +
                     "userId[" + planSetting.getUserId() + "], PlanSetting[" + ToStringBuilder.reflectionToString
                     (planSetting) + "]", e);
             Exceptions.logAndThrow(logger, shelfException);
+        } catch (TaobaoSessionExpiredException e) {
+            Exceptions.logAndThrow(logger, "userId[" + planSetting.getUserId() + "]", e);
         }
 
         List<Item> onSaleItems = onSaleItemResult.getKey();
-        onSaleItems=ShelfUtils.normalizeItem(onSaleItems);
+        onSaleItems = ShelfUtils.normalizeItem(onSaleItems);
 
         if (null == onSaleItemResult || null == onSaleItems) {
             ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +
@@ -171,7 +173,7 @@ public class PlanService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException {
+    public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException {
         checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
                 userId, planSetting.getUserId());
         try {
@@ -184,10 +186,12 @@ public class PlanService {
             logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
                     planSetting.getId());
             savePlan(planSetting.getId(), plans);
-        } catch (EnhancedApiException e) {
+        } catch (TaobaoEnhancedApiException e) {
             ShelfException shelfException = new ShelfException("create plan error, userId[" + userId + "], " +
                     "planSettingId[" + planSetting.getId() + "]", e);
             Exceptions.logAndThrow(logger, shelfException);
+        } catch (TaobaoSessionExpiredException e) {
+            Exceptions.logAndThrow(logger, "userId[" + userId + "]", e);
         }
     }
 
@@ -332,7 +336,7 @@ public class PlanService {
         return assignTable;
     }
 
-    public void execPlan(Long planSettingId) {
+    public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException {
         DateTime now = appService.getLocalSystemTime();
         List<Plan> plans = planMapper.selectByPlanSettingIdAndStatusAndPlanTime(planSettingId,
                 ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST), now.withTimeAtStartOfDay().toDate(),
@@ -342,7 +346,7 @@ public class PlanService {
         }
     }
 
-    private void execPlan(Plan plan) {
+    private void execPlan(Plan plan) throws TaobaoSessionExpiredException {
         DateTime now = appService.getLocalSystemTime();
         if (now.toLocalTime().getMillisOfDay() < plan.getPlanAdjustStartTime().getTime()) {
             logger.info("planId[{}] is delay, startTime[{}] but now[{}]", plan.getId(),
@@ -374,9 +378,11 @@ public class PlanService {
                 planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
                 planResult.setFailedCause(delistingResponse.getSubCode());
             }
-        } catch (EnhancedApiException e) {
+        } catch (TaobaoEnhancedApiException e) {
             planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
             planResult.setFailedCause(ToStringBuilder.reflectionToString(e));
+        } catch (TaobaoSessionExpiredException e) {
+            Exceptions.logAndThrow(logger, "userId[" + plan.getUserId() + "]", e);
         }
         planMapper.updateByPrimaryKey(planResult);
     }
@@ -385,16 +391,16 @@ public class PlanService {
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
     }
 
-    public void excludeItem(Long planSettingId,Long numIid){
-        Plan plan =new Plan();
+    public void excludeItem(Long planSettingId, Long numIid) {
+        Plan plan = new Plan();
         plan.setPlanSettingId(planSettingId);
         plan.setItemNumIid(numIid);
         plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
         planMapper.updateByPlanSettingIdAndNumIid(plan);
     }
 
-    public void includeItem(Long planSettingId,Long numIid){
-        Plan plan =new Plan();
+    public void includeItem(Long planSettingId, Long numIid) {
+        Plan plan = new Plan();
         plan.setPlanSettingId(planSettingId);
         plan.setItemNumIid(numIid);
         plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);

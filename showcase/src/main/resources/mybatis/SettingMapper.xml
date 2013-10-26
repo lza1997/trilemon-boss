@@ -3,7 +3,7 @@
 <mapper namespace="com.trilemon.boss360.showcase.dao.SettingMapper" >
   <resultMap id="BaseResultMap" type="com.trilemon.boss360.showcase.model.Setting" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="rule_type" property="ruleType" jdbcType="TINYINT" />
     <result column="min_sale_volume" property="minSaleVolume" jdbcType="INTEGER" />
@@ -12,6 +12,7 @@
     <result column="max_price" property="maxPrice" jdbcType="DECIMAL" />
     <result column="include_keywords" property="includeKeywords" jdbcType="VARCHAR" />
     <result column="include_seller_cids" property="includeSellerCids" jdbcType="VARCHAR" />
+    <result column="include_item_num_iids" property="includeItemNumIids" jdbcType="INTEGER" />
     <result column="exclude_item_delisting_within" property="excludeItemDelistingWithin" jdbcType="INTEGER" />
     <result column="exclude_item_inventory_lt" property="excludeItemInventoryLt" jdbcType="INTEGER" />
     <result column="exclude_item_delisting_after" property="excludeItemDelistingAfter" jdbcType="INTEGER" />
@@ -78,8 +79,8 @@
   </sql>
   <sql id="Base_Column_List" >
     id, user_id, status, rule_type, min_sale_volume, max_sale_volume, min_price, max_price, 
-    include_keywords, include_seller_cids, exclude_item_delisting_within, exclude_item_inventory_lt, 
-    exclude_item_delisting_after, add_time, upd_time
+    include_keywords, include_seller_cids, include_item_num_iids, exclude_item_delisting_within, 
+    exclude_item_inventory_lt, exclude_item_delisting_after, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.showcase.model.SettingExample" >
     select
@@ -115,15 +116,17 @@
     insert into setting (id, user_id, status, 
       rule_type, min_sale_volume, max_sale_volume, 
       min_price, max_price, include_keywords, 
-      include_seller_cids, exclude_item_delisting_within, 
-      exclude_item_inventory_lt, exclude_item_delisting_after, 
-      add_time, upd_time)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
+      include_seller_cids, include_item_num_iids, 
+      exclude_item_delisting_within, exclude_item_inventory_lt, 
+      exclude_item_delisting_after, add_time, upd_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{ruleType,jdbcType=TINYINT}, #{minSaleVolume,jdbcType=INTEGER}, #{maxSaleVolume,jdbcType=INTEGER}, 
       #{minPrice,jdbcType=DECIMAL}, #{maxPrice,jdbcType=DECIMAL}, #{includeKeywords,jdbcType=VARCHAR}, 
-      #{includeSellerCids,jdbcType=VARCHAR}, #{excludeItemDelistingWithin,jdbcType=INTEGER}, 
-      #{excludeItemInventoryLt,jdbcType=INTEGER}, #{excludeItemDelistingAfter,jdbcType=INTEGER}, 
-      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
+      #{includeSellerCids,jdbcType=VARCHAR}, #{includeItemNumIids,jdbcType=INTEGER}, 
+      #{excludeItemDelistingWithin,jdbcType=INTEGER}, #{excludeItemInventoryLt,jdbcType=INTEGER}, 
+      #{excludeItemDelistingAfter,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
     insert into setting
@@ -158,6 +161,9 @@
       <if test="includeSellerCids != null" >
         include_seller_cids,
       </if>
+      <if test="includeItemNumIids != null" >
+        include_item_num_iids,
+      </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within,
       </if>
@@ -179,7 +185,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
+        #{userId,jdbcType=BIGINT},
       </if>
       <if test="status != null" >
         #{status,jdbcType=TINYINT},
@@ -204,6 +210,9 @@
       </if>
       <if test="includeSellerCids != null" >
         #{includeSellerCids,jdbcType=VARCHAR},
+      </if>
+      <if test="includeItemNumIids != null" >
+        #{includeItemNumIids,jdbcType=INTEGER},
       </if>
       <if test="excludeItemDelistingWithin != null" >
         #{excludeItemDelistingWithin,jdbcType=INTEGER},
@@ -235,7 +244,7 @@
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=BIGINT},
       </if>
       <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
@@ -261,6 +270,9 @@
       <if test="record.includeSellerCids != null" >
         include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
       </if>
+      <if test="record.includeItemNumIids != null" >
+        include_item_num_iids = #{record.includeItemNumIids,jdbcType=INTEGER},
+      </if>
       <if test="record.excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
       </if>
@@ -284,7 +296,7 @@
   <update id="updateByExample" parameterType="map" >
     update setting
     set id = #{record.id,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=BIGINT},
       status = #{record.status,jdbcType=TINYINT},
       rule_type = #{record.ruleType,jdbcType=TINYINT},
       min_sale_volume = #{record.minSaleVolume,jdbcType=INTEGER},
@@ -293,6 +305,7 @@
       max_price = #{record.maxPrice,jdbcType=DECIMAL},
       include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
+      include_item_num_iids = #{record.includeItemNumIids,jdbcType=INTEGER},
       exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
       exclude_item_inventory_lt = #{record.excludeItemInventoryLt,jdbcType=INTEGER},
       exclude_item_delisting_after = #{record.excludeItemDelistingAfter,jdbcType=INTEGER},
@@ -306,7 +319,7 @@
     update setting
     <set >
       <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=BIGINT},
       </if>
       <if test="status != null" >
         status = #{status,jdbcType=TINYINT},
@@ -332,6 +345,9 @@
       <if test="includeSellerCids != null" >
         include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
       </if>
+      <if test="includeItemNumIids != null" >
+        include_item_num_iids = #{includeItemNumIids,jdbcType=INTEGER},
+      </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
       </if>
@@ -352,7 +368,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.showcase.model.Setting" >
     update setting
-    set user_id = #{userId,jdbcType=INTEGER},
+    set user_id = #{userId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
       rule_type = #{ruleType,jdbcType=TINYINT},
       min_sale_volume = #{minSaleVolume,jdbcType=INTEGER},
@@ -361,6 +377,7 @@
       max_price = #{maxPrice,jdbcType=DECIMAL},
       include_keywords = #{includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
+      include_item_num_iids = #{includeItemNumIids,jdbcType=INTEGER},
       exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
       exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
       exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},

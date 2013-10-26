@@ -1,6 +1,7 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.PlanSetting;
@@ -33,7 +34,7 @@ public class PlanSettingController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Object create(@RequestBody @Valid PlanSetting planSetting, BindingResult result, HttpServletResponse response) throws ShelfException {
+    public Object create(@RequestBody @Valid PlanSetting planSetting, BindingResult result, HttpServletResponse response) throws ShelfException, TaobaoSessionExpiredException {
         if (result.hasErrors()) {
             response.setStatus(422);
             return result.getAllErrors();
@@ -57,7 +58,7 @@ public class PlanSettingController {
 
     @RequestMapping(value = "/{planSettingId}", method = RequestMethod.PUT)
     @ResponseBody
-    public Object update(@PathVariable Long planSettingId, @RequestBody @Valid PlanSetting planSetting, BindingResult result) {
+    public Object update(@PathVariable Long planSettingId, @RequestBody @Valid PlanSetting planSetting, BindingResult result) throws TaobaoSessionExpiredException {
         try {
             planSetting.setId(planSettingId);
             planSettingService.updatePlanSetting(56912708L, planSetting);
