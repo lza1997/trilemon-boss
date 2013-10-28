@@ -26,6 +26,7 @@
         <module>showcase</module>
         <module>center</module>
         <module>center-client</module>
+        <module>inventory</module>
     </modules>
 
     <name>Trilemon-360boss</name>
