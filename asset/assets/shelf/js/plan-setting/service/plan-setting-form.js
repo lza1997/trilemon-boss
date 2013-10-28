@@ -20,7 +20,7 @@ define(function(require, exports, module) {
 
                     // 修改时回填
                     _.each(data, function(cat) {
-                        if (_.include($scope.includeCids, cat.cid + '')) {
+                        if (_.include($scope.includeSellerCids, cat.cid + '')) {
                             cat.selected = true;
                         }
                     });
@@ -81,7 +81,7 @@ define(function(require, exports, module) {
                 // 将选中分类的id写入 planSetting 对象
                 function saveCatIds() {
                     var selectedCids = _.chain($scope.sellerCats).where({selected: true}).pluck('cid').value();
-                    $scope.planSetting.includeCids = selectedCids.join(',');
+                    $scope.planSetting.includeSellerCids = selectedCids.join(',');
                 }
             }
         };

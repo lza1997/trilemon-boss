@@ -11,7 +11,7 @@ define(function(require, exports, module) {
                 options.pid = planSetting.id; // 用于编辑
             }
             else {
-                options.cids = planSetting.includeCids.split(',');  // 用于创建，上一步选中的分类
+                options.cids = planSetting.includeSellerCids.split(',');  // 用于创建，上一步选中的分类
             }
 
             RestPageangular.all(URL.ITEM).getList(options).then(function(data) {
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
                 $scope.lastSearchKey;  // 上一次搜索的关键词
                 // 被排除的宝贝 id
                 if (planSetting.id) {
-                    $scope.excludeIds = _.map(planSetting.excludeItemIids.split(','), function(v) {
+                    $scope.excludeIds = _.map(planSetting.excludeItemNumIids.split(','), function(v) {
                         return parseInt(v, 10);
                     });
                 }
@@ -66,7 +66,7 @@ define(function(require, exports, module) {
 
                 // 保存
                 $scope.save = function() {
-                    planSetting.excludeItemIids = $scope.excludeIds.join(',');
+                    planSetting.excludeItemNumIids = $scope.excludeIds.join(',');
                     if (planSetting.id) {
                         return planSetting.put();
                     }

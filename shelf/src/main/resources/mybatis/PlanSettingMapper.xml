@@ -122,7 +122,8 @@
                     #{beforeAdjustDistribution,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{lastPlanTime,jdbcType=TIMESTAMP},
                     #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" >
+    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting"
+            useGeneratedKeys="true" keyProperty="id">
         insert into plan_setting
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -369,13 +370,13 @@
             <if test="namePinyin != null">
                 name_pinyin = #{namePinyin,jdbcType=VARCHAR},
             </if>
-            <if test="includeCids != null">
+            <if test="includeSellerCids != null">
                 include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
             </if>
             <if test="autoAddNewItems != null">
                 auto_add_new_items = #{autoAddNewItems,jdbcType=BIT},
             </if>
-            <if test="excludeItemIids != null">
+            <if test="excludeItemNumIids != null">
                 exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
             </if>
             <if test="distribution != null">

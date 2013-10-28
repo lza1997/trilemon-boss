@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
         Restangular.one(URL.PLAN_SETTING, $routeParams.id).get().then(function(planSetting) {
             // 选中的分类 ID
-            $scope.includeCids = planSetting.includeCids.split(',');
+            $scope.includeSellerCids = planSetting.includeSellerCids.split(',');
 
             PlanSettingForm.initScope($scope, planSetting);
         });
