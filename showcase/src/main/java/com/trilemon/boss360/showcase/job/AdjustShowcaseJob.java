@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AdjustShowcaseJob extends AbstractQueueService<Setting> {
     @Autowired
     private SettingService settingService;
+
     @Override
     public void timeout() {
         //To change body of implemented methods use File | Settings | File Templates.
@@ -18,7 +19,7 @@ public class AdjustShowcaseJob extends AbstractQueueService<Setting> {
 
     @Override
     public void process(Setting setting) throws Exception {
-        settingService.adjust(setting);
+        settingService.adjust(setting.getUserId());
     }
 
     @Override

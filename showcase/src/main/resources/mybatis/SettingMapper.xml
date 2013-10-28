@@ -12,7 +12,8 @@
     <result column="max_price" property="maxPrice" jdbcType="DECIMAL" />
     <result column="include_keywords" property="includeKeywords" jdbcType="VARCHAR" />
     <result column="include_seller_cids" property="includeSellerCids" jdbcType="VARCHAR" />
-    <result column="include_item_num_iids" property="includeItemNumIids" jdbcType="INTEGER" />
+    <result column="include_item_num_iids" property="includeItemNumIids" jdbcType="VARCHAR" />
+    <result column="exclude_item_num_iids" property="excludeItemNumIids" jdbcType="VARCHAR" />
     <result column="exclude_item_delisting_within" property="excludeItemDelistingWithin" jdbcType="INTEGER" />
     <result column="exclude_item_inventory_lt" property="excludeItemInventoryLt" jdbcType="INTEGER" />
     <result column="exclude_item_delisting_after" property="excludeItemDelistingAfter" jdbcType="INTEGER" />
@@ -79,8 +80,9 @@
   </sql>
   <sql id="Base_Column_List" >
     id, user_id, status, rule_type, min_sale_volume, max_sale_volume, min_price, max_price, 
-    include_keywords, include_seller_cids, include_item_num_iids, exclude_item_delisting_within, 
-    exclude_item_inventory_lt, exclude_item_delisting_after, add_time, upd_time
+    include_keywords, include_seller_cids, include_item_num_iids, exclude_item_num_iids, 
+    exclude_item_delisting_within, exclude_item_inventory_lt, exclude_item_delisting_after, 
+    add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.showcase.model.SettingExample" >
     select
@@ -117,16 +119,16 @@
       rule_type, min_sale_volume, max_sale_volume, 
       min_price, max_price, include_keywords, 
       include_seller_cids, include_item_num_iids, 
-      exclude_item_delisting_within, exclude_item_inventory_lt, 
-      exclude_item_delisting_after, add_time, upd_time
-      )
+      exclude_item_num_iids, exclude_item_delisting_within, 
+      exclude_item_inventory_lt, exclude_item_delisting_after, 
+      add_time, upd_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{ruleType,jdbcType=TINYINT}, #{minSaleVolume,jdbcType=INTEGER}, #{maxSaleVolume,jdbcType=INTEGER}, 
       #{minPrice,jdbcType=DECIMAL}, #{maxPrice,jdbcType=DECIMAL}, #{includeKeywords,jdbcType=VARCHAR}, 
-      #{includeSellerCids,jdbcType=VARCHAR}, #{includeItemNumIids,jdbcType=INTEGER}, 
-      #{excludeItemDelistingWithin,jdbcType=INTEGER}, #{excludeItemInventoryLt,jdbcType=INTEGER}, 
-      #{excludeItemDelistingAfter,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
-      )
+      #{includeSellerCids,jdbcType=VARCHAR}, #{includeItemNumIids,jdbcType=VARCHAR}, 
+      #{excludeItemNumIids,jdbcType=VARCHAR}, #{excludeItemDelistingWithin,jdbcType=INTEGER}, 
+      #{excludeItemInventoryLt,jdbcType=INTEGER}, #{excludeItemDelistingAfter,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
     insert into setting
@@ -163,6 +165,9 @@
       </if>
       <if test="includeItemNumIids != null" >
         include_item_num_iids,
+      </if>
+      <if test="excludeItemNumIids != null" >
+        exclude_item_num_iids,
       </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within,
@@ -212,7 +217,10 @@
         #{includeSellerCids,jdbcType=VARCHAR},
       </if>
       <if test="includeItemNumIids != null" >
-        #{includeItemNumIids,jdbcType=INTEGER},
+        #{includeItemNumIids,jdbcType=VARCHAR},
+      </if>
+      <if test="excludeItemNumIids != null" >
+        #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="excludeItemDelistingWithin != null" >
         #{excludeItemDelistingWithin,jdbcType=INTEGER},
@@ -271,7 +279,10 @@
         include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
       </if>
       <if test="record.includeItemNumIids != null" >
-        include_item_num_iids = #{record.includeItemNumIids,jdbcType=INTEGER},
+        include_item_num_iids = #{record.includeItemNumIids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.excludeItemNumIids != null" >
+        exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="record.excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
@@ -305,7 +316,8 @@
       max_price = #{record.maxPrice,jdbcType=DECIMAL},
       include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
-      include_item_num_iids = #{record.includeItemNumIids,jdbcType=INTEGER},
+      include_item_num_iids = #{record.includeItemNumIids,jdbcType=VARCHAR},
+      exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
       exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
       exclude_item_inventory_lt = #{record.excludeItemInventoryLt,jdbcType=INTEGER},
       exclude_item_delisting_after = #{record.excludeItemDelistingAfter,jdbcType=INTEGER},
@@ -346,7 +358,10 @@
         include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
       </if>
       <if test="includeItemNumIids != null" >
-        include_item_num_iids = #{includeItemNumIids,jdbcType=INTEGER},
+        include_item_num_iids = #{includeItemNumIids,jdbcType=VARCHAR},
+      </if>
+      <if test="excludeItemNumIids != null" >
+        exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
@@ -377,7 +392,8 @@
       max_price = #{maxPrice,jdbcType=DECIMAL},
       include_keywords = #{includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
-      include_item_num_iids = #{includeItemNumIids,jdbcType=INTEGER},
+      include_item_num_iids = #{includeItemNumIids,jdbcType=VARCHAR},
+      exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
       exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
       exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
       exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},

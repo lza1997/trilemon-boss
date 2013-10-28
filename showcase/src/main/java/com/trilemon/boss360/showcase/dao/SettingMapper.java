@@ -28,4 +28,8 @@ public interface SettingMapper {
     int updateByPrimaryKeySelective(Setting record);
 
     int updateByPrimaryKey(Setting record);
+
+    Setting selectByUserId(Long userId);
+
+    void updateStatusByUserId(@Param("userId")Long userId,@Param("status") Byte status);
 }

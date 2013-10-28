@@ -24,7 +24,9 @@ public class Setting {
 
     private String includeSellerCids;
 
-    private Integer includeItemNumIids;
+    private String includeItemNumIids;
+
+    private String excludeItemNumIids;
 
     private Integer excludeItemDelistingWithin;
 
@@ -116,12 +118,20 @@ public class Setting {
         this.includeSellerCids = includeSellerCids == null ? null : includeSellerCids.trim();
     }
 
-    public Integer getIncludeItemNumIids() {
+    public String getIncludeItemNumIids() {
         return includeItemNumIids;
     }
 
-    public void setIncludeItemNumIids(Integer includeItemNumIids) {
-        this.includeItemNumIids = includeItemNumIids;
+    public void setIncludeItemNumIids(String includeItemNumIids) {
+        this.includeItemNumIids = includeItemNumIids == null ? null : includeItemNumIids.trim();
+    }
+
+    public String getExcludeItemNumIids() {
+        return excludeItemNumIids;
+    }
+
+    public void setExcludeItemNumIids(String excludeItemNumIids) {
+        this.excludeItemNumIids = excludeItemNumIids == null ? null : excludeItemNumIids.trim();
     }
 
     public Integer getExcludeItemDelistingWithin() {
