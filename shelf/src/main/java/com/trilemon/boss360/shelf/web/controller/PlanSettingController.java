@@ -5,6 +5,7 @@ import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpired
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.service.PlanService;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class PlanSettingController {
     AppService appService;
     @Autowired
     private PlanSettingService planSettingService;
+    @Autowired
+    private PlanService planService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -101,6 +104,32 @@ public class PlanSettingController {
     public byte resume(@PathVariable Long planSettingId) {
         planSettingService.resumePlanSetting(56912708L, planSettingId);
         return ShelfConstants.PLAN_SETTING_STATUS_RUNNING;
+    }
+
+    /**
+     * 排除宝贝
+     * @param planSettingId
+     * @param numIid
+     * @return
+     */
+    @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.POST)
+    @ResponseBody
+    public String excludeItem(@PathVariable Long planSettingId, @PathVariable Long numIid){
+        planService.excludeItem(planSettingId, numIid);
+        return "";
+    }
+
+    /**
+     * 取消排除宝贝
+     * @param planSettingId
+     * @param numIid
+     * @return
+     */
+    @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String includeItem(@PathVariable Long planSettingId,@PathVariable Long numIid){
+        planService.includeItem(planSettingId, numIid);
+        return "";
     }
 
 }

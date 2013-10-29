@@ -1,9 +1,11 @@
+/**
+ * 挑选分类，其实是修改计划
+ */
 define(function(require, exports, module) {
 
-    var NewController = ['$scope', 'Restangular', 'URL', 'PlanSettingForm', '$routeParams', 'Flash',
-        function($scope, Restangular, URL, PlanSettingForm, $routeParams) {
+    var EditController = ['$scope', 'REST', 'PlanSettingForm', '$routeParams', 'Flash', function($scope, REST, PlanSettingForm, $routeParams) {
 
-        Restangular.one(URL.PLAN_SETTING, $routeParams.id).get().then(function(planSetting) {
+        REST.PLAN_SETTING.get($routeParams.id).then(function(planSetting) {
             // 选中的分类 ID
             $scope.includeSellerCids = planSetting.includeSellerCids.split(',');
 
@@ -11,9 +13,9 @@ define(function(require, exports, module) {
         });
     }];
 
-    NewController.template = require('../template/form.html');
-    NewController.title = "编辑计划";
-    NewController.navClass = "";
+    EditController.template = require('../template/form.html');
+    EditController.title = "挑选分类";
+    EditController.navClass = "";
 
-    module.exports = NewController;
+    module.exports = EditController;
 });

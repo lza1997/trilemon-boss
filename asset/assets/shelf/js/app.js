@@ -13,31 +13,14 @@ app.factory('ajaxSpinner', ['$rootScope', '$q', function($rootScope, $q) {
     };
 }]);
 
-// 带分页处理的 restangular
-app.factory('RestPageangular', function(Restangular) {
-    return Restangular.withConfig(function(config) {
-        config.setResponseExtractor(function(data, operation, what, url, response, deferred) {
-            if (operation === 'getList') {
-                var items = data.items;
-                items.totalPage = data.pages;
-                items.currPage = data.pageNum;
-                return items;
-            }
-            else {
-                return data;
-            }
-        });
-    });
-});
-
-app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider) {
+app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
 
     SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
     var planSetting = SeajsLazyModuleProvider.create('shelf_js/plan-setting/index');
 
     $routeProvider
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
-        .when('/plan-setting/filter', planSetting.routeFor('planSetting.filter'))
+        .when('/plan-setting/:id/filter', planSetting.routeFor('planSetting.filter'))
         .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
         .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
         .otherwise({redirectTo: '/plan-setting'});
@@ -46,14 +29,13 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
     RestangularProvider.setMethodOverriders(['put', 'delete']);
 
     $httpProvider.interceptors.push('ajaxSpinner');
-}]);
 
-// REST 接口的 URL 常量
-app.constant('URL', {
-    ITEM: 'shelf/items',
-    SELLER_CAT: 'shelf/sellercats',
-    PLAN_SETTING: 'shelf/plan-settings'
-});
+    RESTProvider.setURL({
+        ITEM: 'shelf/items',
+        SELLER_CAT: 'shelf/sellercats',
+        PLAN_SETTING: 'shelf/plan-settings'
+    });
+}]);
 
 app.constant('PLAN_STATUS', {
     WAITING: 0,
