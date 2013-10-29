@@ -12,9 +12,9 @@ import com.trilemon.boss360.infrastructure.base.model.TaobaoApp;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -76,7 +76,8 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/sellerCatAndOnSaleItemNum", method = RequestMethod.GET)
     Set<SellerCat> getSellerCatAndOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
-        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L);
+        Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L,
+                taobaoApiShopService.getSellerCats(56912708L));
         return map.keySet();
     }
 
@@ -102,7 +103,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/sellerCatsByNick", method = RequestMethod.GET)
     List<SellerCat> getSellerCatsByNick() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
-        List<SellerCat> cids = taobaoApiShopService.getSellerCats("gymitat");
+        List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         return cids;
     }
 

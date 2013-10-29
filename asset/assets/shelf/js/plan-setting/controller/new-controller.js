@@ -1,8 +1,8 @@
 define(function(require, exports, module) {
 
-    var NewController = ['$scope', 'Restangular', 'Flash', 'PlanSettingForm', function($scope, Restangular, Flash, PlanSettingForm) {
+    var NewController = ['$scope', 'REST', 'Flash', 'PlanSettingForm', function($scope, REST, Flash, PlanSettingForm) {
 
-        var planSetting = Restangular.one('shelf/plan-settings');
+        var planSetting = REST.PLAN_SETTING.newOne();
         planSetting.autoAddNewItems = true;
 
         PlanSettingForm.initScope($scope, planSetting);

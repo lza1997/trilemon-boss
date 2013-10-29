@@ -1,11 +1,11 @@
 <div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
-<table class="table table-hover">
-    <col width="15%"/>
+<table ng-show="planSettings.length>0" class="table table-hover">
+    <col width="120px"/>
     <col/>
     <col/>
     <col/>
     <col/>
-    <col width="20%"/>
+    <col width="300px"/>
     <thead>
     <tr>
         <th>计划名称</th>
@@ -28,11 +28,17 @@
             <a href="" ng-click="pause(planSetting, true)" ng-if="planSetting.status === PLAN_STATUS.RUNNING">暂停</a>
             <a href="" ng-click="pause(planSetting, false)" ng-if="planSetting.status === PLAN_STATUS.PAUSED">继续</a>
             <a href="" ng-click="delete(planSetting)">删除</a>
-            <a ng-href="#/plan-setting/{{planSetting.id}}/edit">查看编辑</a>
-            <a href="" ng-click="showFilterModal(planSetting)">筛选宝贝</a>
+            <a ng-href="#/plan-setting/{{planSetting.id}}/edit">挑选分类</a>
+            <a href="#/plan-setting/{{planSetting.id}}/filter">筛选宝贝</a>
+            <a href="">修改时间</a>
         </td>
     </tr>
 </table>
 <div class="pull-right">
     <pagination items="planSettings" pager-click="jumpPage(page)"></pagination>
+</div>
+
+<div class="well" ng-show="planSettings.length<1">
+    <p>暂时还没有计划呢~</p>
+    <a class="btn btn-primary btn-lg" href="#/plan-setting/new">立刻创建计划</a>
 </div>

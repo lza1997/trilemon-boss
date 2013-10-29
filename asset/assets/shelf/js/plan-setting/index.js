@@ -4,7 +4,6 @@ define(function(require, exports, module) {
     var EditController = require('./controller/edit-controller');
     var IndexController = require('./controller/index-controller');
 
-    var ItemFilter = require('./service/item-filter');
     var PlanSettingForm = require('./service/plan-setting-form');
     var Confirm = require('./service/confirm');
 
@@ -16,7 +15,6 @@ define(function(require, exports, module) {
             'planSetting.edit': EditController
         },
         factories: {
-            'ItemFilter': ItemFilter,
             'PlanSettingForm': PlanSettingForm,
             'Confirm': Confirm
         }

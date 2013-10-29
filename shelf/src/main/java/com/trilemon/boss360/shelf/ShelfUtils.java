@@ -8,6 +8,7 @@ import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
+import com.trilemon.boss360.shelf.web.controller.ItemController;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -225,13 +226,19 @@ public class ShelfUtils {
         return filerPlans;
     }
 
-    public static List<Item> planToItem(List<Plan> plans) {
-        List<Item> items = Lists.newArrayList();
+    /**
+     * 将 Plan 对象转为 Item，注意是另一个 VO
+     * @param plans
+     * @return
+     */
+    public static List<ItemController.Item> planToItem(List<Plan> plans) {
+        List<ItemController.Item> items = Lists.newArrayList();
         for (Plan plan : plans) {
-            Item item = new Item();
+            ItemController.Item item = new ItemController.Item();
             item.setTitle(plan.getItemTitle());
             item.setNumIid(plan.getItemNumIid());
             item.setPicUrl(plan.getItemPicUrl());
+            item.setExclude(plan.getStatus().equals(ShelfConstants.PLAN_STATUS_EXCLUDED));  // just for u，草
             items.add(item);
         }
         return items;

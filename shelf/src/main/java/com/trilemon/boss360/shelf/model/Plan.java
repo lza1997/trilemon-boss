@@ -1,10 +1,13 @@
 package com.trilemon.boss360.shelf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class Plan {
     private Long id;
 
+    @JsonIgnore
     private Long planSettingId;
 
     private Long userId;

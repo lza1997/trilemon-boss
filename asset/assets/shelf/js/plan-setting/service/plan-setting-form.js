@@ -2,7 +2,7 @@
  * 新建或修改计划，用于 Controller 的复用
  */
 define(function(require, exports, module) {
-    module.exports = ['Restangular', 'URL', 'Flash', '$location', function(Restangular, URL, Flash, $location) {
+    module.exports = ['REST', 'Flash', '$location', function(REST, Flash, $location) {
 
         return {
             // 向 controller 的 scope 注入方法与数据
@@ -14,11 +14,10 @@ define(function(require, exports, module) {
                 $scope.$watch('sellerCats', function saveCatIds(value) {
                     var selectedCids = _.chain(value).where({selected: true}).pluck('cid').value();
                     $scope.planSetting.includeSellerCids = selectedCids.join(',');
-                    $scope.form.includeSellerCids.$dirty = true;
                 }, true);
 
                 // 获取卖家的宝贝分类
-                Restangular.all(URL.SELLER_CAT).getList().then(function(data) {
+                REST.SELLER_CAT.getList().then(function(data) {
                     // 展开第一个有子分类的
                     var firstChild = _.find(data, function(cat) {
                         return cat.parentCid !== 0;
@@ -27,9 +26,7 @@ define(function(require, exports, module) {
 
                     // 修改时回填
                     _.each(data, function(cat) {
-                        if (_.include($scope.includeSellerCids, cat.cid + '')) {
-                            cat.selected = true;
-                        }
+                        cat.selected = _.include($scope.includeSellerCids, cat.cid + '');
                     });
 
                     $scope.sellerCats = data;
@@ -67,15 +64,6 @@ define(function(require, exports, module) {
                             Flash.success('计划 ' + $scope.planSetting.name + ' ' + tip + '成功！');
                             $location.url('/plan-setting');
                         });
-                    }
-
-                };
-
-                // 跳转至筛选页面
-                $scope.gotoFilter = function() {
-                    if (isValidate()) {
-                        Flash.tmp($scope.planSetting);
-                        $location.url('/plan-setting/filter');
                     }
                 };
 

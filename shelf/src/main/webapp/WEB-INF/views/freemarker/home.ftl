@@ -40,6 +40,7 @@
     <script src="${asset}/shelf/js/app.js"></script>
     <script src="${asset}/shelf/js/common/index.js"></script>
     <script src="${asset}/shelf/js/common/flash.js"></script>
+    <script src="${asset}/shelf/js/common/rest.js"></script>
 
     <script>
         seajs.config({
