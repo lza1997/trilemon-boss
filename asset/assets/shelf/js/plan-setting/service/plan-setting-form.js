@@ -7,8 +7,15 @@ define(function(require, exports, module) {
         return {
             // 向 controller 的 scope 注入方法与数据
             initScope: function($scope, planSetting) {
-                $scope.sellerCats = [];
                 $scope.planSetting = planSetting;
+                $scope.sellerCats = [];
+
+                // 将选中分类的 id 写入 planSetting 对象
+                $scope.$watch('sellerCats', function saveCatIds(value) {
+                    var selectedCids = _.chain(value).where({selected: true}).pluck('cid').value();
+                    $scope.planSetting.includeSellerCids = selectedCids.join(',');
+                    $scope.form.includeSellerCids.$dirty = true;
+                }, true);
 
                 // 获取卖家的宝贝分类
                 Restangular.all(URL.SELLER_CAT).getList().then(function(data) {
@@ -53,35 +60,33 @@ define(function(require, exports, module) {
 
                 // 保存计划
                 $scope.save = function() {
-                    if(!$scope.form.$valid){
-                        return;
-                    }
-                    saveCatIds();
-                    if ($scope.planSetting.id) {
-                        $scope.planSetting.put().then(function() {
-                            Flash.success('计划 ' + $scope.planSetting.name + ' 修改成功！');
+                    if (isValidate()) {
+                        var method = $scope.planSetting.id ? 'put' : 'post';
+                        var tip = $scope.planSetting.id ? '创建' : '修改';
+                        $scope.planSetting[method]().then(function() {
+                            Flash.success('计划 ' + $scope.planSetting.name + ' ' + tip + '成功！');
                             $location.url('/plan-setting');
                         });
                     }
-                    else {
-                        $scope.planSetting.post().then(function() {
-                            Flash.success('计划 ' + $scope.planSetting.name + ' 创建成功！');
-                            $location.url('/plan-setting');
-                        });
-                    }
+
                 };
 
                 // 跳转至筛选页面
                 $scope.gotoFilter = function() {
-                    saveCatIds();
-                    Flash.tmp($scope.planSetting);
-                    $location.url('/plan-setting/filter');
+                    if (isValidate()) {
+                        Flash.tmp($scope.planSetting);
+                        $location.url('/plan-setting/filter');
+                    }
                 };
 
-                // 将选中分类的id写入 planSetting 对象
-                function saveCatIds() {
-                    var selectedCids = _.chain($scope.sellerCats).where({selected: true}).pluck('cid').value();
-                    $scope.planSetting.includeSellerCids = selectedCids.join(',');
+                // 校验表单
+                function isValidate() {
+                    for (var field in $scope.form) {
+                        if (field[0] !== '$' && $scope.form[field].$pristine) {
+                            $scope.form[field].$setViewValue($scope.form[field].$modelValue);
+                        }
+                    }
+                    return $scope.form.$valid;
                 }
             }
         };

@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="col-md-1 control-label">计划名称</label>
 
-        <div class="col-md-6" ng-class="{'has-error': form.name.$invalid && form.name.$dirty}">
+        <div class="col-md-6">
             <input type="text" class="form-control" ng-model="planSetting.name" name="name" required />
             <label class="error"><i class="icon-exclamation-sign"></i> 请填写计划名称</label>
         </div>
@@ -19,7 +19,7 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}">
                 <label>
-                    <input type="checkbox" name="cats" ng-model="sellercat.selected" ng-change="changeSelected(sellercat)" />
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="changeSelected(sellercat)" />
                 </label>
                 <label ng-click="toggleSellerCat(sellercat)" >
                     <span style="width:40px;">
@@ -34,6 +34,8 @@
                     </label>
                 </div>
             </div>
+            <input type="hidden" ng-model="planSetting.includeSellerCids" name="includeSellerCids" required />
+            <label class="error"><i class="icon-exclamation-sign"></i> 请选择分类</label>
         </div>
     </div>
     <div class="form-group">
@@ -49,7 +51,7 @@
     </div>
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
-            <button class="btn btn-primary btn-lg" ng-click="save()" ng-disabled="form.$invalid">{{ planSetting.id ? '修改' : '创建' }}计划</button>
+            <button class="btn btn-primary btn-lg" ng-click="save()">{{ planSetting.id ? '修改' : '创建' }}计划</button>
             &nbsp;&nbsp;<a href="" ng-click="gotoFilter()">或筛选宝贝</a>
         </div>
     </div>
