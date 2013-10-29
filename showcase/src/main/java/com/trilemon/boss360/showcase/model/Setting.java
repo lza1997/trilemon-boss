@@ -12,13 +12,13 @@ public class Setting {
 
     private Byte ruleType;
 
-    private Integer minSaleVolume;
+    private Integer includeMinSaleVolume;
 
-    private Integer maxSaleVolume;
+    private Integer includeMaxSaleVolume;
 
-    private BigDecimal minPrice;
+    private BigDecimal includeMinPrice;
 
-    private BigDecimal maxPrice;
+    private BigDecimal includeMaxPrice;
 
     private String includeKeywords;
 
@@ -70,36 +70,36 @@ public class Setting {
         this.ruleType = ruleType;
     }
 
-    public Integer getMinSaleVolume() {
-        return minSaleVolume;
+    public Integer getIncludeMinSaleVolume() {
+        return includeMinSaleVolume;
     }
 
-    public void setMinSaleVolume(Integer minSaleVolume) {
-        this.minSaleVolume = minSaleVolume;
+    public void setIncludeMinSaleVolume(Integer includeMinSaleVolume) {
+        this.includeMinSaleVolume = includeMinSaleVolume;
     }
 
-    public Integer getMaxSaleVolume() {
-        return maxSaleVolume;
+    public Integer getIncludeMaxSaleVolume() {
+        return includeMaxSaleVolume;
     }
 
-    public void setMaxSaleVolume(Integer maxSaleVolume) {
-        this.maxSaleVolume = maxSaleVolume;
+    public void setIncludeMaxSaleVolume(Integer includeMaxSaleVolume) {
+        this.includeMaxSaleVolume = includeMaxSaleVolume;
     }
 
-    public BigDecimal getMinPrice() {
-        return minPrice;
+    public BigDecimal getIncludeMinPrice() {
+        return includeMinPrice;
     }
 
-    public void setMinPrice(BigDecimal minPrice) {
-        this.minPrice = minPrice;
+    public void setIncludeMinPrice(BigDecimal includeMinPrice) {
+        this.includeMinPrice = includeMinPrice;
     }
 
-    public BigDecimal getMaxPrice() {
-        return maxPrice;
+    public BigDecimal getIncludeMaxPrice() {
+        return includeMaxPrice;
     }
 
-    public void setMaxPrice(BigDecimal maxPrice) {
-        this.maxPrice = maxPrice;
+    public void setIncludeMaxPrice(BigDecimal includeMaxPrice) {
+        this.includeMaxPrice = includeMaxPrice;
     }
 
     public String getIncludeKeywords() {

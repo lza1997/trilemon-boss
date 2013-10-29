@@ -4,7 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.taobao.api.domain.Item;
-import com.trilemon.boss360.showcase.model.AdjustHistory;
+import com.trilemon.boss360.showcase.model.AdjustDetail;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 
@@ -23,31 +23,31 @@ public class ShowcaseUtils {
         }
     };
 
-    public static List<AdjustHistory> getAdjustHistories(List<AdjustHistory> adjustHistories, Collection<Long> numIids) {
-        List<AdjustHistory> filerPlans = Lists.newArrayList();
+    public static List<AdjustDetail> getAdjustHistories(List<AdjustDetail> adjustDetails, Collection<Long> numIids) {
+        List<AdjustDetail> filteredAdjustDetails = Lists.newArrayList();
 
-        for (AdjustHistory adjustHistory : adjustHistories) {
-            if (numIids.contains(adjustHistory.getItemNumIid())) {
-                filerPlans.add(adjustHistory);
+        for (AdjustDetail adjustDetail : adjustDetails) {
+            if (numIids.contains(adjustDetail.getItemNumIid())) {
+                filteredAdjustDetails.add(adjustDetail);
             }
         }
-        return filerPlans;
+        return filteredAdjustDetails;
     }
 
-    public static AdjustHistory getAdjustHistory(List<AdjustHistory> adjustHistories, Long numIid) {
-        for (AdjustHistory adjustHistory : adjustHistories) {
-            if (numIid == adjustHistory.getItemNumIid()) {
-                return adjustHistory;
+    public static AdjustDetail getAdjustDetail(List<AdjustDetail> adjustDetails, Long numIid) {
+        for (AdjustDetail adjustDetail : adjustDetails) {
+            if (numIid == adjustDetail.getItemNumIid()) {
+                return adjustDetail;
             }
         }
         return null;
     }
 
-    public static List<Long> getAdjustHistoryNumIids(List<AdjustHistory> adjustHistories) {
-        return Lists.transform(adjustHistories, new Function<AdjustHistory, Long>() {
+    public static List<Long> getAdjustDetailsNumIids(List<AdjustDetail> adjustDetails) {
+        return Lists.transform(adjustDetails, new Function<AdjustDetail, Long>() {
             @Nullable
             @Override
-            public Long apply(@Nullable AdjustHistory input) {
+            public Long apply(@Nullable AdjustDetail input) {
                 return input.getItemNumIid();
             }
         });
@@ -55,12 +55,16 @@ public class ShowcaseUtils {
 
     /**
      * 按照下架时间排序（越靠近下架时间越靠前）
-     *
      * @param items
+     * @param reverse true desc false acs
      * @return
      */
-    public static List<Item> orderItemsByDelistingTime(List<Item> items) {
-        return byDelistingTimeOrdering.sortedCopy(items);
+    public static List<Item> orderItemsByDelistingTime(List<Item> items, boolean reverse) {
+        if (reverse) {
+            return byDelistingTimeOrdering.reverse().sortedCopy(items);
+        } else {
+            return byDelistingTimeOrdering.sortedCopy(items);
+        }
     }
 
     /**
@@ -73,7 +77,6 @@ public class ShowcaseUtils {
     public static boolean isItemInventoryLt(Item item, int numLt) {
         return item.getNum() < numLt;
     }
-
 
     /**
      * 下架时间是否在指定分钟之内

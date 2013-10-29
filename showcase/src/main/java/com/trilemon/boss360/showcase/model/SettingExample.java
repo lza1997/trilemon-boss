@@ -346,243 +346,243 @@ public class SettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeIsNull() {
-            addCriterion("min_sale_volume is null");
+        public Criteria andIncludeMinSaleVolumeIsNull() {
+            addCriterion("include_min_sale_volume is null");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeIsNotNull() {
-            addCriterion("min_sale_volume is not null");
+        public Criteria andIncludeMinSaleVolumeIsNotNull() {
+            addCriterion("include_min_sale_volume is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeEqualTo(Integer value) {
-            addCriterion("min_sale_volume =", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeEqualTo(Integer value) {
+            addCriterion("include_min_sale_volume =", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeNotEqualTo(Integer value) {
-            addCriterion("min_sale_volume <>", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeNotEqualTo(Integer value) {
+            addCriterion("include_min_sale_volume <>", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeGreaterThan(Integer value) {
-            addCriterion("min_sale_volume >", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeGreaterThan(Integer value) {
+            addCriterion("include_min_sale_volume >", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("min_sale_volume >=", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("include_min_sale_volume >=", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeLessThan(Integer value) {
-            addCriterion("min_sale_volume <", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeLessThan(Integer value) {
+            addCriterion("include_min_sale_volume <", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeLessThanOrEqualTo(Integer value) {
-            addCriterion("min_sale_volume <=", value, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeLessThanOrEqualTo(Integer value) {
+            addCriterion("include_min_sale_volume <=", value, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeIn(List<Integer> values) {
-            addCriterion("min_sale_volume in", values, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeIn(List<Integer> values) {
+            addCriterion("include_min_sale_volume in", values, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeNotIn(List<Integer> values) {
-            addCriterion("min_sale_volume not in", values, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeNotIn(List<Integer> values) {
+            addCriterion("include_min_sale_volume not in", values, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeBetween(Integer value1, Integer value2) {
-            addCriterion("min_sale_volume between", value1, value2, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeBetween(Integer value1, Integer value2) {
+            addCriterion("include_min_sale_volume between", value1, value2, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinSaleVolumeNotBetween(Integer value1, Integer value2) {
-            addCriterion("min_sale_volume not between", value1, value2, "minSaleVolume");
+        public Criteria andIncludeMinSaleVolumeNotBetween(Integer value1, Integer value2) {
+            addCriterion("include_min_sale_volume not between", value1, value2, "includeMinSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeIsNull() {
-            addCriterion("max_sale_volume is null");
+        public Criteria andIncludeMaxSaleVolumeIsNull() {
+            addCriterion("include_max_sale_volume is null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeIsNotNull() {
-            addCriterion("max_sale_volume is not null");
+        public Criteria andIncludeMaxSaleVolumeIsNotNull() {
+            addCriterion("include_max_sale_volume is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeEqualTo(Integer value) {
-            addCriterion("max_sale_volume =", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeEqualTo(Integer value) {
+            addCriterion("include_max_sale_volume =", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeNotEqualTo(Integer value) {
-            addCriterion("max_sale_volume <>", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeNotEqualTo(Integer value) {
+            addCriterion("include_max_sale_volume <>", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeGreaterThan(Integer value) {
-            addCriterion("max_sale_volume >", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeGreaterThan(Integer value) {
+            addCriterion("include_max_sale_volume >", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("max_sale_volume >=", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("include_max_sale_volume >=", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeLessThan(Integer value) {
-            addCriterion("max_sale_volume <", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeLessThan(Integer value) {
+            addCriterion("include_max_sale_volume <", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeLessThanOrEqualTo(Integer value) {
-            addCriterion("max_sale_volume <=", value, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeLessThanOrEqualTo(Integer value) {
+            addCriterion("include_max_sale_volume <=", value, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeIn(List<Integer> values) {
-            addCriterion("max_sale_volume in", values, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeIn(List<Integer> values) {
+            addCriterion("include_max_sale_volume in", values, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeNotIn(List<Integer> values) {
-            addCriterion("max_sale_volume not in", values, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeNotIn(List<Integer> values) {
+            addCriterion("include_max_sale_volume not in", values, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeBetween(Integer value1, Integer value2) {
-            addCriterion("max_sale_volume between", value1, value2, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeBetween(Integer value1, Integer value2) {
+            addCriterion("include_max_sale_volume between", value1, value2, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMaxSaleVolumeNotBetween(Integer value1, Integer value2) {
-            addCriterion("max_sale_volume not between", value1, value2, "maxSaleVolume");
+        public Criteria andIncludeMaxSaleVolumeNotBetween(Integer value1, Integer value2) {
+            addCriterion("include_max_sale_volume not between", value1, value2, "includeMaxSaleVolume");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceIsNull() {
-            addCriterion("min_price is null");
+        public Criteria andIncludeMinPriceIsNull() {
+            addCriterion("include_min_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceIsNotNull() {
-            addCriterion("min_price is not null");
+        public Criteria andIncludeMinPriceIsNotNull() {
+            addCriterion("include_min_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceEqualTo(BigDecimal value) {
-            addCriterion("min_price =", value, "minPrice");
+        public Criteria andIncludeMinPriceEqualTo(BigDecimal value) {
+            addCriterion("include_min_price =", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceNotEqualTo(BigDecimal value) {
-            addCriterion("min_price <>", value, "minPrice");
+        public Criteria andIncludeMinPriceNotEqualTo(BigDecimal value) {
+            addCriterion("include_min_price <>", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceGreaterThan(BigDecimal value) {
-            addCriterion("min_price >", value, "minPrice");
+        public Criteria andIncludeMinPriceGreaterThan(BigDecimal value) {
+            addCriterion("include_min_price >", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("min_price >=", value, "minPrice");
+        public Criteria andIncludeMinPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("include_min_price >=", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceLessThan(BigDecimal value) {
-            addCriterion("min_price <", value, "minPrice");
+        public Criteria andIncludeMinPriceLessThan(BigDecimal value) {
+            addCriterion("include_min_price <", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("min_price <=", value, "minPrice");
+        public Criteria andIncludeMinPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("include_min_price <=", value, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceIn(List<BigDecimal> values) {
-            addCriterion("min_price in", values, "minPrice");
+        public Criteria andIncludeMinPriceIn(List<BigDecimal> values) {
+            addCriterion("include_min_price in", values, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceNotIn(List<BigDecimal> values) {
-            addCriterion("min_price not in", values, "minPrice");
+        public Criteria andIncludeMinPriceNotIn(List<BigDecimal> values) {
+            addCriterion("include_min_price not in", values, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("min_price between", value1, value2, "minPrice");
+        public Criteria andIncludeMinPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("include_min_price between", value1, value2, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMinPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("min_price not between", value1, value2, "minPrice");
+        public Criteria andIncludeMinPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("include_min_price not between", value1, value2, "includeMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceIsNull() {
-            addCriterion("max_price is null");
+        public Criteria andIncludeMaxPriceIsNull() {
+            addCriterion("include_max_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceIsNotNull() {
-            addCriterion("max_price is not null");
+        public Criteria andIncludeMaxPriceIsNotNull() {
+            addCriterion("include_max_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceEqualTo(BigDecimal value) {
-            addCriterion("max_price =", value, "maxPrice");
+        public Criteria andIncludeMaxPriceEqualTo(BigDecimal value) {
+            addCriterion("include_max_price =", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceNotEqualTo(BigDecimal value) {
-            addCriterion("max_price <>", value, "maxPrice");
+        public Criteria andIncludeMaxPriceNotEqualTo(BigDecimal value) {
+            addCriterion("include_max_price <>", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceGreaterThan(BigDecimal value) {
-            addCriterion("max_price >", value, "maxPrice");
+        public Criteria andIncludeMaxPriceGreaterThan(BigDecimal value) {
+            addCriterion("include_max_price >", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceGreaterThanOrEqualTo(BigDecimal value) {
-            addCriterion("max_price >=", value, "maxPrice");
+        public Criteria andIncludeMaxPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("include_max_price >=", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceLessThan(BigDecimal value) {
-            addCriterion("max_price <", value, "maxPrice");
+        public Criteria andIncludeMaxPriceLessThan(BigDecimal value) {
+            addCriterion("include_max_price <", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceLessThanOrEqualTo(BigDecimal value) {
-            addCriterion("max_price <=", value, "maxPrice");
+        public Criteria andIncludeMaxPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("include_max_price <=", value, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceIn(List<BigDecimal> values) {
-            addCriterion("max_price in", values, "maxPrice");
+        public Criteria andIncludeMaxPriceIn(List<BigDecimal> values) {
+            addCriterion("include_max_price in", values, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceNotIn(List<BigDecimal> values) {
-            addCriterion("max_price not in", values, "maxPrice");
+        public Criteria andIncludeMaxPriceNotIn(List<BigDecimal> values) {
+            addCriterion("include_max_price not in", values, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("max_price between", value1, value2, "maxPrice");
+        public Criteria andIncludeMaxPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("include_max_price between", value1, value2, "includeMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andMaxPriceNotBetween(BigDecimal value1, BigDecimal value2) {
-            addCriterion("max_price not between", value1, value2, "maxPrice");
+        public Criteria andIncludeMaxPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("include_max_price not between", value1, value2, "includeMaxPrice");
             return (Criteria) this;
         }
 

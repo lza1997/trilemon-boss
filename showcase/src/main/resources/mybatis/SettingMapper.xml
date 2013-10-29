@@ -6,10 +6,10 @@
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="rule_type" property="ruleType" jdbcType="TINYINT" />
-    <result column="min_sale_volume" property="minSaleVolume" jdbcType="INTEGER" />
-    <result column="max_sale_volume" property="maxSaleVolume" jdbcType="INTEGER" />
-    <result column="min_price" property="minPrice" jdbcType="DECIMAL" />
-    <result column="max_price" property="maxPrice" jdbcType="DECIMAL" />
+    <result column="include_min_sale_volume" property="includeMinSaleVolume" jdbcType="INTEGER" />
+    <result column="include_max_sale_volume" property="includeMaxSaleVolume" jdbcType="INTEGER" />
+    <result column="include_min_price" property="includeMinPrice" jdbcType="DECIMAL" />
+    <result column="include_max_price" property="includeMaxPrice" jdbcType="DECIMAL" />
     <result column="include_keywords" property="includeKeywords" jdbcType="VARCHAR" />
     <result column="include_seller_cids" property="includeSellerCids" jdbcType="VARCHAR" />
     <result column="include_item_num_iids" property="includeItemNumIids" jdbcType="VARCHAR" />
@@ -79,10 +79,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, status, rule_type, min_sale_volume, max_sale_volume, min_price, max_price, 
-    include_keywords, include_seller_cids, include_item_num_iids, exclude_item_num_iids, 
-    exclude_item_delisting_within, exclude_item_inventory_lt, exclude_item_delisting_after, 
-    add_time, upd_time
+    id, user_id, status, rule_type, include_min_sale_volume, include_max_sale_volume, 
+    include_min_price, include_max_price, include_keywords, include_seller_cids, include_item_num_iids, 
+    exclude_item_num_iids, exclude_item_delisting_within, exclude_item_inventory_lt, 
+    exclude_item_delisting_after, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.showcase.model.SettingExample" >
     select
@@ -116,15 +116,15 @@
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss360.showcase.model.Setting" >
     insert into setting (id, user_id, status, 
-      rule_type, min_sale_volume, max_sale_volume, 
-      min_price, max_price, include_keywords, 
+      rule_type, include_min_sale_volume, include_max_sale_volume, 
+      include_min_price, include_max_price, include_keywords, 
       include_seller_cids, include_item_num_iids, 
       exclude_item_num_iids, exclude_item_delisting_within, 
       exclude_item_inventory_lt, exclude_item_delisting_after, 
       add_time, upd_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
-      #{ruleType,jdbcType=TINYINT}, #{minSaleVolume,jdbcType=INTEGER}, #{maxSaleVolume,jdbcType=INTEGER}, 
-      #{minPrice,jdbcType=DECIMAL}, #{maxPrice,jdbcType=DECIMAL}, #{includeKeywords,jdbcType=VARCHAR}, 
+      #{ruleType,jdbcType=TINYINT}, #{includeMinSaleVolume,jdbcType=INTEGER}, #{includeMaxSaleVolume,jdbcType=INTEGER}, 
+      #{includeMinPrice,jdbcType=DECIMAL}, #{includeMaxPrice,jdbcType=DECIMAL}, #{includeKeywords,jdbcType=VARCHAR}, 
       #{includeSellerCids,jdbcType=VARCHAR}, #{includeItemNumIids,jdbcType=VARCHAR}, 
       #{excludeItemNumIids,jdbcType=VARCHAR}, #{excludeItemDelistingWithin,jdbcType=INTEGER}, 
       #{excludeItemInventoryLt,jdbcType=INTEGER}, #{excludeItemDelistingAfter,jdbcType=INTEGER}, 
@@ -145,17 +145,17 @@
       <if test="ruleType != null" >
         rule_type,
       </if>
-      <if test="minSaleVolume != null" >
-        min_sale_volume,
+      <if test="includeMinSaleVolume != null" >
+        include_min_sale_volume,
       </if>
-      <if test="maxSaleVolume != null" >
-        max_sale_volume,
+      <if test="includeMaxSaleVolume != null" >
+        include_max_sale_volume,
       </if>
-      <if test="minPrice != null" >
-        min_price,
+      <if test="includeMinPrice != null" >
+        include_min_price,
       </if>
-      <if test="maxPrice != null" >
-        max_price,
+      <if test="includeMaxPrice != null" >
+        include_max_price,
       </if>
       <if test="includeKeywords != null" >
         include_keywords,
@@ -198,17 +198,17 @@
       <if test="ruleType != null" >
         #{ruleType,jdbcType=TINYINT},
       </if>
-      <if test="minSaleVolume != null" >
-        #{minSaleVolume,jdbcType=INTEGER},
+      <if test="includeMinSaleVolume != null" >
+        #{includeMinSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="maxSaleVolume != null" >
-        #{maxSaleVolume,jdbcType=INTEGER},
+      <if test="includeMaxSaleVolume != null" >
+        #{includeMaxSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="minPrice != null" >
-        #{minPrice,jdbcType=DECIMAL},
+      <if test="includeMinPrice != null" >
+        #{includeMinPrice,jdbcType=DECIMAL},
       </if>
-      <if test="maxPrice != null" >
-        #{maxPrice,jdbcType=DECIMAL},
+      <if test="includeMaxPrice != null" >
+        #{includeMaxPrice,jdbcType=DECIMAL},
       </if>
       <if test="includeKeywords != null" >
         #{includeKeywords,jdbcType=VARCHAR},
@@ -260,17 +260,17 @@
       <if test="record.ruleType != null" >
         rule_type = #{record.ruleType,jdbcType=TINYINT},
       </if>
-      <if test="record.minSaleVolume != null" >
-        min_sale_volume = #{record.minSaleVolume,jdbcType=INTEGER},
+      <if test="record.includeMinSaleVolume != null" >
+        include_min_sale_volume = #{record.includeMinSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="record.maxSaleVolume != null" >
-        max_sale_volume = #{record.maxSaleVolume,jdbcType=INTEGER},
+      <if test="record.includeMaxSaleVolume != null" >
+        include_max_sale_volume = #{record.includeMaxSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="record.minPrice != null" >
-        min_price = #{record.minPrice,jdbcType=DECIMAL},
+      <if test="record.includeMinPrice != null" >
+        include_min_price = #{record.includeMinPrice,jdbcType=DECIMAL},
       </if>
-      <if test="record.maxPrice != null" >
-        max_price = #{record.maxPrice,jdbcType=DECIMAL},
+      <if test="record.includeMaxPrice != null" >
+        include_max_price = #{record.includeMaxPrice,jdbcType=DECIMAL},
       </if>
       <if test="record.includeKeywords != null" >
         include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
@@ -310,10 +310,10 @@
       user_id = #{record.userId,jdbcType=BIGINT},
       status = #{record.status,jdbcType=TINYINT},
       rule_type = #{record.ruleType,jdbcType=TINYINT},
-      min_sale_volume = #{record.minSaleVolume,jdbcType=INTEGER},
-      max_sale_volume = #{record.maxSaleVolume,jdbcType=INTEGER},
-      min_price = #{record.minPrice,jdbcType=DECIMAL},
-      max_price = #{record.maxPrice,jdbcType=DECIMAL},
+      include_min_sale_volume = #{record.includeMinSaleVolume,jdbcType=INTEGER},
+      include_max_sale_volume = #{record.includeMaxSaleVolume,jdbcType=INTEGER},
+      include_min_price = #{record.includeMinPrice,jdbcType=DECIMAL},
+      include_max_price = #{record.includeMaxPrice,jdbcType=DECIMAL},
       include_keywords = #{record.includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
       include_item_num_iids = #{record.includeItemNumIids,jdbcType=VARCHAR},
@@ -339,17 +339,17 @@
       <if test="ruleType != null" >
         rule_type = #{ruleType,jdbcType=TINYINT},
       </if>
-      <if test="minSaleVolume != null" >
-        min_sale_volume = #{minSaleVolume,jdbcType=INTEGER},
+      <if test="includeMinSaleVolume != null" >
+        include_min_sale_volume = #{includeMinSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="maxSaleVolume != null" >
-        max_sale_volume = #{maxSaleVolume,jdbcType=INTEGER},
+      <if test="includeMaxSaleVolume != null" >
+        include_max_sale_volume = #{includeMaxSaleVolume,jdbcType=INTEGER},
       </if>
-      <if test="minPrice != null" >
-        min_price = #{minPrice,jdbcType=DECIMAL},
+      <if test="includeMinPrice != null" >
+        include_min_price = #{includeMinPrice,jdbcType=DECIMAL},
       </if>
-      <if test="maxPrice != null" >
-        max_price = #{maxPrice,jdbcType=DECIMAL},
+      <if test="includeMaxPrice != null" >
+        include_max_price = #{includeMaxPrice,jdbcType=DECIMAL},
       </if>
       <if test="includeKeywords != null" >
         include_keywords = #{includeKeywords,jdbcType=VARCHAR},
@@ -386,10 +386,10 @@
     set user_id = #{userId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
       rule_type = #{ruleType,jdbcType=TINYINT},
-      min_sale_volume = #{minSaleVolume,jdbcType=INTEGER},
-      max_sale_volume = #{maxSaleVolume,jdbcType=INTEGER},
-      min_price = #{minPrice,jdbcType=DECIMAL},
-      max_price = #{maxPrice,jdbcType=DECIMAL},
+      include_min_sale_volume = #{includeMinSaleVolume,jdbcType=INTEGER},
+      include_max_sale_volume = #{includeMaxSaleVolume,jdbcType=INTEGER},
+      include_min_price = #{includeMinPrice,jdbcType=DECIMAL},
+      include_max_price = #{includeMaxPrice,jdbcType=DECIMAL},
       include_keywords = #{includeKeywords,jdbcType=VARCHAR},
       include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
       include_item_num_iids = #{includeItemNumIids,jdbcType=VARCHAR},
@@ -401,4 +401,69 @@
       upd_time = #{updTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="long">
+        select
+        <include refid="Base_Column_List"/>
+        from setting
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <update id="updateStatusByUserId" parameterType="map">
+        update setting
+        set status = #{status,jdbcType=TINYINT}
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByUserIdSelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+        update setting
+        <set >
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="ruleType != null" >
+                rule_type = #{ruleType,jdbcType=TINYINT},
+            </if>
+            <if test="includeMinSaleVolume != null" >
+                include_min_sale_volume = #{includeMinSaleVolume,jdbcType=INTEGER},
+            </if>
+            <if test="includeMaxSaleVolume != null" >
+                include_max_sale_volume = #{includeMaxSaleVolume,jdbcType=INTEGER},
+            </if>
+            <if test="includeMinPrice != null" >
+                include_min_price = #{includeMinPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="includeMaxPrice != null" >
+                include_max_price = #{includeMaxPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="includeKeywords != null" >
+                include_keywords = #{includeKeywords,jdbcType=VARCHAR},
+            </if>
+            <if test="includeSellerCids != null" >
+                include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
+            </if>
+            <if test="includeItemNumIids != null" >
+                include_item_num_iids = #{includeItemNumIids,jdbcType=VARCHAR},
+            </if>
+            <if test="excludeItemNumIids != null" >
+                exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
+            </if>
+            <if test="excludeItemDelistingWithin != null" >
+                exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
+            </if>
+            <if test="excludeItemInventoryLt != null" >
+                exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
+            </if>
+            <if test="excludeItemDelistingAfter != null" >
+                exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null" >
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updTime != null" >
+                upd_time = #{updTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
 </mapper>

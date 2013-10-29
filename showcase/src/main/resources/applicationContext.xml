@@ -44,6 +44,10 @@
         <property name="mapperLocations" value="classpath:/mybatis/*Mapper.xml"/>
     </bean>
 
+    <bean id="myBatisBatchWriter" class="com.trilemon.boss360.showcase.service.MyBatisBatchWriter">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
     <mybatis:scan base-package="com.trilemon.boss360.showcase.dao"/>
 
     <!--事务管理器配置, MyBatis单数据源事务-->
