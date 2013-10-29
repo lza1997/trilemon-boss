@@ -19,7 +19,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-    <display-name>Trilemon-TOP-360BOSS-SHELF</display-name>
+    <display-name>Trilemon-TOP-360BOSS-SHOWCASE</display-name>
     <!-- Spring ApplicationContext配置文件的路径,可使用通配符，用于后面的Spring Context Loader -->
     <context-param>
         <param-name>contextConfigLocation</param-name>

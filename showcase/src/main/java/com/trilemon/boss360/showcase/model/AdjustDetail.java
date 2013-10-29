@@ -2,7 +2,7 @@ package com.trilemon.boss360.showcase.model;
 
 import java.util.Date;
 
-public class AdjustHistory {
+public class AdjustDetail {
     private Integer id;
 
     private Long userId;

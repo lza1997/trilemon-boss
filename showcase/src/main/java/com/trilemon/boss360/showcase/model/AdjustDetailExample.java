@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AdjustHistoryExample {
+public class AdjustDetailExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public AdjustHistoryExample() {
+    public AdjustDetailExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

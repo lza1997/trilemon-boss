@@ -32,4 +32,6 @@ public interface SettingMapper {
     Setting selectByUserId(Long userId);
 
     void updateStatusByUserId(@Param("userId")Long userId,@Param("status") Byte status);
+
+    void updateByUserIdSelective(Setting setting);
 }

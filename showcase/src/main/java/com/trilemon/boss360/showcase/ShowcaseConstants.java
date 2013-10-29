@@ -8,7 +8,7 @@ import java.util.List;
  * @author kevin
  */
 public interface ShowcaseConstants {
-    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "delist_time", "title", "pic_url", "seller_cids");
+    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "has_showcase", "title", "pic_url", "seller_cids","num");
     byte NOT_HAS_SHOWCASE = 0;
     byte HAS_SHOWCASE = 1;
     byte RULE_TYPE_INCLUDE_SELLER_CIDS = 1;
