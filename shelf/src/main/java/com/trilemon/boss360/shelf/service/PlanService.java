@@ -199,7 +199,9 @@ public class PlanService {
 
     @Transactional
     private void savePlan(Long planSettingId, List<Plan> plans) {
-        planMapper.batchInsert(plans);
+        if (CollectionUtils.isNotEmpty(plans)) {
+            planMapper.batchInsert(plans);
+        }
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_RUNNING);

@@ -111,11 +111,12 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
-        INSERT INTO plan_setting (id, user_id, name,
+    <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO plan_setting (id, user_id, `name`,
                                   name_pinyin, include_seller_cids, auto_add_new_items,
                                   exclude_item_num_iids, distribution, distribution_type,
-                                  status, last_plan_time, add_time,
+                                  `status`, last_plan_time, add_time,
                                   upd_time)
             VALUES (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR},
                     #{namePinyin,jdbcType=VARCHAR}, #{includeSellerCids,jdbcType=VARCHAR}, #{autoAddNewItems,jdbcType=BIT},
@@ -123,7 +124,8 @@
                     #{status,jdbcType=TINYINT}, #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP},
                     #{updTime,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting">
+    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.PlanSetting" useGeneratedKeys="true"
+            keyProperty="id">
         insert into plan_setting
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">

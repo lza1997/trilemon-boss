@@ -122,7 +122,7 @@
     <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.Plan">
         INSERT INTO plan (id, plan_setting_id, user_id,
                           item_num_iid, item_title, item_title_pinyin,
-                          item_pic_url, status, failed_cause,
+                          item_pic_url, `status`, failed_cause,
                           plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time,
                           adjust_time, add_time, upd_time
         )
@@ -379,7 +379,7 @@
     </update>
     <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO plan (plan_setting_id, user_id,
-        item_num_iid, item_seller_cid, item_title,
+        item_num_iid, item_title,
         item_title_pinyin, item_pic_url, `status`,
         plan_adjust_day, plan_adjust_start_time,
         plan_adjust_end_time, add_time

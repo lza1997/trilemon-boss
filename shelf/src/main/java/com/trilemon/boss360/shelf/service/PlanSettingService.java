@@ -242,7 +242,7 @@ public class PlanSettingService {
             for (PlanSetting planSetting : PlanSettingPage.getItems()) {
                 plannedSellerCatIds.addAll(Collections3.getLongList(planSetting.getIncludeSellerCids()));
             }
-            if (PlanSettingPage.getTotalSize()==0) {
+            if (PlanSettingPage.isLastPage()) {
                 break;
             } else {
                 pageNum++;
