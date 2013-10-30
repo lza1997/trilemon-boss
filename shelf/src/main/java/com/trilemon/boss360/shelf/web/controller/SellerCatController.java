@@ -22,7 +22,7 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/sellercats")
-public class SellerCatAController {
+public class SellerCatController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
     @Autowired
