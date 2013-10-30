@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.27)
 # Database: trilemon-360boss-shelf
-# Generation Time: 2013-10-28 11:45:12 +0000
+# Generation Time: 2013-10-30 14:24:56 +0000
 # ************************************************************
 
 
@@ -30,7 +30,6 @@ CREATE TABLE `plan` (
   `plan_setting_id` bigint(11) unsigned NOT NULL DEFAULT '0',
   `user_id` bigint(11) unsigned NOT NULL DEFAULT '0',
   `item_num_iid` bigint(11) unsigned NOT NULL DEFAULT '0',
-  `item_seller_cid` bigint(11) unsigned NOT NULL,
   `item_title` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `item_title_pinyin` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `item_pic_url` varchar(1024) NOT NULL DEFAULT '',
@@ -58,16 +57,17 @@ CREATE TABLE `plan_setting` (
   `name` varchar(32) NOT NULL DEFAULT '',
   `name_pinyin` varchar(256) NOT NULL DEFAULT '',
   `include_seller_cids` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `auto_add_new_items` tinyint(1) NOT NULL DEFAULT '0',
+  `auto_add_new_items` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `exclude_item_num_iids` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `distribution` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `distribution_type` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `before_adjust_distribution` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `last_plan_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `add_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `upd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `index_plan_setting_user_id` (`user_id`),
+  KEY `index_plan_setting_user_id_and_status` (`user_id`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
