@@ -6,7 +6,6 @@
         <result column="plan_setting_id" property="planSettingId" jdbcType="BIGINT"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="item_num_iid" property="itemNumIid" jdbcType="BIGINT"/>
-        <result column="item_seller_cid" property="itemSellerCid" jdbcType="BIGINT"/>
         <result column="item_title" property="itemTitle" jdbcType="VARCHAR"/>
         <result column="item_title_pinyin" property="itemTitlePinyin" jdbcType="VARCHAR"/>
         <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR"/>
@@ -25,8 +24,6 @@
         <result column="new_item_num" property="newItemNum" jdbcType="INTEGER"/>
         <result column="wait_adjust_item_num" property="waitAdjustItemNum" jdbcType="INTEGER"/>
     </resultMap>
-
-
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -88,8 +85,8 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        id, plan_setting_id, user_id, item_num_iid, item_seller_cid, item_title, item_title_pinyin,
-        item_pic_url, status, failed_cause, plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time,
+        id, plan_setting_id, user_id, item_num_iid, item_title, item_title_pinyin, item_pic_url,
+        status, failed_cause, plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time,
         adjust_time, add_time, upd_time
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.shelf.model.PlanExample">
@@ -124,17 +121,17 @@
     </delete>
     <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.Plan">
         INSERT INTO plan (id, plan_setting_id, user_id,
-                          item_num_iid, item_seller_cid, item_title,
-                          item_title_pinyin, item_pic_url, `status`,
-                          failed_cause, plan_adjust_day, plan_adjust_start_time,
-                          plan_adjust_end_time, adjust_time, add_time,
-                          upd_time)
+                          item_num_iid, item_title, item_title_pinyin,
+                          item_pic_url, status, failed_cause,
+                          plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time,
+                          adjust_time, add_time, upd_time
+        )
             VALUES (#{id,jdbcType=BIGINT}, #{planSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
-                    #{itemNumIid,jdbcType=BIGINT}, #{itemSellerCid,jdbcType=BIGINT}, #{itemTitle,jdbcType=VARCHAR},
-                    #{itemTitlePinyin,jdbcType=VARCHAR}, #{itemPicUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
-                    #{failedCause,jdbcType=VARCHAR}, #{planAdjustDay,jdbcType=TIMESTAMP}, #{planAdjustStartTime,jdbcType=TIME},
-                    #{planAdjustEndTime,jdbcType=TIME}, #{adjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP},
-                    #{updTime,jdbcType=TIMESTAMP})
+                    #{itemNumIid,jdbcType=BIGINT}, #{itemTitle,jdbcType=VARCHAR}, #{itemTitlePinyin,jdbcType=VARCHAR},
+                    #{itemPicUrl,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{failedCause,jdbcType=VARCHAR},
+                    #{planAdjustDay,jdbcType=TIMESTAMP}, #{planAdjustStartTime,jdbcType=TIME}, #{planAdjustEndTime,jdbcType=TIME},
+                    #{adjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+            )
     </insert>
     <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.Plan">
         insert into plan
@@ -150,9 +147,6 @@
             </if>
             <if test="itemNumIid != null">
                 item_num_iid,
-            </if>
-            <if test="itemSellerCid != null">
-                item_seller_cid,
             </if>
             <if test="itemTitle != null">
                 item_title,
@@ -200,9 +194,6 @@
             </if>
             <if test="itemNumIid != null">
                 #{itemNumIid,jdbcType=BIGINT},
-            </if>
-            <if test="itemSellerCid != null">
-                #{itemSellerCid,jdbcType=BIGINT},
             </if>
             <if test="itemTitle != null">
                 #{itemTitle,jdbcType=VARCHAR},
@@ -261,9 +252,6 @@
             <if test="record.itemNumIid != null">
                 item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
             </if>
-            <if test="record.itemSellerCid != null">
-                item_seller_cid = #{record.itemSellerCid,jdbcType=BIGINT},
-            </if>
             <if test="record.itemTitle != null">
                 item_title = #{record.itemTitle,jdbcType=VARCHAR},
             </if>
@@ -308,11 +296,10 @@
         plan_setting_id = #{record.planSettingId,jdbcType=BIGINT},
         user_id = #{record.userId,jdbcType=BIGINT},
         item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
-        item_seller_cid = #{record.itemSellerCid,jdbcType=BIGINT},
         item_title = #{record.itemTitle,jdbcType=VARCHAR},
         item_title_pinyin = #{record.itemTitlePinyin,jdbcType=VARCHAR},
         item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
-        `status` = #{record.status,jdbcType=TINYINT},
+        status = #{record.status,jdbcType=TINYINT},
         failed_cause = #{record.failedCause,jdbcType=VARCHAR},
         plan_adjust_day = #{record.planAdjustDay,jdbcType=TIMESTAMP},
         plan_adjust_start_time = #{record.planAdjustStartTime,jdbcType=TIME},
@@ -335,9 +322,6 @@
             </if>
             <if test="itemNumIid != null">
                 item_num_iid = #{itemNumIid,jdbcType=BIGINT},
-            </if>
-            <if test="itemSellerCid != null">
-                item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
             </if>
             <if test="itemTitle != null">
                 item_title = #{itemTitle,jdbcType=VARCHAR},
@@ -380,11 +364,10 @@
         SET plan_setting_id = #{planSettingId,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
             item_num_iid = #{itemNumIid,jdbcType=BIGINT},
-            item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
             item_title = #{itemTitle,jdbcType=VARCHAR},
             item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
             item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
-            `status` = #{status,jdbcType=TINYINT},
+            status = #{status,jdbcType=TINYINT},
             failed_cause = #{failedCause,jdbcType=VARCHAR},
             plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
             plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
@@ -405,8 +388,7 @@
         <foreach collection="list" item="plan" index="index"
                  separator=",">
             (#{plan.planSettingId,jdbcType=BIGINT}, #{plan.userId,jdbcType=BIGINT},
-            #{plan.itemNumIid,jdbcType=BIGINT}, #{plan.itemSellerCid,jdbcType=BIGINT},
-            #{plan.itemTitle,jdbcType=VARCHAR},
+            #{plan.itemNumIid,jdbcType=BIGINT}, #{plan.itemTitle,jdbcType=VARCHAR},
             #{plan.itemTitlePinyin,jdbcType=VARCHAR}, #{plan.itemPicUrl,jdbcType=VARCHAR},
             #{plan.status,jdbcType=TINYINT},
             #{plan.planAdjustDay,jdbcType=TIMESTAMP}, #{plan.planAdjustStartTime,jdbcType=TIME},
@@ -524,9 +506,6 @@
             <if test="itemNumIid != null">
                 item_num_iid = #{itemNumIid,jdbcType=BIGINT},
             </if>
-            <if test="itemSellerCid != null">
-                item_seller_cid = #{itemSellerCid,jdbcType=BIGINT},
-            </if>
             <if test="itemTitle != null">
                 item_title = #{itemTitle,jdbcType=VARCHAR},
             </if>
@@ -563,4 +542,12 @@
         </set>
         where plan_setting_id = #{planSettingId,jdbcType=BIGINT} and item_num_iid = #{itemNumIid,jdbcType=BIGINT}
     </update>
+    <select id="selectNumIidsByUserId" resultType="long" parameterType="long">
+        select
+        item_num_iid
+        from plan
+        <where>
+            user_id = #{userId,jdbcType=BIGINT}
+        </where>
+    </select>
 </mapper>

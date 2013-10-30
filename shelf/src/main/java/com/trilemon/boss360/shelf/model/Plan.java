@@ -1,20 +1,15 @@
 package com.trilemon.boss360.shelf.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Date;
 
 public class Plan {
     private Long id;
 
-    @JsonIgnore
     private Long planSettingId;
 
     private Long userId;
 
     private Long itemNumIid;
-
-    private Long itemSellerCid;
 
     private String itemTitle;
 
@@ -68,14 +63,6 @@ public class Plan {
 
     public void setItemNumIid(Long itemNumIid) {
         this.itemNumIid = itemNumIid;
-    }
-
-    public Long getItemSellerCid() {
-        return itemSellerCid;
-    }
-
-    public void setItemSellerCid(Long itemSellerCid) {
-        this.itemSellerCid = itemSellerCid;
     }
 
     public String getItemTitle() {

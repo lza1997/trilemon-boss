@@ -4,33 +4,18 @@ import java.util.Date;
 
 public class PlanSetting {
     private Long id;
-
     private Long userId;
-
     private String name;
-
     private String namePinyin;
-
     private String includeSellerCids;
-
     private Boolean autoAddNewItems;
-
     private String excludeItemNumIids;
-
     private String distribution;
-
     private Byte distributionType;
-
-    private String beforeAdjustDistribution;
-
     private Byte status;
-
     private Date lastPlanTime;
-
     private Date addTime;
-
     private Date updTime;
-
     private int itemNum; // 宝贝数量
     private int newItemNum; // 新上架宝贝数量
     private int waitAdjustItemNum; // 待调整宝贝数量
@@ -105,14 +90,6 @@ public class PlanSetting {
 
     public void setDistributionType(Byte distributionType) {
         this.distributionType = distributionType;
-    }
-
-    public String getBeforeAdjustDistribution() {
-        return beforeAdjustDistribution;
-    }
-
-    public void setBeforeAdjustDistribution(String beforeAdjustDistribution) {
-        this.beforeAdjustDistribution = beforeAdjustDistribution == null ? null : beforeAdjustDistribution.trim();
     }
 
     public Byte getStatus() {

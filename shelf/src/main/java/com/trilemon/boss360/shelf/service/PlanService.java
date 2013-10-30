@@ -181,7 +181,10 @@ public class PlanService {
             request.setSellerCids(planSetting.getIncludeSellerCids());
             Pair<List<Item>, Long> result = taobaoApiShopService.getOnSaleItems(userId, request);
 
-            List<Plan> plans = plan(planSetting, result.getKey());
+            //获取已经计划的宝贝
+            List<Long> usedItemNumIids = planMapper.selectNumIidsByUserId(userId);
+
+            List<Plan> plans = plan(planSetting, TopApiUtils.excludeItems(result.getKey(), usedItemNumIids));
             logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
                     planSetting.getId());
             savePlan(planSetting.getId(), plans);

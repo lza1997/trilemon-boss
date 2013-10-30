@@ -61,4 +61,6 @@ public interface PlanMapper {
                                                          @Param("planAdjustEndTime") Date planAdjustEndTime);
 
     void updateByPlanSettingIdAndNumIid(Plan plan);
+
+    List<Long> selectNumIidsByUserId(Long userId);
 }

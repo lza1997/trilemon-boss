@@ -246,7 +246,6 @@ public class TestController {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSetting.setAutoAddNewItems(true);
-        planSetting.setBeforeAdjustDistribution("test");
         planSetting.setDistribution("test");
         planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
         planSetting.setExcludeItemNumIids("19491833743");

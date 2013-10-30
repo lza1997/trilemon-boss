@@ -1,9 +1,7 @@
 package com.trilemon.boss360.shelf.service;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
 import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
@@ -32,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
@@ -56,11 +55,31 @@ public class PlanSettingService {
     private TaobaoApiShopService taobaoApiShopService;
 
     /**
-     * 创建计划设置
+     * 检测是否分类已经被其他计划使用
+     * @param userId
+     * @param sellerCatStr
+     * @return
+     */
+    public boolean isSellerCatUsed(Long userId, String sellerCatStr) {
+        final Set<Long> usedSellerCatIds = getUsedSellerCatIds(userId);
+        List<Long> planSellerCatIds = Collections3.getLongList(sellerCatStr);
+        return Iterables.any(planSellerCatIds, new Predicate<Long>() {
+            @Override
+            public boolean apply(@Nullable Long input) {
+                return usedSellerCatIds.contains(input);
+            }
+        });
+    }
+
+    /**
+     * 创建计划设置，需要检测是否所选择类目已经存在于其他计划了，如果存在则创建出错。
      *
      * @param planSetting
      */
     public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException {
+        if (isSellerCatUsed(userId, planSetting.getIncludeSellerCids())) {
+            throw new ShelfException("userId[" + userId + "] sellerCat[" + planSetting.getIncludeSellerCids() + "] is used");
+        }
         planSetting.setUserId(userId);
         planSetting.setStatus(PLAN_SETTING_STATUS_WAITING_PLAN);
         try {
@@ -214,7 +233,7 @@ public class PlanSettingService {
      * @return 不会返回 null，如果结果为空，返回一个空的{@link Set}
      */
     @NotNull
-    public Set<Long> getPlannedSellerCatIds(Long userId) {
+    public Set<Long> getUsedSellerCatIds(Long userId) {
         Set<Long> plannedSellerCatIds = Sets.newHashSet();
         int pageNum = 1;
         while (true) {

@@ -1,7 +1,10 @@
 package com.trilemon.boss360.shelf.job;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
@@ -12,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 调整计划，主要需要调整 <ul> <li>新加入宝贝纳入计划</li> <li>已加入宝贝下架</li> </ul>
@@ -20,7 +23,7 @@ import java.util.Collection;
  * @author kevin
  */
 @Service
-public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
+public class UpdatePlanJob extends AbstractQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private PlanService planService;
@@ -45,20 +48,25 @@ public class UpdatePlanJob extends AbstractQueueService<PlanSetting> {
     public void fillQueue() {
         logger.info("start to fill queue.");
         //自动纳入宝贝的才更新
-        int offset = 0;
+        long hitUserId = 0;
         while (true) {
-            Collection<PlanSetting> planSettings = planSettingMapper.paginateAutoAddItemPlanSettings(offset, 500);
-            if (CollectionUtils.isEmpty(planSettings)) {
+            List<Long> userIds = planSettingMapper.paginateUserIdByStatus(hitUserId, 100,
+                    ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+            if (CollectionUtils.isEmpty(userIds)) {
                 break;
             } else {
-                fillQueue(planSettings);
+                hitUserId = Iterables.getLast(userIds);
+                fillQueue(userIds);
             }
         }
         logger.info("end to fill queue[{}].", getQueue().size());
     }
 
     @Override
-    public void process(PlanSetting planSetting) throws Exception {
-        planService.updatePlan(planSetting.getId());
+    public void process(Long userId) throws Exception {
+        List<PlanSetting> planSettings = planSettingMapper.selectByUserId(userId);
+        for (PlanSetting planSetting : planSettings) {
+            planService.updatePlan(planSetting.getId());
+        }
     }
 }

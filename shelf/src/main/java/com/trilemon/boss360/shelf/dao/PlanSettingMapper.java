@@ -40,7 +40,7 @@ public interface PlanSettingMapper {
 
     int countByUserIdAndStatus(@Param("userId") Long userId, @Param("statusList") List<Byte> statusList);
 
-    List<PlanSetting> paginateByStatus(@Param("offset") Integer offset,
+    List<PlanSetting> paginateByStatus(@Param("hitId") Long hitId,
                                        @Param("limit") Integer limit,
                                        @Param("statusList") List<Byte> statusList);
 
@@ -57,5 +57,8 @@ public interface PlanSettingMapper {
 
     int countByUserIdAndName(@Param("userId") Long userId, @Param("query") String query);
 
-    List<PlanSetting> paginateAutoAddItemPlanSettings(@Param("offset") Integer offset, @Param("limit") Integer limit);
+    List<PlanSetting> paginateAutoAddItemPlanSettings(@Param("hitId") Long hitId, @Param("limit") Integer limit);
+
+    List<Long> paginateUserIdByStatus( @Param("hitUserId") Long hitUserId,@Param("limit") Integer limit,
+                                       @Param("statusList")  List<Byte> statusList);
 }

@@ -46,10 +46,10 @@ public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
     @Override
     public void fillQueue() {
         logger.info("start to fill queue.");
-        int offset = 0;
+        long hitUserId = 0;
         while (true) {
-            List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(offset,
-                    500, ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+            List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(hitUserId,100,
+                    ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
             if (CollectionUtils.isEmpty(planSettings)) {
                 break;
             } else {

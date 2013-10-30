@@ -10,7 +10,6 @@ import com.trilemon.boss360.shelf.web.controller.ItemController;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
@@ -179,9 +178,6 @@ public class ShelfUtils {
         plan.setItemNumIid(item.getNumIid());
         plan.setItemTitle(item.getTitle());
         plan.setItemPicUrl(item.getPicUrl());
-        if (null != item.getSellerCids()) {
-            plan.setItemSellerCid(Long.valueOf(StringUtils.remove(item.getSellerCids(), ",")));
-        }
         plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
         try {
             plan.setItemTitlePinyin(Languages.getHanYuPinyin(item.getTitle()));

@@ -39,7 +39,7 @@ public class SellerCatController {
     public List<SellerCatVO> index() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         List<SellerCat> sellerCats = taobaoApiShopService.getSellerCats(56912708L);
         Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L, sellerCats);
-        Set<Long> plannedSellerCatIds = planSettingService.getPlannedSellerCatIds(56912708L);
+        Set<Long> plannedSellerCatIds = planSettingService.getUsedSellerCatIds(56912708L);
 
         // map -> list , use DTO to transfer
         List<SellerCatVO> list = Lists.newArrayList();

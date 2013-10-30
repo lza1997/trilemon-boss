@@ -372,66 +372,6 @@ public class PlanExample {
             return (Criteria) this;
         }
 
-        public Criteria andItemSellerCidIsNull() {
-            addCriterion("item_seller_cid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidIsNotNull() {
-            addCriterion("item_seller_cid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidEqualTo(Long value) {
-            addCriterion("item_seller_cid =", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidNotEqualTo(Long value) {
-            addCriterion("item_seller_cid <>", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidGreaterThan(Long value) {
-            addCriterion("item_seller_cid >", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidGreaterThanOrEqualTo(Long value) {
-            addCriterion("item_seller_cid >=", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidLessThan(Long value) {
-            addCriterion("item_seller_cid <", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidLessThanOrEqualTo(Long value) {
-            addCriterion("item_seller_cid <=", value, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidIn(List<Long> values) {
-            addCriterion("item_seller_cid in", values, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidNotIn(List<Long> values) {
-            addCriterion("item_seller_cid not in", values, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidBetween(Long value1, Long value2) {
-            addCriterion("item_seller_cid between", value1, value2, "itemSellerCid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemSellerCidNotBetween(Long value1, Long value2) {
-            addCriterion("item_seller_cid not between", value1, value2, "itemSellerCid");
-            return (Criteria) this;
-        }
-
         public Criteria andItemTitleIsNull() {
             addCriterion("item_title is null");
             return (Criteria) this;
