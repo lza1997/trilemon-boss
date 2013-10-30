@@ -1,7 +1,7 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.google.common.base.Throwables;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

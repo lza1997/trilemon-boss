@@ -2,6 +2,7 @@ package com.trilemon.boss360.shelf.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -11,6 +12,7 @@ import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.vo.PlanStatus;
+import com.trilemon.commons.Collections3;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -22,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 import static com.trilemon.boss360.shelf.ShelfConstants.*;
 
@@ -191,5 +195,30 @@ public class PlanSettingService {
         } else {
             return Page.create(totalSize, pageNum, pageSize, plans);
         }
+    }
+
+    /**
+     * 获取已经在计划中的的宝贝分类
+     *
+     * @param userId
+     * @return 不会返回 null，如果结果为空，返回一个空的{@link Set}
+     */
+    @NotNull
+    public Set<Long> getPlannedSellerCatIds(Long userId) {
+        Set<Long> plannedSellerCatIds = Sets.newHashSet();
+        int pageNum = 1;
+        while (true) {
+            Page<PlanSetting> PlanSettingPage = paginatePlanSettings(userId, pageNum, 100);
+
+            for (PlanSetting planSetting : PlanSettingPage.getItems()) {
+                plannedSellerCatIds.addAll(Collections3.getLongList(planSetting.getIncludeSellerCids()));
+            }
+            if (PlanSettingPage.isLastPage()) {
+                break;
+            } else {
+                pageNum++;
+            }
+        }
+        return plannedSellerCatIds;
     }
 }
