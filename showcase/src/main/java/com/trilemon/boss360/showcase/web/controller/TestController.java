@@ -1,8 +1,8 @@
 package com.trilemon.boss360.showcase.web.controller;
 
 import com.taobao.api.domain.Item;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoEnhancedApiException;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoSessionExpiredException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.showcase.ShowcaseConstants;
 import com.trilemon.boss360.showcase.ShowcaseException;
 import com.trilemon.boss360.showcase.model.Setting;
