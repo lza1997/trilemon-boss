@@ -22,14 +22,14 @@ import java.util.Set;
  */
 @Controller
 @RequestMapping("/sellercats")
-public class SellerCatController {
+public class SellerCatAController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
     @Autowired
     private PlanSettingService planSettingService;
 
     /**
-     * 获取卖家的目录
+     * 获取卖家的分类信息
      *
      * @return
      * @throws TaobaoEnhancedApiException
