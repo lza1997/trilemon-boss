@@ -1,9 +1,7 @@
 package com.trilemon.boss360.shelf;
 
 import com.google.common.base.Function;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Table;
+import com.google.common.collect.*;
 import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
@@ -228,6 +226,7 @@ public class ShelfUtils {
 
     /**
      * 将 Plan 对象转为 Item，注意是另一个 VO
+     *
      * @param plans
      * @return
      */
@@ -244,16 +243,14 @@ public class ShelfUtils {
         return items;
     }
 
-    public static List<Item> normalizeItem(List<Item> items) {
-        return Lists.transform(items, new Function<Item, Item>() {
-            @Nullable
-            @Override
-            public Item apply(@Nullable Item input) {
-                if (null != input.getSellerCids() && input.getSellerCids().equals("-1")) {
-                    input.setSellerCids("0");
-                }
-                return input;
+    public static Multiset<Integer> getItemDayOfWeekNum(List<Item> items) {
+        Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
+        for (Item item : items) {
+            if (null != item.getDelistTime()) {
+                DateTime delistDateTime = new DateTime(item.getDelistTime());
+                dayOfWeekNum.add(delistDateTime.getDayOfWeek());
             }
-        });
+        }
+        return dayOfWeekNum;
     }
 }

@@ -12,8 +12,8 @@ import com.trilemon.boss360.infrastructure.base.model.TaobaoApp;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
-import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
@@ -21,6 +21,7 @@ import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
+import com.trilemon.boss360.shelf.service.dto.ShelfStatus;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
@@ -409,4 +410,17 @@ public class TestController {
         planService.includeItem(planSettingId, numIid);
         return "success";
     }
+
+    /**
+     * 获取用于展示店铺上下架图形的数据
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/shelfStatus", method = RequestMethod.GET)
+    public ShelfStatus shelfStatus() throws
+            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        return planSettingService.getShelfStatus(56912708L);
+    }
+
 }

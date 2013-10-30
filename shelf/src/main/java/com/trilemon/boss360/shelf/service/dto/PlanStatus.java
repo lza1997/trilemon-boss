@@ -1,4 +1,4 @@
-package com.trilemon.boss360.shelf.service.vo;
+package com.trilemon.boss360.shelf.service.dto;
 
 /**
  * @author kevin

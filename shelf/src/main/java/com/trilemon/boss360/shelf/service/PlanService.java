@@ -94,7 +94,6 @@ public class PlanService {
         }
 
         List<Item> onSaleItems = onSaleItemResult.getKey();
-        onSaleItems = ShelfUtils.normalizeItem(onSaleItems);
 
         if (null == onSaleItemResult || null == onSaleItems) {
             ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +

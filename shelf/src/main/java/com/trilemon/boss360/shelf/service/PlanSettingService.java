@@ -2,22 +2,30 @@ package com.trilemon.boss360.shelf.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
+import com.taobao.api.domain.Item;
+import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
+import com.trilemon.boss360.shelf.ShelfUtils;
 import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
-import com.trilemon.boss360.shelf.service.vo.PlanStatus;
+import com.trilemon.boss360.shelf.service.dto.PlanStatus;
+import com.trilemon.boss360.shelf.service.dto.ShelfStatus;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +52,8 @@ public class PlanSettingService {
     private PlanService planService;
     @Autowired
     private AppService appService;
+    @Autowired
+    private TaobaoApiShopService taobaoApiShopService;
 
     /**
      * 创建计划设置
@@ -220,5 +230,33 @@ public class PlanSettingService {
             }
         }
         return plannedSellerCatIds;
+    }
+
+    /**
+     * 获取当前宝贝的 dayOfWeek 分布情况 TODO cache
+     *
+     * @param userId
+     * @return
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     */
+    public ShelfStatus getShelfStatus(Long userId) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        //获取当前实际的宝贝在dayOfWeek的分布情况
+        ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
+        request.setFields("delist_time");
+        Pair<List<Item>, Long> itemPair = taobaoApiShopService.getOnSaleItems(userId, request);
+        List<Integer> listItemNum = Lists.newArrayList();
+        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDayOfWeekNum(itemPair.getKey());
+        ShelfStatus shelfStatus = new ShelfStatus();
+        shelfStatus.setDayOfWeek(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7));
+        listItemNum.add(dayOfWeekNum.count(1));
+        listItemNum.add(dayOfWeekNum.count(2));
+        listItemNum.add(dayOfWeekNum.count(3));
+        listItemNum.add(dayOfWeekNum.count(4));
+        listItemNum.add(dayOfWeekNum.count(5));
+        listItemNum.add(dayOfWeekNum.count(6));
+        listItemNum.add(dayOfWeekNum.count(7));
+        shelfStatus.setListItemNum(listItemNum);
+        return shelfStatus;
     }
 }

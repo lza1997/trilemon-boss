@@ -3,7 +3,7 @@ package com.trilemon.boss360.shelf.dao;
 import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanExample;
-import com.trilemon.boss360.shelf.service.vo.PlanStatus;
+import com.trilemon.boss360.shelf.service.dto.PlanStatus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
