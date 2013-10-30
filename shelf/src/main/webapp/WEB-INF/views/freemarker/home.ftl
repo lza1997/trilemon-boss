@@ -26,6 +26,7 @@
     <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
     <script src="${asset}/base/js/underscore.js"></script>
     <script src="${asset}/base/js/jquery.js"></script>
+    <script src="${asset}/base/js/highcharts.src.js"></script>
     <script src="${asset}/base/js/angular.js"></script>
     <script src="${asset}/base/js/angular-animate.js"></script>
     <script src="${asset}/base/js/angular-resource.js"></script>
@@ -36,6 +37,8 @@
     <script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-modal.js"></script>
     <script src="${asset}/base/js/seajs-lazy-module.js"></script>
+    <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
+    <script src="${asset}/base/js/angular/highchart.js"></script>
 
     <script src="${asset}/shelf/js/app.js"></script>
     <script src="${asset}/shelf/js/common/index.js"></script>
@@ -87,9 +90,7 @@
     </div>
 </header>
 
-<div class="ajax-spinner fade" ng-class="{'in':ajaxing}" ng-if="ajaxing">
-    <i class="icon-spinner icon-spin"></i> 载入中...
-</div>
+<div ajax-spinner></div>
 
 <div class="container" ng-view>
 
