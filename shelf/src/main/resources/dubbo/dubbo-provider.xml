@@ -15,17 +15,18 @@
 
     <dubbo:reference id="baseClient" interface="com.trilemon.boss360.infrastructure.base.client.BaseClient"/>
 
+    <dubbo:registry protocol="zookeeper" address="${zk}"/>
+
     <beans profile="development">
         <context:property-placeholder ignore-resource-not-found="true"
                                       location="classpath*:/application.properties,
           			  classpath*:/application.development.properties"/>
-        <dubbo:registry protocol="zookeeper" address="${zk}"/>
+
     </beans>
     <beans profile="production">
         <context:property-placeholder ignore-resource-not-found="true"
                                       location="classpath*:/application.properties,
           			  classpath*:/application.production.properties"/>
-        <dubbo:registry protocol="zookeeper" address="${zk}"/>
     </beans>
     <beans profile="test">
         <context:property-placeholder ignore-resource-not-found="true"
