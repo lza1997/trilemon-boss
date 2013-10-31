@@ -29,7 +29,7 @@
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.planned && !sellercat.wasSelected" />
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.planned && !childCat.wasSelected" />
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>
