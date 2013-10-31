@@ -37,6 +37,9 @@ define(function(require, exports, module) {
                     // 联动所有子分类
                     if (sellerCat.parentCid === 0) {
                         _.chain($scope.sellerCats).where({parentCid: sellerCat.cid}).each(function(childSellerCat) {
+                            if (childSellerCat.planned && !childSellerCat.wasSelected) {
+                                return;
+                            }
                             childSellerCat.selected = sellerCat.selected;
                         });
                     }
