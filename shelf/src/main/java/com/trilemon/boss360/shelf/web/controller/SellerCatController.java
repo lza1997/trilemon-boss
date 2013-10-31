@@ -44,13 +44,13 @@ public class SellerCatController {
         // map -> list , use DTO to transfer
         List<SellerCatVO> list = Lists.newArrayList();
         for (SellerCat sellerCat : map.keySet()) {
-            SellerCatVO sellerCatDTO = new SellerCatVO(sellerCat);
-            sellerCatDTO.setItemNum(map.get(sellerCat));
+            SellerCatVO sellerCatVO = new SellerCatVO(sellerCat);
+            sellerCatVO.setItemNum(map.get(sellerCat));
             //设置是否分类已经被占用了
             if (plannedSellerCatIds.contains(sellerCat.getCid())) {
-                sellerCatDTO.setPlanned(true);
+                sellerCatVO.setPlanned(true);
             }
-            list.add(sellerCatDTO);
+            list.add(sellerCatVO);
         }
 
         return list;

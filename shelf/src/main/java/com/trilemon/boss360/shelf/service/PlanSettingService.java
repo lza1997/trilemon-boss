@@ -213,11 +213,11 @@ public class PlanSettingService {
         }
     }
 
-    public Page<Plan> paginatePlans(Long userId, Long planSettingId, int pageNum, int pageSize) {
+    public Page<Plan> paginatePlans(Long userId, Long planSettingId, String query,int pageNum, int pageSize) {
         List<Byte> statusList = ImmutableList.of(PLAN_STATUS_SUCCESSFUL, PLAN_STATUS_WAITING_ADJUST, PLAN_STATUS_EXCLUDED);
-        int totalSize = planMapper.countByUserIdAndPlanSettingIdAndStatus(userId, planSettingId, statusList);
+        int totalSize = planMapper.countByUserIdAndPlanSettingIdAndStatus(userId, planSettingId, statusList,query);
         List<Plan> plans = planMapper.paginateByUserIdAndPlanSettingIdAndStatus(userId,
-                planSettingId, statusList, (pageNum - 1) * pageSize,
+                planSettingId, statusList, query,(pageNum - 1) * pageSize,
                 pageSize);
         if (CollectionUtils.isEmpty(plans)) {
             return Page.create(totalSize, pageNum, pageSize, Lists.<Plan>newArrayList());

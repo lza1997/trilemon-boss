@@ -47,11 +47,17 @@ public interface PlanMapper {
     List<Plan> selectByPlanSettingIdAndStatus(@Param("planSettingId") Long planSettingId,
                                               @Param("statusList") List<Byte> statusList);
 
-    int countByUserIdAndPlanSettingIdAndStatus(@Param("userId") Long userId, @Param("planSettingId") Long planSettingId, @Param("statusList") List<Byte> statusList);
+    int countByUserIdAndPlanSettingIdAndStatus(@Param("userId") Long userId,
+                                               @Param("planSettingId") Long planSettingId,
+                                               @Param("statusList") List<Byte> statusList,
+                                               @Param("query") String query);
 
     List<Plan> paginateByUserIdAndPlanSettingIdAndStatus(@Param("userId") Long userId,
                                                          @Param("planSettingId") Long planSettingId,
-                                                         @Param("statusList") List<Byte> statusList, @Param("offset") Integer offset, @Param("limit") Integer limit);
+                                                         @Param("statusList") List<Byte> statusList,
+                                                         @Param("query") String query,
+                                                         @Param("offset") Integer offset,
+                                                         @Param("limit") Integer limit);
 
     PlanStatus calcPlanStatus(@Param("planSettingId") Long planSettingId, @Param("lastPlanTime") Date lastPlanTime);
 

@@ -444,31 +444,35 @@
     </delete>
     <select id="countByUserIdAndPlanSettingIdAndStatus" parameterType="map" resultType="java.lang.Integer">
         select count(*) from plan
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-            and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
-            and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where
+        user_id = #{userId,jdbcType=BIGINT}
+        and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+        and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        <if test="query!=null">
+            and (item_title like CONCAT('%','${query}','%'))
+        </if>
     </select>
     <select id="paginateByUserIdAndPlanSettingIdAndStatus" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-            and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
-            and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where
+        user_id = #{userId,jdbcType=BIGINT}
+        and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
+        and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        <if test="query!=null">
+            and (item_title like CONCAT('%','${query}','%'))
+        </if>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
     <select id="calcPlanStatus" resultMap="PlanStatusResultMap" parameterType="map">

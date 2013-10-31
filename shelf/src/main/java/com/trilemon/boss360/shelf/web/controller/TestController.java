@@ -369,7 +369,7 @@ public class TestController {
     @RequestMapping(value = "/paginatePlans", method = RequestMethod.GET)
     public Page<Plan> paginatePlans(@RequestParam long planSettingId, @RequestParam int pageNum) throws
             ShelfException {
-        return planSettingService.paginatePlans(56912708L, planSettingId, pageNum, 2);
+        return planSettingService.paginatePlans(56912708L, planSettingId, null,pageNum, 2);
     }
 
     @ResponseBody
