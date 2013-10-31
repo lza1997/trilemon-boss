@@ -26,4 +26,9 @@
                                       location="classpath*:/application.properties,
           			  classpath*:/application.production.properties"/>
     </beans>
+    <beans profile="test">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.properties,
+          			  classpath*:/application.test.properties"/>
+    </beans>
 </beans>
