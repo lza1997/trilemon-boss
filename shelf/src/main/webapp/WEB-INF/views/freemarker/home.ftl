@@ -17,6 +17,9 @@
     <!--[if lt IE 9]>
     <script src="${asset}/base/js/html5shiv.js"></script>
     <script src="${asset}/base/js/respond.min.js"></script>
+    <script>
+        document.createElement('chart');
+    </script>
     <![endif]-->
 
     <!--[if lt IE 8]>
@@ -92,8 +95,7 @@
 
 <div ajax-spinner></div>
 
-<div class="container" ng-view>
-
+<div class="container" ng-view ng-cloak>
 </div>
 
 <footer>

@@ -24,16 +24,16 @@ define(function(require, exports, module) {
                     });
                     _.findWhere(data, {cid: firstChild.parentCid}).expand = true;
 
-                    // 修改时回填
+                    // 显示页面时回填
                     _.each(data, function(cat) {
-                        cat.selected = _.include($scope.includeSellerCids, cat.cid + '');
+                        cat.wasSelected = cat.selected = _.include($scope.includeSellerCids, cat.cid + '');
                     });
 
                     $scope.sellerCats = data;
                 });
 
                 // 分类的父子联动选择
-                $scope.changeSelected = function(sellerCat) {
+                $scope.check = function(sellerCat) {
                     // 联动所有子分类
                     if (sellerCat.parentCid === 0) {
                         _.chain($scope.sellerCats).where({parentCid: sellerCat.cid}).each(function(childSellerCat) {

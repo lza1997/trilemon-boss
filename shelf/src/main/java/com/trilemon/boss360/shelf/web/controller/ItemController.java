@@ -30,7 +30,7 @@ public class ItemController {
     Page<Item> index(String key, @RequestParam(defaultValue = "") Long[] cids, @RequestParam(defaultValue = "1") int
             page, @RequestParam(required = false) Long pid) throws TaobaoEnhancedApiException,
             TaobaoSessionExpiredException {
-        Page<Plan> plans = planSettingService.paginatePlans(56912708L, pid,null, page, 2);
+        Page<Plan> plans = planSettingService.paginatePlans(56912708L, pid, key, page, 2);
         Page<Item> itemPage = Page.empty();
         itemPage.setTotalSize(plans.getTotalSize());
         itemPage.setPageSize(plans.getPageSize());

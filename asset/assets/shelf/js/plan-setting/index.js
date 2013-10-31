@@ -19,6 +19,14 @@ define(function(require, exports, module) {
         factories: {
             'PlanSettingForm': PlanSettingForm,
             'Confirm': Confirm
+        },
+        templates: {
+            'planSetting/adjust': require('./template/adjust.html'),
+            'planSetting/chart': require('./template/chart.html'),
+            'planSetting/confirm': require('./template/confirm.html'),
+            'planSetting/filter': require('./template/filter.html'),
+            'planSetting/form': require('./template/form.html'),
+            'planSetting/index': require('./template/index.html')
         }
     };
 });

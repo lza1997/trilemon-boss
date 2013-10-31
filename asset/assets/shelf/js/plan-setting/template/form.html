@@ -19,17 +19,17 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}">
                 <label>
-                    <input type="checkbox" ng-model="sellercat.selected" ng-change="changeSelected(sellercat)" />
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" ng-disabled="sellercat.planned && !sellercat.wasSelected"  />
                 </label>
                 <label ng-click="toggleSellerCat(sellercat)" >
-                    <span style="width:40px;">
+                    <span>
                         <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
                     </span>
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="changeSelected(childCat)" />
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.planned && !sellercat.wasSelected" />
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>

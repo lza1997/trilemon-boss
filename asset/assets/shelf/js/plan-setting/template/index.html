@@ -1,6 +1,6 @@
 <div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
-<div>
-    <a class="pull-right" href="" ng-click="showChart()">查看店铺宝贝上下架前后对比</a>
+<div ng-show="planSettings.length>0">
+    <a class="pull-right" href="" ng-click="showChart()">当前上下架统计</a>
 </div>
 <table ng-show="planSettings.length>0" class="table table-hover">
     <col width="120px"/>
@@ -34,9 +34,11 @@
             <button class="btn btn-primary" ng-click="pause(planSetting, false)" ng-if="planSetting.status == PLAN_STATUS.PAUSED">
                 <i class="icon-play"></i> 继续
             </button>
-            <button ng-click="delete(planSetting)" class="btn btn-primary">
+            &nbsp;
+            <button ng-click="remove(planSetting)" class="btn btn-primary">
                 <i class="icon-remove"></i> 删除
             </button>
+            &nbsp;
             <div class="btn-group">
                 <a href="#/plan-setting/{{planSetting.id}}/edit" class="btn btn-primary">
                     <i class="icon-pencil"></i> 修改
@@ -46,7 +48,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="#/plan-setting/{{planSetting.id}}/filter">筛选宝贝</a></li>
-                    <li><a href="#/plan-setting/{{planSetting.id}}/edit-time">修改时间</a></li>
+                    <li><a href="#/plan-setting/{{planSetting.id}}/adjust">修改时间</a></li>
                 </ul>
             </div>
         </td>
@@ -56,7 +58,7 @@
     <pagination items="planSettings" pager-click="jumpPage(page)"></pagination>
 </div>
 
-<div class="well" ng-show="planSettings.length<1">
+<div class="well" ng-show="planSettings.length<1 && !ajaxing">
     <p>暂时还没有计划呢~</p>
     <a class="btn btn-primary btn-lg" href="#/plan-setting/new">立刻创建计划</a>
 </div>

@@ -47,7 +47,6 @@ public class PlanSettingController {
             planSetting.setAddTime(appService.getLocalSystemTime().toDate());
             planSetting.setDistribution("test");
             planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
-            //planSetting.setExcludeItemIids("19491833743,19440841598");
             planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
             planSetting.setUserId(56912708L);
             planSettingService.createPlanSetting(56912708L, planSetting);

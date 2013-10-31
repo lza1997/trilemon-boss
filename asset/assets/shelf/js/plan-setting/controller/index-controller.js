@@ -1,6 +1,4 @@
 define(function(require, exports, module) {
-    var chartTemplate = require('../template/chart.html');
-
     var IndexController = ['$scope', 'REST', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, REST, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
         // 初始化
         $scope.init = function() {
@@ -19,7 +17,7 @@ define(function(require, exports, module) {
         };
 
         // 删除计划
-        $scope.delete = function(planSetting) {
+        $scope.remove = function(planSetting) {
             Confirm.open('确定要删除“' + planSetting.name + '”？').then(function() {
                 planSetting.remove().then(function() {
                     $scope.jumpPage($scope.planSettings.currPage).then(function(data) {
@@ -49,36 +47,19 @@ define(function(require, exports, module) {
 
         $scope.showChart = function() {
             var modal = $modal.open({
-                template: chartTemplate,
-                controller: function($scope, $http, $modalInstance) {
-                    $scope.modal = $modalInstance;
-                    $http.get("/shelf/plan-settings/chart").success(function(data) {
-                        $scope.data = {
-                            "title": {
-                                "text": "我也不知道叫啥"
-                            },
-                            "xAxis": {
-                                "labels": {}
-                            },
-                            "tooltip": {},
-                            "series": [
-                                {
-                                    "name": "上架宝贝数量",
-                                    "data": data
-                                },
-                            ]
-                        };
-                    });
-                }
+                templateUrl: 'planSetting/chart',
+                controller: require('./chart-controller')
             });
         };
 
         $scope.init();
     }];
 
-    IndexController.template = require('../template/index.html');
-    IndexController.title = "计划列表";
-    IndexController.navClass = "planIndex";
+
+
+    IndexController.template = 'planSetting/index';
+    IndexController.title = '计划列表';
+    IndexController.navClass = 'planIndex';
 
     module.exports = IndexController;
 });

@@ -36,7 +36,7 @@ define(function(require, exports, module) {
         }
     }];
 
-    FilterController.template = require('../template/filter.html');
+    FilterController.template = 'planSetting/filter';
     FilterController.title = "筛选宝贝";
 
     module.exports = FilterController;

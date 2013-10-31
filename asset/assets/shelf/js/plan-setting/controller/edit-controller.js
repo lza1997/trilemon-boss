@@ -13,7 +13,7 @@ define(function(require, exports, module) {
         });
     }];
 
-    EditController.template = require('../template/form.html');
+    EditController.template = 'planSetting/form';
     EditController.title = "挑选分类";
 
     module.exports = EditController;

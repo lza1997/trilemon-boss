@@ -9,7 +9,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
         .when('/plan-setting/:id/filter', planSetting.routeFor('planSetting.filter'))
         .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
-        .when('/plan-setting/:id/edit-time', planSetting.routeFor('planSetting.editTime'))
+        .when('/plan-setting/:id/adjust', planSetting.routeFor('planSetting.adjust'))
         .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
         .otherwise({redirectTo: '/plan-setting'});
 
@@ -29,6 +29,6 @@ app.constant('PLAN_STATUS', {
     PAUSED: 2
 });
 
-app.run(['SeajsLazyModule', function(SeajsLazyModule) {
-    SeajsLazyModule.init();
+app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
+    SeajsLazyModule.init($templateCache);
 }]);
