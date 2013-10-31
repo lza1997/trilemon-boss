@@ -25,7 +25,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath*:/applicationContext.xml
-            classpath*:/applicationContext-Trilemon-360Boss-Shelf.xml
+            classpath*:/AapplicationContext-Trilemon-360Boss-Shelf.xml
         </param-value>
     </context-param>
 
