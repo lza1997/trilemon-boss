@@ -1,17 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap', 'common', 'seajs']);
-
-app.factory('ajaxSpinner', ['$rootScope', '$q', function($rootScope, $q) {
-    return {
-        'request': function(config) {
-            $rootScope.ajaxing = true;
-            return config || $q.when(config);
-        },
-        'response': function(response) {
-            $rootScope.ajaxing = false;
-            return response || $q.when(response);
-        }
-    };
-}]);
+var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
 
 app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
 
@@ -22,13 +9,12 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
         .when('/plan-setting/:id/filter', planSetting.routeFor('planSetting.filter'))
         .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
+        .when('/plan-setting/:id/edit-time', planSetting.routeFor('planSetting.editTime'))
         .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
         .otherwise({redirectTo: '/plan-setting'});
 
 
     RestangularProvider.setMethodOverriders(['put', 'delete']);
-
-    $httpProvider.interceptors.push('ajaxSpinner');
 
     RESTProvider.setURL({
         ITEM: 'shelf/items',

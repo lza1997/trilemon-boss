@@ -3,6 +3,7 @@ define(function(require, exports, module) {
     var FilterController = require('./controller/filter-controller');
     var EditController = require('./controller/edit-controller');
     var IndexController = require('./controller/index-controller');
+    var AdjustController = require('./controller/adjust-controller');
 
     var PlanSettingForm = require('./service/plan-setting-form');
     var Confirm = require('./service/confirm');
@@ -12,7 +13,8 @@ define(function(require, exports, module) {
             'planSetting.new': NewController,
             'planSetting.filter': FilterController,
             'planSetting.index': IndexController,
-            'planSetting.edit': EditController
+            'planSetting.edit': EditController,
+            'planSetting.adjust': AdjustController
         },
         factories: {
             'PlanSettingForm': PlanSettingForm,

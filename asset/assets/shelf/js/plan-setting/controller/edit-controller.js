@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var EditController = ['$scope', 'REST', 'PlanSettingForm', '$routeParams', 'Flash', function($scope, REST, PlanSettingForm, $routeParams) {
+    var EditController = ['$scope', 'REST', 'PlanSettingForm', '$routeParams', function($scope, REST, PlanSettingForm, $routeParams) {
 
         REST.PLAN_SETTING.get($routeParams.id).then(function(planSetting) {
             // 选中的分类 ID
@@ -15,7 +15,6 @@ define(function(require, exports, module) {
 
     EditController.template = require('../template/form.html');
     EditController.title = "挑选分类";
-    EditController.navClass = "";
 
     module.exports = EditController;
 });

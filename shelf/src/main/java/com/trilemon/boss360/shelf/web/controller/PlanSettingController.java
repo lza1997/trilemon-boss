@@ -1,6 +1,7 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
 import com.trilemon.boss360.shelf.ShelfException;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author kevin
@@ -130,6 +132,18 @@ public class PlanSettingController {
     public String includeItem(@PathVariable Long planSettingId,@PathVariable Long numIid){
         planService.includeItem(planSettingId, numIid);
         return "";
+    }
+
+    /**
+     * 获取用于展示店铺上下架图形的数据
+     * @return
+     * @throws ShelfException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/chart", method = RequestMethod.GET)
+    public List<Integer> chart() throws
+            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        return planSettingService.getShelfStatus(56912708L).getListItemNum();
     }
 
 }
