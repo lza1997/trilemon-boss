@@ -43,6 +43,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,9 +101,7 @@ public class PlanService {
 
         if (null == onSaleItemResult || null == onSaleItems) {
             ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +
-                    "userId[" + planSetting.getUserId() + "], PlanSetting[" + ToStringBuilder.reflectionToString(planSetting)
-                    +
-                    "]");
+                    "userId[" + planSetting.getUserId() + "], PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]");
             Exceptions.logAndThrow(logger, shelfException);
         }
 
@@ -203,7 +202,7 @@ public class PlanService {
     @Transactional
     private void savePlan(Long planSettingId, List<Plan> plans) {
         if (CollectionUtils.isNotEmpty(plans)) {
-            myBatisBatchWriter.write("com.trilemon.boss360.shelf.dao.PlanMapper.insertSelective",plans);
+            myBatisBatchWriter.write("com.trilemon.boss360.shelf.dao.PlanMapper.insertSelective", plans);
         }
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
@@ -215,15 +214,15 @@ public class PlanService {
     /**
      * 依据计划设置安排计划，并且返回计划列表。
      *
-     * @param planSetting
-     * @param items
+     * @param planSetting {@link PlanSetting}
+     * @param items       需要纳入计划的宝贝
      * @return 不会返回 null，如果没有计划，返回一个空的集合
      */
+    @NotNull
     private List<Plan> plan(PlanSetting planSetting, List<Item> items) throws ShelfException {
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = null;
         switch (planSetting.getDistributionType()) {
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
-                //首先平均，然后后续采用智能分析 TODO
                 assignTable = autoAssignItems(items);
                 break;
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
@@ -288,8 +287,7 @@ public class PlanService {
                 planDistribution = ShelfUtils.getDefaultZeroFilledDistribution();
                 break;
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
-                planDistribution = ShelfUtils.parseAndFillZeroDistribution
-                        (planSetting.getDistribution());
+                planDistribution = ShelfUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
                 break;
         }
         if (null == planDistribution) {
@@ -298,7 +296,7 @@ public class PlanService {
         }
         Table<Integer, LocalTimeInterval, Integer> newItemDistribution = ShelfUtils.getNewItemDistribution(items.size(),
                 planDistribution, currDistribution);
-        return assignItems(items, newItemDistribution);
+        return ShelfUtils.assignItems(items, newItemDistribution);
     }
 
     /**
@@ -309,7 +307,7 @@ public class PlanService {
      */
     private Table<Integer, LocalTimeInterval, List<Item>> autoAssignItems(List<Item> items) {
         Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.getDefaultDistribution(items.size());
-        return assignItems(items, distribution);
+        return ShelfUtils.assignItems(items, distribution);
     }
 
     /**
@@ -319,28 +317,10 @@ public class PlanService {
      * @param items
      * @return
      */
-    private Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) {
+    public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) {
         Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
                 .getDistribution());
-        return assignItems(items, distribution);
-    }
-
-    /**
-     * 把宝贝平均的安排到计划时间段
-     *
-     * @param items
-     * @param distribution
-     * @return
-     */
-    private Table<Integer, LocalTimeInterval, List<Item>> assignItems(List<Item> items, Table<Integer, LocalTimeInterval, Integer> distribution) {
-        Table<Integer, LocalTimeInterval, List<Item>> assignTable = HashBasedTable.create();
-        int fromIndex = 0;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
-            assignTable.put(cell.getRowKey(), cell.getColumnKey(),
-                    items.subList(fromIndex, fromIndex + cell.getValue()));
-            fromIndex += cell.getValue();
-        }
-        return assignTable;
+        return ShelfUtils.assignItems(items, distribution);
     }
 
     public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException {

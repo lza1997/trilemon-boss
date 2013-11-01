@@ -1,6 +1,7 @@
 package com.trilemon.boss360.shelf;
 
 import com.google.common.base.Function;
+import com.google.common.base.Splitter;
 import com.google.common.collect.*;
 import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
@@ -30,7 +31,7 @@ public class ShelfUtils {
      * @return
      */
     public static Table<Integer, LocalTimeInterval, Integer> getDistribution(Iterable<Plan> plans) {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         for (Plan plan : plans) {
             DateTime adjustDay = new DateTime(plan.getPlanAdjustDay());
             int dayOfWeek = adjustDay.getDayOfWeek();
@@ -55,12 +56,19 @@ public class ShelfUtils {
      * @return
      */
     public static Table<Integer, LocalTimeInterval, Integer> parseAndFillZeroDistribution(String distribution) {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
-        for (String interval : distribution.split("\\|\\|")) {
-            String[] segments = interval.split("\\|");
+        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
+        Iterable<String> days = Splitter.on("||").trimResults().omitEmptyStrings().split(distribution);
+        if (Iterables.isEmpty(days)) {
+            return table;
+        }
+        for (String interval : days) {
+            Iterable<String> segments = Splitter.on("|").trimResults().omitEmptyStrings().split(interval);
+            if (Iterables.isEmpty(segments) || (Iterables.size(segments) != 2)) {
+                return table;
+            }
             //解析|分隔符
-            int weekDay = Integer.valueOf(segments[0]);
-            String[] hourAndMin = segments[1].split("\\-");
+            int weekDay = Integer.valueOf(Iterables.get(segments,0));
+            String[] hourAndMin = Iterables.get(segments,1).split("\\-");
 
             //解析小时段
             String[] startHourAndMin = hourAndMin[0].split(":");
@@ -82,10 +90,10 @@ public class ShelfUtils {
      * @return
      */
     public static Table<Integer, LocalTimeInterval, Integer> getDefaultDistribution(int itemNum) {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         int cellDivision = IntMath.divide(itemNum, 7 * (23 - 9), RoundingMode.CEILING);
         for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
-            for (int hourOfDay = 9; hourOfDay <= 23; hourOfDay++) {
+            for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
                 if (itemNum == 0) {
                     break;
                 }
@@ -102,7 +110,7 @@ public class ShelfUtils {
     }
 
     public static Table<Integer, LocalTimeInterval, Integer> getDefaultZeroFilledDistribution() {
-        Table<Integer, LocalTimeInterval, Integer> table = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
             for (int hourOfDay = 9; hourOfDay <= 23; hourOfDay++) {
                 LocalTime startHour = new LocalTime(hourOfDay, 0);
@@ -135,7 +143,7 @@ public class ShelfUtils {
     public static Table<Integer, LocalTimeInterval, Integer> getNewItemDistribution(int itemNum,
                                                                                     Table<Integer, LocalTimeInterval, Integer> planDistribution,
                                                                                     Table<Integer, LocalTimeInterval, Integer> currDistribution) {
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = TreeBasedTable.create();
         Table<Integer, LocalTimeInterval, Integer> combinedDistribution = combineDistribution(planDistribution, currDistribution);
         for (int index = 0; index < itemNum; index++) {
             Table.Cell<Integer, LocalTimeInterval, Integer> minCell = ShelfUtils.findMinCellOfDistribution(combinedDistribution);
@@ -151,7 +159,7 @@ public class ShelfUtils {
 
     public static Table<Integer, LocalTimeInterval, Integer> combineDistribution(Table<Integer, LocalTimeInterval,
             Integer>... distributions) {
-        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = HashBasedTable.create();
+        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = TreeBasedTable.create();
         for (Table<Integer, LocalTimeInterval, Integer> distribution : distributions) {
             for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
                 if (null != cell.getValue()) {
@@ -248,5 +256,24 @@ public class ShelfUtils {
             }
         }
         return dayOfWeekNum;
+    }
+
+    /**
+     * 把宝贝平均的安排到计划时间段
+     *
+     * @param items
+     * @param distribution
+     * @return
+     */
+    public static Table<Integer, LocalTimeInterval, List<Item>> assignItems(List<Item> items, Table<Integer,
+            LocalTimeInterval, Integer> distribution) {
+        Table<Integer, LocalTimeInterval, List<Item>> assignTable = TreeBasedTable.create();
+        int fromIndex = 0;
+        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
+            assignTable.put(cell.getRowKey(), cell.getColumnKey(),
+                    items.subList(fromIndex, fromIndex + cell.getValue()));
+            fromIndex += cell.getValue();
+        }
+        return assignTable;
     }
 }
