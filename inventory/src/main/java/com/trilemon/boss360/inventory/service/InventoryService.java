@@ -7,10 +7,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InventoryService {
-    public int getRegularShelvedItemNum() {
-        return 0;
-    }
-
     public int getNeverOnShelfItemNum() {
         return 0;
     }
