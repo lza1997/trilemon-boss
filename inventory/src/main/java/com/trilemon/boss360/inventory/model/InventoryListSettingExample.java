@@ -225,63 +225,73 @@ public class InventoryListSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeIsNull() {
-            addCriterion("include_inventory_type is null");
+        public Criteria andIncludeInventoryTypesIsNull() {
+            addCriterion("include_inventory_types is null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeIsNotNull() {
-            addCriterion("include_inventory_type is not null");
+        public Criteria andIncludeInventoryTypesIsNotNull() {
+            addCriterion("include_inventory_types is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeEqualTo(Byte value) {
-            addCriterion("include_inventory_type =", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesEqualTo(String value) {
+            addCriterion("include_inventory_types =", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeNotEqualTo(Byte value) {
-            addCriterion("include_inventory_type <>", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesNotEqualTo(String value) {
+            addCriterion("include_inventory_types <>", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeGreaterThan(Byte value) {
-            addCriterion("include_inventory_type >", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesGreaterThan(String value) {
+            addCriterion("include_inventory_types >", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeGreaterThanOrEqualTo(Byte value) {
-            addCriterion("include_inventory_type >=", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesGreaterThanOrEqualTo(String value) {
+            addCriterion("include_inventory_types >=", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeLessThan(Byte value) {
-            addCriterion("include_inventory_type <", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesLessThan(String value) {
+            addCriterion("include_inventory_types <", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeLessThanOrEqualTo(Byte value) {
-            addCriterion("include_inventory_type <=", value, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesLessThanOrEqualTo(String value) {
+            addCriterion("include_inventory_types <=", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeIn(List<Byte> values) {
-            addCriterion("include_inventory_type in", values, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesLike(String value) {
+            addCriterion("include_inventory_types like", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeNotIn(List<Byte> values) {
-            addCriterion("include_inventory_type not in", values, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesNotLike(String value) {
+            addCriterion("include_inventory_types not like", value, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeBetween(Byte value1, Byte value2) {
-            addCriterion("include_inventory_type between", value1, value2, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesIn(List<String> values) {
+            addCriterion("include_inventory_types in", values, "includeInventoryTypes");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypeNotBetween(Byte value1, Byte value2) {
-            addCriterion("include_inventory_type not between", value1, value2, "includeInventoryType");
+        public Criteria andIncludeInventoryTypesNotIn(List<String> values) {
+            addCriterion("include_inventory_types not in", values, "includeInventoryTypes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeInventoryTypesBetween(String value1, String value2) {
+            addCriterion("include_inventory_types between", value1, value2, "includeInventoryTypes");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeInventoryTypesNotBetween(String value1, String value2) {
+            addCriterion("include_inventory_types not between", value1, value2, "includeInventoryTypes");
             return (Criteria) this;
         }
 

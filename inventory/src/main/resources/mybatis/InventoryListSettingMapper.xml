@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.trilemon.boss360.inventory.model.InventoryListSetting" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="include_inventory_type" property="includeInventoryType" jdbcType="TINYINT" />
+    <result column="include_inventory_types" property="includeInventoryTypes" jdbcType="VARCHAR" />
     <result column="auto_add_new_item" property="autoAddNewItem" jdbcType="TINYINT" />
     <result column="distribution" property="distribution" jdbcType="VARCHAR" />
     <result column="list_type" property="listType" jdbcType="TINYINT" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, include_inventory_type, auto_add_new_item, distribution, list_type, 
+    id, user_id, include_inventory_types, auto_add_new_item, distribution, list_type, 
     list_interval, last_plan_time, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.inventory.model.InventoryListSettingExample" >
@@ -106,11 +106,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss360.inventory.model.InventoryListSetting" >
-    insert into inventory_list_setting (id, user_id, include_inventory_type, 
+    insert into inventory_list_setting (id, user_id, include_inventory_types, 
       auto_add_new_item, distribution, list_type, 
       list_interval, last_plan_time, add_time, 
       upd_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeInventoryType,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeInventoryTypes,jdbcType=VARCHAR}, 
       #{autoAddNewItem,jdbcType=TINYINT}, #{distribution,jdbcType=VARCHAR}, #{listType,jdbcType=TINYINT}, 
       #{listInterval,jdbcType=INTEGER}, #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updTime,jdbcType=TIMESTAMP})
@@ -124,8 +124,8 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="includeInventoryType != null" >
-        include_inventory_type,
+      <if test="includeInventoryTypes != null" >
+        include_inventory_types,
       </if>
       <if test="autoAddNewItem != null" >
         auto_add_new_item,
@@ -156,8 +156,8 @@
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
       </if>
-      <if test="includeInventoryType != null" >
-        #{includeInventoryType,jdbcType=TINYINT},
+      <if test="includeInventoryTypes != null" >
+        #{includeInventoryTypes,jdbcType=VARCHAR},
       </if>
       <if test="autoAddNewItem != null" >
         #{autoAddNewItem,jdbcType=TINYINT},
@@ -197,8 +197,8 @@
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=BIGINT},
       </if>
-      <if test="record.includeInventoryType != null" >
-        include_inventory_type = #{record.includeInventoryType,jdbcType=TINYINT},
+      <if test="record.includeInventoryTypes != null" >
+        include_inventory_types = #{record.includeInventoryTypes,jdbcType=VARCHAR},
       </if>
       <if test="record.autoAddNewItem != null" >
         auto_add_new_item = #{record.autoAddNewItem,jdbcType=TINYINT},
@@ -230,7 +230,7 @@
     update inventory_list_setting
     set id = #{record.id,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
-      include_inventory_type = #{record.includeInventoryType,jdbcType=TINYINT},
+      include_inventory_types = #{record.includeInventoryTypes,jdbcType=VARCHAR},
       auto_add_new_item = #{record.autoAddNewItem,jdbcType=TINYINT},
       distribution = #{record.distribution,jdbcType=VARCHAR},
       list_type = #{record.listType,jdbcType=TINYINT},
@@ -248,8 +248,8 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=BIGINT},
       </if>
-      <if test="includeInventoryType != null" >
-        include_inventory_type = #{includeInventoryType,jdbcType=TINYINT},
+      <if test="includeInventoryTypes != null" >
+        include_inventory_types = #{includeInventoryTypes,jdbcType=VARCHAR},
       </if>
       <if test="autoAddNewItem != null" >
         auto_add_new_item = #{autoAddNewItem,jdbcType=TINYINT},
@@ -278,7 +278,7 @@
   <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.inventory.model.InventoryListSetting" >
     update inventory_list_setting
     set user_id = #{userId,jdbcType=BIGINT},
-      include_inventory_type = #{includeInventoryType,jdbcType=TINYINT},
+      include_inventory_types = #{includeInventoryTypes,jdbcType=VARCHAR},
       auto_add_new_item = #{autoAddNewItem,jdbcType=TINYINT},
       distribution = #{distribution,jdbcType=VARCHAR},
       list_type = #{listType,jdbcType=TINYINT},

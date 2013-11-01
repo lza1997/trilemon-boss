@@ -28,6 +28,7 @@ import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.Exceptions;
 import com.trilemon.commons.LocalTimeInterval;
+import com.trilemon.commons.mybatis.MyBatisBatchWriter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +69,8 @@ public class PlanService {
     private BaseClient baseClient;
     @Autowired
     private TaobaoApiService taobaoApiService;
+    @Autowired
+    private MyBatisBatchWriter myBatisBatchWriter;
 
     /**
      * 更新一个计划。
@@ -185,22 +188,22 @@ public class PlanService {
             List<Long> usedItemNumIids = planMapper.selectNumIidsByUserId(userId);
 
             List<Plan> plans = plan(planSetting, TopApiUtils.excludeItems(result.getKey(), usedItemNumIids));
-            logger.info("generate {} plans for userId[{}], planSettingId[{}].", plans.size(), userId,
-                    planSetting.getId());
+            logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
             savePlan(planSetting.getId(), plans);
         } catch (TaobaoEnhancedApiException e) {
-            ShelfException shelfException = new ShelfException("create plan error, userId[" + userId + "], " +
+            ShelfException shelfException = new ShelfException("userId[" + userId + "] create plan error for " +
                     "planSettingId[" + planSetting.getId() + "]", e);
             Exceptions.logAndThrow(logger, shelfException);
         } catch (TaobaoSessionExpiredException e) {
-            Exceptions.logAndThrow(logger, "userId[" + userId + "]", e);
+            e.setUserId(userId);
+            Exceptions.logAndThrow(logger, e);
         }
     }
 
     @Transactional
     private void savePlan(Long planSettingId, List<Plan> plans) {
         if (CollectionUtils.isNotEmpty(plans)) {
-            planMapper.batchInsert(plans);
+            myBatisBatchWriter.write("com.trilemon.boss360.shelf.dao.PlanMapper.insertSelective",plans);
         }
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);

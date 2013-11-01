@@ -34,8 +34,6 @@ public interface PlanMapper {
 
     List<Plan> selectByPlanSettingId(Long planSettingId);
 
-    void batchInsert(List<Plan> plans);
-
     void deleteByPlanSettingId(Long planSettingId);
 
     void deleteByUserIdAndNumIids(@Param("userId") Long userId, @Param("numIids") List<Long> numIids);

@@ -377,26 +377,6 @@
             upd_time = #{updTime,jdbcType=TIMESTAMP}
         WHERE id = #{id,jdbcType=BIGINT}
     </update>
-    <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO plan (plan_setting_id, user_id,
-        item_num_iid, item_title,
-        item_title_pinyin, item_pic_url, `status`,
-        plan_adjust_day, plan_adjust_start_time,
-        plan_adjust_end_time, add_time
-        )
-        VALUES
-        <foreach collection="list" item="plan" index="index"
-                 separator=",">
-            (#{plan.planSettingId,jdbcType=BIGINT}, #{plan.userId,jdbcType=BIGINT},
-            #{plan.itemNumIid,jdbcType=BIGINT}, #{plan.itemTitle,jdbcType=VARCHAR},
-            #{plan.itemTitlePinyin,jdbcType=VARCHAR}, #{plan.itemPicUrl,jdbcType=VARCHAR},
-            #{plan.status,jdbcType=TINYINT},
-            #{plan.planAdjustDay,jdbcType=TIMESTAMP}, #{plan.planAdjustStartTime,jdbcType=TIME},
-            #{plan.planAdjustEndTime,jdbcType=TIME},
-            #{plan.addTime,jdbcType=TIMESTAMP}
-            )
-        </foreach>
-    </insert>
     <select id="selectByPlanSettingId" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>

@@ -7,7 +7,7 @@ public class InventoryListSetting {
 
     private Long userId;
 
-    private Byte includeInventoryType;
+    private String includeInventoryTypes;
 
     private Byte autoAddNewItem;
 
@@ -39,12 +39,12 @@ public class InventoryListSetting {
         this.userId = userId;
     }
 
-    public Byte getIncludeInventoryType() {
-        return includeInventoryType;
+    public String getIncludeInventoryTypes() {
+        return includeInventoryTypes;
     }
 
-    public void setIncludeInventoryType(Byte includeInventoryType) {
-        this.includeInventoryType = includeInventoryType;
+    public void setIncludeInventoryTypes(String includeInventoryTypes) {
+        this.includeInventoryTypes = includeInventoryTypes == null ? null : includeInventoryTypes.trim();
     }
 
     public Byte getAutoAddNewItem() {
