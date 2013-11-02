@@ -44,7 +44,7 @@
         <property name="mapperLocations" value="classpath:/mybatis/*Mapper.xml"/>
     </bean>
 
-    <bean id="myBatisBatchWriter" class="com.trilemon.boss360.showcase.service.MyBatisBatchWriter">
+    <bean id="myBatisBatchWriter" class="com.trilemon.commons.mybatis.MyBatisBatchWriter">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 

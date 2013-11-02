@@ -2,7 +2,6 @@ package com.trilemon.boss360.showcase.service;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -24,10 +23,10 @@ import com.trilemon.boss360.showcase.model.AdjustDetail;
 import com.trilemon.boss360.showcase.model.Setting;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.Exceptions;
+import com.trilemon.commons.mybatis.MyBatisBatchWriter;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
@@ -40,7 +39,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -57,8 +55,6 @@ public class SettingService {
     private AdjustDetailMapper adjustDetailMapper;
     @Autowired
     private AppService appService;
-    @Autowired
-    private TaobaoApiService taobaoApiService;
     @Autowired
     private MyBatisBatchWriter myBatisBatchWriter;
 
