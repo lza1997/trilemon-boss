@@ -17,7 +17,7 @@
     <div class="form-group">
         <label class="col-md-1 control-label"></label>
         <div class="col-md-6">
-            <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}">
+            <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
                     <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" ng-disabled="sellercat.planned && !sellercat.wasSelected"  />
                 </label>
@@ -27,7 +27,7 @@
                     </span>
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
                 </label>
-                <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}">
+                <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
                     <label>
                         <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.planned && !childCat.wasSelected" />
                         {{childCat.name}} ({{childCat.itemNum}})
