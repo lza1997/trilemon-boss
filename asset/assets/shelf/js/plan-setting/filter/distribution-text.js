@@ -31,7 +31,7 @@ define(function(require, exports, module) {
             }, []);
 
             // [[1,2], [3,4]] => ['1:00~2:00', '3:00~4:00']
-            hours = hours.map(function(hour) {
+            hours = _.map(hours, function(hour) {
                 return format(hour[0]) + '~' + format(hour[1]);
             });
 
