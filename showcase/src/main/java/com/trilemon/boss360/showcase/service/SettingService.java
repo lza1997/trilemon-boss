@@ -60,11 +60,11 @@ public class SettingService {
 
     public void createSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
         if (null != settingMapper.selectByUserId(userId)) {
-            logger.debug("userId[{}] setting exist.", userId);
+            logger.info("userId[{}] setting exist.", userId);
             return;
         }
         setting.setUserId(userId);
-        setting.setStatus(ShowcaseConstants.SETTING_STATUS_PAUSE);
+        setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
         setting.setAddTime(appService.getLocalSystemTime().toDate());
         settingMapper.insertSelective(setting);
         adjust(userId);

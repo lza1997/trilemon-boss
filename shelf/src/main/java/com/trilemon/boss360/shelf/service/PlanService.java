@@ -287,7 +287,11 @@ public class PlanService {
                 planDistribution = ShelfUtils.getDefaultZeroFilledDistribution();
                 break;
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
-                planDistribution = ShelfUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
+                try {
+                    planDistribution = ShelfUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
+                } catch (Exception e) {
+                    throw new ShelfException("parse distribution error, planSettingId["+planSetting.getId()+"]",e);
+                }
                 break;
         }
         if (null == planDistribution) {
@@ -317,9 +321,14 @@ public class PlanService {
      * @param items
      * @return
      */
-    public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) {
-        Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
-                .getDistribution());
+    public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) throws ShelfException {
+        Table<Integer, LocalTimeInterval, Integer> distribution = null;
+        try {
+            distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
+                    .getDistribution());
+        } catch (Exception e) {
+            throw new ShelfException("parse distribution error, planSettingId["+planSetting.getId()+"]",e);
+        }
         return ShelfUtils.assignItems(items, distribution);
     }
 

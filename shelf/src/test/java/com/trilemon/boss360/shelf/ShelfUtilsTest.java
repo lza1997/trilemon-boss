@@ -17,8 +17,8 @@ import static org.junit.Assert.assertTrue;
 public class ShelfUtilsTest {
 
     @Test
-    public void testParseDistribution() {
-        Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.parseAndFillZeroDistribution("1|9:00-10:00||2|9:00-10:00||2|10:00-11:00");
+    public void testParseDistribution() throws Exception {
+        Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.parseAndFillZeroDistribution("{\"1\":{\"8\":false,\"9\":true},\"2\":{\"9\":true,\"10\":true}}");
         assertEquals(2, table.rowKeySet().size());
         assertEquals(2, table.columnKeySet().size());
         assertEquals(3, table.cellSet().size());
@@ -83,26 +83,27 @@ public class ShelfUtilsTest {
     }
 
     @Test
-    public void testParseAndFillZeroDistribution_empty() {
+    public void testParseAndFillZeroDistribution_empty() throws Exception {
         Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.parseAndFillZeroDistribution("");
         assertTrue(table.isEmpty());
     }
 
     @Test
-    public void testParseAndFillZeroDistribution() {
+    public void testParseAndFillZeroDistribution() throws Exception {
         Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.parseAndFillZeroDistribution
-                ("1|9:00-10:00||1|10:00-12:00||2|9:00-10:00||1|22:00-23:00");
+                ("{\"1\":{\"8\":false,\"9\":true,\"10\":true,\"22\":true},\"2\":{\"9\":true}}");
         assertEquals(4, table.size());
         assertEquals(0, table.get(1, new LocalTimeInterval(9, 10)).intValue());
-        assertEquals(0, table.get(1, new LocalTimeInterval(10, 12)).intValue());
+        assertEquals(0, table.get(1, new LocalTimeInterval(10, 11)).intValue());
         assertEquals(0, table.get(1, new LocalTimeInterval(22, 23)).intValue());
         assertEquals(0, table.get(2, new LocalTimeInterval(9, 10)).intValue());
     }
 
     @Test
-    public void testFindMinCellOfDistribution() {
+    public void testFindMinCellOfDistribution() throws Exception {
+        //1|9:00-10:00||1|10:00-11:00||2|9:00-10:00
         Table<Integer, LocalTimeInterval, Integer> table=ShelfUtils.parseAndFillZeroDistribution
-                ("1|9:00-10:00||1|10:00-11:00||2|9:00-10:00");
+                ("{\"1\":{\"8\":false,\"9\":true},\"1\":{\"10\":true},\"2\":{\"9\":true}}");
         table.put(1,new LocalTimeInterval(9, 10),2);
         table.put(1,new LocalTimeInterval(10, 11),3);
         table.put(2,new LocalTimeInterval(9, 10),1);
@@ -112,11 +113,11 @@ public class ShelfUtilsTest {
     }
 
     @Test
-    public void testGetNewItemDistribution() {
+    public void testGetNewItemDistribution() throws Exception {
         Table<Integer, LocalTimeInterval, Integer> planDistribution=ShelfUtils.getDefaultDistribution(10);
 
         Table<Integer, LocalTimeInterval, Integer> currDistribution=ShelfUtils.parseAndFillZeroDistribution
-                ("1|9:00-10:00||1|10:00-11:00||2|9:00-10:00");
+                ("{\"1\":{\"8\":false,\"9\":true},\"1\":{\"10\":true},\"2\":{\"9\":true}}");
         currDistribution.put(1,new LocalTimeInterval(9, 10),1);
         currDistribution.put(1,new LocalTimeInterval(10, 11),1);
         currDistribution.put(2,new LocalTimeInterval(9, 10),2);

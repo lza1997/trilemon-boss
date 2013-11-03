@@ -1,13 +1,13 @@
 package com.trilemon.boss360.shelf;
 
 import com.google.common.base.Function;
-import com.google.common.base.Splitter;
 import com.google.common.collect.*;
 import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.web.controller.ItemController;
+import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevin
@@ -50,35 +51,21 @@ public class ShelfUtils {
     }
 
     /**
-     * distribution 的格式约定为 <code> week|hour||week|hour</code>； 例如<code>1|9:00-10:00||1|10:00-12:00</code>。
      *
      * @param distribution
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, Integer> parseAndFillZeroDistribution(String distribution) {
+    public static Table<Integer, LocalTimeInterval, Integer> parseAndFillZeroDistribution(String distribution) throws Exception {
         Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
-        Iterable<String> days = Splitter.on("||").trimResults().omitEmptyStrings().split(distribution);
-        if (Iterables.isEmpty(days)) {
-            return table;
-        }
-        for (String interval : days) {
-            Iterable<String> segments = Splitter.on("|").trimResults().omitEmptyStrings().split(interval);
-            if (Iterables.isEmpty(segments) || (Iterables.size(segments) != 2)) {
-                return table;
+        Map<String, Map<String, Boolean>> distributionMap = (Map<String, Map<String, Boolean>>) JsonMapper.nonEmptyMapper().fromJson2Map(distribution);
+        for (Map.Entry<String, Map<String, Boolean>> day : distributionMap.entrySet()) {
+            for (Map.Entry<String, Boolean> hour : day.getValue().entrySet()) {
+                if (true == hour.getValue()) {
+                    LocalTime startTime = new LocalTime(Integer.valueOf(hour.getKey()), 0);
+                    LocalTime endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
+                    table.put(Integer.valueOf(day.getKey()), new LocalTimeInterval(startTime, endTime), 0);
+                }
             }
-            //解析|分隔符
-            int weekDay = Integer.valueOf(Iterables.get(segments,0));
-            String[] hourAndMin = Iterables.get(segments,1).split("\\-");
-
-            //解析小时段
-            String[] startHourAndMin = hourAndMin[0].split(":");
-            String[] endHourAndMin = hourAndMin[1].split(":");
-            LocalTime startTime = new LocalTime(Integer.valueOf(startHourAndMin[0]),
-                    Integer.valueOf(startHourAndMin[1]));
-            LocalTime endTime = new LocalTime(Integer.valueOf(endHourAndMin[0]),
-                    Integer.valueOf(endHourAndMin[1]));
-
-            table.put(weekDay, new LocalTimeInterval(startTime, endTime), 0);
         }
         return table;
     }

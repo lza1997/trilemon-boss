@@ -18,6 +18,7 @@ import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.dto.PlanStatus;
 import com.trilemon.boss360.shelf.service.dto.ShelfStatus;
 import com.trilemon.commons.Collections3;
+import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
@@ -33,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.trilemon.boss360.shelf.ShelfConstants.*;
@@ -56,6 +58,7 @@ public class PlanSettingService {
 
     /**
      * 检测是否分类已经被其他计划使用
+     *
      * @param userId
      * @param sellerCatStr
      * @return
@@ -160,6 +163,19 @@ public class PlanSettingService {
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
     }
 
+    public void updatePlanSettingDistribution(Long userId,
+                                              Long planSettingId,
+                                              Map<String, Map<String, Boolean>> distribution) throws ShelfException,
+            TaobaoSessionExpiredException {
+        PlanSetting planSetting = new PlanSetting();
+        planSetting.setId(planSettingId);
+        planSetting.setUserId(userId);
+        planSetting.setDistribution(JsonMapper.nonEmptyMapper().toJson(distribution));
+        planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
+        planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
+        planService.updatePlan(planSetting.getId());
+    }
+
     /**
      * 获取计划设置
      *
@@ -213,11 +229,11 @@ public class PlanSettingService {
         }
     }
 
-    public Page<Plan> paginatePlans(Long userId, Long planSettingId, String query,int pageNum, int pageSize) {
+    public Page<Plan> paginatePlans(Long userId, Long planSettingId, String query, int pageNum, int pageSize) {
         List<Byte> statusList = ImmutableList.of(PLAN_STATUS_SUCCESSFUL, PLAN_STATUS_WAITING_ADJUST, PLAN_STATUS_EXCLUDED);
-        int totalSize = planMapper.countByUserIdAndPlanSettingIdAndStatus(userId, planSettingId, statusList,query);
+        int totalSize = planMapper.countByUserIdAndPlanSettingIdAndStatus(userId, planSettingId, statusList, query);
         List<Plan> plans = planMapper.paginateByUserIdAndPlanSettingIdAndStatus(userId,
-                planSettingId, statusList, query,(pageNum - 1) * pageSize,
+                planSettingId, statusList, query, (pageNum - 1) * pageSize,
                 pageSize);
         if (CollectionUtils.isEmpty(plans)) {
             return Page.create(totalSize, pageNum, pageSize, Lists.<Plan>newArrayList());
