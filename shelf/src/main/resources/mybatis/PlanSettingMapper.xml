@@ -390,14 +390,12 @@
     </update>
     <select id="countByUserIdAndStatus" parameterType="map" resultType="java.lang.Integer">
         select count(*) from plan_setting
-        <where>
-            user_id = #{userId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where user_id = #{userId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
     </select>
     <select id="countByUserId" parameterType="long" resultType="java.lang.Integer">
         SELECT
@@ -415,53 +413,46 @@
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where user_id = #{userId,jdbcType=BIGINT}
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
     </select>
     <select id="paginateByUserIdAndStatus" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        <where>
-            user_id = #{userId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where user_id = #{userId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
     <select id="paginateByStatus" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        <where>
-            id > #{hitId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        where id > #{hitId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        ORDER BY user_id asc
         LIMIT 0,#{limit,jdbcType=INTEGER}
     </select>
     <select id="paginateByUserIdAndName" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-            <if test="query">
-                and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
-            </if>
-        </where>
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="query">
+            and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
+        </if>
         LIMIT #{offset,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
     </select>
     <select id="selectByPrimaryKeyAndUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -471,39 +462,30 @@
         where id = #{id,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
     </select>
     <select id="countByUserIdAndName" parameterType="long" resultType="java.lang.Integer">
-        SELECT
-        count(*)
-        FROM plan_setting
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-            <if test="query">
-                and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
-            </if>
-        </where>
+        SELECT count(*) FROM plan_setting
+        where user_id = #{userId,jdbcType=BIGINT}
+        <if test="query">
+            and (`name` like CONCAT('%','${query}','%') or name_pinyin like CONCAT('%','${query}','%'))
+        </if>
     </select>
     <select id="paginateAutoAddItemPlanSettings" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from plan_setting
-        where
-        id > #{hitId,jdbcType=BIGINT}
+        where id > #{hitId,jdbcType=BIGINT}
         and auto_add_new_items = 1
         and `status`=1
         where
         LIMIT 0, #{limit,jdbcType=INTEGER}
     </select>
     <select id="paginateUserIdByStatus" resultMap="BaseResultMap" parameterType="map">
-        select
-        user_id
-        from plan_setting
-        <where>
-            user_id > #{hitUserId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-        </where>
+        select user_id from plan_setting
+        where user_id > #{hitUserId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
         group by user_id
         order by user_id asc
         LIMIT 0, #{limit,jdbcType=INTEGER}
