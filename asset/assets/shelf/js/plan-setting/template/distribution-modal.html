@@ -1,0 +1,28 @@
+<div class="modal-dialog" style="width:350px">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="nav nav-tabs" style="margin-bottom: 20px">
+                <li ng-class="{active: tab.active}" ng-repeat="tab in tabs">
+                    <a href="" ng-click="selectTab(tab)">{{tab.name}}</a>
+                </li>
+            </div>
+            <div class="tab-content">
+                <table>
+                    <tr ng-repeat="hour in hours">
+                        <td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="distribution[week][hour]"/> {{hour}}:00 ~ {{hour+1}}:00
+                                </label>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="modal.close()">关闭</button>
+        </div>
+    </div>
+</div>

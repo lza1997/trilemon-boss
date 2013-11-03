@@ -1,0 +1,30 @@
+<table>
+    <summary>设置上架时间</summary>
+    <col width="100px"/>
+    <col width="200px"/>
+    <col/>
+    <tr ng-repeat="week in weeks">
+        <td>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="week.checked"/> {{week.name}}
+                </label>
+            </div>
+        </td>
+        <td>
+            <div ng-if="week.checked">
+                {{distribution[$index+1] | distributionText}}
+            </div>
+        </td>
+        <td>
+            <div ng-if="week.checked">
+                <a href="" ng-click="showModal(week)">选择时间段</a>
+            </div>
+        </td>
+    </tr>
+</table>
+        {{distribution}}
+<div class="form-action">
+    <button class="btn btn-primary">保存</button>
+    <a href="">放弃</a>
+</div>

@@ -39,6 +39,7 @@
     <script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-modal.js"></script>
+    <script src="${asset}/base/js/bootstrap/angular-tabs.js"></script>
     <script src="${asset}/base/js/seajs-lazy-module.js"></script>
     <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
     <script src="${asset}/base/js/angular/highchart.js"></script>
