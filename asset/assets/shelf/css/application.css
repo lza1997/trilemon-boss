@@ -27,8 +27,8 @@ input.ng-invalid.ng-dirty:focus { border-color: #953b39; -webkit-box-shadow: ins
 
 .ajax-spinner.show { top: 103px; margin-right: 5px; }
 
-.confirm-dialog { width: 300px; padding-top: 60px; }
-.confirm-dialog .modal-footer { padding: 14px 20px 15px; }
+.modal-dialog.confirm-dialog { width: 300px; padding-top: 60px; }
+.modal-dialog.confirm-dialog .modal-footer { padding: 14px 20px 15px; }
 
 footer { margin-top: 50px; border-top: 1px solid #eee; }
 

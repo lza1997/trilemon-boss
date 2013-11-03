@@ -1,1 +1,1 @@
-angular.module('ui.bootstrap', ['ui.bootstrap.dropdownToggle', 'ui.bootstrap.modal', 'ui.bootstrap.pagination']);
+angular.module('ui.bootstrap', ['ui.bootstrap.dropdownToggle', 'ui.bootstrap.modal', 'ui.bootstrap.pagination', 'ui.bootstrap.tabs']);
