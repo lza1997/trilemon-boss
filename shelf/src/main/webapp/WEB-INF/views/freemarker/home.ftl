@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh" id="ng-app" ng-app="app">
+<html xmlns:ng="http://angularjs.org" lang="zh" id="ng-app" ng-app="app">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
