@@ -441,8 +441,7 @@
         select
         <include refid="Base_Column_List"/>
         from plan
-        where
-        user_id = #{userId,jdbcType=BIGINT}
+        where user_id = #{userId,jdbcType=BIGINT}
         and plan_setting_id = #{planSettingId,jdbcType=BIGINT}
         and
         <trim prefix="(" suffix=")" prefixOverrides="and">
@@ -467,16 +466,14 @@
         select
         <include refid="Base_Column_List"/>
         from plan
-        <where>
-            plan_setting_id = #{planSettingId,jdbcType=BIGINT} and
-            <trim prefix="(" suffix=")" prefixOverrides="and">
-                <foreach collection="statusList" item="status" separator="or">
-                    `status` = #{status,jdbcType=TINYINT}
-                </foreach>
-            </trim>
-            and plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP}
-            and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME},
-        </where>
+        where plan_setting_id = #{planSettingId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        and plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP}
+        and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME}
     </select>
     <update id="updateByPlanSettingIdAndNumIid" parameterType="com.trilemon.boss360.shelf.model.Plan">
         update plan
@@ -527,11 +524,9 @@
         where plan_setting_id = #{planSettingId,jdbcType=BIGINT} and item_num_iid = #{itemNumIid,jdbcType=BIGINT}
     </update>
     <select id="selectNumIidsByUserId" resultType="long" parameterType="long">
-        select
-        item_num_iid
-        from plan
-        <where>
-            user_id = #{userId,jdbcType=BIGINT}
-        </where>
+        SELECT
+            item_num_iid
+        FROM plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
     </select>
 </mapper>
