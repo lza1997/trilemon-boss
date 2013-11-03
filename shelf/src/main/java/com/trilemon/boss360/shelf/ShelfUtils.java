@@ -33,6 +33,7 @@ public class ShelfUtils {
             }
             map.put(String.valueOf(dayOfWeek), hourMap);
         }
+        System.out.println( JsonMapper.nonEmptyMapper().toJson(map).length());
         return JsonMapper.nonEmptyMapper().toJson(map);
     }
 
