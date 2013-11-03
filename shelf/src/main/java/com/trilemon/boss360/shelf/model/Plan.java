@@ -1,36 +1,24 @@
 package com.trilemon.boss360.shelf.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.util.Date;
 
 public class Plan {
     private Long id;
-
     private Long planSettingId;
-
     private Long userId;
-
     private Long itemNumIid;
-
     private String itemTitle;
-
     private String itemTitlePinyin;
-
     private String itemPicUrl;
-
     private Byte status;
-
     private String failedCause;
-
     private Date planAdjustDay;
-
     private Date planAdjustStartTime;
-
     private Date planAdjustEndTime;
-
     private Date adjustTime;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {
@@ -151,5 +139,9 @@ public class Plan {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
