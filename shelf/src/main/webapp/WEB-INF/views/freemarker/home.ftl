@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh" id="ng-app" ng-app="app">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title ng-bind="title"></title>
 
@@ -23,7 +22,8 @@
     <![endif]-->
 
     <!--[if lt IE 8]>
-    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet">
+    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
+    <script src="${asset}/base/js/json2.js"></script>
     <![endif]-->
 
     <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
