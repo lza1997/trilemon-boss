@@ -113,6 +113,9 @@ public class PlanSettingService {
         } else {
             //处理额外字段（总共需要调整宝贝数量，新加入宝贝数量，待调整宝贝数量）
             for (PlanSetting planSetting : planSettings) {
+                if (PLAN_SETTING_DISTRIBUTE_TYPE_AUTO == planSetting.getDistributionType()) {
+                    planSetting.setDistribution(ShelfUtils.getDefaultDistribution());
+                }
                 PlanStatus planStatus = planMapper.calcPlanStatus(planSetting.getId(), planSetting.getLastPlanTime());
                 if (null != planStatus) {
                     planSetting.setItemNum(planStatus.getItemNum());
@@ -183,7 +186,11 @@ public class PlanSettingService {
      * @return
      */
     public PlanSetting getPlanSetting(Long userId, Long planSettingId) {
-        return planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
+        PlanSetting planSetting= planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
+        if (PLAN_SETTING_DISTRIBUTE_TYPE_AUTO == planSetting.getDistributionType()) {
+            planSetting.setDistribution(ShelfUtils.getDefaultDistribution());
+        }
+        return planSetting;
     }
 
     /**
