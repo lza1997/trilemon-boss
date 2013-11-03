@@ -24,6 +24,17 @@ import java.util.Map;
  * @author kevin
  */
 public class ShelfUtils {
+    public static String getDefaultDistribution() {
+        Map<String, Map<String, Boolean>> map = Maps.newTreeMap();
+        for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
+            Map<String, Boolean> hourMap = Maps.newTreeMap();
+            for (int hour = 9; hour <= 23; hour++) {
+                hourMap.put(String.valueOf(hour), true);
+            }
+            map.put(String.valueOf(dayOfWeek), hourMap);
+        }
+        return JsonMapper.nonEmptyMapper().toJson(map);
+    }
 
     /**
      * 根据宝贝获取时间分布。
@@ -51,7 +62,6 @@ public class ShelfUtils {
     }
 
     /**
-     *
      * @param distribution
      * @return
      */
