@@ -197,12 +197,14 @@ public class SettingService {
 
         //获取必推宝贝
         final List<Long> includeShowcaseItemNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
-        final List<Item> includeShowcaseItems = taobaoApiShopService.getItems(setting.getUserId(), includeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+        //一个个获取，以免失败
+        final List<Item> includeShowcaseItems = taobaoApiShopService.getItemsOneByOne(setting.getUserId(),
+                includeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
         logger.info("userId[{}] get [{}] must showcase items.", setting.getUserId(), includeShowcaseItems.size());
 
         //获取必不推宝贝
         final List<Long> excludeShowcaseItemNumIids = Collections3.getLongList(setting.getExcludeItemNumIids());
-        final List<Item> excludeShowcaseItems = taobaoApiShopService.getItems(setting.getUserId(), excludeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+        final List<Item> excludeShowcaseItems = taobaoApiShopService.getItemsOneByOne(setting.getUserId(), excludeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
         logger.info("userId[{}] get [{}] must not showcase items.", setting.getUserId(), excludeShowcaseItems.size());
 
         // 获取橱窗状态
@@ -292,7 +294,7 @@ public class SettingService {
             return;
         }
 
-        //////////////////////////////////step4. 调整其他宝贝////////////////////////////////
+        //////////////////////////////////step4. 调整非必推/比不推宝贝////////////////////////////////
         //计算符合橱窗条件的宝贝
         List<Item> canBeShowcaseItems = filterShowcaseItems(setting, nonShowcaseItems);
         //计算符合下橱窗条件的宝贝
