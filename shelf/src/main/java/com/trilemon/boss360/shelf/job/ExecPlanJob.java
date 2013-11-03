@@ -1,6 +1,7 @@
 package com.trilemon.boss360.shelf.job;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -48,11 +49,12 @@ public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
         logger.info("start to fill queue.");
         long hitUserId = 0;
         while (true) {
-            List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(hitUserId,100,
+            List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(hitUserId, 100,
                     ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
             if (CollectionUtils.isEmpty(planSettings)) {
                 break;
             } else {
+                hitUserId = Iterables.getLast(planSettings).getUserId();
                 fillQueue(planSettings);
             }
         }

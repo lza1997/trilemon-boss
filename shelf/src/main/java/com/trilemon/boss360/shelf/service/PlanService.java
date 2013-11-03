@@ -243,7 +243,7 @@ public class PlanService {
      * @param assignTable 需要加入计划的宝贝的<周几，时段，宝贝>
      * @return
      */
-    private List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable) {
+    public List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable) {
         List<Plan> plans = Lists.newArrayList();
 
         DateTime now = appService.getLocalSystemTime();
@@ -392,5 +392,9 @@ public class PlanService {
         plan.setItemNumIid(numIid);
         plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
         planMapper.updateByPlanSettingIdAndNumIid(plan);
+    }
+
+    public void setAppService(AppService appService) {
+        this.appService = appService;
     }
 }
