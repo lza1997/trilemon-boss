@@ -34,6 +34,7 @@
     <script src="${asset}/base/js/angular-animate.js"></script>
     <script src="${asset}/base/js/angular-resource.js"></script>
     <script src="${asset}/base/js/angular-route.js"></script>
+    <script src="${asset}/base/js/angular-sanitize.js"></script>
     <script src="${asset}/base/js/restangular.js"></script>
     <script src="${asset}/base/js/bootstrap/index.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>

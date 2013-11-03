@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate', 'ngRoute', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
+var app = angular.module('app', ['ngAnimate', 'ngRoute', 'ngSanitize', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
 
 app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
 
@@ -9,7 +9,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
         .when('/plan-setting/:id/filter', planSetting.routeFor('planSetting.filter'))
         .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
-        .when('/plan-setting/:id/adjust', planSetting.routeFor('planSetting.distribution'))
+        .when('/plan-setting/:id/distribution', planSetting.routeFor('planSetting.distribution'))
         .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
         .otherwise({redirectTo: '/plan-setting'});
 

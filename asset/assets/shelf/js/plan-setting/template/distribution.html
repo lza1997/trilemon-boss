@@ -1,5 +1,5 @@
+<h4>设置上架时间</h4>
 <table>
-    <summary>设置上架时间</summary>
     <col width="100px"/>
     <col width="200px"/>
     <col/>
@@ -13,7 +13,7 @@
         </td>
         <td>
             <div ng-if="week.checked">
-                {{distribution[$index+1] | distributionText}}
+                {{distribution[week.value] | distributionText}}
             </div>
         </td>
         <td>
@@ -23,8 +23,7 @@
         </td>
     </tr>
 </table>
-        {{distribution}}
 <div class="form-action">
-    <button class="btn btn-primary">保存</button>
-    <a href="">放弃</a>
+    <button class="btn btn-primary" ng-click="save()">保存</button>
+    <a href="#/plan-setting">放弃</a>
 </div>

@@ -55,8 +55,6 @@ define(function(require, exports, module) {
         $scope.init();
     }];
 
-
-
     IndexController.template = 'planSetting/index';
     IndexController.title = '计划列表';
     IndexController.navClass = 'planIndex';

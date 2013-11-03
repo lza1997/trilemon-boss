@@ -1,4 +1,4 @@
-<div class="alert alert-success" ng-if="flashSuccess">{{flashSuccess}}系统已经对宝贝进行了智能上架分配。可以手动设置上架时间。</div>
+<div class="alert alert-success" ng-if="flashSuccess" ng-bind-html="flashSuccess"></div>
 <div ng-show="planSettings.length>0">
     <a class="pull-right" href="" ng-click="showChart()">当前上下架统计</a>
 </div>
@@ -48,7 +48,7 @@
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="#/plan-setting/{{planSetting.id}}/filter">筛选宝贝</a></li>
-                    <li><a href="#/plan-setting/{{planSetting.id}}/adjust">修改时间</a></li>
+                    <li><a href="#/plan-setting/{{planSetting.id}}/distribution">修改时间</a></li>
                 </ul>
             </div>
         </td>

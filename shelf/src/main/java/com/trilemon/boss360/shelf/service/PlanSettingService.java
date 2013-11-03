@@ -85,6 +85,7 @@ public class PlanSettingService {
         }
         planSetting.setUserId(userId);
         planSetting.setStatus(PLAN_SETTING_STATUS_WAITING_PLAN);
+        planSetting.setDistributionType(PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
         try {
             String hanYuPinyin = Languages.getHanYuPinyin(planSetting.getName());
             planSetting.setNamePinyin(hanYuPinyin);
@@ -174,6 +175,7 @@ public class PlanSettingService {
         planSetting.setId(planSettingId);
         planSetting.setUserId(userId);
         planSetting.setDistribution(JsonMapper.nonEmptyMapper().toJson(distribution));
+        planSetting.setDistributionType(PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL);
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
         planService.updatePlan(planSetting.getId());

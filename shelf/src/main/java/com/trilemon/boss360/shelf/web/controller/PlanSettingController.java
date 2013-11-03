@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevin
@@ -44,11 +46,6 @@ public class PlanSettingController {
             response.setStatus(422);
             return result.getAllErrors();
         } else {
-            planSetting.setAddTime(appService.getLocalSystemTime().toDate());
-            planSetting.setDistribution("test");
-            planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
-            planSetting.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
-            planSetting.setUserId(56912708L);
             planSettingService.createPlanSetting(56912708L, planSetting);
             return planSetting;
         }
@@ -74,6 +71,7 @@ public class PlanSettingController {
 
     /**
      * 删除计划
+     *
      * @param planSettingId
      * @return
      */
@@ -85,6 +83,7 @@ public class PlanSettingController {
 
     /**
      * 暂停计划
+     *
      * @param planSettingId
      * @return
      */
@@ -97,6 +96,7 @@ public class PlanSettingController {
 
     /**
      * 继续计划
+     *
      * @param planSettingId
      * @return
      */
@@ -109,32 +109,35 @@ public class PlanSettingController {
 
     /**
      * 排除宝贝
+     *
      * @param planSettingId
      * @param numIid
      * @return
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.POST)
     @ResponseBody
-    public String excludeItem(@PathVariable Long planSettingId, @PathVariable Long numIid){
+    public String excludeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
         planService.excludeItem(planSettingId, numIid);
         return "";
     }
 
     /**
      * 取消排除宝贝
+     *
      * @param planSettingId
      * @param numIid
      * @return
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String includeItem(@PathVariable Long planSettingId,@PathVariable Long numIid){
+    public String includeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
         planService.includeItem(planSettingId, numIid);
         return "";
     }
 
     /**
      * 获取用于展示店铺上下架图形的数据
+     *
      * @return
      * @throws ShelfException
      */
@@ -145,6 +148,16 @@ public class PlanSettingController {
         return planSettingService.getShelfStatus(56912708L).getListItemNum();
     }
 
+    @RequestMapping(value = "/{planSettingId}/distribution", method = RequestMethod.GET)
+    public void getDistribution(@PathVariable Long planSettingId, HttpServletResponse resp) throws IOException {
+        PlanSetting planSetting = planSettingService.getPlanSetting(56912708L, planSettingId);
+        resp.setContentType("application/json");
+        resp.getWriter().write(planSetting.getDistribution());
+    }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/{planSettingId}/distribution", method = RequestMethod.PUT)
+    public void updateDistribution(@PathVariable Long planSettingId, @RequestBody Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, ShelfException {
+        planSettingService.updatePlanSettingDistribution(56912708L, planSettingId, distribution);
+    }
 }
