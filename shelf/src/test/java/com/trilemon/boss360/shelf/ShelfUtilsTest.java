@@ -125,11 +125,10 @@ public class ShelfUtilsTest {
         Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.getNewItemDistribution
                 (10,planDistribution,currDistribution);
         assertEquals(1, table.get(1, new LocalTimeInterval(9, 10)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(10, 11)).intValue());
-        assertEquals(2, table.get(2, new LocalTimeInterval(10, 11)).intValue());
-        assertEquals(1, table.get(3, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(2, new LocalTimeInterval(10, 11)).intValue());
+        assertEquals(2, table.get(3, new LocalTimeInterval(9, 10)).intValue());
         assertEquals(1, table.get(3, new LocalTimeInterval(10, 11)).intValue());
-        assertEquals(1, table.get(4, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(2, table.get(4, new LocalTimeInterval(9, 10)).intValue());
         assertEquals(1, table.get(5, new LocalTimeInterval(9, 10)).intValue());
         assertEquals(1, table.get(6, new LocalTimeInterval(9, 10)).intValue());
         assertEquals(1, table.get(7, new LocalTimeInterval(9, 10)).intValue());
