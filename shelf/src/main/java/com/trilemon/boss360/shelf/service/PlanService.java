@@ -202,6 +202,9 @@ public class PlanService {
     @Transactional
     private void savePlan(Long planSettingId, List<Plan> plans) {
         if (CollectionUtils.isNotEmpty(plans)) {
+            for (Plan plan : plans) {
+                plan.setAddTime(appService.getLocalSystemTime().toDate());
+            }
             myBatisBatchWriter.write("com.trilemon.boss360.shelf.dao.PlanMapper.insertSelective", plans);
         }
         PlanSetting planSetting = new PlanSetting();
@@ -290,7 +293,7 @@ public class PlanService {
                 try {
                     planDistribution = ShelfUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
                 } catch (Exception e) {
-                    throw new ShelfException("parse distribution error, planSettingId["+planSetting.getId()+"]",e);
+                    throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
                 }
                 break;
         }
@@ -327,7 +330,7 @@ public class PlanService {
             distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
                     .getDistribution());
         } catch (Exception e) {
-            throw new ShelfException("parse distribution error, planSettingId["+planSetting.getId()+"]",e);
+            throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
         }
         return ShelfUtils.assignItems(items, distribution);
     }
@@ -360,7 +363,7 @@ public class PlanService {
                     taobaoSession.getAccessToken());
             if (delistingResponse.isSuccess()) {
                 ItemUpdateListingRequest listingRequest = new ItemUpdateListingRequest();
-                listingRequest.setNumIid(1000231L);
+                listingRequest.setNumIid(plan.getItemNumIid());
                 ItemUpdateListingResponse listingResponse = taobaoApiService.request(listingRequest,
                         taobaoApiService.getAppKey(), taobaoSession.getAccessToken());
                 if (listingResponse.isSuccess()) {

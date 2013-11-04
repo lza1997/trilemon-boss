@@ -43,20 +43,20 @@ public class ShelfUtilsTest {
     public void testGetDefaultDistribution_15() {
         Table<Integer, LocalTimeInterval, Integer> table = ShelfUtils.getDefaultDistribution(15);
         assertEquals(1, table.get(1, new LocalTimeInterval(9, 10)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(10, 11)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(11, 12)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(12, 13)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(13, 14)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(14, 15)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(15, 16)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(16, 17)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(17, 18)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(18, 19)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(19, 20)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(20, 21)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(21, 22)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(22, 23)).intValue());
         assertEquals(1, table.get(2, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(3, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(4, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(5, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(6, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(7, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(1, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(2, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(3, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(4, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(5, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(6, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(7, new LocalTimeInterval(10,11)).intValue());
+        assertEquals(1, table.get(1, new LocalTimeInterval(11,12)).intValue());
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ShelfUtilsTest {
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = ShelfUtils.assignItems(items, table);
         assertEquals(2, assignTable.size());
         assertEquals(Lists.newArrayList(items.get(0)), assignTable.get(1, new LocalTimeInterval(9, 10)));
-        assertEquals(Lists.newArrayList(items.get(1)), assignTable.get(1, new LocalTimeInterval(10, 11)));
+        assertEquals(Lists.newArrayList(items.get(1)), assignTable.get(2, new LocalTimeInterval(9, 10)));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ShelfUtilsTest {
         Table<Integer, LocalTimeInterval, Integer> planDistribution=ShelfUtils.getDefaultDistribution(10);
 
         Table<Integer, LocalTimeInterval, Integer> currDistribution=ShelfUtils.parseAndFillZeroDistribution
-                ("{\"1\":{\"8\":false,\"9\":true},\"1\":{\"10\":true},\"2\":{\"9\":true}}");
+                ("{\"1\":{\"8\":false,\"9\":true,\"10\":true},\"2\":{\"9\":true}}");
         currDistribution.put(1,new LocalTimeInterval(9, 10),1);
         currDistribution.put(1,new LocalTimeInterval(10, 11),1);
         currDistribution.put(2,new LocalTimeInterval(9, 10),2);
@@ -126,13 +126,12 @@ public class ShelfUtilsTest {
                 (10,planDistribution,currDistribution);
         assertEquals(1, table.get(1, new LocalTimeInterval(9, 10)).intValue());
         assertEquals(1, table.get(1, new LocalTimeInterval(10, 11)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(11, 12)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(12, 13)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(13, 14)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(14, 15)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(15, 16)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(16, 17)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(17, 18)).intValue());
-        assertEquals(1, table.get(1, new LocalTimeInterval(18, 19)).intValue());
+        assertEquals(2, table.get(2, new LocalTimeInterval(10, 11)).intValue());
+        assertEquals(1, table.get(3, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(3, new LocalTimeInterval(10, 11)).intValue());
+        assertEquals(1, table.get(4, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(5, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(6, new LocalTimeInterval(9, 10)).intValue());
+        assertEquals(1, table.get(7, new LocalTimeInterval(9, 10)).intValue());
     }
 }

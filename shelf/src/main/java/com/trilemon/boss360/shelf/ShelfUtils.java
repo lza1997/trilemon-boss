@@ -33,7 +33,7 @@ public class ShelfUtils {
             }
             map.put(String.valueOf(dayOfWeek), hourMap);
         }
-        System.out.println( JsonMapper.nonEmptyMapper().toJson(map).length());
+        System.out.println(JsonMapper.nonEmptyMapper().toJson(map).length());
         return JsonMapper.nonEmptyMapper().toJson(map);
     }
 
@@ -90,8 +90,9 @@ public class ShelfUtils {
     public static Table<Integer, LocalTimeInterval, Integer> getDefaultDistribution(int itemNum) {
         Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         int cellDivision = IntMath.divide(itemNum, 7 * (23 - 9), RoundingMode.CEILING);
-        for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
-            for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
+
+        for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
+            for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
                 if (itemNum == 0) {
                     break;
                 }
