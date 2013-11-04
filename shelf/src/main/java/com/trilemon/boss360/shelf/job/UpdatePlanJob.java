@@ -46,20 +46,24 @@ public class UpdatePlanJob extends AbstractQueueService<Long> {
 
     @Override
     public void fillQueue() {
-        logger.info("start to fill queue.");
+        logger.info("start to fill update queue.");
         //自动纳入宝贝的才更新
         long hitUserId = 0;
         while (true) {
-            List<Long> userIds = planSettingMapper.paginateUserIdByStatus(hitUserId, 100,
-                    ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
-            if (CollectionUtils.isEmpty(userIds)) {
-                break;
-            } else {
-                hitUserId = Iterables.getLast(userIds);
-                fillQueue(userIds);
+            try {
+                List<Long> userIds = planSettingMapper.paginateUserIdByStatus(hitUserId, 100,
+                        ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+                if (CollectionUtils.isEmpty(userIds)) {
+                    break;
+                } else {
+                    hitUserId = Iterables.getLast(userIds);
+                    fillQueue(userIds);
+                }
+            } catch (Throwable e) {
+                logger.error("poll update error", e);
             }
         }
-        logger.info("end to fill queue[{}].", getQueue().size());
+        logger.info("end to fill update queue[{}].", getQueue().size());
     }
 
     @Override

@@ -325,7 +325,7 @@ public class PlanService {
      * @return
      */
     public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) throws ShelfException {
-        Table<Integer, LocalTimeInterval, Integer> distribution = null;
+        Table<Integer, LocalTimeInterval, Integer> distribution;
         try {
             distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
                     .getDistribution());
@@ -338,8 +338,10 @@ public class PlanService {
     public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException {
         DateTime now = appService.getLocalSystemTime();
         List<Plan> plans = planMapper.selectByPlanSettingIdAndStatusAndPlanTime(planSettingId,
-                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST), now.withTimeAtStartOfDay().toDate(),
+                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST,ShelfConstants.PLAN_STATUS_FAILED),
+                now.withTimeAtStartOfDay().toDate(),
                 now.toLocalTime().plusHours(1).toDateTimeToday().toDate());
+        logger.info("planSetting[{}] get [{}] plan to adjust", planSettingId, plans.size());
         for (Plan plan : plans) {
             execPlan(plan);
         }
@@ -357,25 +359,32 @@ public class PlanService {
         planResult.setId(plan.getId());
         ItemUpdateDelistingRequest request = new ItemUpdateDelistingRequest();
         request.setNumIid(plan.getItemNumIid());
+        planResult.setAdjustTime(appService.getLocalSystemTime().toDate());
         TaobaoSession taobaoSession = baseClient.getTaobaoSession(plan.getUserId(), taobaoApiService.getAppKey());
         try {
+            //下架
             ItemUpdateDelistingResponse delistingResponse = taobaoApiService.request(request,
                     taobaoSession.getAccessToken());
-            if (delistingResponse.isSuccess()) {
+            if (delistingResponse.isSuccess()||delistingResponse.getSubCode().equals("isv.item-listing-service-error")) {
+                //获取商品数量
+                Item item=taobaoApiShopService.getItem(plan.getUserId(),plan.getItemNumIid(),
+                        ImmutableList.of("num"));
+                //上架
                 ItemUpdateListingRequest listingRequest = new ItemUpdateListingRequest();
                 listingRequest.setNumIid(plan.getItemNumIid());
+                listingRequest.setNum(item.getNum());
                 ItemUpdateListingResponse listingResponse = taobaoApiService.request(listingRequest,
-                        taobaoApiService.getAppKey(), taobaoSession.getAccessToken());
+                        taobaoSession.getAccessToken());
                 if (listingResponse.isSuccess()) {
+                    planResult.setFailedCause("");
                     planResult.setStatus(ShelfConstants.PLAN_STATUS_SUCCESSFUL);
-                    planResult.setAdjustTime(appService.getLocalSystemTime().toDate());
                 } else {
                     planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
-                    planResult.setFailedCause(listingResponse.getSubCode());
+                    planResult.setFailedCause(listingResponse.getSubCode()+listingResponse.getSubMsg());
                 }
             } else {
                 planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
-                planResult.setFailedCause(delistingResponse.getSubCode());
+                planResult.setFailedCause(delistingResponse.getSubCode()+delistingResponse.getSubMsg());
             }
         } catch (TaobaoEnhancedApiException e) {
             planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
@@ -383,7 +392,7 @@ public class PlanService {
         } catch (TaobaoSessionExpiredException e) {
             Exceptions.logAndThrow(logger, "userId[" + plan.getUserId() + "]", e);
         }
-        planMapper.updateByPrimaryKey(planResult);
+        planMapper.updateByPrimaryKeySelective(planResult);
     }
 
     public void deletePlan(Long userId, Long planSettingId) {

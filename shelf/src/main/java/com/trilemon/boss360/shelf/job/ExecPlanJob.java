@@ -46,19 +46,23 @@ public class ExecPlanJob extends AbstractQueueService<PlanSetting> {
 
     @Override
     public void fillQueue() {
-        logger.info("start to fill queue.");
+        logger.info("start to fill exec queue.");
         long hitUserId = 0;
         while (true) {
-            List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(hitUserId, 100,
-                    ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
-            if (CollectionUtils.isEmpty(planSettings)) {
-                break;
-            } else {
-                hitUserId = Iterables.getLast(planSettings).getUserId();
-                fillQueue(planSettings);
+            try {
+                List<PlanSetting> planSettings = planSettingMapper.paginateByStatus(hitUserId, 100,
+                        ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
+                if (CollectionUtils.isEmpty(planSettings)) {
+                    break;
+                } else {
+                    hitUserId = Iterables.getLast(planSettings).getUserId();
+                    fillQueue(planSettings);
+                }
+            } catch (Throwable e) {
+                logger.error("exec plan error", e);
             }
         }
-        logger.info("end to fill queue[{}].", getQueue().size());
+        logger.info("end to fill exec queue[{}].", getQueue().size());
     }
 
     @Override
