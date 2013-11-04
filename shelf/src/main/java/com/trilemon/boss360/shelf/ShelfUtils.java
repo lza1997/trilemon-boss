@@ -72,7 +72,12 @@ public class ShelfUtils {
             for (Map.Entry<String, Boolean> hour : day.getValue().entrySet()) {
                 if (true == hour.getValue()) {
                     LocalTime startTime = new LocalTime(Integer.valueOf(hour.getKey()), 0);
-                    LocalTime endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
+                    LocalTime endTime;
+                    if (Integer.valueOf(hour.getKey()) == 23) {
+                        endTime = new LocalTime(0, 0);
+                    } else {
+                        endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
+                    }
                     table.put(Integer.valueOf(day.getKey()), new LocalTimeInterval(startTime, endTime), 0);
                 }
             }
