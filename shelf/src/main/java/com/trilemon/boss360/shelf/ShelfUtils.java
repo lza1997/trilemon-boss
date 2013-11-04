@@ -141,6 +141,9 @@ public class ShelfUtils {
                         break;
                     }
                 }
+                if(null==currentCell){
+                    continue;
+                }
                 if ((null == currentCell.getValue()) || currentCell.getValue() == 0) {
                     return currentCell;
                 } else {
