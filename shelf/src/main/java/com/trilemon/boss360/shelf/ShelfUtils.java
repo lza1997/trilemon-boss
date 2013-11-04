@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author kevin
@@ -130,13 +131,23 @@ public class ShelfUtils {
             LocalTimeInterval, Integer> distribution) {
         Integer minCellValue = Integer.MAX_VALUE;
         Table.Cell<Integer, LocalTimeInterval, Integer> minCell = null;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
-            if ((null == cell.getValue()) || cell.getValue() == 0) {
-                return cell;
-            } else {
-                if (cell.getValue() < minCellValue) {
-                    minCellValue = cell.getValue();
-                    minCell = cell;
+        Table.Cell<Integer, LocalTimeInterval, Integer> currentCell = null;
+        Set<Table.Cell<Integer, LocalTimeInterval, Integer>> cells=distribution.cellSet();
+        for(LocalTimeInterval column:distribution.columnKeySet()){
+            for(Integer row:distribution.rowKeySet()){
+                for(Table.Cell<Integer, LocalTimeInterval, Integer> c:cells){
+                    if(c.getRowKey()==row&&c.getColumnKey().equals(column)){
+                        currentCell=c;
+                        break;
+                    }
+                }
+                if ((null == currentCell.getValue()) || currentCell.getValue() == 0) {
+                    return currentCell;
+                } else {
+                    if (currentCell.getValue() < minCellValue) {
+                        minCellValue = currentCell.getValue();
+                        minCell = currentCell;
+                    }
                 }
             }
         }
