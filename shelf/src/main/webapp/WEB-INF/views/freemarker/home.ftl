@@ -17,13 +17,8 @@
     <script src="${asset}/base/js/html5shiv.js"></script>
     <script src="${asset}/base/js/respond.min.js"></script>
     <script>
-        document.createElement('chart');
+        document.createElement('pagination');
     </script>
-    <![endif]-->
-
-    <!--[if lt IE 8]>
-    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
-    <script src="${asset}/base/js/json2.js"></script>
     <![endif]-->
 
     <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
@@ -31,7 +26,6 @@
     <script src="${asset}/base/js/jquery.js"></script>
     <script src="${asset}/base/js/highcharts.src.js"></script>
     <script src="${asset}/base/js/angular.js"></script>
-    <script src="${asset}/base/js/angular-animate.js"></script>
     <script src="${asset}/base/js/angular-resource.js"></script>
     <script src="${asset}/base/js/angular-route.js"></script>
     <script src="${asset}/base/js/angular-sanitize.js"></script>
@@ -49,6 +43,15 @@
     <script src="${asset}/shelf/js/common/index.js"></script>
     <script src="${asset}/shelf/js/common/flash.js"></script>
     <script src="${asset}/shelf/js/common/rest.js"></script>
+
+    <!--[if lt IE 8]>
+    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
+    <script src="${asset}/base/js/json2.js"></script>
+    <script src="${asset}/base/js/angular/animate-ie7fix.js"></script>
+    <script>
+        app.config(AnimateIE7Fix);
+    </script>
+    <![endif]-->
 
     <script>
         seajs.config({

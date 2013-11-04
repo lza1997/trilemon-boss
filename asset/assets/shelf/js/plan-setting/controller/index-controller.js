@@ -38,7 +38,7 @@ define(function(require, exports, module) {
         // 处理分页
         $scope.jumpPage = function(page) {
             $location.search('page', page);
-            var promise = REST.PLAN_SETTING.getList({page: page || 1 });
+            var promise = REST.PLAN_SETTING.getList({page: (page || 1) });
             promise.then(function(data) {
                 $scope.planSettings = data;
             });
