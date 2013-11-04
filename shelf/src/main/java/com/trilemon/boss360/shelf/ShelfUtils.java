@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author kevin
@@ -33,7 +34,6 @@ public class ShelfUtils {
             }
             map.put(String.valueOf(dayOfWeek), hourMap);
         }
-        System.out.println( JsonMapper.nonEmptyMapper().toJson(map).length());
         return JsonMapper.nonEmptyMapper().toJson(map);
     }
 
@@ -73,7 +73,12 @@ public class ShelfUtils {
             for (Map.Entry<String, Boolean> hour : day.getValue().entrySet()) {
                 if (true == hour.getValue()) {
                     LocalTime startTime = new LocalTime(Integer.valueOf(hour.getKey()), 0);
-                    LocalTime endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
+                    LocalTime endTime;
+                    if (Integer.valueOf(hour.getKey()) == 23) {
+                        endTime = new LocalTime(0, 0);
+                    } else {
+                        endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
+                    }
                     table.put(Integer.valueOf(day.getKey()), new LocalTimeInterval(startTime, endTime), 0);
                 }
             }
@@ -90,8 +95,9 @@ public class ShelfUtils {
     public static Table<Integer, LocalTimeInterval, Integer> getDefaultDistribution(int itemNum) {
         Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         int cellDivision = IntMath.divide(itemNum, 7 * (23 - 9), RoundingMode.CEILING);
-        for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
-            for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
+
+        for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
+            for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
                 if (itemNum == 0) {
                     break;
                 }
@@ -125,13 +131,26 @@ public class ShelfUtils {
             LocalTimeInterval, Integer> distribution) {
         Integer minCellValue = Integer.MAX_VALUE;
         Table.Cell<Integer, LocalTimeInterval, Integer> minCell = null;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
-            if ((null == cell.getValue()) || cell.getValue() == 0) {
-                return cell;
-            } else {
-                if (cell.getValue() < minCellValue) {
-                    minCellValue = cell.getValue();
-                    minCell = cell;
+        Table.Cell<Integer, LocalTimeInterval, Integer> currentCell = null;
+        Set<Table.Cell<Integer, LocalTimeInterval, Integer>> cells=distribution.cellSet();
+        for(LocalTimeInterval column:distribution.columnKeySet()){
+            for(Integer row:distribution.rowKeySet()){
+                for(Table.Cell<Integer, LocalTimeInterval, Integer> c:cells){
+                    if(c.getRowKey()==row&&c.getColumnKey().equals(column)){
+                        currentCell=c;
+                        break;
+                    }
+                }
+                if(null==currentCell){
+                    continue;
+                }
+                if ((null == currentCell.getValue()) || currentCell.getValue() == 0) {
+                    return currentCell;
+                } else {
+                    if (currentCell.getValue() < minCellValue) {
+                        minCellValue = currentCell.getValue();
+                        minCell = currentCell;
+                    }
                 }
             }
         }

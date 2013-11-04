@@ -2,7 +2,7 @@ package com.trilemon.boss360.shelf.model;
 
 import java.util.Date;
 
-public class PlanSetting {
+public class PlanSetting implements Comparable<PlanSetting> {
     private Long id;
     private Long userId;
     private String name;
@@ -146,5 +146,11 @@ public class PlanSetting {
 
     public void setWaitAdjustItemNum(int waitAdjustItemNum) {
         this.waitAdjustItemNum = waitAdjustItemNum;
+    }
+
+    @Override
+    public int compareTo(PlanSetting o) {
+        int lastPlanTime = (int) (o.getLastPlanTime().getTime() - this.getLastPlanTime().getTime());
+        return lastPlanTime;
     }
 }

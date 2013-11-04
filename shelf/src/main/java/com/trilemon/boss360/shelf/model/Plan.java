@@ -1,10 +1,11 @@
 package com.trilemon.boss360.shelf.model;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
-public class Plan {
+public class Plan implements Comparable<Plan> {
     private Long id;
     private Long planSettingId;
     private Long userId;
@@ -143,5 +144,18 @@ public class Plan {
 
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    @Override
+    public int compareTo(Plan o) {
+        int day = (int) (o.getPlanAdjustDay().getTime() - this.getPlanAdjustDay().getTime());
+        if (day == 0) {
+            return Math.abs(day);
+        } else {
+            int hour = new DateTime(o.getPlanAdjustStartTime()).getHourOfDay() - new DateTime(this
+                    .getPlanAdjustStartTime()
+            ).getHourOfDay();
+            return Math.abs(hour);
+        }
     }
 }

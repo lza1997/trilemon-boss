@@ -109,7 +109,7 @@
         <property name="prefix" value=""/>
         <property name="suffix" value=".ftl"/>
         <property name="exposeRequestAttributes" value="true"/>
-        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="contentType" value="text/html;charset=UTF-8"/>
     </bean>
 
     <mvc:view-controller path="/" view-name="redirect:/plan-settings"/>

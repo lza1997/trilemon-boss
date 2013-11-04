@@ -478,7 +478,7 @@
         where
         LIMIT 0, #{limit,jdbcType=INTEGER}
     </select>
-    <select id="paginateUserIdByStatus" resultMap="BaseResultMap" parameterType="map">
+    <select id="paginateUserIdByStatus" resultType="long" parameterType="map">
         select user_id from plan_setting
         where user_id > #{hitUserId,jdbcType=BIGINT} and
         <trim prefix="(" suffix=")" prefixOverrides="and">

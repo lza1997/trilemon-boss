@@ -20,8 +20,8 @@ public class TestController {
     @RequestMapping(value = "/shelfStatus", method = RequestMethod.GET)
     public int[] shelfStatus() {
         int[] inventoryItemNum = new int[]{0, 0};
-        inventoryItemNum[0] = inventoryListService.getNeverOnShelfItemNum();
-        inventoryItemNum[1] = inventoryListService.getOffShelfItemNum();
+//        inventoryItemNum[0] = inventoryListService.getNeverOnShelfItemNum();
+//        inventoryItemNum[1] = inventoryListService.getOffShelfItemNum();
         return inventoryItemNum;
     }
     @ResponseBody
