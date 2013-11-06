@@ -24,15 +24,20 @@
                         </contextHandler>
 
                         <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-                            <contextPath>/shelf</contextPath>
-                            <resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>
+                            <contextPath>/</contextPath>
+                            <resourceBase>${basedir}/../center/target/trilemon-360boss-center-1.0-SNAPSHOT</resourceBase>
                         </contextHandler>
 
-                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-                            <contextPath>/showcase</contextPath>
-                            <resourceBase>${basedir}/../showcase/target/trilemon-360boss-showcase-1.0-SNAPSHOT
-                            </resourceBase>
-                        </contextHandler>
+                        <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
+                            <!--<contextPath>/shelf</contextPath>-->
+                            <!--<resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>-->
+                        <!--</contextHandler>-->
+
+                        <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
+                            <!--<contextPath>/showcase</contextPath>-->
+                            <!--<resourceBase>${basedir}/../showcase/target/trilemon-360boss-showcase-1.0-SNAPSHOT-->
+                            <!--</resourceBase>-->
+                        <!--</contextHandler>-->
                     </contextHandlers>
                     <scanIntervalSeconds>0</scanIntervalSeconds>
                     <stopKey>trilemon</stopKey>
@@ -53,7 +58,7 @@
                     <systemProperties>
                         <systemProperty>
                             <name>MAVEN_OPTS</name>
-                            <value>-Xmx128m</value>
+                            <value>-Xmx384m -XX:PermSize=256M -XX:MaxPermSize=512M</value>
                         </systemProperty>
                         <systemProperty>
                             <name>spring.profiles.active</name>
