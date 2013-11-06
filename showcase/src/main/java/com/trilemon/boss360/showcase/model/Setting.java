@@ -3,7 +3,7 @@ package com.trilemon.boss360.showcase.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Setting {
+public class Setting implements Comparable<Setting>{
     private Integer id;
 
     private Long userId;
@@ -172,5 +172,9 @@ public class Setting {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+    @Override
+    public int compareTo(Setting o) {
+        return (int) (o.getUpdTime().getTime() - this.getUpdTime().getTime());
     }
 }

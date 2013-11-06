@@ -91,7 +91,7 @@
 
         <dependency>
             <groupId>com.taobao.sdk</groupId>
-            <artifactId>standard</artifactId>
+            <artifactId>turbo</artifactId>
         </dependency>
 
         <dependency>
@@ -458,6 +458,10 @@
                         <logTimeZone>GMT+8:00</logTimeZone>
                     </requestLog>
                     <systemProperties>
+                        <systemProperty>
+                            <name>MAVEN_OPTS</name>
+                            <value>-Xmx128m</value>
+                        </systemProperty>
                         <systemProperty>
                             <name>spring.profiles.active</name>
                             <value>development</value>

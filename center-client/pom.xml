@@ -37,7 +37,7 @@
 
         <dependency>
             <groupId>com.taobao.sdk</groupId>
-            <artifactId>standard</artifactId>
+            <artifactId>turbo</artifactId>
         </dependency>
 
         <dependency>
