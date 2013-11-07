@@ -18,7 +18,9 @@
     <properties>
         <!-- 主要依赖库的版本定义 -->
         <trilemon.commons.version>1.0-SNAPSHOT</trilemon.commons.version>
-        <trilemon.360boss.infrastructure.base.client>1.0-SNAPSHOT</trilemon.360boss.infrastructure.base.client>
+        <trilemon.360boss.infrastructure.base.client.version>
+            1.0-SNAPSHOT
+        </trilemon.360boss.infrastructure.base.client.version>
     </properties>
 
     <!-- 依赖项定义 -->
@@ -32,7 +34,7 @@
         <dependency>
             <groupId>com.trilemon.360boss</groupId>
             <artifactId>trilemon-360boss-infrastructure-base-client</artifactId>
-            <version>${trilemon.360boss.infrastructure.base.client}</version>
+            <version>${trilemon.360boss.infrastructure.base.client.version}</version>
         </dependency>
 
         <dependency>
