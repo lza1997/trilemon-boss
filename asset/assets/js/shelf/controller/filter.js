@@ -1,3 +1,6 @@
+/**
+ * 筛选宝贝
+ */
 define(function(require, exports, module) {
 
     var FilterController = ['$scope', 'REST', '$routeParams', function($scope, REST, $routeParams) {
@@ -36,7 +39,7 @@ define(function(require, exports, module) {
         }
     }];
 
-    FilterController.template = 'planSetting/filter';
+    FilterController.template = 'shelf/filter';
     FilterController.title = "筛选宝贝";
 
     module.exports = FilterController;

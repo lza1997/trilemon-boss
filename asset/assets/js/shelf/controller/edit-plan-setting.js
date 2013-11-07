@@ -13,7 +13,7 @@ define(function(require, exports, module) {
         });
     }];
 
-    EditController.template = 'planSetting/form';
+    EditController.template = 'shelf/form';
     EditController.title = "挑选分类";
 
     module.exports = EditController;

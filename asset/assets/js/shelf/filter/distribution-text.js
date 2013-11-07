@@ -1,3 +1,6 @@
+/**
+ * 显示计划的时间分配
+ */
 define(function(require, exports, module) {
     module.exports = function() {
 

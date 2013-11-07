@@ -12,7 +12,7 @@
 
     <link href="${asset}/base/css/bootstrap.css" rel="stylesheet">
     <link href="${asset}/base/css/font-awesome.css" rel="stylesheet">
-    <link href="${asset}/shelf/css/application.css" rel="stylesheet">
+    <link href="${asset}/css/application.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="${asset}/base/js/html5shiv.js"></script>
@@ -40,10 +40,10 @@
     <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
     <script src="${asset}/base/js/angular/highchart.js"></script>
 
-    <script src="${asset}/shelf/js/app.js"></script>
-    <script src="${asset}/shelf/js/common/index.js"></script>
-    <script src="${asset}/shelf/js/common/flash.js"></script>
-    <script src="${asset}/shelf/js/common/rest.js"></script>
+    <script src="${asset}/js/app.js"></script>
+    <script src="${asset}/js/common/index.js"></script>
+    <script src="${asset}/js/common/flash.js"></script>
+    <script src="${asset}/js/common/rest.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
@@ -58,7 +58,7 @@
         seajs.config({
             preload: ['seajs/seajs-text/1.0.3/seajs-text'],
             paths: {
-                'shelf_js':'${asset}/shelf/js'
+                'app':'${asset}/js'
             }
         });
     </script>
@@ -89,10 +89,10 @@
                     </ul>
                 </li>
                 <li ng-class="{active: navClass == 'planIndex'}">
-                    <a href="#/plan-setting">计划列表</a>
+                    <a href="#/shelf/plan-setting">计划列表</a>
                 </li>
                 <li ng-class="{active: navClass == 'planNew'}">
-                    <a href="#/plan-setting/new">创建计划</a>
+                    <a href="#/shelf/plan-setting/new">创建计划</a>
                 </li>
             </ul>
         </div>
@@ -104,11 +104,6 @@
 <div class="container" ng-view ng-cloak>
 </div>
 
-<div id="sb">sb</div>
-<script>
-
-    angular.element(document.getElementById('sb')).addClass('ng-hide');
-</script>
 <footer>
     <div class="container">
         <ul class="list-inline">

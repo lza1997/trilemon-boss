@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 
         $scope.showModal = function(week) {
             $modal.open({
-                templateUrl: 'planSetting/distributionModal',
+                templateUrl: 'shelf/distributionModal',
                 controller: ModalController,
                 resolve: {
                     distribution: function() {
@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 
         $scope.save = function() {
             $scope.distribution.put().then(function() {
-                $location.url('/plan-setting');
+                $location.url('/shelf/plan-setting');
             });
         };
 
@@ -67,7 +67,7 @@ define(function(require, exports, module) {
         $scope.selectTab(_.first($scope.tabs));
     }];
 
-    DistributionController.template = 'planSetting/distribution';
+    DistributionController.template = 'shelf/distribution';
     DistributionController.title = "设置上架时间";
 
     module.exports = DistributionController;
