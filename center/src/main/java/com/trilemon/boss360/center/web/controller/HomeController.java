@@ -1,4 +1,4 @@
-package com.trilemon.boss360.shelf.web.controller;
+package com.trilemon.boss360.center.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
