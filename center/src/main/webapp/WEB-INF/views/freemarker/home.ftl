@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="zh" id="ng-app" ng-app="app">
+<!doctype html>
+<html xmlns:ng="http://angularjs.org" lang="zh" id="ng-app" ng-app="app">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="renderer" content="webkit" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title ng-bind="title"></title>
 
@@ -17,29 +17,42 @@
     <!--[if lt IE 9]>
     <script src="${asset}/base/js/html5shiv.js"></script>
     <script src="${asset}/base/js/respond.min.js"></script>
-    <![endif]-->
-
-    <!--[if lt IE 8]>
-    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet">
+    <script>
+        document.createElement('pagination');
+    </script>
     <![endif]-->
 
     <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
     <script src="${asset}/base/js/underscore.js"></script>
     <script src="${asset}/base/js/jquery.js"></script>
+    <script src="${asset}/base/js/highcharts.src.js"></script>
     <script src="${asset}/base/js/angular.js"></script>
-    <script src="${asset}/base/js/angular-animate.js"></script>
     <script src="${asset}/base/js/angular-resource.js"></script>
     <script src="${asset}/base/js/angular-route.js"></script>
+    <script src="${asset}/base/js/angular-sanitize.js"></script>
     <script src="${asset}/base/js/restangular.js"></script>
     <script src="${asset}/base/js/bootstrap/index.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>
     <script src="${asset}/base/js/bootstrap/angular-modal.js"></script>
+    <script src="${asset}/base/js/bootstrap/angular-tabs.js"></script>
     <script src="${asset}/base/js/seajs-lazy-module.js"></script>
+    <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
+    <script src="${asset}/base/js/angular/highchart.js"></script>
 
     <script src="${asset}/shelf/js/app.js"></script>
     <script src="${asset}/shelf/js/common/index.js"></script>
     <script src="${asset}/shelf/js/common/flash.js"></script>
+    <script src="${asset}/shelf/js/common/rest.js"></script>
+
+    <!--[if lt IE 8]>
+    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
+    <script src="${asset}/base/js/json2.js"></script>
+    <script src="${asset}/base/js/angular/animate-ie7fix.js"></script>
+    <script>
+        app.config(AnimateIE7Fix);
+    </script>
+    <![endif]-->
 
     <script>
         seajs.config({
@@ -86,14 +99,16 @@
     </div>
 </header>
 
-<div class="ajax-spinner fade" ng-class="{'in':ajaxing}">
-    <i class="icon-spinner icon-spin"></i> 载入中...
+<div ajax-spinner></div>
+
+<div class="container" ng-view ng-cloak>
 </div>
 
-<div class="container" ng-view>
+<div id="sb">sb</div>
+<script>
 
-</div>
-
+    angular.element(document.getElementById('sb')).addClass('ng-hide');
+</script>
 <footer>
     <div class="container">
         <ul class="list-inline">
