@@ -28,10 +28,10 @@
                             <resourceBase>${basedir}/../center/target/trilemon-360boss-center-1.0-SNAPSHOT</resourceBase>
                         </contextHandler>
 
-                        <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
-                            <!--<contextPath>/shelf</contextPath>-->
-                            <!--<resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>-->
-                        <!--</contextHandler>-->
+                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
+                            <contextPath>/shelf</contextPath>
+                            <resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>
+                        </contextHandler>
 
                         <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
                             <!--<contextPath>/showcase</contextPath>-->
