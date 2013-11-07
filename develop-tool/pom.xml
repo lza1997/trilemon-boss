@@ -24,14 +24,14 @@
                         </contextHandler>
 
                         <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-                            <contextPath>/</contextPath>
+                            <contextPath>/center</contextPath>
                             <resourceBase>${basedir}/../center/target/trilemon-360boss-center-1.0-SNAPSHOT</resourceBase>
                         </contextHandler>
 
-                        <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
-                            <contextPath>/shelf</contextPath>
-                            <resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>
-                        </contextHandler>
+                        <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
+                            <!--<contextPath>/shelf</contextPath>-->
+                            <!--<resourceBase>${basedir}/../shelf/target/trilemon-360boss-shelf-1.0-SNAPSHOT</resourceBase>-->
+                        <!--</contextHandler>-->
 
                         <!--<contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">-->
                             <!--<contextPath>/showcase</contextPath>-->
@@ -69,6 +69,7 @@
                             <value>/Users/kevin/Dev/logs</value>
                         </systemProperty>
                     </systemProperties>
+                    <jvmArgs>-Xmx256m -XX:PermSize=128m -XX:MaxPermSize=256m</jvmArgs>
                 </configuration>
             </plugin>
         </plugins>

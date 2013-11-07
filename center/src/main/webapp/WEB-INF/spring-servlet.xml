@@ -112,7 +112,7 @@
         <property name="contentType" value="text/html;charset=UTF-8"></property>
     </bean>
 
-    <mvc:view-controller path="/" view-name="redirect:/plan-settings"/>
+    <mvc:view-controller path="/" view-name="redirect:/home"/>
 
     <!-- 将Controller抛出的异常转到特定View, 保持SiteMesh的装饰效果 -->
     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

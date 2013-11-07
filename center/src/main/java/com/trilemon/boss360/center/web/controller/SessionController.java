@@ -17,6 +17,7 @@ public class SessionController {
     @RequestMapping(value = "/testSession", method = RequestMethod.GET)
     public void testSession(){
         Subject currentUser = SecurityUtils.getSubject();
+        ///dddd
         if (!currentUser.isAuthenticated()) {
             //collect user principals and credentials in a gui specific manner
             //such as username/password html form, X509 certificate, OpenID, etc.

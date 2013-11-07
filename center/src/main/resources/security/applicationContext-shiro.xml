@@ -41,7 +41,7 @@
             <value>
                 /signIn = anon
                 /signOut = logout
-                /** =authc
+                /** =anon
             </value>
         </property>
     </bean>
