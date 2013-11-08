@@ -2,7 +2,7 @@
  * 新建或修改计划，用于 Controller 的复用
  */
 define(function(require, exports, module) {
-    module.exports = ['REST', 'Flash', '$location', function(REST, Flash, $location) {
+    module.exports = ['REST', 'Flash', '$location', 'SellerCat', function(REST, Flash, $location, SellerCat) {
 
         return {
             // 向 controller 的 scope 注入方法与数据
@@ -17,46 +17,17 @@ define(function(require, exports, module) {
                 }, true);
 
                 // 获取卖家的宝贝分类
-                REST.SELLER_CAT.getList().then(function(data) {
-                    // 展开第一个有子分类的
-                    var firstChild = _.find(data, function(cat) {
-                        return cat.parentCid !== 0;
-                    });
-                    _.findWhere(data, {cid: firstChild.parentCid}).expand = true;
-
-                    // 显示页面时回填
-                    _.each(data, function(cat) {
-                        cat.wasSelected = cat.selected = _.include($scope.includeSellerCids, cat.cid + '');
-                    });
-
+                SellerCat.fetch({selectedCids: $scope.includeSellerCids}).then(function(data) {
                     $scope.sellerCats = data;
                 });
 
                 // 分类的父子联动选择
-                $scope.check = function(sellerCat) {
-                    // 联动所有子分类
-                    if (sellerCat.parentCid === 0) {
-                        _.chain($scope.sellerCats).where({parentCid: sellerCat.cid}).each(function(childSellerCat) {
-                            if (childSellerCat.planned && !childSellerCat.wasSelected) {
-                                return;
-                            }
-                            childSellerCat.selected = sellerCat.selected;
-                        });
-                    }
-                    // 联动父分类，所有兄弟都选中时才选中父分类
-                    else {
-                        var parentCat = _.findWhere($scope.sellerCats, {cid: sellerCat.parentCid});
-                        var childCats = _.where($scope.sellerCats, {parentCid: sellerCat.parentCid});
-                        parentCat.selected = _.every(childCats, function(cat) {
-                            return cat.selected;
-                        });
-                    }
+                $scope.check = function(cat) {
+                    SellerCat.checkSellerCat(cat, $scope.sellerCats);
                 };
 
                 // 展开或折叠父分类
-                $scope.toggleSellerCat = function(sellerCat) {
-                    sellerCat.expand = !sellerCat.expand;
-                };
+                $scope.toggleSellerCat = SellerCat.toggleSellerCat;
 
                 // 保存计划
                 $scope.save = function() {

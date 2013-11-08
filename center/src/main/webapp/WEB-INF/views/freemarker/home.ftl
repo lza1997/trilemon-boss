@@ -44,6 +44,7 @@
     <script src="${asset}/js/common/index.js"></script>
     <script src="${asset}/js/common/flash.js"></script>
     <script src="${asset}/js/common/rest.js"></script>
+    <script src="${asset}/js/common/seller-cat.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
