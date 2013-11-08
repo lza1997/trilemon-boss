@@ -20,7 +20,7 @@
 
     <description>导入applicationContext文件列表</description>
 
-    <import resource="applicationContext-Trilemon-360Boss-Infra-Base-Client.xml"/>
+    <import resource="applicationContext-trilemon-360Boss-infra-base-client.xml"/>
     <import resource="cache/applicationContext-redis.xml"/>
     <import resource="schedule/applicationContext-spring-scheduler.xml"/>
     <import resource="security/applicationContext-shiro.xml"/>

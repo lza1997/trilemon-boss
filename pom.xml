@@ -29,6 +29,7 @@
         <module>inventory</module>
         <module>develop-tool</module>
         <module>crm</module>
+        <module>rate</module>
     </modules>
 
     <name>Trilemon-360boss</name>
