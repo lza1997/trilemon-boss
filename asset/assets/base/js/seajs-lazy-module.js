@@ -52,7 +52,7 @@ angular.module('seajs', []).config(['$controllerProvider', '$compileProvider', '
             this.$templateCache = $templateCache;
             this.$rootScope.$on('$routeChangeStart', function(e, target) {
                 var route = target && target.$$route;
-                if (route) {
+                if (route && route.moduleUrl) {
                     route.resolve = route.resolve || {};
                     _this.handleRouteChange(route);
                 }

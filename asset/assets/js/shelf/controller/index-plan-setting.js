@@ -1,3 +1,6 @@
+/**
+ * 计划列表
+ */
 define(function(require, exports, module) {
     var IndexController = ['$scope', 'REST', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, REST, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
         // 初始化
@@ -47,15 +50,15 @@ define(function(require, exports, module) {
 
         $scope.showChart = function() {
             var modal = $modal.open({
-                templateUrl: 'planSetting/chart',
-                controller: require('./chart-controller')
+                templateUrl: 'shelf/chart',
+                controller: require('./chart')
             });
         };
 
         $scope.init();
     }];
 
-    IndexController.template = 'planSetting/index';
+    IndexController.template = 'shelf/index';
     IndexController.title = '计划列表';
     IndexController.navClass = 'planIndex';
 

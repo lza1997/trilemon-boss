@@ -1,3 +1,6 @@
+/**
+ * 创建计划
+ */
 define(function(require, exports, module) {
 
     var NewController = ['$scope', 'REST', 'Flash', 'PlanSettingForm', function($scope, REST, Flash, PlanSettingForm) {
@@ -8,7 +11,7 @@ define(function(require, exports, module) {
         PlanSettingForm.initScope($scope, planSetting);
     }];
 
-    NewController.template = 'planSetting/form';
+    NewController.template = 'shelf/form';
     NewController.title = "创建计划";
     NewController.navClass = "planNew";
 

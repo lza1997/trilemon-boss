@@ -1,5 +1,5 @@
 /**
- * 商品（宝贝）
+ * 确认框
  */
 define(function(require, exports, module) {
 

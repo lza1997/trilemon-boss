@@ -3,15 +3,21 @@ var app = angular.module('app', ['ngRoute', 'ngSanitize', 'restangular', 'ui.boo
 app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
 
     SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
-    var planSetting = SeajsLazyModuleProvider.create('shelf_js/plan-setting/index');
+    var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
+    var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
 
     $routeProvider
-        .when('/plan-setting/new', planSetting.routeFor('planSetting.new'))
-        .when('/plan-setting/:id/filter', planSetting.routeFor('planSetting.filter'))
-        .when('/plan-setting/:id/edit', planSetting.routeFor('planSetting.edit'))
-        .when('/plan-setting/:id/distribution', planSetting.routeFor('planSetting.distribution'))
-        .when('/plan-setting', planSetting.routeFor('planSetting.index', {reloadOnSearch: false}))
-        .otherwise({redirectTo: '/plan-setting'});
+        .when('/shelf/plan-setting/new', shelf.routeFor('shelf.newPlanSetting'))
+        .when('/shelf/plan-setting/:id/filter', shelf.routeFor('shelf.filter'))
+        .when('/shelf/plan-setting/:id/edit', shelf.routeFor('shelf.editPlanSetting'))
+        .when('/shelf/plan-setting/:id/distribution', shelf.routeFor('shelf.distribution'))
+        .when('/shelf/plan-setting', shelf.routeFor('shelf.indexPlanSetting', {reloadOnSearch: false}))
+        .when('/shelf', {redirectTo: '/shelf/plan-setting'})
+
+        .when('/showcase/rule/edit', showCase.routeFor('showcase.editRule'))
+        .when('/showcase', {redirectTo: '/showcase/rule/edit'})
+
+        .otherwise({redirectTo: '/shelf'});
 
 
     RestangularProvider.setMethodOverriders(['put', 'delete']);

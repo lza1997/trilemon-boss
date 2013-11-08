@@ -1,0 +1,67 @@
+<div class="well">
+    自动橱窗推荐管理{{hasRule ? '已经' : '尚未'}}开启
+    <button class="btn btn-primary" ng-click="createRule()" ng-show="!hasRule">立刻开启</button>
+</div>
+<form class="form" name="form" novalidate ng-show="hasRule">
+    <div class="form-group">
+        <label>宝贝分类<p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length}} 个子分类</p></label>
+
+        <div>
+            <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
+                <label>
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)"
+                           ng-disabled="sellercat.planned && !sellercat.wasSelected"/>
+                </label>
+                <label ng-click="toggleSellerCat(sellercat)">
+                    <span>
+                        <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
+                    </span>
+                    <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
+                </label>
+
+                <div class="checkbox" ng-show="sellercat.expand"
+                     ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
+                    <label>
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)"
+                               ng-disabled="childCat.planned && !childCat.wasSelected"/>
+                        {{childCat.name}} ({{childCat.itemNum}})
+                    </label>
+                </div>
+            </div>
+            <input type="hidden" ng-model="planSetting.includeSellerCids" name="includeSellerCids" required/>
+            <label class="error"><i class="icon-exclamation-sign"></i> 请选择分类</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>排除设置</label>
+
+        <div class="checkbox">
+            <label>
+                排除指定宝贝 <a href="">筛选</a>
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" />
+                排除 <input type="text" style="width:50px;display: inline" /> 分钟内要下架的宝贝
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" />
+                排除库存低于 <input type="text" class="form-control" style="width:50px;display: inline" /> 的宝贝
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" />
+                不推荐刚上架(剩余时间超过6天半)的宝贝
+            </label>
+        </div>
+    </div>
+    <div class="form-group form-action">
+        <div class="col-md-offset-1 col-md-10">
+            <button class="btn btn-primary btn-lg" ng-click="save()">{{ planSetting.id ? '保存' : '创建计划' }}</button>
+        </div>
+    </div>
+</form>
