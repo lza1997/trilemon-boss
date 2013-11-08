@@ -1,0 +1,84 @@
+<div class="row" ng-show="!setting.isEnabled()">
+    <div class="well col-lg-5">
+        自动橱窗推荐管理尚未开启
+        <button class="btn btn-primary" ng-click="enableSetting(true)">立刻开启</button>
+    </div>
+</div>
+<form class="form-horizontal rule-form" name="form" novalidate ng-show="setting.isEnabled()">
+    <div class="form-group">
+        <label class="col-md-1 control-label">宝贝分类</label>
+
+        <div class="col-md-6">
+            <p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length}} 个子分类</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label"></label>
+
+        <div class="col-md-6">
+            <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
+                <label>
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" />
+                </label>
+                <label ng-click="toggleSellerCat(sellercat)">
+                    <span>
+                        <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
+                    </span>
+                    <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
+                </label>
+
+                <div class="checkbox" ng-show="sellercat.expand"
+                     ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
+                    <label>
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" />
+                        {{childCat.name}} ({{childCat.itemNum}})
+                    </label>
+                </div>
+            </div>
+            <input type="hidden" ng-model="setting.includeSellerCids" name="includeSellerCids" required/>
+            <label class="error"><i class="icon-exclamation-sign"></i> 请选择分类</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label">排除设置</label>
+
+        <div class="col-md-6">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"/>
+                    排除指定宝贝 <a href="">筛选</a>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="setting.excludeItemDelistingAfter" ng-true-value="1" ng-false-value="-1" />
+                    排除
+                </label>
+                <label>
+                     <input type="number" ng-disabled="setting.excludeItemDelistingAfter == -1" ng-model="setting.excludeItemDelistingAfter" class="form-control input-sm"/> 分钟内要下架的商宝贝
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" />
+                    排除库存低于
+                </label>
+                <label>
+                    <input type="number" disabled class="form-control input-sm"/> 的宝贝
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"/>
+                    不推荐刚上架(剩余时间超过6天半)的宝贝
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group form-action">
+        <div class="col-md-offset-1 col-md-10">
+            <button class="btn btn-primary btn-lg" ng-click="save()">保存</button>
+            <button class="btn btn-default btn-lg" ng-click="enableSetting(false)">关闭自动推荐</button>
+        </div>
+    </div>
+</form>

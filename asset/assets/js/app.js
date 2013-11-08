@@ -14,8 +14,8 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/shelf/plan-setting', shelf.routeFor('shelf.indexPlanSetting', {reloadOnSearch: false}))
         .when('/shelf', {redirectTo: '/shelf/plan-setting'})
 
-        .when('/showcase/rule/edit', showCase.routeFor('showcase.editRule'))
-        .when('/showcase', {redirectTo: '/showcase/rule/edit'})
+        .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
+        .when('/showcase', {redirectTo: '/showcase/setting/edit'})
 
         .otherwise({redirectTo: '/shelf'});
 

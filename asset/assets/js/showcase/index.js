@@ -4,10 +4,10 @@
 define(function(require, exports, module) {
     var showcase = {
         controllers: {
-            'showcase.editRule': require('./controller/edit-rule')
+            'showcase.editSetting': require('./controller/edit-setting')
         },
         templates: {
-            'showcase/edit': require('./template/edit.html')
+            'showcase/editSetting': require('./template/edit-setting.html')
         }
     };
 

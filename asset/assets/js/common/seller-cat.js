@@ -7,6 +7,8 @@ angular.module('common').factory('SellerCat', ['REST', '$q', function(REST, $q) 
         // 获取所有分类
         // options.selectedCids 已经选择的分类 ID
         fetch: function(options) {
+            options = _.defaults(options || {}, {selectedCids: []});
+
             var defer = $q.defer();
             REST.SELLER_CAT.getList().then(function(data) {
                 // 展开第一个有子分类的 TODO:BUG
