@@ -13,6 +13,7 @@ import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -76,7 +77,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCatAndOnSaleItemNum", method = RequestMethod.GET)
-    Set<SellerCat> getSellerCatAndOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    Set<SellerCat> getSellerCatAndOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L,
                 taobaoApiShopService.getSellerCats(56912708L));
         return map.keySet();
@@ -90,7 +91,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCats", method = RequestMethod.GET)
-    List<SellerCat> getSellerCats() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    List<SellerCat> getSellerCats() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         return cids;
     }
@@ -103,7 +104,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/sellerCatsByNick", method = RequestMethod.GET)
-    List<SellerCat> getSellerCatsByNick() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    List<SellerCat> getSellerCatsByNick() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         return cids;
     }
@@ -117,7 +118,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/onSaleItems", method = RequestMethod.GET)
-    Page<Item> getOnSaleItems(@RequestParam int pageNum) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    Page<Item> getOnSaleItems(@RequestParam int pageNum) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> sellerCats = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -139,7 +140,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/allOnSaleItemNum", method = RequestMethod.GET)
-    long getAllOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    long getAllOnSaleItemNum() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         List<SellerCat> cids = taobaoApiShopService.getSellerCats(56912708L);
         List<Long> cidList = Lists.transform(cids, new Function<SellerCat, Long>() {
             @Nullable
@@ -160,7 +161,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/tradeNumFromTop", method = RequestMethod.GET)
-    long getTradeNumFromTop() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    long getTradeNumFromTop() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         long num = taobaoApiShopService.getTradeNumFromTop(56912708L, BaseConstants.TRADE_TYPES,
                 DateUtils.startOfNDaysBefore(90).toDate(),
                 DateUtils.endOfNDaysBefore(1).toDate());
@@ -214,7 +215,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     Page<Item> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
-            TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         return taobaoApiShopService.paginateOnSaleItems(56912708L, query, ShelfConstants.ITEM_FIELDS, null,
                 pageNum, 1, true);
     }
@@ -228,7 +229,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/items/{numIid}", method = RequestMethod.GET)
     public String searchOnSaleItem(@PathVariable String numIid) throws
-            TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         Item item = taobaoApiShopService.getItem(56912708L, Long.valueOf(numIid), ShelfConstants.ITEM_FIELDS);
         JsonMapper jsonMapper = new JsonMapper(JsonInclude.Include.NON_NULL);
         return jsonMapper.toJson(item);
@@ -242,7 +243,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/save", method = RequestMethod.GET)
-    public String savePlanSetting() throws ShelfException, TaobaoSessionExpiredException {
+    public String savePlanSetting() throws ShelfException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSetting.setAutoAddNewItems(true);
@@ -338,7 +339,7 @@ public class TestController {
      */
     @ResponseBody
     @RequestMapping(value = "/updatePlanSetting", method = RequestMethod.GET)
-    public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException, TaobaoSessionExpiredException {
+    public String updatePlanSetting(@RequestParam long planSettingId) throws ShelfException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setName("更新的计划");
@@ -418,7 +419,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/shelfStatus", method = RequestMethod.GET)
     public ShelfStatus shelfStatus() throws
-            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         return planSettingService.getShelfStatus(56912708L);
     }
 

@@ -1,6 +1,7 @@
 package com.trilemon.boss360.showcase.web.controller;
 
 import com.taobao.api.domain.Item;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.showcase.ShowcaseConstants;
@@ -26,7 +27,7 @@ public class TestController {
 
     @RequestMapping("/create")
     @ResponseBody
-    public Setting create() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public Setting create() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         Setting setting = new Setting();
         setting.setExcludeItemDelistingAfter((int) 6.5 * 24 * 60);
         setting.setExcludeItemDelistingWithin(30);
@@ -44,7 +45,7 @@ public class TestController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public Setting update() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public Setting update() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         Setting setting = new Setting();
         setting.setExcludeItemDelistingAfter((int) 6.5 * 24 * 60);
         setting.setExcludeItemDelistingWithin(30);
@@ -68,7 +69,7 @@ public class TestController {
 
     @RequestMapping("/resumeSetting")
     @ResponseBody
-    public String resumeSetting() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public String resumeSetting() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         settingService.resumeSetting(56912708L);
         return "resume success";
     }
@@ -105,7 +106,7 @@ public class TestController {
     public Page<Item> paginateShowcaseItems(@RequestParam Integer pageNum, @RequestParam Integer pageSize) throws
             ShowcaseException,
             TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException {
+            TaobaoEnhancedApiException, TaobaoAccessControlException {
       return  settingService.paginateShowcaseItems(56912708L, pageNum, pageSize);
     }
 }

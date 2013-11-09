@@ -3,6 +3,7 @@ package com.trilemon.boss360.shelf.web.controller;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
@@ -28,15 +29,17 @@ public class SellerCatController {
     @Autowired
     private PlanSettingService planSettingService;
 
+
     /**
      * 获取卖家的分类信息
-     *
      * @return
      * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoAccessControlException
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public List<SellerCatVO> index() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    public List<SellerCatVO> index() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         List<SellerCat> sellerCats = taobaoApiShopService.getSellerCats(56912708L);
         Map<SellerCat, Long> map = taobaoApiShopService.getSellerCatAndOnSaleItemNum(56912708L, sellerCats);
         System.out.println(map);

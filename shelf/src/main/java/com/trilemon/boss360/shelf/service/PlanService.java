@@ -10,11 +10,14 @@ import com.taobao.api.request.ItemUpdateListingRequest;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.taobao.api.response.ItemUpdateDelistingResponse;
 import com.taobao.api.response.ItemUpdateListingResponse;
+import com.taobao.api.response.ItemsOnsaleGetResponse;
 import com.trilemon.boss360.infrastructure.base.client.BaseClient;
 import com.trilemon.boss360.infrastructure.base.model.TaobaoSession;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.BaseTaobaoApiException;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.infrastructure.base.util.TopApiUtils;
@@ -26,14 +29,12 @@ import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.commons.DateUtils;
-import com.trilemon.commons.Exceptions;
 import com.trilemon.commons.LocalTimeInterval;
 import com.trilemon.commons.mybatis.MyBatisBatchWriter;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.slf4j.Logger;
@@ -78,31 +79,22 @@ public class PlanService {
      *
      * @throws ShelfException
      */
-    public void updatePlan(Long planSettingId) throws ShelfException, TaobaoSessionExpiredException {
+    public void updatePlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException, ShelfException {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKey(planSettingId);
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
         //所有在售宝贝
-        Pair<List<Item>, Long> onSaleItemResult = null;
-        try {
-            ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
-            request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
-            request.setSellerCids(planSetting.getIncludeSellerCids());
-            onSaleItemResult = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), request);
-        } catch (TaobaoEnhancedApiException e) {
-            ShelfException shelfException = new ShelfException("get onSaleItemPage error during plan, " +
-                    "userId[" + planSetting.getUserId() + "], PlanSetting[" + ToStringBuilder.reflectionToString
-                    (planSetting) + "]", e);
-            Exceptions.logAndThrow(logger, shelfException);
-        } catch (TaobaoSessionExpiredException e) {
-            Exceptions.logAndThrow(logger, "userId[" + planSetting.getUserId() + "]", e);
-        }
 
-        List<Item> onSaleItems = onSaleItemResult.getKey();
+        ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
+        request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
+        request.setSellerCids(planSetting.getIncludeSellerCids());
+        ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(planSetting.getUserId(), request);
 
-        if (null == onSaleItemResult || null == onSaleItems) {
-            ShelfException shelfException = new ShelfException("onSaleItemPage is null during plan, " +
-                    "userId[" + planSetting.getUserId() + "], PlanSetting[" + ToStringBuilder.reflectionToString(planSetting) + "]");
-            Exceptions.logAndThrow(logger, shelfException);
+        List<Item> onSaleItems = result.getItems();
+
+        if (null == onSaleItems) {
+            logger.info("onsale item is empty, userId[{}], PlanSettingId[{}]", planSetting.getUserId(),
+                    planSetting.getId());
+            return;
         }
 
         Set<Long> onSaleNumIids = Sets.newHashSet(TopApiUtils.getItemNumIids(onSaleItems));
@@ -174,29 +166,20 @@ public class PlanService {
      * @param planSetting
      * @throws ShelfException
      */
-    public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException {
+    public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
                 userId, planSetting.getUserId());
-        try {
-            ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
-            request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
-            request.setSellerCids(planSetting.getIncludeSellerCids());
-            Pair<List<Item>, Long> result = taobaoApiShopService.getOnSaleItems(userId, request);
+        ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
+        request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
+        request.setSellerCids(planSetting.getIncludeSellerCids());
+        ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(userId, request);
 
-            //获取已经计划的宝贝
-            List<Long> usedItemNumIids = planMapper.selectNumIidsByUserId(userId);
+        //获取已经计划的宝贝
+        List<Long> usedItemNumIids = planMapper.selectNumIidsByUserId(userId);
 
-            List<Plan> plans = plan(planSetting, TopApiUtils.excludeItems(result.getKey(), usedItemNumIids));
-            logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
-            savePlan(planSetting.getId(), plans);
-        } catch (TaobaoEnhancedApiException e) {
-            ShelfException shelfException = new ShelfException("userId[" + userId + "] create plan error for " +
-                    "planSettingId[" + planSetting.getId() + "]", e);
-            Exceptions.logAndThrow(logger, shelfException);
-        } catch (TaobaoSessionExpiredException e) {
-            e.setUserId(userId);
-            Exceptions.logAndThrow(logger, e);
-        }
+        List<Plan> plans = plan(planSetting, TopApiUtils.excludeItems(result.getItems(), usedItemNumIids));
+        logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
+        savePlan(planSetting.getId(), plans);
     }
 
     @Transactional
@@ -282,8 +265,9 @@ public class PlanService {
     }
 
     private Table<Integer, LocalTimeInterval, List<Item>> avgAssignNewItems(List<Item> items,
-                                                                            PlanSetting planSetting, Table<Integer,
-            LocalTimeInterval, Integer> currDistribution) throws ShelfException {
+                                                                            PlanSetting planSetting,
+                                                                            Table<Integer, LocalTimeInterval, Integer> currDistribution)
+            throws ShelfException {
         Table<Integer, LocalTimeInterval, Integer> planDistribution = null;
         switch (planSetting.getDistributionType()) {
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
@@ -335,10 +319,10 @@ public class PlanService {
         return ShelfUtils.assignItems(items, distribution);
     }
 
-    public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException {
+    public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         DateTime now = appService.getLocalSystemTime();
         List<Plan> plans = planMapper.selectByPlanSettingIdAndStatusAndPlanTime(planSettingId,
-                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST,ShelfConstants.PLAN_STATUS_FAILED),
+                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST, ShelfConstants.PLAN_STATUS_FAILED),
                 now.withTimeAtStartOfDay().toDate(),
                 now.toLocalTime().plusHours(1).toDateTimeToday().toDate());
         logger.info("planSetting[{}] get [{}] plan to adjust", planSettingId, plans.size());
@@ -347,7 +331,7 @@ public class PlanService {
         }
     }
 
-    private void execPlan(Plan plan) throws TaobaoSessionExpiredException {
+    private void execPlan(Plan plan) throws TaobaoAccessControlException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
         DateTime now = appService.getLocalSystemTime();
         if (now.toLocalTime().getMillisOfDay() < plan.getPlanAdjustStartTime().getTime()) {
             logger.info("planId[{}] is delay, startTime[{}] but now[{}]", plan.getId(),
@@ -365,9 +349,9 @@ public class PlanService {
             //下架
             ItemUpdateDelistingResponse delistingResponse = taobaoApiService.request(request,
                     taobaoSession.getAccessToken());
-            if (delistingResponse.isSuccess()||delistingResponse.getSubCode().equals("isv.item-listing-service-error")) {
+            if (delistingResponse.isSuccess() || delistingResponse.getSubCode().equals("isv.item-listing-service-error")) {
                 //获取商品数量
-                Item item=taobaoApiShopService.getItem(plan.getUserId(),plan.getItemNumIid(),
+                Item item = taobaoApiShopService.getItem(plan.getUserId(), plan.getItemNumIid(),
                         ImmutableList.of("num"));
                 //上架
                 ItemUpdateListingRequest listingRequest = new ItemUpdateListingRequest();
@@ -380,17 +364,17 @@ public class PlanService {
                     planResult.setStatus(ShelfConstants.PLAN_STATUS_SUCCESSFUL);
                 } else {
                     planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
-                    planResult.setFailedCause(listingResponse.getSubCode()+listingResponse.getSubMsg());
+                    planResult.setFailedCause(listingResponse.getSubCode() + listingResponse.getSubMsg());
                 }
             } else {
                 planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
-                planResult.setFailedCause(delistingResponse.getSubCode()+delistingResponse.getSubMsg());
+                planResult.setFailedCause(delistingResponse.getSubCode() + delistingResponse.getSubMsg());
             }
-        } catch (TaobaoEnhancedApiException e) {
+        } catch (BaseTaobaoApiException e) {
             planResult.setStatus(ShelfConstants.PLAN_STATUS_FAILED);
             planResult.setFailedCause(ToStringBuilder.reflectionToString(e));
-        } catch (TaobaoSessionExpiredException e) {
-            Exceptions.logAndThrow(logger, "userId[" + plan.getUserId() + "]", e);
+            planMapper.updateByPrimaryKeySelective(planResult);
+            throw e;
         }
         planMapper.updateByPrimaryKeySelective(planResult);
     }

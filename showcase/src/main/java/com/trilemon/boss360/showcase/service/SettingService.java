@@ -8,9 +8,10 @@ import com.google.common.collect.Sets;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
+import com.taobao.api.response.ItemsOnsaleGetResponse;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
-import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.infrastructure.base.util.TopApiUtils;
@@ -22,12 +23,10 @@ import com.trilemon.boss360.showcase.dao.SettingMapper;
 import com.trilemon.boss360.showcase.model.AdjustDetail;
 import com.trilemon.boss360.showcase.model.Setting;
 import com.trilemon.commons.Collections3;
-import com.trilemon.commons.Exceptions;
 import com.trilemon.commons.mybatis.MyBatisBatchWriter;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
 import org.slf4j.Logger;
@@ -58,7 +57,7 @@ public class SettingService {
     @Autowired
     private MyBatisBatchWriter myBatisBatchWriter;
 
-    public void createSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public void createSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         if (null != settingMapper.selectByUserId(userId)) {
             logger.info("userId[{}] setting exist.", userId);
             return;
@@ -70,7 +69,7 @@ public class SettingService {
         adjust(userId);
     }
 
-    public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         setting.setUserId(userId);
         settingMapper.updateByUserIdSelective(setting);
         adjust(userId);
@@ -81,7 +80,7 @@ public class SettingService {
     }
 
     public void resumeSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException {
+            TaobaoEnhancedApiException, TaobaoAccessControlException {
         settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_RUNNING);
         adjust(userId);
     }
@@ -145,18 +144,17 @@ public class SettingService {
         return rows == 1;
     }
 
-    public Page<Item> paginateShowcaseItems(Long userId, int pageNum, int pageSize) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    public Page<Item> paginateShowcaseItems(Long userId, int pageNum, int pageSize) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         checkNotNull(userId, "userId must be not null.");
 
         ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
         request.setFields(Joiner.on(",").join(ShowcaseConstants.ITEM_FIELDS));
         request.setHasShowcase(true);
-        request.setPageNo(Long.valueOf(pageNum));
-        request.setPageSize(Long.valueOf(pageSize));
-        Pair<List<Item>, Long> result = taobaoApiShopService.getOnSaleItems(userId, request);
-        return Page.create(result.getRight().intValue(), request.getPageNo().intValue(),
-                request.getPageSize().intValue(),
-                result.getLeft());
+        request.setPageNo((long) pageNum);
+        request.setPageSize((long) pageSize);
+        ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(userId, request);
+        return Page.create(result.getTotalResults().intValue(), request.getPageNo().intValue(),
+                request.getPageSize().intValue(), result.getItems());
     }
 
     /**
@@ -172,7 +170,7 @@ public class SettingService {
      */
 
     public void adjust(Long userId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException,
-            ShowcaseException {
+            ShowcaseException, TaobaoAccessControlException {
         Setting setting = settingMapper.selectByUserId(userId);
         //////////////////////////////////step1. 获取各种信息////////////////////////////////
         List<SellerCat> sellerCats = taobaoApiShopService.getSellerCats(setting.getUserId());
@@ -368,7 +366,7 @@ public class SettingService {
      * @throws TaobaoSessionExpiredException
      */
     private List<Item> getFilteredOnSaleItems(Setting setting, List<Long> sellerCatIds, List<Long> includeSellerCatIds) throws TaobaoEnhancedApiException,
-            TaobaoSessionExpiredException {
+            TaobaoSessionExpiredException, TaobaoAccessControlException {
         Set<Long> validSellerCatIds = Sets.intersection(Sets.newHashSet(sellerCatIds),
                 Sets.newHashSet(includeSellerCatIds));
 
@@ -378,15 +376,9 @@ public class SettingService {
             ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
             request.setFields(Joiner.on(",").join(ShowcaseConstants.ITEM_FIELDS));
             request.setSellerCids(Collections3.COMMA_JOINER.join(partition));
-            try {
-                Pair<List<Item>, Long> onSaleItemPair = taobaoApiShopService.getOnSaleItems(setting.getUserId(),
-                        request);
-                onSaleItems.addAll(onSaleItemPair.getKey());
-            } catch (TaobaoEnhancedApiException e) {
-                Exceptions.logAndThrow(logger, "userId[" + setting.getUserId() + "] get filter on sale item failure.", e);
-            } catch (TaobaoSessionExpiredException e) {
-                Exceptions.logAndThrow(logger, "userId[" + setting.getUserId() + "] get filter on sale item failure.", e);
-            }
+            ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(setting.getUserId(),
+                    request);
+            onSaleItems.addAll(result.getItems());
         }
         return onSaleItems;
     }
