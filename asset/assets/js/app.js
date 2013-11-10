@@ -15,6 +15,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/shelf', {redirectTo: '/shelf/plan-setting'})
 
         .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
+        .when('/showcase/items', showCase.routeFor('showcase.indexShowcase'))
         .when('/showcase', {redirectTo: '/showcase/setting/edit'})
 
         .otherwise({redirectTo: '/shelf'});
@@ -25,7 +26,8 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
     RESTProvider.setURL({
         ITEM: 'shelf/items',
         SELLER_CAT: 'shelf/sellercats',
-        PLAN_SETTING: 'shelf/plan-settings'
+        PLAN_SETTING: 'shelf/plan-settings',
+        SHOWCASE_ITEM: 'showcase/showcase-items'
     });
 }]);
 

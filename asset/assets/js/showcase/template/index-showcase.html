@@ -2,38 +2,35 @@
     <div class="input-group">
         <input type="text" class="form-control" placeholder="宝贝标题、编号" maxlength="20" ng-model="searchKey"/>
         <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit" ng-disabled="items.length<1">搜 索</button>
+            <button class="btn btn-primary" type="submit">搜 索</button>
         </span>
     </div>
 </form>
 <table class="table table-hover">
     <col width="15%"/>
     <col/>
-    <col width="15%"/>
+    <col width="10%"/>
+    <col width="10%"/>
+    <col width="10%"/>
     <thead>
     <tr>
         <th>图片</th>
         <th>宝贝名称</th>
-        <th>操作</th>
+        <th>价格</th>
+        <th>下架时间</th>
+        <th>状态</th>
     </tr>
     </thead>
     <tr ng-repeat="item in items" ng-class="{danger:item.exclude}">
         <td><img ng-src="{{item.picUrl}}_sum.jpg"/></td>
         <td>{{ item.title }}</td>
-        <td>
-            <a ng-if="!item.exclude" href="" ng-click="setExclude(item, true)">排除</a>
-
-            <div ng-if="item.exclude">
-                已排除
-                <a href="" ng-click="setExclude(item, false)">恢复</a>
-            </div>
-
+        <td align="right">
+            {{ item.price }}
         </td>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 <div class="clearfix">
     <pagination class="pull-right" items="items" pager-click="jumpPage(page)"></pagination>
-</div>
-<div class="form-action">
-    <a href="#/shelf/plan-setting"><i class="icon-double-angle-left "></i> 返回列表</a>
 </div>
