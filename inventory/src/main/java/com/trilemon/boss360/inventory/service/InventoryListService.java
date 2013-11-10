@@ -4,6 +4,7 @@ import com.taobao.api.request.ItemsInventoryGetRequest;
 import com.taobao.api.response.ItemsInventoryGetResponse;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.TaobaoApiService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.inventory.InventoryConstants;
@@ -71,30 +72,21 @@ public class InventoryListService {
 
     }
 
-    public Long getNeverOnShelfItemNum(Long userId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public Long getNeverOnShelfItemNum(Long userId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         return getInventoryItemNum(userId, InventoryConstants.ITEM_FIELDS, InventoryConstants.NEVER_ON_SHELF);
     }
 
-    public Long getOffShelfItemNum(Long userId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public Long getOffShelfItemNum(Long userId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         return getInventoryItemNum(userId, InventoryConstants.ITEM_FIELDS, InventoryConstants.OFF_SHELF);
     }
 
-    public Long getInventoryItemNum(Long userId, List<String> fields, String inventoryType) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException {
+    public Long getInventoryItemNum(Long userId, List<String> fields, String inventoryType) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         ItemsInventoryGetRequest request = new ItemsInventoryGetRequest();
         request.setFields(Collections3.COMMA_JOINER.join(fields));
         request.setBanner(inventoryType);
         request.setPageNo(1L);
         request.setPageSize(1L);
-        try {
-            ItemsInventoryGetResponse response = taobaoApiService.request(request);
-            if (response.isSuccess()) {
-                return response.getTotalResults();
-            } else {
-                throw new TaobaoEnhancedApiException(String.valueOf(userId), request, response);
-            }
-        } catch (TaobaoSessionExpiredException e) {
-            e.setUserId(userId);
-            throw e;
-        }
+        ItemsInventoryGetResponse response = taobaoApiService.request(request);
+        return response.getTotalResults();
     }
 }

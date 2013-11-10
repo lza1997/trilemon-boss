@@ -4,8 +4,10 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
+import com.taobao.api.response.ItemsOnsaleGetResponse;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -79,7 +81,7 @@ public class PlanSettingService {
      *
      * @param planSetting
      */
-    public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException {
+    public void createPlanSetting(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         if (isSellerCatUsed(userId, planSetting.getIncludeSellerCids())) {
             throw new ShelfException("userId[" + userId + "] sellerCat[" + planSetting.getIncludeSellerCids() + "] is used");
         }
@@ -136,8 +138,9 @@ public class PlanSettingService {
      * @param planSetting
      * @throws ShelfException
      */
+    @Transactional
     public void updatePlanSetting(Long userId, PlanSetting planSetting) throws ShelfException,
-            TaobaoSessionExpiredException {
+            TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         planSetting.setUserId(userId);
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSetting.getId());
@@ -166,11 +169,11 @@ public class PlanSettingService {
         }
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
     }
-
+    @Transactional
     public void updatePlanSettingDistribution(Long userId,
                                               Long planSettingId,
                                               Map<String, Map<String, Boolean>> distribution) throws ShelfException,
-            TaobaoSessionExpiredException {
+            TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setId(planSettingId);
         planSetting.setUserId(userId);
@@ -284,13 +287,13 @@ public class PlanSettingService {
      * @throws TaobaoEnhancedApiException
      * @throws TaobaoSessionExpiredException
      */
-    public ShelfStatus getShelfStatus(Long userId) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+    public ShelfStatus getShelfStatus(Long userId) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         //获取当前实际的宝贝在dayOfWeek的分布情况
         ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
         request.setFields("delist_time");
-        Pair<List<Item>, Long> itemPair = taobaoApiShopService.getOnSaleItems(userId, request);
+        ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(userId, request);
         List<Integer> listItemNum = Lists.newArrayList();
-        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDayOfWeekNum(itemPair.getKey());
+        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDayOfWeekNum(result.getItems());
         ShelfStatus shelfStatus = new ShelfStatus();
         shelfStatus.setDayOfWeek(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7));
         listItemNum.add(dayOfWeekNum.count(1));

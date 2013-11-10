@@ -1,6 +1,7 @@
 package com.trilemon.boss360.shelf.web.controller;
 
 import com.trilemon.boss360.infrastructure.base.service.AppService;
+import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss360.shelf.ShelfConstants;
@@ -41,7 +42,7 @@ public class PlanSettingController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Object create(@RequestBody @Valid PlanSetting planSetting, BindingResult result, HttpServletResponse response) throws ShelfException, TaobaoSessionExpiredException {
+    public Object create(@RequestBody @Valid PlanSetting planSetting, BindingResult result, HttpServletResponse response) throws ShelfException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         if (result.hasErrors()) {
             response.setStatus(422);
             return result.getAllErrors();
@@ -59,7 +60,7 @@ public class PlanSettingController {
 
     @RequestMapping(value = "/{planSettingId}", method = RequestMethod.PUT)
     @ResponseBody
-    public Object update(@PathVariable Long planSettingId, @RequestBody @Valid PlanSetting planSetting, BindingResult result) throws TaobaoSessionExpiredException {
+    public Object update(@PathVariable Long planSettingId, @RequestBody @Valid PlanSetting planSetting, BindingResult result) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         try {
             planSetting.setId(planSettingId);
             planSettingService.updatePlanSetting(56912708L, planSetting);
@@ -144,7 +145,7 @@ public class PlanSettingController {
     @ResponseBody
     @RequestMapping(value = "/chart", method = RequestMethod.GET)
     public List<Integer> chart() throws
-            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         return planSettingService.getShelfStatus(56912708L).getListItemNum();
     }
 
@@ -157,7 +158,7 @@ public class PlanSettingController {
 
     @ResponseBody
     @RequestMapping(value = "/{planSettingId}/distribution", method = RequestMethod.PUT)
-    public void updateDistribution(@PathVariable Long planSettingId, @RequestBody Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, ShelfException {
+    public void updateDistribution(@PathVariable Long planSettingId, @RequestBody Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, ShelfException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         planSettingService.updatePlanSettingDistribution(56912708L, planSettingId, distribution);
     }
 }
