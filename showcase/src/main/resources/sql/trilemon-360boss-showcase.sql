@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.27)
 # Database: trilemon-360boss-showcase
-# Generation Time: 2013-11-06 08:18:43 +0000
+# Generation Time: 2013-11-11 10:33:31 +0000
 # ************************************************************
 
 
@@ -29,6 +29,10 @@ CREATE TABLE `adjust_detail` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(11) unsigned NOT NULL,
   `item_num_iid` bigint(11) unsigned NOT NULL,
+  `is_on_sale` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `item_title` varchar(128) NOT NULL DEFAULT '',
+  `item_title_pinyin` varchar(256) NOT NULL DEFAULT '',
+  `item_pic_url` varchar(1024) NOT NULL DEFAULT '',
   `adjust_type` tinyint(4) unsigned NOT NULL DEFAULT '0',
   `adjust_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `add_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
