@@ -12,8 +12,8 @@ define(function(require, exports, module) {
     }];
 
     NewController.template = 'shelf/form';
-    NewController.title = "创建计划";
-    NewController.navClass = "planNew";
+    NewController.title = '创建计划';
+    NewController.navClass = 'shelfNew';
 
     module.exports = NewController;
 });

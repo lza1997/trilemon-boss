@@ -45,6 +45,7 @@
     <script src="${asset}/js/common/flash.js"></script>
     <script src="${asset}/js/common/rest.js"></script>
     <script src="${asset}/js/common/seller-cat.js"></script>
+    <script src="${asset}/js/common/controller/nav.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
@@ -77,23 +78,17 @@
     </div>
     <div class="navbar navbar-default trilemon-navbar">
         <div class="container">
-            <ul class="nav navbar-nav">
-                <li class="dropdown" ng-class="{open:navmenuOpen}">
+            <ul class="nav navbar-nav" ng-controller="nav">
+                <li class="dropdown">
                     <a class="nav-menu-trigger dropdown-toggle" href="">
-                        <i class="icon-reorder"></i> 上下架
+                        <i class="icon-reorder"></i> {{currNav.name}}
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">上下架</a></li>
-                        <li><a href="#">仓库上架</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li ng-repeat="nav in navs"><a ng-href="{{'#' + nav.url}}">{{nav.name}}</a></li>
                     </ul>
                 </li>
-                <li ng-class="{active: navClass == 'planIndex'}">
-                    <a href="#/shelf/plan-setting">计划列表</a>
-                </li>
-                <li ng-class="{active: navClass == 'planNew'}">
-                    <a href="#/shelf/plan-setting/new">创建计划</a>
+                <li ng-repeat="childNav in currNav.children" ng-class="{active: navClass == childNav.navClass}">
+                    <a ng-href="{{'#' + childNav.url}}">{{childNav.name}}</a>
                 </li>
             </ul>
         </div>

@@ -60,7 +60,7 @@ define(function(require, exports, module) {
 
     IndexController.template = 'shelf/index';
     IndexController.title = '计划列表';
-    IndexController.navClass = 'planIndex';
+    IndexController.navClass = 'shelfIndex';
 
     module.exports = IndexController;
 });

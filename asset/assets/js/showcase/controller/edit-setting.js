@@ -34,6 +34,7 @@ define(function(require, exports, module) {
 
     EditRuleController.template = "showcase/editSetting";
     EditRuleController.title = "橱窗推荐规则";
+    EditRuleController.navClass = "showcaseEdit";
 
     module.exports = EditRuleController;
 });
