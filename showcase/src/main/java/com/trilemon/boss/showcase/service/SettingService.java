@@ -5,10 +5,10 @@ import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
-import com.trilemon.boss.showcase.dao.AdjustDetailMapper;
 import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
+import com.trilemon.boss360.infrastructure.base.model.dto.SellerCatExtended;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
@@ -187,7 +187,7 @@ public class SettingService {
     }
 
     public Page<ShowcaseItem> paginateInventoryShowcaseItems(Long userId, String query, int pageNum,
-                                                          int pageSize) throws TaobaoEnhancedApiException,
+                                                             int pageSize) throws TaobaoEnhancedApiException,
             TaobaoSessionExpiredException, TaobaoAccessControlException {
         String includeSellerCids = settingMapper.selectByUserId(userId).getIncludeSellerCids();
         return paginateInventoryItems(userId,
@@ -303,5 +303,16 @@ public class SettingService {
         Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
                 itemPage.getPageSize(), showcaseItems);
         return showcaseItemPage;
+    }
+
+    public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
+            TaobaoAccessControlException, TaobaoEnhancedApiException {
+        Setting setting = settingMapper.selectByUserId(userId);
+        if (null == setting.getIncludeSellerCids()) {
+            return taobaoApiShopService.getOnsaleSellerCatExtended(userId, Lists.<Long>newArrayList());
+        } else {
+            final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
+            return taobaoApiShopService.getOnsaleSellerCatExtended(userId, includeSellCatIds);
+        }
     }
 }
