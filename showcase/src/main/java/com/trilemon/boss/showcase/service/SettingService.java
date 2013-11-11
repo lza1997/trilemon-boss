@@ -49,10 +49,10 @@ public class SettingService {
     public Setting getSetting(Long userId) throws ShowcaseException {
         Setting setting = settingMapper.selectByUserId(userId);
         if (null == setting) {
-            return new Setting();
-        } else {
-            return setting;
+            setting = new Setting();
+            setting.setStatus(ShowcaseConstants.SETTING_STATUS_PAUSED);
         }
+        return setting;
     }
 
     public void resumeSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
@@ -73,7 +73,7 @@ public class SettingService {
 
     public void pauseSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
             TaobaoEnhancedApiException {
-        settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_PAUSE);
+        settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_PAUSED);
     }
 
     /**

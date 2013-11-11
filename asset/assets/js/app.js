@@ -15,7 +15,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/shelf', {redirectTo: '/shelf/plan-setting'})
 
         .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
-        .when('/showcase/items', showCase.routeFor('showcase.indexShowcase'))
+        .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase'))
         .when('/showcase', {redirectTo: '/showcase/setting/edit'})
 
         .otherwise({redirectTo: '/shelf'});
@@ -27,6 +27,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         ITEM: 'shelf/items',
         SELLER_CAT: 'shelf/sellercats',
         PLAN_SETTING: 'shelf/plan-settings',
+        SHOWCASE_SETTING: 'showcase/settings',
         SHOWCASE_ITEM: 'showcase/showcase-items'
     });
 }]);
@@ -36,6 +37,12 @@ app.constant('PLAN_STATUS', {
     RUNNING: 1,
     PAUSED: 2
 });
+
+app.constant('SETTING_STATUS', {
+    PAUSED: 1,
+    RUNNING: 2
+});
+
 
 app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
     SeajsLazyModule.init($templateCache);

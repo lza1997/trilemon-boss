@@ -1,10 +1,10 @@
-<div class="row" ng-show="!setting.isEnabled()">
+<div class="row" ng-show="setting.isPaused">
     <div class="well col-lg-5">
         自动橱窗推荐管理尚未开启
-        <button class="btn btn-primary" ng-click="enableSetting(true)">立刻开启</button>
+        <button class="btn btn-primary" ng-click="setPaused(false)">立刻开启</button>
     </div>
 </div>
-<form class="form-horizontal rule-form" name="form" novalidate ng-show="setting.isEnabled()">
+<form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.isPaused">
     <div class="form-group">
         <label class="col-md-1 control-label">宝贝分类</label>
 
@@ -78,7 +78,7 @@
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
             <button class="btn btn-primary btn-lg" ng-click="save()">保存</button>
-            <button class="btn btn-default btn-lg" ng-click="enableSetting(false)">关闭自动推荐</button>
+            <button class="btn btn-default btn-lg" ng-click="setPaused(true)">关闭自动推荐</button>
         </div>
     </div>
 </form>

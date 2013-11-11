@@ -29,6 +29,7 @@ define(function(require, exports, module) {
 
     IndexController.template = 'showcase/indexShowcase';
     IndexController.title = '橱窗宝贝';
+    IndexController.navClass = 'showcaseItem';
 
     module.exports = IndexController;
 });
