@@ -18,7 +18,7 @@ import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSess
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +46,6 @@ public class SettingService {
     @Autowired
     private AdjustService adjustService;
 
-    public void createSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        if (null != settingMapper.selectByUserId(userId)) {
-            logger.info("userId[{}] setting exist.", userId);
-            return;
-        }
-        setting.setUserId(userId);
-        setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
-        setting.setAddTime(appService.getLocalSystemTime().toDate());
-        settingMapper.insertSelective(setting);
-        adjustService.adjust(userId);
-    }
-
     public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         setting.setUserId(userId);
         settingMapper.updateByUserIdSelective(setting);
@@ -70,8 +58,18 @@ public class SettingService {
 
     public void resumeSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
             TaobaoEnhancedApiException, TaobaoAccessControlException {
-        settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_RUNNING);
-        adjustService.adjust(userId);
+        Setting setting = settingMapper.selectByUserId(userId);
+        if (null == setting) {
+            setting=new Setting();
+            setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
+            setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
+            setting.setUserId(userId);
+            setting.setAddTime(DateTime.now().toDate());
+            settingMapper.insertSelective(setting);
+        } else {
+            settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_RUNNING);
+            adjustService.adjust(userId);
+        }
     }
 
     public void pauseSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
@@ -187,7 +185,7 @@ public class SettingService {
 
         int totalSize = adjustDetailMapper.countByUserIdAndQuery(userId, query);
         List<AdjustDetail> adjustDetails = adjustDetailMapper.paginateByUserIdAndQuery(userId,
-                query, (pageNum - 1) * pageSize,pageSize);
+                query, (pageNum - 1) * pageSize, pageSize);
         if (CollectionUtils.isEmpty(adjustDetails)) {
             return Page.create(totalSize, pageNum, pageSize, Lists.<ShowcaseItem>newArrayList());
         } else {
@@ -270,7 +268,6 @@ public class SettingService {
 
     /**
      * 查询在售商品
-     *
      *
      * @param userId
      * @param query

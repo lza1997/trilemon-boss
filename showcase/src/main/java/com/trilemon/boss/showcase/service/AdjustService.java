@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.trilemon.boss.showcase.ShowcaseConstants.HAS_SHOWCASE;
+import static com.trilemon.boss.showcase.ShowcaseConstants.ITEM_FIELDS;
 import static com.trilemon.boss.showcase.ShowcaseConstants.NOT_HAS_SHOWCASE;
 
 /**
@@ -69,7 +70,7 @@ public class AdjustService {
      * @param userId
      * @throws com.trilemon.boss.showcase.ShowcaseException
      *
-     * @throws com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException
+     * @throws TaobaoSessionExpiredException
      *
      */
 
@@ -82,15 +83,15 @@ public class AdjustService {
         List<Long> sellerCatIds = TopApiUtils.getSellerCatIds(sellerCats);
         //获取在线的符合条件的宝贝
         List<Item> filteredOnSaleItems = getFilteredOnSaleItems(setting, sellerCatIds, includeSellerCatIds);
-        logger.info("userId[{}] get [{}] items.", setting.getUserId(), filteredOnSaleItems.size());
+        logger.info("userId[{}] get [{}] on sale items.", setting.getUserId(), filteredOnSaleItems.size());
 
         //获取在线的橱窗宝贝
         List<Item> showcaseItems = Lists.newArrayList(TopApiUtils.getShowcaseItems(filteredOnSaleItems, true));
-        logger.info("userId[{}] get [{}] showcase items.", setting.getUserId(), showcaseItems.size());
+        logger.info("userId[{}] get [{}] on sale showcase items.", setting.getUserId(), showcaseItems.size());
 
         //获取在线的非橱窗宝贝
         List<Item> nonShowcaseItems = Lists.newArrayList(TopApiUtils.getShowcaseItems(filteredOnSaleItems, false));
-        logger.info("userId[{}] get [{}] non showcase items.", setting.getUserId(), nonShowcaseItems.size());
+        logger.info("userId[{}] get [{}] on sale non showcase items.", setting.getUserId(), nonShowcaseItems.size());
 
         //获取数据库中的橱窗中的宝贝
         List<AdjustDetail> adjustDetails = adjustDetailMapper.selectByUserIdAndAdjustType(setting.getUserId(),
@@ -101,12 +102,12 @@ public class AdjustService {
         final List<Long> includeShowcaseItemNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
         //一个个获取，以免失败
         final List<Item> includeShowcaseItems = taobaoApiShopService.getItemsOneByOne(setting.getUserId(),
-                includeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+                includeShowcaseItemNumIids, ITEM_FIELDS);
         logger.info("userId[{}] get [{}] must showcase items.", setting.getUserId(), includeShowcaseItems.size());
 
         //获取必不推宝贝
         final List<Long> excludeShowcaseItemNumIids = Collections3.getLongList(setting.getExcludeItemNumIids());
-        final List<Item> excludeShowcaseItems = taobaoApiShopService.getItemsOneByOne(setting.getUserId(), excludeShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+        final List<Item> excludeShowcaseItems = taobaoApiShopService.getItemsOneByOne(setting.getUserId(), excludeShowcaseItemNumIids, ITEM_FIELDS);
         logger.info("userId[{}] get [{}] must not showcase items.", setting.getUserId(), excludeShowcaseItems.size());
 
         // 获取橱窗状态
@@ -265,7 +266,8 @@ public class AdjustService {
      *
      * @param setting
      * @param sellerCatIds
-     * @param includeSellerCatIds @return
+     * @param includeSellerCatIds
+     * @return
      * @throws TaobaoEnhancedApiException
      * @throws TaobaoSessionExpiredException
      */
@@ -278,7 +280,7 @@ public class AdjustService {
         Iterable<List<Long>> sellerCatPartitions = Iterables.partition(validSellerCatIds, 32);
         for (List<Long> partition : sellerCatPartitions) {
             ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
-            request.setFields(Joiner.on(",").join(ShowcaseConstants.ITEM_FIELDS));
+            request.setFields(Collections3.COMMA_JOINER.join(ITEM_FIELDS));
             request.setSellerCids(Collections3.COMMA_JOINER.join(partition));
             ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(setting.getUserId(),
                     request);
@@ -362,13 +364,13 @@ public class AdjustService {
         List<AdjustDetail> adjustOfAdjustDetails = Lists.newArrayList();
         //更新数据库中还在橱窗但是实际已经下橱窗的宝贝
         List<Item> invalidShowcaseItem = taobaoApiShopService.getItems(setting.getUserId(),
-                invalidShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+                invalidShowcaseItemNumIids, ITEM_FIELDS);
         for (Item item : invalidShowcaseItem) {
             adjustOfAdjustDetails.add(buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE,false));
         }
         //更新实际在线但是数据库中没有记录的宝贝
         List<Item> newShowcaseItem = taobaoApiShopService.getItems(setting.getUserId(),
-                newShowcaseItemNumIids, ShowcaseConstants.ITEM_FIELDS);
+                newShowcaseItemNumIids, ITEM_FIELDS);
         for (Item item : newShowcaseItem) {
             adjustOfAdjustDetails.add(buildAdjustDetail(setting, item, HAS_SHOWCASE,false));
         }

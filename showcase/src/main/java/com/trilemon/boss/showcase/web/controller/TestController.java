@@ -32,33 +32,6 @@ public class TestController {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
 
-    /**
-     * 添加
-     *
-     * @return
-     * @throws ShowcaseException
-     * @throws TaobaoSessionExpiredException
-     * @throws TaobaoEnhancedApiException
-     * @throws TaobaoAccessControlException
-     */
-    @RequestMapping("/create")
-    @ResponseBody
-    public Setting create() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        Setting setting = new Setting();
-        setting.setExcludeItemDelistingAfter((int) 6.5 * 24 * 60);
-        setting.setExcludeItemDelistingWithin(30);
-        setting.setExcludeItemInventoryLt(1);
-        setting.setExcludeItemNumIids("19440841598");
-        setting.setIncludeItemNumIids("19480514567,19491833743");
-        setting.setIncludeSellerCids("819049791");
-        setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
-        setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
-        setting.setUserId(56912708L);
-        setting.setAddTime(DateTime.now().toDate());
-        settingService.createSetting(56912708L, setting);
-        return setting;
-    }
-
     @RequestMapping("/update")
     @ResponseBody
     public Setting update() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
