@@ -47,7 +47,12 @@ public class SettingService {
     }
 
     public Setting getSetting(Long userId) throws ShowcaseException {
-        return settingMapper.selectByUserId(userId);
+        Setting setting = settingMapper.selectByUserId(userId);
+        if (null == setting) {
+            return new Setting();
+        } else {
+            return setting;
+        }
     }
 
     public void resumeSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
