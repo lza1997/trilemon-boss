@@ -1,5 +1,6 @@
 package com.trilemon.boss360.rate.dao;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.rate.model.RateCommentSetting;
 import com.trilemon.boss360.rate.model.RateCommentSettingExample;
 import java.util.List;
@@ -26,4 +27,6 @@ public interface RateCommentSettingDAO {
     int updateByPrimaryKeySelective(RateCommentSetting record);
 
     int updateByPrimaryKey(RateCommentSetting record);
+
+    List<String> selectContentByUserIdAndStatus(Long userId, ImmutableList<Byte> statusList);
 }

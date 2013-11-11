@@ -7,25 +7,19 @@ public class RateFilterTrade {
 
     private Long userId;
 
-    private Long itemNumIid;
-
-    private Long buyerUserId;
-
     private String buyerNick;
 
     private Long tid;
-
-    private Long oid;
 
     private Boolean isSellerRate;
 
     private Boolean isBuyerRate;
 
+    private Byte status;
+
     private Byte filterType;
 
     private Date filterTime;
-
-    private Date rateTime;
 
     private Date addTime;
 
@@ -47,22 +41,6 @@ public class RateFilterTrade {
         this.userId = userId;
     }
 
-    public Long getItemNumIid() {
-        return itemNumIid;
-    }
-
-    public void setItemNumIid(Long itemNumIid) {
-        this.itemNumIid = itemNumIid;
-    }
-
-    public Long getBuyerUserId() {
-        return buyerUserId;
-    }
-
-    public void setBuyerUserId(Long buyerUserId) {
-        this.buyerUserId = buyerUserId;
-    }
-
     public String getBuyerNick() {
         return buyerNick;
     }
@@ -77,14 +55,6 @@ public class RateFilterTrade {
 
     public void setTid(Long tid) {
         this.tid = tid;
-    }
-
-    public Long getOid() {
-        return oid;
-    }
-
-    public void setOid(Long oid) {
-        this.oid = oid;
     }
 
     public Boolean getIsSellerRate() {
@@ -103,6 +73,14 @@ public class RateFilterTrade {
         this.isBuyerRate = isBuyerRate;
     }
 
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     public Byte getFilterType() {
         return filterType;
     }
@@ -117,14 +95,6 @@ public class RateFilterTrade {
 
     public void setFilterTime(Date filterTime) {
         this.filterTime = filterTime;
-    }
-
-    public Date getRateTime() {
-        return rateTime;
-    }
-
-    public void setRateTime(Date rateTime) {
-        this.rateTime = rateTime;
     }
 
     public Date getAddTime() {

@@ -342,6 +342,66 @@ public class RateSettingExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsExpiredIsNull() {
+            addCriterion("is_expired is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredIsNotNull() {
+            addCriterion("is_expired is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredEqualTo(Integer value) {
+            addCriterion("is_expired =", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredNotEqualTo(Integer value) {
+            addCriterion("is_expired <>", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredGreaterThan(Integer value) {
+            addCriterion("is_expired >", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_expired >=", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredLessThan(Integer value) {
+            addCriterion("is_expired <", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredLessThanOrEqualTo(Integer value) {
+            addCriterion("is_expired <=", value, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredIn(List<Integer> values) {
+            addCriterion("is_expired in", values, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredNotIn(List<Integer> values) {
+            addCriterion("is_expired not in", values, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredBetween(Integer value1, Integer value2) {
+            addCriterion("is_expired between", value1, value2, "isExpired");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExpiredNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_expired not between", value1, value2, "isExpired");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;
@@ -782,52 +842,52 @@ public class RateSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateEqualTo(Float value) {
+        public Criteria andIsFilterGoodRateEqualTo(Boolean value) {
             addCriterion("is_filter_good_rate =", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateNotEqualTo(Float value) {
+        public Criteria andIsFilterGoodRateNotEqualTo(Boolean value) {
             addCriterion("is_filter_good_rate <>", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateGreaterThan(Float value) {
+        public Criteria andIsFilterGoodRateGreaterThan(Boolean value) {
             addCriterion("is_filter_good_rate >", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateGreaterThanOrEqualTo(Float value) {
+        public Criteria andIsFilterGoodRateGreaterThanOrEqualTo(Boolean value) {
             addCriterion("is_filter_good_rate >=", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateLessThan(Float value) {
+        public Criteria andIsFilterGoodRateLessThan(Boolean value) {
             addCriterion("is_filter_good_rate <", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateLessThanOrEqualTo(Float value) {
+        public Criteria andIsFilterGoodRateLessThanOrEqualTo(Boolean value) {
             addCriterion("is_filter_good_rate <=", value, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateIn(List<Float> values) {
+        public Criteria andIsFilterGoodRateIn(List<Boolean> values) {
             addCriterion("is_filter_good_rate in", values, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateNotIn(List<Float> values) {
+        public Criteria andIsFilterGoodRateNotIn(List<Boolean> values) {
             addCriterion("is_filter_good_rate not in", values, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateBetween(Float value1, Float value2) {
+        public Criteria andIsFilterGoodRateBetween(Boolean value1, Boolean value2) {
             addCriterion("is_filter_good_rate between", value1, value2, "isFilterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterGoodRateNotBetween(Float value1, Float value2) {
+        public Criteria andIsFilterGoodRateNotBetween(Boolean value1, Boolean value2) {
             addCriterion("is_filter_good_rate not between", value1, value2, "isFilterGoodRate");
             return (Criteria) this;
         }
@@ -842,52 +902,52 @@ public class RateSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateEqualTo(Integer value) {
+        public Criteria andFilterGoodRateEqualTo(Float value) {
             addCriterion("filter_good_rate =", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateNotEqualTo(Integer value) {
+        public Criteria andFilterGoodRateNotEqualTo(Float value) {
             addCriterion("filter_good_rate <>", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateGreaterThan(Integer value) {
+        public Criteria andFilterGoodRateGreaterThan(Float value) {
             addCriterion("filter_good_rate >", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFilterGoodRateGreaterThanOrEqualTo(Float value) {
             addCriterion("filter_good_rate >=", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateLessThan(Integer value) {
+        public Criteria andFilterGoodRateLessThan(Float value) {
             addCriterion("filter_good_rate <", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateLessThanOrEqualTo(Integer value) {
+        public Criteria andFilterGoodRateLessThanOrEqualTo(Float value) {
             addCriterion("filter_good_rate <=", value, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateIn(List<Integer> values) {
+        public Criteria andFilterGoodRateIn(List<Float> values) {
             addCriterion("filter_good_rate in", values, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateNotIn(List<Integer> values) {
+        public Criteria andFilterGoodRateNotIn(List<Float> values) {
             addCriterion("filter_good_rate not in", values, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateBetween(Integer value1, Integer value2) {
+        public Criteria andFilterGoodRateBetween(Float value1, Float value2) {
             addCriterion("filter_good_rate between", value1, value2, "filterGoodRate");
             return (Criteria) this;
         }
 
-        public Criteria andFilterGoodRateNotBetween(Integer value1, Integer value2) {
+        public Criteria andFilterGoodRateNotBetween(Float value1, Float value2) {
             addCriterion("filter_good_rate not between", value1, value2, "filterGoodRate");
             return (Criteria) this;
         }
@@ -902,52 +962,52 @@ public class RateSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateEqualTo(Float value) {
+        public Criteria andIsFilterBadRateEqualTo(Boolean value) {
             addCriterion("is_filter_bad_rate =", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateNotEqualTo(Float value) {
+        public Criteria andIsFilterBadRateNotEqualTo(Boolean value) {
             addCriterion("is_filter_bad_rate <>", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateGreaterThan(Float value) {
+        public Criteria andIsFilterBadRateGreaterThan(Boolean value) {
             addCriterion("is_filter_bad_rate >", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateGreaterThanOrEqualTo(Float value) {
+        public Criteria andIsFilterBadRateGreaterThanOrEqualTo(Boolean value) {
             addCriterion("is_filter_bad_rate >=", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateLessThan(Float value) {
+        public Criteria andIsFilterBadRateLessThan(Boolean value) {
             addCriterion("is_filter_bad_rate <", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateLessThanOrEqualTo(Float value) {
+        public Criteria andIsFilterBadRateLessThanOrEqualTo(Boolean value) {
             addCriterion("is_filter_bad_rate <=", value, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateIn(List<Float> values) {
+        public Criteria andIsFilterBadRateIn(List<Boolean> values) {
             addCriterion("is_filter_bad_rate in", values, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateNotIn(List<Float> values) {
+        public Criteria andIsFilterBadRateNotIn(List<Boolean> values) {
             addCriterion("is_filter_bad_rate not in", values, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateBetween(Float value1, Float value2) {
+        public Criteria andIsFilterBadRateBetween(Boolean value1, Boolean value2) {
             addCriterion("is_filter_bad_rate between", value1, value2, "isFilterBadRate");
             return (Criteria) this;
         }
 
-        public Criteria andIsFilterBadRateNotBetween(Float value1, Float value2) {
+        public Criteria andIsFilterBadRateNotBetween(Boolean value1, Boolean value2) {
             addCriterion("is_filter_bad_rate not between", value1, value2, "isFilterBadRate");
             return (Criteria) this;
         }
@@ -962,52 +1022,52 @@ public class RateSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountEqualTo(Integer value) {
+        public Criteria andFilterBadRateCountEqualTo(Float value) {
             addCriterion("filter_bad_rate_count =", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountNotEqualTo(Integer value) {
+        public Criteria andFilterBadRateCountNotEqualTo(Float value) {
             addCriterion("filter_bad_rate_count <>", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountGreaterThan(Integer value) {
+        public Criteria andFilterBadRateCountGreaterThan(Float value) {
             addCriterion("filter_bad_rate_count >", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountGreaterThanOrEqualTo(Integer value) {
+        public Criteria andFilterBadRateCountGreaterThanOrEqualTo(Float value) {
             addCriterion("filter_bad_rate_count >=", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountLessThan(Integer value) {
+        public Criteria andFilterBadRateCountLessThan(Float value) {
             addCriterion("filter_bad_rate_count <", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountLessThanOrEqualTo(Integer value) {
+        public Criteria andFilterBadRateCountLessThanOrEqualTo(Float value) {
             addCriterion("filter_bad_rate_count <=", value, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountIn(List<Integer> values) {
+        public Criteria andFilterBadRateCountIn(List<Float> values) {
             addCriterion("filter_bad_rate_count in", values, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountNotIn(List<Integer> values) {
+        public Criteria andFilterBadRateCountNotIn(List<Float> values) {
             addCriterion("filter_bad_rate_count not in", values, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountBetween(Integer value1, Integer value2) {
+        public Criteria andFilterBadRateCountBetween(Float value1, Float value2) {
             addCriterion("filter_bad_rate_count between", value1, value2, "filterBadRateCount");
             return (Criteria) this;
         }
 
-        public Criteria andFilterBadRateCountNotBetween(Integer value1, Integer value2) {
+        public Criteria andFilterBadRateCountNotBetween(Float value1, Float value2) {
             addCriterion("filter_bad_rate_count not between", value1, value2, "filterBadRateCount");
             return (Criteria) this;
         }

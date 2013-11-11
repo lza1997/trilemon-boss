@@ -22,7 +22,7 @@ import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
 import com.trilemon.boss360.shelf.service.PlanService;
 import com.trilemon.boss360.shelf.service.PlanSettingService;
-import com.trilemon.boss360.shelf.service.dto.ShelfStatus;
+import com.trilemon.boss360.shelf.model.dto.ShelfStatus;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
@@ -128,7 +128,7 @@ public class TestController {
             }
         });
         Page<Item> items = taobaoApiShopService.paginateOnSaleItems(56912708L, null, ShelfConstants.ITEM_FIELDS,
-                sellerCats, pageNum, 1, false);
+                sellerCats, pageNum, 1, false,false);
         return items;
     }
 
@@ -217,7 +217,7 @@ public class TestController {
     Page<Item> searchOnSaleItem(@RequestParam String query, @RequestParam int pageNum) throws
             TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         return taobaoApiShopService.paginateOnSaleItems(56912708L, query, ShelfConstants.ITEM_FIELDS, null,
-                pageNum, 1, true);
+                pageNum, 1, true,false);
     }
 
     /**

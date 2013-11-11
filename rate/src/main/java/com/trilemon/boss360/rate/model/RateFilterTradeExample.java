@@ -272,126 +272,6 @@ public class RateFilterTradeExample {
             return (Criteria) this;
         }
 
-        public Criteria andItemNumIidIsNull() {
-            addCriterion("item_num_iid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidIsNotNull() {
-            addCriterion("item_num_iid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidEqualTo(Long value) {
-            addCriterion("item_num_iid =", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidNotEqualTo(Long value) {
-            addCriterion("item_num_iid <>", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidGreaterThan(Long value) {
-            addCriterion("item_num_iid >", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidGreaterThanOrEqualTo(Long value) {
-            addCriterion("item_num_iid >=", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidLessThan(Long value) {
-            addCriterion("item_num_iid <", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidLessThanOrEqualTo(Long value) {
-            addCriterion("item_num_iid <=", value, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidIn(List<Long> values) {
-            addCriterion("item_num_iid in", values, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidNotIn(List<Long> values) {
-            addCriterion("item_num_iid not in", values, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidBetween(Long value1, Long value2) {
-            addCriterion("item_num_iid between", value1, value2, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andItemNumIidNotBetween(Long value1, Long value2) {
-            addCriterion("item_num_iid not between", value1, value2, "itemNumIid");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdIsNull() {
-            addCriterion("buyer_user_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdIsNotNull() {
-            addCriterion("buyer_user_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdEqualTo(Long value) {
-            addCriterion("buyer_user_id =", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdNotEqualTo(Long value) {
-            addCriterion("buyer_user_id <>", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdGreaterThan(Long value) {
-            addCriterion("buyer_user_id >", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("buyer_user_id >=", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdLessThan(Long value) {
-            addCriterion("buyer_user_id <", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdLessThanOrEqualTo(Long value) {
-            addCriterion("buyer_user_id <=", value, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdIn(List<Long> values) {
-            addCriterion("buyer_user_id in", values, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdNotIn(List<Long> values) {
-            addCriterion("buyer_user_id not in", values, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdBetween(Long value1, Long value2) {
-            addCriterion("buyer_user_id between", value1, value2, "buyerUserId");
-            return (Criteria) this;
-        }
-
-        public Criteria andBuyerUserIdNotBetween(Long value1, Long value2) {
-            addCriterion("buyer_user_id not between", value1, value2, "buyerUserId");
-            return (Criteria) this;
-        }
-
         public Criteria andBuyerNickIsNull() {
             addCriterion("buyer_nick is null");
             return (Criteria) this;
@@ -522,66 +402,6 @@ public class RateFilterTradeExample {
             return (Criteria) this;
         }
 
-        public Criteria andOidIsNull() {
-            addCriterion("oid is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidIsNotNull() {
-            addCriterion("oid is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidEqualTo(Long value) {
-            addCriterion("oid =", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidNotEqualTo(Long value) {
-            addCriterion("oid <>", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidGreaterThan(Long value) {
-            addCriterion("oid >", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidGreaterThanOrEqualTo(Long value) {
-            addCriterion("oid >=", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidLessThan(Long value) {
-            addCriterion("oid <", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidLessThanOrEqualTo(Long value) {
-            addCriterion("oid <=", value, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidIn(List<Long> values) {
-            addCriterion("oid in", values, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidNotIn(List<Long> values) {
-            addCriterion("oid not in", values, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidBetween(Long value1, Long value2) {
-            addCriterion("oid between", value1, value2, "oid");
-            return (Criteria) this;
-        }
-
-        public Criteria andOidNotBetween(Long value1, Long value2) {
-            addCriterion("oid not between", value1, value2, "oid");
-            return (Criteria) this;
-        }
-
         public Criteria andIsSellerRateIsNull() {
             addCriterion("is_seller_rate is null");
             return (Criteria) this;
@@ -702,6 +522,66 @@ public class RateFilterTradeExample {
             return (Criteria) this;
         }
 
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Byte value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Byte value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Byte value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Byte value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Byte> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Byte> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("status not between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
         public Criteria andFilterTypeIsNull() {
             addCriterion("filter_type is null");
             return (Criteria) this;
@@ -819,66 +699,6 @@ public class RateFilterTradeExample {
 
         public Criteria andFilterTimeNotBetween(Date value1, Date value2) {
             addCriterion("filter_time not between", value1, value2, "filterTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeIsNull() {
-            addCriterion("rate_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeIsNotNull() {
-            addCriterion("rate_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeEqualTo(Date value) {
-            addCriterion("rate_time =", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeNotEqualTo(Date value) {
-            addCriterion("rate_time <>", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeGreaterThan(Date value) {
-            addCriterion("rate_time >", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("rate_time >=", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeLessThan(Date value) {
-            addCriterion("rate_time <", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeLessThanOrEqualTo(Date value) {
-            addCriterion("rate_time <=", value, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeIn(List<Date> values) {
-            addCriterion("rate_time in", values, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeNotIn(List<Date> values) {
-            addCriterion("rate_time not in", values, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeBetween(Date value1, Date value2) {
-            addCriterion("rate_time between", value1, value2, "rateTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andRateTimeNotBetween(Date value1, Date value2) {
-            addCriterion("rate_time not between", value1, value2, "rateTime");
             return (Criteria) this;
         }
 

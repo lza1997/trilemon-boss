@@ -1,10 +1,12 @@
 package com.trilemon.boss360.rate.dao.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss360.rate.dao.RateCommentSettingDAO;
 import com.trilemon.boss360.rate.model.RateCommentSetting;
 import com.trilemon.boss360.rate.model.RateCommentSettingExample;
-import java.util.List;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+
+import java.util.List;
 
 public class RateCommentSettingDAOImpl extends SqlMapClientDaoSupport implements RateCommentSettingDAO {
 
@@ -70,6 +72,11 @@ public class RateCommentSettingDAOImpl extends SqlMapClientDaoSupport implements
     public int updateByPrimaryKey(RateCommentSetting record) {
         int rows = getSqlMapClientTemplate().update("rate_comment_setting.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public List<String> selectContentByUserIdAndStatus(Long userId, ImmutableList<Byte> statusList) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected static class UpdateByExampleParms extends RateCommentSettingExample {

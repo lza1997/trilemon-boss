@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.trilemon.boss360.showcase.dao.SettingMapper" >
-  <resultMap id="BaseResultMap" type="com.trilemon.boss360.showcase.model.Setting" >
+<mapper namespace="com.trilemon.boss.showcase.dao.SettingMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.boss.showcase.model.Setting" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
@@ -84,7 +84,7 @@
     exclude_item_num_iids, exclude_item_delisting_within, exclude_item_inventory_lt, 
     exclude_item_delisting_after, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.showcase.model.SettingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.showcase.model.SettingExample" >
     select
     <if test="distinct" >
       distinct
@@ -108,13 +108,13 @@
     delete from setting
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.trilemon.boss360.showcase.model.SettingExample" >
+  <delete id="deleteByExample" parameterType="com.trilemon.boss.showcase.model.SettingExample" >
     delete from setting
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+  <insert id="insert" parameterType="com.trilemon.boss.showcase.model.Setting" >
     insert into setting (id, user_id, status, 
       rule_type, include_min_sale_volume, include_max_sale_volume, 
       include_min_price, include_max_price, include_keywords, 
@@ -130,7 +130,7 @@
       #{excludeItemInventoryLt,jdbcType=INTEGER}, #{excludeItemDelistingAfter,jdbcType=INTEGER}, 
       #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+  <insert id="insertSelective" parameterType="com.trilemon.boss.showcase.model.Setting" >
     insert into setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -239,7 +239,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.trilemon.boss360.showcase.model.SettingExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.trilemon.boss.showcase.model.SettingExample" resultType="java.lang.Integer" >
     select count(*) from setting
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -327,7 +327,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss.showcase.model.Setting" >
     update setting
     <set >
       <if test="userId != null" >
@@ -381,7 +381,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.showcase.model.Setting" >
     update setting
     set user_id = #{userId,jdbcType=BIGINT},
       status = #{status,jdbcType=TINYINT},
@@ -412,7 +412,7 @@
         set status = #{status,jdbcType=TINYINT}
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
-    <update id="updateByUserIdSelective" parameterType="com.trilemon.boss360.showcase.model.Setting" >
+    <update id="updateByUserIdSelective" parameterType="com.trilemon.boss.showcase.model.Setting" >
         update setting
         <set >
             <if test="userId != null" >

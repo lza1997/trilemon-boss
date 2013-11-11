@@ -19,7 +19,7 @@
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="PlanStatusResultMap" type="com.trilemon.boss360.shelf.service.dto.PlanStatus">
+    <resultMap id="PlanStatusResultMap" type="com.trilemon.boss360.shelf.model.dto.PlanStatus">
         <result column="item_num" property="itemNum" jdbcType="INTEGER"/>
         <result column="new_item_num" property="newItemNum" jdbcType="INTEGER"/>
         <result column="wait_adjust_item_num" property="waitAdjustItemNum" jdbcType="INTEGER"/>

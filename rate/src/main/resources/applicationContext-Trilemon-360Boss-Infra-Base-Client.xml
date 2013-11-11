@@ -28,6 +28,16 @@
         <property name="baseClient" ref="baseClient"/>
     </bean>
 
+    <bean id="taobaoApiUserService" class="com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiUserService">
+        <property name="taobaoApiService" ref="taobaoApiService"/>
+        <property name="baseClient" ref="baseClient"/>
+    </bean>
+
+    <bean id="taobaoApiTradeService" class="com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiTradeService">
+        <property name="taobaoApiService" ref="taobaoApiService"/>
+        <property name="baseClient" ref="baseClient"/>
+    </bean>
+
     <bean id="taobaoApiService" class="com.trilemon.boss360.infrastructure.base.service.TaobaoApiService">
         <property name="taobaoAppKey" value="${taobao_app_key}"/>
         <property name="appService" ref="appService"/>

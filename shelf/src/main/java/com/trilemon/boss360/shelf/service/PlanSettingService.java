@@ -2,9 +2,9 @@ package com.trilemon.boss360.shelf.service;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.taobao.api.response.ItemsOnsaleGetResponse;
+import com.trilemon.boss360.infrastructure.base.model.dto.SellerCatExtended;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
 import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
@@ -17,8 +17,8 @@ import com.trilemon.boss360.shelf.dao.PlanMapper;
 import com.trilemon.boss360.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss360.shelf.model.Plan;
 import com.trilemon.boss360.shelf.model.PlanSetting;
-import com.trilemon.boss360.shelf.service.dto.PlanStatus;
-import com.trilemon.boss360.shelf.service.dto.ShelfStatus;
+import com.trilemon.boss360.shelf.model.dto.PlanStatus;
+import com.trilemon.boss360.shelf.model.dto.ShelfStatus;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.Languages;
@@ -26,7 +26,6 @@ import com.trilemon.commons.web.Page;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +65,7 @@ public class PlanSettingService {
      * @return
      */
     public boolean isSellerCatUsed(Long userId, String sellerCatStr) {
-        final Set<Long> usedSellerCatIds = getUsedSellerCatIds(userId);
+        final List<Long> usedSellerCatIds = getUsedSellerCatIds(userId);
         List<Long> planSellerCatIds = Collections3.getLongList(sellerCatStr);
         return Iterables.any(planSellerCatIds, new Predicate<Long>() {
             @Override
@@ -169,6 +168,7 @@ public class PlanSettingService {
         }
         planSettingMapper.updateByPrimaryKeyAndUserIdSelective(planSetting);
     }
+
     @Transactional
     public void updatePlanSettingDistribution(Long userId,
                                               Long planSettingId,
@@ -191,7 +191,7 @@ public class PlanSettingService {
      * @return
      */
     public PlanSetting getPlanSetting(Long userId, Long planSettingId) {
-        PlanSetting planSetting= planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
+        PlanSetting planSetting = planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
         if (PLAN_SETTING_DISTRIBUTE_TYPE_AUTO == planSetting.getDistributionType()) {
             planSetting.setDistribution(ShelfUtils.getDefaultDistribution());
         }
@@ -261,7 +261,7 @@ public class PlanSettingService {
      * @return 不会返回 null，如果结果为空，返回一个空的{@link Set}
      */
     @NotNull
-    public Set<Long> getUsedSellerCatIds(Long userId) {
+    public List<Long> getUsedSellerCatIds(Long userId) {
         Set<Long> plannedSellerCatIds = Sets.newHashSet();
         int pageNum = 1;
         while (true) {
@@ -276,7 +276,7 @@ public class PlanSettingService {
                 pageNum++;
             }
         }
-        return plannedSellerCatIds;
+        return Lists.newArrayList(plannedSellerCatIds);
     }
 
     /**
@@ -305,5 +305,11 @@ public class PlanSettingService {
         listItemNum.add(dayOfWeekNum.count(7));
         shelfStatus.setListItemNum(listItemNum);
         return shelfStatus;
+    }
+
+    public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
+            TaobaoAccessControlException, TaobaoEnhancedApiException {
+        List<Long> plannedSellerCatIds = getUsedSellerCatIds(userId);
+        return taobaoApiShopService.getOnsaleSellerCatExtended(userId, plannedSellerCatIds);
     }
 }

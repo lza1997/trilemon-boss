@@ -9,6 +9,8 @@ public class RateSetting {
 
     private String nick;
 
+    private Integer isExpired;
+
     private Byte status;
 
     private Byte autoRate;
@@ -23,13 +25,13 @@ public class RateSetting {
 
     private Integer filterCreditMax;
 
-    private Float isFilterGoodRate;
+    private Boolean isFilterGoodRate;
 
-    private Integer filterGoodRate;
+    private Float filterGoodRate;
 
-    private Float isFilterBadRate;
+    private Boolean isFilterBadRate;
 
-    private Integer filterBadRateCount;
+    private Float filterBadRateCount;
 
     private Boolean isFilterRegisterDay;
 
@@ -65,6 +67,14 @@ public class RateSetting {
 
     public void setNick(String nick) {
         this.nick = nick == null ? null : nick.trim();
+    }
+
+    public Integer getIsExpired() {
+        return isExpired;
+    }
+
+    public void setIsExpired(Integer isExpired) {
+        this.isExpired = isExpired;
     }
 
     public Byte getStatus() {
@@ -123,35 +133,35 @@ public class RateSetting {
         this.filterCreditMax = filterCreditMax;
     }
 
-    public Float getIsFilterGoodRate() {
+    public Boolean getIsFilterGoodRate() {
         return isFilterGoodRate;
     }
 
-    public void setIsFilterGoodRate(Float isFilterGoodRate) {
+    public void setIsFilterGoodRate(Boolean isFilterGoodRate) {
         this.isFilterGoodRate = isFilterGoodRate;
     }
 
-    public Integer getFilterGoodRate() {
+    public Float getFilterGoodRate() {
         return filterGoodRate;
     }
 
-    public void setFilterGoodRate(Integer filterGoodRate) {
+    public void setFilterGoodRate(Float filterGoodRate) {
         this.filterGoodRate = filterGoodRate;
     }
 
-    public Float getIsFilterBadRate() {
+    public Boolean getIsFilterBadRate() {
         return isFilterBadRate;
     }
 
-    public void setIsFilterBadRate(Float isFilterBadRate) {
+    public void setIsFilterBadRate(Boolean isFilterBadRate) {
         this.isFilterBadRate = isFilterBadRate;
     }
 
-    public Integer getFilterBadRateCount() {
+    public Float getFilterBadRateCount() {
         return filterBadRateCount;
     }
 
-    public void setFilterBadRateCount(Integer filterBadRateCount) {
+    public void setFilterBadRateCount(Float filterBadRateCount) {
         this.filterBadRateCount = filterBadRateCount;
     }
 
