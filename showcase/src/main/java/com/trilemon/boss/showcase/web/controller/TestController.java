@@ -156,26 +156,6 @@ public class TestController {
         return "delete excludeItem " + result;
     }
 
-    /**
-     * 查询橱窗商品
-     * @param pageNum
-     * @param pageSize
-     * @param query
-     * @return
-     * @throws ShowcaseException
-     * @throws TaobaoSessionExpiredException
-     * @throws TaobaoEnhancedApiException
-     * @throws TaobaoAccessControlException
-     */
-    @RequestMapping("/paginateShowcaseItems")
-    @ResponseBody
-    public Page<ShowcaseItem> paginateShowcaseItems(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
-                                                    @RequestParam(required = false) String query) throws
-            ShowcaseException,
-            TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException, TaobaoAccessControlException {
-        return settingService.paginateShowcaseItems(56912708L, query, pageNum, pageSize);
-    }
 
     /**
      * 搜索在线商品

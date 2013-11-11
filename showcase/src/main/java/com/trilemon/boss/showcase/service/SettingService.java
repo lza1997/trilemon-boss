@@ -7,7 +7,6 @@ import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.dao.AdjustDetailMapper;
 import com.trilemon.boss.showcase.dao.SettingMapper;
-import com.trilemon.boss.showcase.model.AdjustDetail;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.boss360.infrastructure.base.service.AppService;
@@ -17,7 +16,6 @@ import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnha
 import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
-import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +24,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author kevin
@@ -39,8 +35,6 @@ public class SettingService {
     private TaobaoApiShopService taobaoApiShopService;
     @Autowired
     private SettingMapper settingMapper;
-    @Autowired
-    private AdjustDetailMapper adjustDetailMapper;
     @Autowired
     private AppService appService;
     @Autowired
@@ -60,7 +54,7 @@ public class SettingService {
             TaobaoEnhancedApiException, TaobaoAccessControlException {
         Setting setting = settingMapper.selectByUserId(userId);
         if (null == setting) {
-            setting=new Setting();
+            setting = new Setting();
             setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
             setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
             setting.setUserId(userId);
@@ -179,38 +173,31 @@ public class SettingService {
         return rows == 1;
     }
 
-    public Page<ShowcaseItem> paginateShowcaseItems(Long userId, String query, int pageNum,
-                                                    int pageSize) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
-        checkNotNull(userId, "userId must be not null.");
+    public Page<ShowcaseItem> paginateOnSaleShowcaseItems(Long userId, String query, int pageNum,
+                                                          int pageSize) throws TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException, TaobaoAccessControlException {
+        String includeSellerCids = settingMapper.selectByUserId(userId).getIncludeSellerCids();
+        return paginateOnSaleItems(userId,
+                query,
+                Collections3.COMMA_SPLITTER.splitToList(includeSellerCids),
+                pageNum,
+                pageSize,
+                true,
+                ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME);
+    }
 
-        int totalSize = adjustDetailMapper.countByUserIdAndQuery(userId, query);
-        List<AdjustDetail> adjustDetails = adjustDetailMapper.paginateByUserIdAndQuery(userId,
-                query, (pageNum - 1) * pageSize, pageSize);
-        if (CollectionUtils.isEmpty(adjustDetails)) {
-            return Page.create(totalSize, pageNum, pageSize, Lists.<ShowcaseItem>newArrayList());
-        } else {
-            Setting setting = settingMapper.selectByUserId(userId);
-            final List<Long> excludeNumIids = Collections3.getLongList(setting.getExcludeItemNumIids());
-            List<ShowcaseItem> showcaseItems = Lists.transform(adjustDetails, new Function<AdjustDetail, ShowcaseItem>() {
-                @Nullable
-                @Override
-                public ShowcaseItem apply(@Nullable AdjustDetail input) {
-                    ShowcaseItem showcaseItem = new ShowcaseItem();
-                    Item item = new Item();
-                    item.setNumIid(input.getItemNumIid());
-                    item.setTitle(input.getItemTitle());
-                    item.setPicUrl(input.getItemPicUrl());
-                    showcaseItem.setItem(item);
-                    if (excludeNumIids.contains(input.getItemNumIid())) {
-                        showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
-                    } else {
-                        showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
-                    }
-                    return showcaseItem;
-                }
-            });
-            return Page.create(totalSize, pageNum, pageSize, showcaseItems);
-        }
+    public Page<ShowcaseItem> paginateInventoryShowcaseItems(Long userId, String query, int pageNum,
+                                                          int pageSize) throws TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException, TaobaoAccessControlException {
+        String includeSellerCids = settingMapper.selectByUserId(userId).getIncludeSellerCids();
+        return paginateInventoryItems(userId,
+                query,
+                ShowcaseConstants.INVENTORY_BANNER_TYPES,
+                Collections3.COMMA_SPLITTER.splitToList(includeSellerCids),
+                pageNum,
+                pageSize,
+                true,
+                ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME);
     }
 
     /**
