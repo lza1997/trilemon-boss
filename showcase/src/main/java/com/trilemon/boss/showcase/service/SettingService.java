@@ -36,8 +36,6 @@ public class SettingService {
     @Autowired
     private SettingMapper settingMapper;
     @Autowired
-    private AppService appService;
-    @Autowired
     private AdjustService adjustService;
 
     public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {

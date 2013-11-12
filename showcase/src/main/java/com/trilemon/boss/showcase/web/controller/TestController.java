@@ -1,7 +1,5 @@
 package com.trilemon.boss.showcase.web.controller;
 
-import com.trilemon.boss.infra.base.service.TaobaoApiService;
-import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -9,6 +7,7 @@ import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
+import com.trilemon.boss.showcase.service.AdjustService;
 import com.trilemon.boss.showcase.service.SettingService;
 import com.trilemon.commons.web.Page;
 import org.joda.time.DateTime;
@@ -28,9 +27,7 @@ public class TestController {
     @Autowired
     private SettingService settingService;
     @Autowired
-    private TaobaoApiService taobaoApiService;
-    @Autowired
-    private TaobaoApiShopService taobaoApiShopService;
+    private AdjustService adjustService;
 
     @RequestMapping("/update")
     @ResponseBody
@@ -54,6 +51,14 @@ public class TestController {
     @ResponseBody
     public Setting getSetting() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
         return settingService.getSetting(56912708L);
+    }
+
+    @RequestMapping("/adjust")
+    @ResponseBody
+    public String adjust() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException,
+            TaobaoAccessControlException {
+        adjustService.adjust(56912708L);
+        return "adjust success";
     }
 
     /**
@@ -155,7 +160,6 @@ public class TestController {
         boolean result = settingService.deleteExcludeItem(56912708L, numIid);
         return "delete excludeItem " + result;
     }
-
 
     /**
      * 搜索在线商品
