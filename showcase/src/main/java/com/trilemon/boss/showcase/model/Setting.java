@@ -32,6 +32,9 @@ public class Setting implements Comparable<Setting> {
     private Integer excludeItemInventoryLt;
     //下架时间还剩大于几天不推荐（单位分钟）
     private Integer excludeItemDelistingAfter;
+    private Boolean isExcludeItemDelistingWithin;
+    private Boolean isExcludeItemInventoryLt;
+    private Boolean isExcludeItemDelistingAfter;
     private Date addTime;
     private Date updTime;
 
@@ -104,7 +107,7 @@ public class Setting implements Comparable<Setting> {
     }
 
     public void setIncludeKeywords(String includeKeywords) {
-        this.includeKeywords = includeKeywords == null ? null : includeKeywords.trim();
+        this.includeKeywords = includeKeywords;
     }
 
     public String getIncludeSellerCids() {
@@ -112,7 +115,7 @@ public class Setting implements Comparable<Setting> {
     }
 
     public void setIncludeSellerCids(String includeSellerCids) {
-        this.includeSellerCids = includeSellerCids == null ? null : includeSellerCids.trim();
+        this.includeSellerCids = includeSellerCids;
     }
 
     public String getIncludeItemNumIids() {
@@ -120,7 +123,7 @@ public class Setting implements Comparable<Setting> {
     }
 
     public void setIncludeItemNumIids(String includeItemNumIids) {
-        this.includeItemNumIids = includeItemNumIids == null ? null : includeItemNumIids.trim();
+        this.includeItemNumIids = includeItemNumIids;
     }
 
     public String getExcludeItemNumIids() {
@@ -128,7 +131,7 @@ public class Setting implements Comparable<Setting> {
     }
 
     public void setExcludeItemNumIids(String excludeItemNumIids) {
-        this.excludeItemNumIids = excludeItemNumIids == null ? null : excludeItemNumIids.trim();
+        this.excludeItemNumIids = excludeItemNumIids;
     }
 
     public Integer getExcludeItemDelistingWithin() {
@@ -169,6 +172,30 @@ public class Setting implements Comparable<Setting> {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public Boolean getIsExcludeItemDelistingAfter() {
+        return isExcludeItemDelistingAfter;
+    }
+
+    public void setIsExcludeItemDelistingAfter(Boolean isExcludeItemDelistingAfter) {
+        this.isExcludeItemDelistingAfter = isExcludeItemDelistingAfter;
+    }
+
+    public Boolean getIsExcludeItemInventoryLt() {
+        return isExcludeItemInventoryLt;
+    }
+
+    public void setIsExcludeItemInventoryLt(Boolean isExcludeItemInventoryLt) {
+        this.isExcludeItemInventoryLt = isExcludeItemInventoryLt;
+    }
+
+    public Boolean getIsExcludeItemDelistingWithin() {
+        return isExcludeItemDelistingWithin;
+    }
+
+    public void setIsExcludeItemDelistingWithin(Boolean isExcludeItemDelistingWithin) {
+        this.isExcludeItemDelistingWithin = isExcludeItemDelistingWithin;
     }
 
     @Override

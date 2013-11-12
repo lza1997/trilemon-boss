@@ -14,8 +14,11 @@
     <result column="include_seller_cids" property="includeSellerCids" jdbcType="VARCHAR" />
     <result column="include_item_num_iids" property="includeItemNumIids" jdbcType="VARCHAR" />
     <result column="exclude_item_num_iids" property="excludeItemNumIids" jdbcType="VARCHAR" />
+    <result column="is_exclude_item_delisting_within" property="isExcludeItemDelistingWithin" jdbcType="BIT" />
     <result column="exclude_item_delisting_within" property="excludeItemDelistingWithin" jdbcType="INTEGER" />
+    <result column="is_exclude_item_inventory_lt" property="isExcludeItemInventoryLt" jdbcType="BIT" />
     <result column="exclude_item_inventory_lt" property="excludeItemInventoryLt" jdbcType="INTEGER" />
+    <result column="is_exclude_item_delisting_after" property="isExcludeItemDelistingAfter" jdbcType="BIT" />
     <result column="exclude_item_delisting_after" property="excludeItemDelistingAfter" jdbcType="INTEGER" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
@@ -81,7 +84,8 @@
   <sql id="Base_Column_List" >
     id, user_id, status, rule_type, include_min_sale_volume, include_max_sale_volume, 
     include_min_price, include_max_price, include_keywords, include_seller_cids, include_item_num_iids, 
-    exclude_item_num_iids, exclude_item_delisting_within, exclude_item_inventory_lt, 
+    exclude_item_num_iids, is_exclude_item_delisting_within, exclude_item_delisting_within, 
+    is_exclude_item_inventory_lt, exclude_item_inventory_lt, is_exclude_item_delisting_after, 
     exclude_item_delisting_after, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.showcase.model.SettingExample" >
@@ -119,16 +123,20 @@
       rule_type, include_min_sale_volume, include_max_sale_volume, 
       include_min_price, include_max_price, include_keywords, 
       include_seller_cids, include_item_num_iids, 
-      exclude_item_num_iids, exclude_item_delisting_within, 
-      exclude_item_inventory_lt, exclude_item_delisting_after, 
-      add_time, upd_time)
+      exclude_item_num_iids, is_exclude_item_delisting_within, 
+      exclude_item_delisting_within, is_exclude_item_inventory_lt, 
+      exclude_item_inventory_lt, is_exclude_item_delisting_after, 
+      exclude_item_delisting_after, add_time, upd_time
+      )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
       #{ruleType,jdbcType=TINYINT}, #{includeMinSaleVolume,jdbcType=INTEGER}, #{includeMaxSaleVolume,jdbcType=INTEGER}, 
       #{includeMinPrice,jdbcType=DECIMAL}, #{includeMaxPrice,jdbcType=DECIMAL}, #{includeKeywords,jdbcType=VARCHAR}, 
       #{includeSellerCids,jdbcType=VARCHAR}, #{includeItemNumIids,jdbcType=VARCHAR}, 
-      #{excludeItemNumIids,jdbcType=VARCHAR}, #{excludeItemDelistingWithin,jdbcType=INTEGER}, 
-      #{excludeItemInventoryLt,jdbcType=INTEGER}, #{excludeItemDelistingAfter,jdbcType=INTEGER}, 
-      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
+      #{excludeItemNumIids,jdbcType=VARCHAR}, #{isExcludeItemDelistingWithin,jdbcType=BIT}, 
+      #{excludeItemDelistingWithin,jdbcType=INTEGER}, #{isExcludeItemInventoryLt,jdbcType=BIT}, 
+      #{excludeItemInventoryLt,jdbcType=INTEGER}, #{isExcludeItemDelistingAfter,jdbcType=BIT}, 
+      #{excludeItemDelistingAfter,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.trilemon.boss.showcase.model.Setting" >
     insert into setting
@@ -169,11 +177,20 @@
       <if test="excludeItemNumIids != null" >
         exclude_item_num_iids,
       </if>
+      <if test="isExcludeItemDelistingWithin != null" >
+        is_exclude_item_delisting_within,
+      </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within,
       </if>
+      <if test="isExcludeItemInventoryLt != null" >
+        is_exclude_item_inventory_lt,
+      </if>
       <if test="excludeItemInventoryLt != null" >
         exclude_item_inventory_lt,
+      </if>
+      <if test="isExcludeItemDelistingAfter != null" >
+        is_exclude_item_delisting_after,
       </if>
       <if test="excludeItemDelistingAfter != null" >
         exclude_item_delisting_after,
@@ -222,11 +239,20 @@
       <if test="excludeItemNumIids != null" >
         #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
+      <if test="isExcludeItemDelistingWithin != null" >
+        #{isExcludeItemDelistingWithin,jdbcType=BIT},
+      </if>
       <if test="excludeItemDelistingWithin != null" >
         #{excludeItemDelistingWithin,jdbcType=INTEGER},
       </if>
+      <if test="isExcludeItemInventoryLt != null" >
+        #{isExcludeItemInventoryLt,jdbcType=BIT},
+      </if>
       <if test="excludeItemInventoryLt != null" >
         #{excludeItemInventoryLt,jdbcType=INTEGER},
+      </if>
+      <if test="isExcludeItemDelistingAfter != null" >
+        #{isExcludeItemDelistingAfter,jdbcType=BIT},
       </if>
       <if test="excludeItemDelistingAfter != null" >
         #{excludeItemDelistingAfter,jdbcType=INTEGER},
@@ -284,11 +310,20 @@
       <if test="record.excludeItemNumIids != null" >
         exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
       </if>
+      <if test="record.isExcludeItemDelistingWithin != null" >
+        is_exclude_item_delisting_within = #{record.isExcludeItemDelistingWithin,jdbcType=BIT},
+      </if>
       <if test="record.excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
       </if>
+      <if test="record.isExcludeItemInventoryLt != null" >
+        is_exclude_item_inventory_lt = #{record.isExcludeItemInventoryLt,jdbcType=BIT},
+      </if>
       <if test="record.excludeItemInventoryLt != null" >
         exclude_item_inventory_lt = #{record.excludeItemInventoryLt,jdbcType=INTEGER},
+      </if>
+      <if test="record.isExcludeItemDelistingAfter != null" >
+        is_exclude_item_delisting_after = #{record.isExcludeItemDelistingAfter,jdbcType=BIT},
       </if>
       <if test="record.excludeItemDelistingAfter != null" >
         exclude_item_delisting_after = #{record.excludeItemDelistingAfter,jdbcType=INTEGER},
@@ -318,8 +353,11 @@
       include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
       include_item_num_iids = #{record.includeItemNumIids,jdbcType=VARCHAR},
       exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
+      is_exclude_item_delisting_within = #{record.isExcludeItemDelistingWithin,jdbcType=BIT},
       exclude_item_delisting_within = #{record.excludeItemDelistingWithin,jdbcType=INTEGER},
+      is_exclude_item_inventory_lt = #{record.isExcludeItemInventoryLt,jdbcType=BIT},
       exclude_item_inventory_lt = #{record.excludeItemInventoryLt,jdbcType=INTEGER},
+      is_exclude_item_delisting_after = #{record.isExcludeItemDelistingAfter,jdbcType=BIT},
       exclude_item_delisting_after = #{record.excludeItemDelistingAfter,jdbcType=INTEGER},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       upd_time = #{record.updTime,jdbcType=TIMESTAMP}
@@ -363,11 +401,20 @@
       <if test="excludeItemNumIids != null" >
         exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
+      <if test="isExcludeItemDelistingWithin != null" >
+        is_exclude_item_delisting_within = #{isExcludeItemDelistingWithin,jdbcType=BIT},
+      </if>
       <if test="excludeItemDelistingWithin != null" >
         exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
       </if>
+      <if test="isExcludeItemInventoryLt != null" >
+        is_exclude_item_inventory_lt = #{isExcludeItemInventoryLt,jdbcType=BIT},
+      </if>
       <if test="excludeItemInventoryLt != null" >
         exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
+      </if>
+      <if test="isExcludeItemDelistingAfter != null" >
+        is_exclude_item_delisting_after = #{isExcludeItemDelistingAfter,jdbcType=BIT},
       </if>
       <if test="excludeItemDelistingAfter != null" >
         exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},
@@ -394,8 +441,11 @@
       include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
       include_item_num_iids = #{includeItemNumIids,jdbcType=VARCHAR},
       exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
+      is_exclude_item_delisting_within = #{isExcludeItemDelistingWithin,jdbcType=BIT},
       exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
+      is_exclude_item_inventory_lt = #{isExcludeItemInventoryLt,jdbcType=BIT},
       exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
+      is_exclude_item_delisting_after = #{isExcludeItemDelistingAfter,jdbcType=BIT},
       exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       upd_time = #{updTime,jdbcType=TIMESTAMP}
@@ -448,11 +498,20 @@
             <if test="excludeItemNumIids != null" >
                 exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
             </if>
+            <if test="isExcludeItemDelistingWithin != null" >
+                is_exclude_item_delisting_within = #{isExcludeItemDelistingWithin,jdbcType=BIT},
+            </if>
             <if test="excludeItemDelistingWithin != null" >
                 exclude_item_delisting_within = #{excludeItemDelistingWithin,jdbcType=INTEGER},
             </if>
+            <if test="isExcludeItemInventoryLt != null" >
+                is_exclude_item_inventory_lt = #{isExcludeItemInventoryLt,jdbcType=BIT},
+            </if>
             <if test="excludeItemInventoryLt != null" >
                 exclude_item_inventory_lt = #{excludeItemInventoryLt,jdbcType=INTEGER},
+            </if>
+            <if test="isExcludeItemDelistingAfter != null" >
+                is_exclude_item_delisting_after = #{isExcludeItemDelistingAfter,jdbcType=BIT},
             </if>
             <if test="excludeItemDelistingAfter != null" >
                 exclude_item_delisting_after = #{excludeItemDelistingAfter,jdbcType=INTEGER},

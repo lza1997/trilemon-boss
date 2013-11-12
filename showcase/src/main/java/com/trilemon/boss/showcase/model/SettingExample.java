@@ -866,6 +866,66 @@ public class SettingExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsExcludeItemDelistingWithinIsNull() {
+            addCriterion("is_exclude_item_delisting_within is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinIsNotNull() {
+            addCriterion("is_exclude_item_delisting_within is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within =", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinNotEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within <>", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinGreaterThan(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within >", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within >=", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinLessThan(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within <", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_within <=", value, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_delisting_within in", values, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinNotIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_delisting_within not in", values, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_delisting_within between", value1, value2, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingWithinNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_delisting_within not between", value1, value2, "isExcludeItemDelistingWithin");
+            return (Criteria) this;
+        }
+
         public Criteria andExcludeItemDelistingWithinIsNull() {
             addCriterion("exclude_item_delisting_within is null");
             return (Criteria) this;
@@ -926,6 +986,66 @@ public class SettingExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsExcludeItemInventoryLtIsNull() {
+            addCriterion("is_exclude_item_inventory_lt is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtIsNotNull() {
+            addCriterion("is_exclude_item_inventory_lt is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt =", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtNotEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt <>", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtGreaterThan(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt >", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt >=", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtLessThan(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt <", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_inventory_lt <=", value, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_inventory_lt in", values, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtNotIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_inventory_lt not in", values, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_inventory_lt between", value1, value2, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemInventoryLtNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_inventory_lt not between", value1, value2, "isExcludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
         public Criteria andExcludeItemInventoryLtIsNull() {
             addCriterion("exclude_item_inventory_lt is null");
             return (Criteria) this;
@@ -983,6 +1103,66 @@ public class SettingExample {
 
         public Criteria andExcludeItemInventoryLtNotBetween(Integer value1, Integer value2) {
             addCriterion("exclude_item_inventory_lt not between", value1, value2, "excludeItemInventoryLt");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterIsNull() {
+            addCriterion("is_exclude_item_delisting_after is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterIsNotNull() {
+            addCriterion("is_exclude_item_delisting_after is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after =", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterNotEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after <>", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterGreaterThan(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after >", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after >=", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterLessThan(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after <", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_exclude_item_delisting_after <=", value, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_delisting_after in", values, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterNotIn(List<Boolean> values) {
+            addCriterion("is_exclude_item_delisting_after not in", values, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_delisting_after between", value1, value2, "isExcludeItemDelistingAfter");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsExcludeItemDelistingAfterNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_exclude_item_delisting_after not between", value1, value2, "isExcludeItemDelistingAfter");
             return (Criteria) this;
         }
 
