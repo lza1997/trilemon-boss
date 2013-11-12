@@ -3,6 +3,7 @@ package com.trilemon.boss360.shelf;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.taobao.api.domain.Item;
+import com.trilemon.boss.shelf.ShelfUtils;
 import com.trilemon.commons.LocalTimeInterval;
 import org.junit.Test;
 
@@ -114,7 +115,7 @@ public class ShelfUtilsTest {
 
     @Test
     public void testGetNewItemDistribution() throws Exception {
-        Table<Integer, LocalTimeInterval, Integer> planDistribution=ShelfUtils.getDefaultDistribution(10);
+        Table<Integer, LocalTimeInterval, Integer> planDistribution= ShelfUtils.getDefaultDistribution(10);
 
         Table<Integer, LocalTimeInterval, Integer> currDistribution=ShelfUtils.parseAndFillZeroDistribution
                 ("{\"1\":{\"8\":false,\"9\":true,\"10\":true},\"2\":{\"9\":true}}");

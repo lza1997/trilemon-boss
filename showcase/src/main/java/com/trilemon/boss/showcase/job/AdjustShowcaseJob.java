@@ -1,6 +1,6 @@
 package com.trilemon.boss.showcase.job;
 
-import com.trilemon.boss360.infrastructure.base.service.AbstractQueueService;
+import com.trilemon.boss.infra.base.service.AbstractQueueService;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.service.AdjustService;
 import org.springframework.beans.factory.annotation.Autowired;

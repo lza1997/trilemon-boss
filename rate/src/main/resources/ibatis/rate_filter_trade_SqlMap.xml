@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="rate_filter_trade" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.model.RateFilterTrade" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="buyer_nick" property="buyerNick" jdbcType="VARCHAR" />
@@ -43,7 +43,7 @@
     id, user_id, buyer_nick, tid, is_seller_rate, is_buyer_rate, status, filter_type, 
     filter_time, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateFilterTradeExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateFilterTradeExample" >
     select
     <isParameterPresent >
       <isEqual property="distinct" compareValue="true" >
@@ -59,21 +59,21 @@
       </isNotNull>
     </isParameterPresent>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     select 
     <include refid="rate_filter_trade.Base_Column_List" />
     from rate_filter_trade
     where id = #id:BIGINT#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     delete from rate_filter_trade
     where id = #id:BIGINT#
   </delete>
-  <delete id="deleteByExample" parameterClass="com.trilemon.boss360.rate.model.RateFilterTradeExample" >
+  <delete id="deleteByExample" parameterClass="com.trilemon.boss.rate.model.RateFilterTradeExample" >
     delete from rate_filter_trade
     <include refid="rate_filter_trade.Example_Where_Clause" />
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     insert into rate_filter_trade (id, user_id, buyer_nick, tid, is_seller_rate, 
       is_buyer_rate, status, filter_type, filter_time, 
       add_time, upd_time)
@@ -81,7 +81,7 @@
       #isBuyerRate:BIT#, #status:TINYINT#, #filterType:TINYINT#, #filterTime:TIMESTAMP#, 
       #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     insert into rate_filter_trade
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
@@ -157,7 +157,7 @@
       )
     </dynamic>
   </insert>
-  <select id="countByExample" parameterClass="com.trilemon.boss360.rate.model.RateFilterTradeExample" resultClass="java.lang.Integer" >
+  <select id="countByExample" parameterClass="com.trilemon.boss.rate.model.RateFilterTradeExample" resultClass="java.lang.Integer" >
     select count(*) from rate_filter_trade
     <include refid="rate_filter_trade.Example_Where_Clause" />
   </select>
@@ -219,7 +219,7 @@
       <include refid="rate_filter_trade.Example_Where_Clause" />
     </isParameterPresent>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     update rate_filter_trade
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
@@ -255,7 +255,7 @@
     </dynamic>
     where id = #id:BIGINT#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateFilterTrade" >
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     update rate_filter_trade
     set user_id = #userId:BIGINT#,
       buyer_nick = #buyerNick:VARCHAR#,

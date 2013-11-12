@@ -23,9 +23,9 @@
     </appender>
 
     <appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log_dir}/trilemon-360boss-center.log</file>
+        <file>${log_dir}/trilemon-boss-center.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/trilemon-360boss-center.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log_dir}/trilemon-boss-center.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>

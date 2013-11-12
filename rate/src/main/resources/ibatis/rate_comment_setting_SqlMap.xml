@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="rate_comment_setting" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.model.RateCommentSetting" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="content" property="content" jdbcType="VARCHAR" />
@@ -37,7 +37,7 @@
   <sql id="Base_Column_List" >
     id, user_id, content, status, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateCommentSettingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateCommentSettingExample" >
     select
     <isParameterPresent >
       <isEqual property="distinct" compareValue="true" >
@@ -53,27 +53,27 @@
       </isNotNull>
     </isParameterPresent>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     select 
     <include refid="rate_comment_setting.Base_Column_List" />
     from rate_comment_setting
     where id = #id:BIGINT#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     delete from rate_comment_setting
     where id = #id:BIGINT#
   </delete>
-  <delete id="deleteByExample" parameterClass="com.trilemon.boss360.rate.model.RateCommentSettingExample" >
+  <delete id="deleteByExample" parameterClass="com.trilemon.boss.rate.model.RateCommentSettingExample" >
     delete from rate_comment_setting
     <include refid="rate_comment_setting.Example_Where_Clause" />
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     insert into rate_comment_setting (id, user_id, content, status, add_time, 
       upd_time)
     values (#id:BIGINT#, #userId:BIGINT#, #content:VARCHAR#, #status:TINYINT#, #addTime:TIMESTAMP#, 
       #updTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     insert into rate_comment_setting
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
@@ -119,7 +119,7 @@
       )
     </dynamic>
   </insert>
-  <select id="countByExample" parameterClass="com.trilemon.boss360.rate.model.RateCommentSettingExample" resultClass="java.lang.Integer" >
+  <select id="countByExample" parameterClass="com.trilemon.boss.rate.model.RateCommentSettingExample" resultClass="java.lang.Integer" >
     select count(*) from rate_comment_setting
     <include refid="rate_comment_setting.Example_Where_Clause" />
   </select>
@@ -161,7 +161,7 @@
       <include refid="rate_comment_setting.Example_Where_Clause" />
     </isParameterPresent>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     update rate_comment_setting
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
@@ -182,7 +182,7 @@
     </dynamic>
     where id = #id:BIGINT#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateCommentSetting" >
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
     update rate_comment_setting
     set user_id = #userId:BIGINT#,
       content = #content:VARCHAR#,

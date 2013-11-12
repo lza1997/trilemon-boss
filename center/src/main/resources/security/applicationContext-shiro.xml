@@ -26,7 +26,7 @@
 
     <!-- 項目自定义的Realm -->
     <bean id="shiroTaobaoAuthorizingRealm"
-          class="com.trilemon.boss360.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm">
+          class="com.trilemon.boss.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm">
         <property name="baseClient" ref="baseClient"/>
         <property name="appService" ref="appService"/>
         <property name="taobaoApiService" ref="taobaoApiService"/>

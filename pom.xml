@@ -18,8 +18,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.trilemon.360boss</groupId>
-    <artifactId>trilemon-360boss</artifactId>
+    <groupId>com.trilemon.boss</groupId>
+    <artifactId>trilemon-boss</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>shelf</module>
@@ -32,10 +32,10 @@
         <module>rate</module>
     </modules>
 
-    <name>Trilemon-360boss</name>
+    <name>Trilemon-boss</name>
     <packaging>pom</packaging>
 
-    <description>360boss</description>
+    <description>boss</description>
     <url>https://github.com/KevinGu/Trilemon-360boss</url>
     <inceptionYear>2013</inceptionYear>
     <organization>

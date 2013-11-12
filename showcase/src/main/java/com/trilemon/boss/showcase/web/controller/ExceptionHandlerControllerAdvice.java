@@ -1,7 +1,7 @@
 package com.trilemon.boss.showcase.web.controller;
 
 import com.google.common.base.Throwables;
-import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

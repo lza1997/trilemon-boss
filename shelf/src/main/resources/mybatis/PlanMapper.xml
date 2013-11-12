@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.trilemon.boss360.shelf.dao.PlanMapper">
-    <resultMap id="BaseResultMap" type="com.trilemon.boss360.shelf.model.Plan">
+<mapper namespace="com.trilemon.boss.shelf.dao.PlanMapper">
+    <resultMap id="BaseResultMap" type="com.trilemon.boss.shelf.model.Plan">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="plan_setting_id" property="planSettingId" jdbcType="BIGINT"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
@@ -19,7 +19,7 @@
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <resultMap id="PlanStatusResultMap" type="com.trilemon.boss360.shelf.model.dto.PlanStatus">
+    <resultMap id="PlanStatusResultMap" type="com.trilemon.boss.shelf.model.dto.PlanStatus">
         <result column="item_num" property="itemNum" jdbcType="INTEGER"/>
         <result column="new_item_num" property="newItemNum" jdbcType="INTEGER"/>
         <result column="wait_adjust_item_num" property="waitAdjustItemNum" jdbcType="INTEGER"/>
@@ -89,7 +89,7 @@
         status, failed_cause, plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time,
         adjust_time, add_time, upd_time
     </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss360.shelf.model.PlanExample">
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.shelf.model.PlanExample">
         select
         <if test="distinct">
             distinct
@@ -113,13 +113,13 @@
         DELETE FROM plan
         WHERE id = #{id,jdbcType=BIGINT}
     </delete>
-    <delete id="deleteByExample" parameterType="com.trilemon.boss360.shelf.model.PlanExample">
+    <delete id="deleteByExample" parameterType="com.trilemon.boss.shelf.model.PlanExample">
         delete from plan
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.trilemon.boss360.shelf.model.Plan">
+    <insert id="insert" parameterType="com.trilemon.boss.shelf.model.Plan">
         INSERT INTO plan (id, plan_setting_id, user_id,
                           item_num_iid, item_title, item_title_pinyin,
                           item_pic_url, `status`, failed_cause,
@@ -133,7 +133,7 @@
                     #{adjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
             )
     </insert>
-    <insert id="insertSelective" parameterType="com.trilemon.boss360.shelf.model.Plan">
+    <insert id="insertSelective" parameterType="com.trilemon.boss.shelf.model.Plan">
         insert into plan
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -230,7 +230,7 @@
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.trilemon.boss360.shelf.model.PlanExample"
+    <select id="countByExample" parameterType="com.trilemon.boss.shelf.model.PlanExample"
             resultType="java.lang.Integer">
         select count(*) from plan
         <if test="_parameter != null">
@@ -311,7 +311,7 @@
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss360.shelf.model.Plan">
+    <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss.shelf.model.Plan">
         update plan
         <set>
             <if test="planSettingId != null">
@@ -359,7 +359,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.trilemon.boss360.shelf.model.Plan">
+    <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.shelf.model.Plan">
         UPDATE plan
         SET plan_setting_id = #{planSettingId,jdbcType=BIGINT},
             user_id = #{userId,jdbcType=BIGINT},
@@ -475,7 +475,7 @@
         and plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP}
         and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME}
     </select>
-    <update id="updateByPlanSettingIdAndNumIid" parameterType="com.trilemon.boss360.shelf.model.Plan">
+    <update id="updateByPlanSettingIdAndNumIid" parameterType="com.trilemon.boss.shelf.model.Plan">
         update plan
         <set>
             <if test="planSettingId != null">

@@ -8,12 +8,12 @@ import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
-import com.trilemon.boss360.infrastructure.base.model.dto.SellerCatExtended;
-import com.trilemon.boss360.infrastructure.base.service.AppService;
-import com.trilemon.boss360.infrastructure.base.service.api.TaobaoApiShopService;
-import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoAccessControlException;
-import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoEnhancedApiException;
-import com.trilemon.boss360.infrastructure.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
+import com.trilemon.boss.infra.base.service.AppService;
+import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
 import org.joda.time.DateTime;
@@ -128,7 +128,8 @@ public class SettingService {
      * 必推商品
      *
      * @param userId
-     * @param numIid * @param addOrDelete true is add,false is delete
+     * @param numIid
+     * @param addOrDelete true is add,false is delete
      * @return
      */
     public boolean includeItem(Long userId, Long numIid, boolean addOrDelete) throws ShowcaseException {

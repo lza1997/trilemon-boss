@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="rate_setting" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss360.rate.model.RateSetting" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.model.RateSetting" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="nick" property="nick" jdbcType="VARCHAR" />
@@ -55,7 +55,7 @@
     filter_bad_rate_count, is_filter_register_day, filter_register_day, is_filter_blacklist, 
     last_rate_time, add_time, upd_time
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateSettingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateSettingExample" >
     select
     <isParameterPresent >
       <isEqual property="distinct" compareValue="true" >
@@ -71,21 +71,21 @@
       </isNotNull>
     </isParameterPresent>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     select 
     <include refid="rate_setting.Base_Column_List" />
     from rate_setting
     where id = #id:BIGINT#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     delete from rate_setting
     where id = #id:BIGINT#
   </delete>
-  <delete id="deleteByExample" parameterClass="com.trilemon.boss360.rate.model.RateSettingExample" >
+  <delete id="deleteByExample" parameterClass="com.trilemon.boss.rate.model.RateSettingExample" >
     delete from rate_setting
     <include refid="rate_setting.Example_Where_Clause" />
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     insert into rate_setting (id, user_id, nick, is_expired, status, 
       auto_rate, notify, sms_notify_phone, is_filter_credit, 
       filter_credit_min, filter_credit_max, is_filter_good_rate, filter_good_rate, 
@@ -99,7 +99,7 @@
       #isFilterBlacklist:BIT#, #lastRateTime:TIMESTAMP#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#
       )
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     insert into rate_setting
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
@@ -235,7 +235,7 @@
       )
     </dynamic>
   </insert>
-  <select id="countByExample" parameterClass="com.trilemon.boss360.rate.model.RateSettingExample" resultClass="java.lang.Integer" >
+  <select id="countByExample" parameterClass="com.trilemon.boss.rate.model.RateSettingExample" resultClass="java.lang.Integer" >
     select count(*) from rate_setting
     <include refid="rate_setting.Example_Where_Clause" />
   </select>
@@ -337,7 +337,7 @@
       <include refid="rate_setting.Example_Where_Clause" />
     </isParameterPresent>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     update rate_setting
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
@@ -403,7 +403,7 @@
     </dynamic>
     where id = #id:BIGINT#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss360.rate.model.RateSetting" >
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateSetting" >
     update rate_setting
     set user_id = #userId:BIGINT#,
       nick = #nick:VARCHAR#,
