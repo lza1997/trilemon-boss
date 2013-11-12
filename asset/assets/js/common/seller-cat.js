@@ -11,16 +11,27 @@ angular.module('common').factory('SellerCat', ['REST', '$q', function(REST, $q) 
 
             var defer = $q.defer();
             REST.SELLER_CAT.getList().then(function(data) {
-                // 展开第一个有子分类的 TODO:BUG
-                var firstChild = _.find(data, function(cat) {
-                    return cat.parentCid !== 0;
+                // 服务器数据再组装
+                data = _.map(data, function(item) {
+                    return _.extend(item.sellerCat, _.omit(item, 'sellerCat'));
                 });
-                _.findWhere(data, {cid: firstChild.parentCid}).expand = true;
+
+                // 展开第一个有子分类的
+                var firstHasChild = _.find(data, function(cat) {
+                    return _.where(data, {parentCid: cat.cid}).length > 0;
+                });
+                if (firstHasChild) {
+                    firstHasChild.expand = true;
+                }
 
                 // 显示页面时回填
                 _.each(data, function(cat) {
                     cat.wasSelected = cat.selected = _.include(options.selectedCids, cat.cid + '');
                 });
+
+                // 一级分类的数量
+                data.parentLength = _.where(data, {parentCid: 0}).length;
+
                 defer.resolve(data);
             });
             return defer.promise;
