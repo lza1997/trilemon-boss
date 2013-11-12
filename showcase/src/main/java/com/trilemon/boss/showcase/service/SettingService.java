@@ -3,19 +3,19 @@ package com.trilemon.boss.showcase.service;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
+import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
+import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
-import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
-import com.trilemon.boss.infra.base.service.AppService;
-import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +60,21 @@ public class SettingService {
             setting = new Setting();
             setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
             setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
+            setting.setIsExcludeItemDelistingAfter(false);
+            setting.setIsExcludeItemDelistingWithin(false);
+            setting.setIsExcludeItemInventoryLt(false);
+            //六天半
+            setting.setExcludeItemDelistingAfter(9360);
+            setting.setExcludeItemDelistingWithin(10);
+            setting.setExcludeItemInventoryLt(1);
             setting.setUserId(userId);
             setting.setAddTime(DateTime.now().toDate());
             settingMapper.insertSelective(setting);
         } else {
             settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_RUNNING);
-            adjustService.adjust(userId);
+            if (StringUtils.isNotBlank(setting.getIncludeSellerCids())) {
+                adjustService.adjust(userId);
+            }
         }
     }
 
@@ -349,7 +358,7 @@ public class SettingService {
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
             TaobaoAccessControlException, TaobaoEnhancedApiException {
         Setting setting = settingMapper.selectByUserId(userId);
-        if (null==setting||null == setting.getIncludeSellerCids()) {
+        if (null == setting || null == setting.getIncludeSellerCids()) {
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, Lists.<Long>newArrayList());
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
