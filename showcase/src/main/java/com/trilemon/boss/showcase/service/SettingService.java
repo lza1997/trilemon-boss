@@ -349,7 +349,7 @@ public class SettingService {
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
             TaobaoAccessControlException, TaobaoEnhancedApiException {
         Setting setting = settingMapper.selectByUserId(userId);
-        if (null == setting.getIncludeSellerCids()) {
+        if (null==setting||null == setting.getIncludeSellerCids()) {
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, Lists.<Long>newArrayList());
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
