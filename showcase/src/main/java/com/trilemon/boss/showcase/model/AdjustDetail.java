@@ -15,6 +15,7 @@ public class AdjustDetail {
 
     private String itemPicUrl;
 
+    //调整类型，上架/下架
     private Byte adjustType;
 
     private Date adjustTime;

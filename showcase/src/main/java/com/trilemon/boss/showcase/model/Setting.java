@@ -3,39 +3,35 @@ package com.trilemon.boss.showcase.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Setting implements Comparable<Setting>{
+public class Setting implements Comparable<Setting> {
     private Integer id;
-
     private Long userId;
-
     private Byte status;
-
+    //调整类型，现在固定只使用按照分类调整
     private Byte ruleType;
-
+    //冗余字段
     private Integer includeMinSaleVolume;
-
+    //冗余字段
     private Integer includeMaxSaleVolume;
-
+    //冗余字段
     private BigDecimal includeMinPrice;
-
+    //冗余字段
     private BigDecimal includeMaxPrice;
-
+    //冗余字段
     private String includeKeywords;
-
+    //调整分类，按照逗号隔开
     private String includeSellerCids;
-
+    //固定橱窗宝贝，按照逗号隔开
     private String includeItemNumIids;
-
+    //不推橱窗宝贝，按照逗号隔开
     private String excludeItemNumIids;
-
+    //下架时间小于多少不推荐（单位分钟）
     private Integer excludeItemDelistingWithin;
-
+    //库存小于多少不推荐
     private Integer excludeItemInventoryLt;
-
+    //下架时间还剩大于几天不推荐（单位分钟）
     private Integer excludeItemDelistingAfter;
-
     private Date addTime;
-
     private Date updTime;
 
     public Integer getId() {
@@ -173,6 +169,7 @@ public class Setting implements Comparable<Setting>{
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
+
     @Override
     public int compareTo(Setting o) {
         return (int) (o.getUpdTime().getTime() - this.getUpdTime().getTime());
