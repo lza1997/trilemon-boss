@@ -11,7 +11,7 @@
         <label class="col-md-1 control-label">宝贝分类</label>
 
         <div class="col-md-6">
-            <p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length}} 个子分类</p>
+            <p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length - sellerCats.parentLength}} 个子分类</p>
         </div>
     </div>
     <div class="form-group">
@@ -19,7 +19,7 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
-                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" ng-disabled="sellercat.planned && !sellercat.wasSelected"  />
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" ng-disabled="sellercat.used && !sellercat.wasSelected"  />
                 </label>
                 <label ng-click="toggleSellerCat(sellercat)" >
                     <span>
@@ -29,7 +29,7 @@
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.planned && !childCat.wasSelected" />
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.used && !childCat.wasSelected" />
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>
