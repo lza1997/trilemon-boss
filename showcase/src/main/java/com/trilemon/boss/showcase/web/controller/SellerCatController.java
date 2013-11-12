@@ -26,9 +26,9 @@ public class SellerCatController {
     /**
      * 获取卖家的分类信息
      * @return
-     * @throws com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException
-     * @throws com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException
-     * @throws com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoAccessControlException
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)

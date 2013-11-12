@@ -6,7 +6,7 @@ import com.google.common.collect.Ordering;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.showcase.model.AdjustDetail;
 import org.joda.time.DateTime;
-import org.joda.time.Minutes;
+import org.joda.time.Seconds;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -87,10 +87,10 @@ public class ShowcaseUtils {
      */
     public static boolean isItemDelistingWithin(Item item, int minWithin, DateTime baseDateTime) {
         DateTime delistingDateTime = new DateTime(item.getDelistTime());
-        if (delistingDateTime.isAfter(baseDateTime)) {
+        if (delistingDateTime.isBefore(baseDateTime)) {
             return false;
         } else {
-            if (Minutes.minutesBetween(baseDateTime, delistingDateTime).getMinutes() <= minWithin) {
+            if (Seconds.secondsBetween(baseDateTime, delistingDateTime).getSeconds() <= minWithin*60) {
                 return true;
             } else {
                 return false;

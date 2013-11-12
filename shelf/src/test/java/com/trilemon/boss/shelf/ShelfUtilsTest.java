@@ -1,9 +1,8 @@
-package com.trilemon.boss360.shelf;
+package com.trilemon.boss.shelf;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Table;
 import com.taobao.api.domain.Item;
-import com.trilemon.boss.shelf.ShelfUtils;
 import com.trilemon.commons.LocalTimeInterval;
 import org.junit.Test;
 

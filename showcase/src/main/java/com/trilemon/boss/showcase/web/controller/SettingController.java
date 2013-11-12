@@ -38,6 +38,10 @@ public class SettingController {
 
     /**
      * 暂停
+     * @return
+     * @throws ShowcaseException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoEnhancedApiException
      */
     @RequestMapping(value = "/pause", method = RequestMethod.POST)
     @ResponseBody
@@ -49,6 +53,10 @@ public class SettingController {
     /**
      * 开启规则
      * @return
+     * @throws ShowcaseException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoAccessControlException
      */
     @RequestMapping(value = "/pause", method = RequestMethod.DELETE)
     @ResponseBody

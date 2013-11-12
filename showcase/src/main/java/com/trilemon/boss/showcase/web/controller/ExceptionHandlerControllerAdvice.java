@@ -24,6 +24,7 @@ public class ExceptionHandlerControllerAdvice {
         logger.error(Throwables.getStackTraceAsString(ex));
         response.setHeader("Content-Type", "application/json");
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        logger.error("error",ex);
         return "Unknown error occurred: " + Throwables.getStackTraceAsString(ex);
     }
 

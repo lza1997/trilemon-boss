@@ -9,8 +9,6 @@ public class AdjustDetail {
 
     private Long itemNumIid;
 
-    private Boolean isOnSale;
-
     private String itemTitle;
 
     private String itemTitlePinyin;
@@ -47,14 +45,6 @@ public class AdjustDetail {
 
     public void setItemNumIid(Long itemNumIid) {
         this.itemNumIid = itemNumIid;
-    }
-
-    public Boolean getIsOnSale() {
-        return isOnSale;
-    }
-
-    public void setIsOnSale(Boolean isOnSale) {
-        this.isOnSale = isOnSale;
     }
 
     public String getItemTitle() {

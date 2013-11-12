@@ -285,66 +285,6 @@ public class AdjustDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andIsOnSaleIsNull() {
-            addCriterion("is_on_sale is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleIsNotNull() {
-            addCriterion("is_on_sale is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleEqualTo(Boolean value) {
-            addCriterion("is_on_sale =", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleNotEqualTo(Boolean value) {
-            addCriterion("is_on_sale <>", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleGreaterThan(Boolean value) {
-            addCriterion("is_on_sale >", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleGreaterThanOrEqualTo(Boolean value) {
-            addCriterion("is_on_sale >=", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleLessThan(Boolean value) {
-            addCriterion("is_on_sale <", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleLessThanOrEqualTo(Boolean value) {
-            addCriterion("is_on_sale <=", value, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleIn(List<Boolean> values) {
-            addCriterion("is_on_sale in", values, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleNotIn(List<Boolean> values) {
-            addCriterion("is_on_sale not in", values, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_on_sale between", value1, value2, "isOnSale");
-            return (Criteria) this;
-        }
-
-        public Criteria andIsOnSaleNotBetween(Boolean value1, Boolean value2) {
-            addCriterion("is_on_sale not between", value1, value2, "isOnSale");
-            return (Criteria) this;
-        }
-
         public Criteria andItemTitleIsNull() {
             addCriterion("item_title is null");
             return (Criteria) this;
