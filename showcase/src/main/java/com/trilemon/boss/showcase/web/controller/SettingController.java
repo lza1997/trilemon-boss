@@ -8,9 +8,12 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiExcep
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.Valid;
 
 /**
  * 橱窗规则设置
@@ -35,9 +38,24 @@ public class SettingController {
         return settingService.getSetting(56912708L);
     }
 
+    /**
+     * 修改规则
+     *
+     * @return
+     * @throws ShowcaseException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoEnhancedApiException
+     */
+    @RequestMapping(method = RequestMethod.PUT)
+    @ResponseBody
+    public Setting update(@RequestBody @Valid Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+        settingService.updateSetting(56912708L, setting);
+        return setting;
+    }
 
     /**
      * 暂停
+     *
      * @return
      * @throws ShowcaseException
      * @throws TaobaoSessionExpiredException
@@ -52,6 +70,7 @@ public class SettingController {
 
     /**
      * 开启规则
+     *
      * @return
      * @throws ShowcaseException
      * @throws TaobaoSessionExpiredException

@@ -25,9 +25,10 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
 
     RESTProvider.setURL({
         ITEM: 'shelf/items',
-        SELLER_CAT: 'shelf/sellercats',
+        SHELF_SELLERCAT: 'shelf/sellercats',
         PLAN_SETTING: 'shelf/plan-settings',
         SHOWCASE_SETTING: 'showcase/settings',
+        SHOWCASE_SELLERCAT: 'showcase/sellercats',
         SHOWCASE_ITEM: 'showcase/showcase-items'
     });
 }]);

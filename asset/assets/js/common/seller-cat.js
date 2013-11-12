@@ -1,8 +1,11 @@
 /**
  * 宝贝分类的选择
  */
-angular.module('common').factory('SellerCat', ['REST', '$q', function(REST, $q) {
+angular.module('common').factory('SellerCat', ['$q', function($q) {
     var SellerCat = {
+        setREST: function(REST) {
+            this.REST = REST;
+        },
 
         // 获取所有分类
         // options.selectedCids 已经选择的分类 ID
@@ -10,7 +13,7 @@ angular.module('common').factory('SellerCat', ['REST', '$q', function(REST, $q) 
             options = _.defaults(options || {}, {selectedCids: []});
 
             var defer = $q.defer();
-            REST.SELLER_CAT.getList().then(function(data) {
+            this.REST.getList().then(function(data) {
                 // 服务器数据再组装
                 data = _.map(data, function(item) {
                     return _.extend(item.sellerCat, _.omit(item, 'sellerCat'));
@@ -42,7 +45,7 @@ angular.module('common').factory('SellerCat', ['REST', '$q', function(REST, $q) 
             // 联动所有子分类
             if (currCat.parentCid === 0) {
                 _.chain(sellerCats).where({parentCid: currCat.cid}).each(function(childSellerCat) {
-                    if (childSellerCat.planned && !childSellerCat.wasSelected) {
+                    if (childSellerCat.used && !childSellerCat.wasSelected) {
                         return;
                     }
                     childSellerCat.selected = currCat.selected;

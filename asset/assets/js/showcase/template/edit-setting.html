@@ -4,12 +4,12 @@
         <button class="btn btn-primary" ng-click="setPaused(false)">立刻开启</button>
     </div>
 </div>
-<form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.isPaused">
+<form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.isPaused && sellerCats">
     <div class="form-group">
-        <label class="col-md-1 control-label">宝贝分类</label>
+        <label class="col-md-1 control-label">选择分类</label>
 
         <div class="col-md-6">
-            <p class="form-control-static">共 {{sellerCats.length}} 个分类，{{sellerCats.length}} 个子分类</p>
+            <p class="form-control-static">共 {{sellerCats.parentLength}} 个分类，{{sellerCats.length - sellerCats.parentLength}} 个子分类</p>
         </div>
     </div>
     <div class="form-group">
@@ -18,19 +18,17 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
-                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" />
+                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)"/>
                 </label>
                 <label ng-click="toggleSellerCat(sellercat)">
-                    <span>
-                        <span ng-class="{'icon-caret-down': sellercat.expand, 'icon-caret-right': !sellercat.expand}"></span>
-                    </span>
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
+                    <span class="icon-caret-down"></span>
                 </label>
 
                 <div class="checkbox" ng-show="sellercat.expand"
                      ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" />
+                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)"/>
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>
@@ -45,31 +43,28 @@
         <div class="col-md-6">
             <div class="checkbox">
                 <label>
-                    <input type="checkbox"/>
-                    排除指定宝贝 <a href="">筛选</a>
-                </label>
-            </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" ng-model="setting.excludeItemDelistingAfter" ng-true-value="1" ng-false-value="-1" />
+                    <input type="checkbox" ng-model="setting.isExcludeItemDelistingWithin"/>
                     排除
                 </label>
                 <label>
-                     <input type="number" ng-disabled="setting.excludeItemDelistingAfter == -1" ng-model="setting.excludeItemDelistingAfter" class="form-control input-sm"/> 分钟内要下架的商宝贝
+                    <input type="number" ng-disabled="!setting.isExcludeItemDelistingWithin"
+                           ng-model="setting.excludeItemDelistingWithin" class="form-control input-sm"/>
+                    分钟内要下架的商宝贝
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" />
+                    <input type="checkbox" ng-model="setting.isExcludeItemInventoryLt"/>
                     排除库存低于
                 </label>
                 <label>
-                    <input type="number" disabled class="form-control input-sm"/> 的宝贝
+                    <input type="number" ng-disabled="!setting.isExcludeItemInventoryLt"
+                           ng-model="setting.excludeItemInventoryLt" class="form-control input-sm" min="1" max="100"/> 的宝贝
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox"/>
+                    <input type="checkbox" ng-model="setting.isExcludeItemDelistingAfter"/>
                     不推荐刚上架(剩余时间超过6天半)的宝贝
                 </label>
             </div>

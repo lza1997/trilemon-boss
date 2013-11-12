@@ -9,7 +9,8 @@ define(function(require, exports, module) {
         },
         templates: {
             'showcase/editSetting': require('./template/edit-setting.html'),
-            'showcase/indexShowcase': require('./template/index-showcase.html')
+            'showcase/indexShowcase': require('./template/index-showcase.html'),
+            'showcase/excludeItem': require('./template/exclude-item.html')
         }
     };
 

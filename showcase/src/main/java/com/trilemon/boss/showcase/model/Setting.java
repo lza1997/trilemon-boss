@@ -1,9 +1,12 @@
 package com.trilemon.boss.showcase.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Setting implements Comparable<Setting> {
+    @JsonIgnore
     private Integer id;
     private Long userId;
     //是否开启橱窗

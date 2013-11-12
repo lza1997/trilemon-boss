@@ -28,7 +28,7 @@ public class ShowcaseItemController {
             ShowcaseException,
             TaobaoSessionExpiredException,
             TaobaoEnhancedApiException {
+        //return settingService.paginateShowcaseItems(56912708L, page, 2);
         return null;
-//        return settingService.paginateShowcaseItems(56912708L, page, 2);
     }
 }

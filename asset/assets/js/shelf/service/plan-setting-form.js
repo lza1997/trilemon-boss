@@ -17,6 +17,7 @@ define(function(require, exports, module) {
                 }, true);
 
                 // 获取卖家的宝贝分类
+                SellerCat.setREST(REST.SHELF_SELLERCAT);
                 SellerCat.fetch({selectedCids: $scope.includeSellerCids}).then(function(data) {
                     $scope.sellerCats = data;
                 });
@@ -37,7 +38,7 @@ define(function(require, exports, module) {
                         $scope.planSetting[method]().then(function(data) {
                             Flash.success('计划 ' + $scope.planSetting.name + ' ' + tip + '成功！' +
                                 '系统已经对宝贝进行了智能上架分配。可以<a href="#/shelf/plan-setting/' + data.id + '/distribution">手动设置上架时间</a>。');
-                            $location.url('/plan-setting');
+                            $location.url('/shelf/plan-setting');
                         });
                     }
                 };

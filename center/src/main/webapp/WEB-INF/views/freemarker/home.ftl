@@ -65,7 +65,7 @@
         });
     </script>
 
-    <link rel="shortcut icon" href="${asset}/assets/ico/favicon.png">
+    <link rel="shortcut icon" href="${asset}/base/ico/favicon.ico">
 </head>
 
 <body>
