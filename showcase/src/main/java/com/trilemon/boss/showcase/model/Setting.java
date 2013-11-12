@@ -6,6 +6,7 @@ import java.util.Date;
 public class Setting implements Comparable<Setting> {
     private Integer id;
     private Long userId;
+    //是否开启橱窗
     private Byte status;
     //调整类型，现在固定只使用按照分类调整
     private Byte ruleType;
