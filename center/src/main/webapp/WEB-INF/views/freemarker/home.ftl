@@ -103,7 +103,7 @@
 <footer>
     <div class="container">
         <ul class="list-inline">
-            <li>© 2013 SB, Inc.</li>
+            <li>© 2013 GLSB, Inc.</li>
             <li><a href="">联系我们</a></li>
             <li><a href="">使用帮助</a></li>
         </ul>
