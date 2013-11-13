@@ -1,5 +1,7 @@
 package com.trilemon.boss.showcase.web.controller;
 
+import com.taobao.api.domain.Item;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.showcase.ShowcaseException;
@@ -24,11 +26,10 @@ public class ShowcaseItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<com.taobao.api.domain.Item> index(String key, @RequestParam(defaultValue = "1") Integer page) throws
+    public Page<Item> index(String key, @RequestParam(defaultValue = "1") Integer page) throws
             ShowcaseException,
             TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException {
-        //return settingService.paginateShowcaseItems(56912708L, page, 2);
-        return null;
+            TaobaoEnhancedApiException, TaobaoAccessControlException {
+        return settingService.paginateShowcaseItems(56912708L, key, null, page, 2, false, null);
     }
 }

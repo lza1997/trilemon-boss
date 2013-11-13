@@ -24,7 +24,7 @@ body {
 
 // 导航
 .trilemon-navbar {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 
   .dropdown-toggle {
     color: #000;
@@ -37,6 +37,17 @@ body {
   .control-label {
     width: 9%
   }
+}
+
+// 筛选宝贝的搜索表单
+.shelf-filter-form {
+  width: 400px;
+  margin-bottom: 20px;
+}
+
+// 橱窗的搜索表单
+.showcase-search-form {
+  margin-bottom: 20px;
 }
 
 // 橱窗规则表单
@@ -75,12 +86,6 @@ input.ng-invalid.ng-dirty:focus {
   margin-top: 30px;
 }
 
-// 筛选宝贝的搜索表单
-.shelf-filter-form {
-  width: 400px;
-  margin-bottom: 20px;
-}
-
 .ajax-spinner {
   position: absolute;
   left: 50%;
@@ -90,7 +95,7 @@ input.ng-invalid.ng-dirty:focus {
   border-radius: 0 0 5px 5px;
   color: #c09853;
   text-align: center;
-  padding: 5px 0;
+  padding: 2px 0;
   background: #FCF6CF;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
 
@@ -106,6 +111,12 @@ input.ng-invalid.ng-dirty:focus {
 .ajax-spinner.show {
   top: 103px;
   margin-right: 5px;
+}
+
+.pagination-wrap {
+  .pagination {
+    margin: 0;
+  }
 }
 
 .modal-dialog.confirm-dialog {

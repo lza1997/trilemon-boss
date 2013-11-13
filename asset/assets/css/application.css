@@ -5,10 +5,14 @@ body { font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "
 .trilemon-banner a { color: #fff; }
 .trilemon-banner .logo { padding: 15px 15px; font-size: 18px; line-height: 20px; float: left; }
 
-.trilemon-navbar { margin-bottom: 50px; }
+.trilemon-navbar { margin-bottom: 30px; }
 .trilemon-navbar .dropdown-toggle { color: #000; font-size: 18px; }
 
 .plan-form .control-label { width: 9%; }
+
+.shelf-filter-form { width: 400px; margin-bottom: 20px; }
+
+.showcase-search-form { margin-bottom: 20px; }
 
 .rule-form .input-sm { display: inline; width: 80px; margin: 0 5px; height: 25px; padding: 2px 10px; }
 
@@ -22,12 +26,12 @@ input.ng-invalid.ng-dirty:focus { border-color: #953b39; -webkit-box-shadow: ins
 
 .form-action { margin-top: 30px; }
 
-.shelf-filter-form { width: 400px; margin-bottom: 20px; }
-
-.ajax-spinner { position: absolute; left: 50%; top: 70px; width: 300px; margin-left: -150px; border-radius: 0 0 5px 5px; color: #c09853; text-align: center; padding: 5px 0; background: #FCF6CF; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); -webkit-transition: top 0.2s ease-out; transition: top 0.2s ease-out; }
+.ajax-spinner { position: absolute; left: 50%; top: 70px; width: 300px; margin-left: -150px; border-radius: 0 0 5px 5px; color: #c09853; text-align: center; padding: 2px 0; background: #FCF6CF; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); -webkit-transition: top 0.2s ease-out; transition: top 0.2s ease-out; }
 .ajax-spinner .icon-spin { -webkit-animation: spin 0.7s infinite linear; animation: spin 0.7s infinite linear; }
 
 .ajax-spinner.show { top: 103px; margin-right: 5px; }
+
+.pagination-wrap .pagination { margin: 0; }
 
 .modal-dialog.confirm-dialog { width: 300px; padding-top: 60px; }
 .modal-dialog.confirm-dialog .modal-footer { padding: 14px 20px 15px; }

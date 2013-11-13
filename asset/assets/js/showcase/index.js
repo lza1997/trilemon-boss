@@ -5,7 +5,8 @@ define(function(require, exports, module) {
     var showcase = {
         controllers: {
             'showcase.editSetting': require('./controller/edit-setting'),
-            'showcase.indexShowcase': require('./controller/index-showcase')
+            'showcase.indexShowcase': require('./controller/index-showcase'),
+            'showcase.excludeItem': require('./controller/exclude-item')
         },
         templates: {
             'showcase/editSetting': require('./template/edit-setting.html'),

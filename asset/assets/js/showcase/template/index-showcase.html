@@ -1,39 +1,37 @@
 <div class="alert alert-info">
-    你可以<a href="#/showcase/setting/edit">编辑规则</a>、<a href="/showcase/">排除规则中的宝贝</a>，或者设置固定推荐宝贝。
+    <i class="icon-info-sign"></i>
+    您可以<a class="alert-link" href="#/showcase/setting/edit">编辑规则</a>，
+    <a class="alert-link" href="#/showcase/exclude-item">排除宝贝</a>，
+    或者<a class="alert-link" href="#/showcase/exclude-item">设置固定推荐</a>
 </div>
-<form ng-submit="search()" class="shelf-filter-form">
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="宝贝标题、编号" maxlength="20" ng-model="searchKey"/>
-        <span class="input-group-btn">
-            <button class="btn btn-primary" type="submit">搜 索</button>
-        </span>
+<form ng-submit="search()" class="form-inline well">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="宝贝标题、编号" ng-model="searchKey" size="40"/>
     </div>
+
+    <button class="btn btn-primary" type="submit">搜 索</button>
 </form>
 <table class="table table-hover">
     <col width="15%"/>
     <col/>
     <col width="10%"/>
-    <col width="10%"/>
-    <col width="10%"/>
+    <col width="15%"/>
     <thead>
     <tr>
         <th>图片</th>
         <th>宝贝名称</th>
-        <th>价格</th>
+        <th class="text-right">价格</th>
         <th>下架时间</th>
-        <th>状态</th>
     </tr>
     </thead>
     <tr ng-repeat="item in items" ng-class="{danger:item.exclude}">
         <td><img ng-src="{{item.picUrl}}_sum.jpg"/></td>
         <td>{{ item.title }}</td>
-        <td align="right">
-            {{ item.price }}
-        </td>
-        <td></td>
-        <td></td>
+        <td class="text-right">{{ item.price }}</td>
+        <td>{{ item.delistTime | date:'yyyy-MM-dd HH:ss' }}</td>
     </tr>
 </table>
-<div class="clearfix">
+<div class="pagination-wrap clearfix">
     <pagination class="pull-right" items="items" pager-click="jumpPage(page)"></pagination>
+</div>
 </div>

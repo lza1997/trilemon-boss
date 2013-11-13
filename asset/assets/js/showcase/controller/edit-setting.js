@@ -2,7 +2,7 @@
  * 设置规则
  */
 define(function(require, exports, module) {
-    var EditRuleController = ['$scope', 'REST', 'SellerCat', 'SETTING_STATUS', '$location', function($scope, REST, SellerCat, SETTING_STATUS, $location) {
+    var EditRuleController = ['$scope', 'REST', 'SellerCat', 'SHOWCASE_SETTING_STATUS', '$location', function($scope, REST, SellerCat, SHOWCASE_SETTING_STATUS, $location) {
         REST.SHOWCASE_SETTING.get().then(function(data) {
             $scope.setting = wrapSetting(data);
 
@@ -24,7 +24,7 @@ define(function(require, exports, module) {
             var method = flag ? 'post' : 'remove';
             REST.SHOWCASE_SETTING.one('pause')[method]().then(function(data) {
                 $scope.setting = data;
-                $scope.setting.isPaused = data.status === SETTING_STATUS.PAUSED;
+                $scope.setting.isPaused = data.status === SHOWCASE_SETTING_STATUS.PAUSED;
             });
         };
 
@@ -57,7 +57,7 @@ define(function(require, exports, module) {
 
         // 包装一下 setting 对象
         function wrapSetting(setting) {
-            setting.isPaused = (setting.status === SETTING_STATUS.PAUSED);
+            setting.isPaused = (setting.status === SHOWCASE_SETTING_STATUS.PAUSED);
             setting.includeSellerCids = setting.includeSellerCids || '';
             return setting;
         }
