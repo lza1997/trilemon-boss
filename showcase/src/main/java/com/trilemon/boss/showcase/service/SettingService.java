@@ -14,6 +14,7 @@ import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.commons.Collections3;
+import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -37,6 +38,13 @@ public class SettingService {
     private SettingMapper settingMapper;
     @Autowired
     private AdjustService adjustService;
+
+    public static void main(String[] args) {
+        Test test = new Test();
+        test.setTestStr("test");
+        String json = JsonMapper.nonDefaultMapper().toJson(test);
+        System.out.println(json);
+    }
 
     public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         setting.setUserId(userId);
@@ -228,7 +236,8 @@ public class SettingService {
      * @throws TaobaoSessionExpiredException
      * @throws TaobaoAccessControlException
      */
-    public Page<ShowcaseItem> paginateInventoryItems(Long userId, String query,
+    public Page<ShowcaseItem> paginateInventoryItems(Long userId,
+                                                     String query,
                                                      List<String> banners,
                                                      List<String> sellerCatIds,
                                                      long pageNum,
@@ -246,7 +255,17 @@ public class SettingService {
                 fuzzy,
                 order);
         Setting setting = settingMapper.selectByUserId(userId);
-        final List<Long> includeNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
+
+        final List<Long> includeNumIids = Lists.newArrayList();
+        if (null != setting.getIncludeItemNumIids()) {
+            includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
+        }
+
+        final List<Long> excludeNumIids = Lists.newArrayList();
+        if (null != setting.getExcludeItemNumIids()) {
+            excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
+        }
+
         List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
             @Nullable
             @Override
@@ -255,6 +274,8 @@ public class SettingService {
                 showcaseItem.setItem(input);
                 if (includeNumIids.contains(input.getNumIid())) {
                     showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+                } else if (excludeNumIids.contains(input.getNumIid())) {
+                    showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
                 } else {
                     showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
                 }
@@ -298,7 +319,15 @@ public class SettingService {
                 null,
                 order);
         Setting setting = settingMapper.selectByUserId(userId);
-        final List<Long> includeNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
+
+        final List<Long> includeNumIids = Lists.newArrayList();
+        if (null != setting.getIncludeItemNumIids()) {
+            includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
+        }
+        final List<Long> excludeNumIids = Lists.newArrayList();
+        if (null != setting.getExcludeItemNumIids()) {
+            excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
+        }
         List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
             @Nullable
             @Override
@@ -307,6 +336,8 @@ public class SettingService {
                 showcaseItem.setItem(input);
                 if (includeNumIids.contains(input.getNumIid())) {
                     showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+                } else if (excludeNumIids.contains(input.getNumIid())) {
+                    showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
                 } else {
                     showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
                 }
@@ -319,7 +350,8 @@ public class SettingService {
     }
 
     /**
-     * 橱窗宝贝查询
+     * 橱窗宝贝
+     *
      * @param userId
      * @param query
      * @param sellerCatIds
@@ -358,6 +390,22 @@ public class SettingService {
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, includeSellCatIds);
+        }
+    }
+
+    static class Test {
+        private String testStr;
+
+        public String getTestStr() {
+            return testStr;
+        }
+
+        public void setTestStr(String testStr) {
+            this.testStr = testStr;
+        }
+
+        public Boolean getTest() {
+            return true;
         }
     }
 }
