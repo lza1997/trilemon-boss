@@ -8,7 +8,8 @@ import java.util.List;
  * @author kevin
  */
 public interface ShowcaseConstants {
-    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "has_showcase", "title", "pic_url", "price","seller_cids",
+    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "has_showcase", "title", "pic_url", "price",
+            "seller_cids","delist_time",
             "num");
     List<String> INVENTORY_BANNER_TYPES = ImmutableList.of("for_shelved");
     //调整记录调整类型
