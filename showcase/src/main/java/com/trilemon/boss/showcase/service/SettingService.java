@@ -318,42 +318,37 @@ public class SettingService {
         return showcaseItemPage;
     }
 
-//    public Page<ShowcaseItem> paginateOnSaleShowcaseItems(Long userId, String query,
-//                                                  List<String> sellerCatIds,
-//                                                  long pageNum,
-//                                                  long pageSize,
-//                                                  boolean fuzzy,
-//                                                  String order) throws TaobaoEnhancedApiException,
-//            TaobaoSessionExpiredException, TaobaoAccessControlException {
-//        Page<Item> itemPage = taobaoApiShopService.paginateOnSaleItems(userId,
-//                query,
-//                ShowcaseConstants.ITEM_FIELDS,
-//                null == sellerCatIds ? null : Collections3.stringList2LongList(sellerCatIds),
-//                pageNum,
-//                pageSize,
-//                fuzzy,
-//                null,
-//                order);
-//        Setting setting = settingMapper.selectByUserId(userId);
-//        final List<Long> includeNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
-//        List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
-//            @Nullable
-//            @Override
-//            public ShowcaseItem apply(@Nullable Item input) {
-//                ShowcaseItem showcaseItem = new ShowcaseItem();
-//                showcaseItem.setItem(input);
-//                if (includeNumIids.contains(input.getNumIid())) {
-//                    showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
-//                } else {
-//                    showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
-//                }
-//                return showcaseItem;
-//            }
-//        });
-//        Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
-//                itemPage.getPageSize(), showcaseItems);
-//        return showcaseItemPage;
-//    }
+    /**
+     * 橱窗宝贝查询
+     * @param userId
+     * @param query
+     * @param sellerCatIds
+     * @param pageNum
+     * @param pageSize
+     * @param fuzzy
+     * @param order
+     * @return
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoAccessControlException
+     */
+    public Page<Item> paginateShowcaseItems(Long userId, String query,
+                                            List<String> sellerCatIds,
+                                            long pageNum,
+                                            long pageSize,
+                                            boolean fuzzy,
+                                            String order) throws TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException, TaobaoAccessControlException {
+        return taobaoApiShopService.paginateOnSaleItems(userId,
+                query,
+                ShowcaseConstants.ITEM_FIELDS,
+                null == sellerCatIds ? null : Collections3.stringList2LongList(sellerCatIds),
+                pageNum,
+                pageSize,
+                fuzzy,
+                true,
+                order);
+    }
 
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
             TaobaoAccessControlException, TaobaoEnhancedApiException {

@@ -10,7 +10,6 @@ import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.boss.showcase.service.AdjustService;
 import com.trilemon.boss.showcase.service.SettingService;
 import com.trilemon.commons.web.Page;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,12 +36,11 @@ public class TestController {
         setting.setExcludeItemDelistingWithin(30);
         setting.setExcludeItemInventoryLt(5);
         setting.setExcludeItemNumIids("19440841598");
-        setting.setIncludeItemNumIids("19480514567,19491833743");
-        setting.setIncludeSellerCids("804731967");
+        setting.setIncludeItemNumIids("19480514567,20005074958");
+        setting.setIncludeSellerCids("819049791");
         setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
         setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
         setting.setUserId(56912708L);
-        setting.setAddTime(DateTime.now().toDate());
         settingService.updateSetting(56912708L, setting);
         return setting;
     }

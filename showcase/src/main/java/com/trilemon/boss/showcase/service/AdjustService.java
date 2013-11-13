@@ -93,7 +93,7 @@ public class AdjustService {
 
         //获取数据库中的橱窗中的宝贝
         List<AdjustDetail> adjustDetails = adjustDetailMapper.selectByUserIdAndAdjustType(setting.getUserId(),
-                HAS_SHOWCASE);
+                ADJUST_DETAILS_HAS_SHOWCASE);
         logger.info("userId[{}] get [{}] has showcase adjustDetails.", setting.getUserId(), adjustDetails.size());
 
         //////////////////////////////////step2. 下橱窗非用户选择类目宝贝////////////////////////////////
@@ -123,7 +123,7 @@ public class AdjustService {
         if (CollectionUtils.isNotEmpty(generalRuleShowcaseItems)) {
             Iterables.removeAll(showcaseUsedSellerCatOnSaleItems, generalRuleShowcaseItems);
         }
-        //////////////////////////////////step7. 如果橱窗不全，补全////////////////////////////////
+        //////////////////////////////////step7. 如果橱窗不全，用分类内商品补全////////////////////////////////
         completeShowcase(setting, showcaseUsedSellerCatOnSaleItems);
         //////////////////////////////////step8. 如果橱窗还不全，用非用户选择分类补全////////////////////////////////
         completeAdditionalShowcase(setting, notUserSellerCatIds);
@@ -205,7 +205,7 @@ public class AdjustService {
                     Item item = showcaseUsedSellerCatOnSaleItems.get(index);
                     taobaoApiShopService.showcase(setting.getUserId(), item.getNumIid());
                     completeShowcaseItems.add(item);
-                    AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE);
+                    AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_HAS_SHOWCASE);
                     completeShowcaseAdjustDetails.add(showcaseAdjustDetail);
                     showcaseNum.incrShowcases();
                     index++;
@@ -268,7 +268,7 @@ public class AdjustService {
             }
             try {
                 taobaoApiShopService.showcase(setting.getUserId(), item.getNumIid());
-                AdjustDetail adjustDetail = buildAdjustDetail(setting, item, HAS_SHOWCASE);
+                AdjustDetail adjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_HAS_SHOWCASE);
                 fixShowcaseAdjustDetails.add(adjustDetail);
                 fixShowcaseItems.add(item);
                 showcaseNum.incrShowcases();
@@ -325,7 +325,7 @@ public class AdjustService {
         for (Item item : needRemovedFromShowcaseItemsOfExcludeShowcaseItems) {
             try {
                 taobaoApiShopService.removeFromShowcase(setting.getUserId(), item.getNumIid());
-                AdjustDetail adjustDetail = buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE);
+                AdjustDetail adjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_NOT_HAS_SHOWCASE);
                 notAdjustDetails.add(adjustDetail);
                 notShowcaseItems.add(item);
                 showcaseNum.decrShowcases();
@@ -361,7 +361,7 @@ public class AdjustService {
                 showcaseNum.getAllShowcases(), showcaseNum.getUsedShowcases(), showcaseNum.getRemainShowcases());
 
         List<AdjustDetail> adjustDetails = adjustDetailMapper.selectByUserIdAndAdjustType(setting.getUserId(),
-                HAS_SHOWCASE);
+                ADJUST_DETAILS_HAS_SHOWCASE);
 
         //计算符合橱窗条件的宝贝
         List<Item> canBeShowcaseItems = filterShowcaseItems(setting, notHasShowcaseUsedSellerCatOnSaleItems);
@@ -391,7 +391,7 @@ public class AdjustService {
                     try {
                         Item item = canBeRemovedShowcaseItems.get(removedShowcaseItemIndex);
                         taobaoApiShopService.removeFromShowcase(setting.getUserId(), item.getNumIid());
-                        AdjustDetail removedAdjustDetail = buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE);
+                        AdjustDetail removedAdjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_NOT_HAS_SHOWCASE);
                         newAdjustDetails.add(removedAdjustDetail);
                         showcaseNum.decrShowcases();
                         isRemovedSuccessfully = true;
@@ -408,7 +408,7 @@ public class AdjustService {
                         Item item = canBeShowcaseItems.get(showcaseItemIndex);
                         taobaoApiShopService.showcase(setting.getUserId(), item.getNumIid());
                         generalRulesShowcaseItems.add(item);
-                        AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE);
+                        AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_NOT_HAS_SHOWCASE);
                         newAdjustDetails.add(showcaseAdjustDetail);
                         showcaseNum.incrShowcases();
                         isShowcaseSuccessfully = true;
@@ -434,7 +434,7 @@ public class AdjustService {
                         Item item = canBeShowcaseItems.get(index);
                         taobaoApiShopService.showcase(setting.getUserId(), item.getNumIid());
                         allShowcaseItems.add(item);
-                        AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE);
+                        AdjustDetail showcaseAdjustDetail = buildAdjustDetail(setting, item, ADJUST_DETAILS_NOT_HAS_SHOWCASE);
                         newAdjustDetails.add(showcaseAdjustDetail);
                         showcaseNum.incrShowcases();
                         index++;
@@ -613,13 +613,13 @@ public class AdjustService {
         List<Item> invalidShowcaseItem = taobaoApiShopService.getItemsOneByOne(setting.getUserId(),
                 invalidShowcaseItemNumIids, ITEM_FIELDS);
         for (Item item : invalidShowcaseItem) {
-            updateOrInsertAdjustDetails.add(buildAdjustDetail(setting, item, NOT_HAS_SHOWCASE));
+            updateOrInsertAdjustDetails.add(buildAdjustDetail(setting, item, ADJUST_DETAILS_NOT_HAS_SHOWCASE));
         }
         //更新实际在线但是数据库中没有记录的宝贝
         List<Item> newShowcaseItem = taobaoApiShopService.getItemsOneByOne(setting.getUserId(),
                 newShowcaseItemNumIids, ITEM_FIELDS);
         for (Item item : newShowcaseItem) {
-            updateOrInsertAdjustDetails.add(buildAdjustDetail(setting, item, HAS_SHOWCASE));
+            updateOrInsertAdjustDetails.add(buildAdjustDetail(setting, item, ADJUST_DETAILS_HAS_SHOWCASE));
         }
         if (CollectionUtils.isNotEmpty(updateOrInsertAdjustDetails)) {
             myBatisBatchWriter.write("com.trilemon.boss.showcase.dao.AdjustDetailMapper.updateOrInsertByNumIid",

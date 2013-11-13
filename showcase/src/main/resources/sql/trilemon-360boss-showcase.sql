@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.27)
 # Database: trilemon-360boss-showcase
-# Generation Time: 2013-11-12 13:55:41 +0000
+# Generation Time: 2013-11-13 06:52:09 +0000
 # ************************************************************
 
 
@@ -64,7 +64,7 @@ CREATE TABLE `setting` (
   `exclude_item_delisting_within` int(11) unsigned NOT NULL DEFAULT '0',
   `is_exclude_item_inventory_lt` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `exclude_item_inventory_lt` int(11) unsigned NOT NULL DEFAULT '0',
-  `is_exclude_item_delisting_after` tinyint(1) NOT NULL DEFAULT '0',
+  `is_exclude_item_delisting_after` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `exclude_item_delisting_after` int(11) unsigned NOT NULL DEFAULT '0',
   `add_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `upd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
