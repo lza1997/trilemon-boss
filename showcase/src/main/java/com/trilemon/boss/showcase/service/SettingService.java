@@ -16,6 +16,7 @@ import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -270,25 +271,31 @@ public class SettingService {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
 
-        List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
-            @Nullable
-            @Override
-            public ShowcaseItem apply(@Nullable Item input) {
-                ShowcaseItem showcaseItem = new ShowcaseItem();
-                showcaseItem.setItem(input);
-                if (includeNumIids.contains(input.getNumIid())) {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
-                } else if (excludeNumIids.contains(input.getNumIid())) {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
-                } else {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
+        if (null==itemPage||CollectionUtils.isNotEmpty(itemPage.getItems())) {
+            List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
+                @Nullable
+                @Override
+                public ShowcaseItem apply(@Nullable Item input) {
+                    ShowcaseItem showcaseItem = new ShowcaseItem();
+                    showcaseItem.setItem(input);
+                    if (includeNumIids.contains(input.getNumIid())) {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+                    } else if (excludeNumIids.contains(input.getNumIid())) {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
+                    } else {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
+                    }
+                    return showcaseItem;
                 }
-                return showcaseItem;
-            }
-        });
-        Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
-                itemPage.getPageSize(), showcaseItems);
-        return showcaseItemPage;
+            });
+
+            Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
+                    itemPage.getPageSize(), showcaseItems);
+            return showcaseItemPage;
+        } else {
+            return Page.empty();
+        }
+
     }
 
     /**
@@ -338,26 +345,29 @@ public class SettingService {
         if (StringUtils.isNotBlank(setting.getExcludeItemNumIids())) {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
-
-        List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
-            @Nullable
-            @Override
-            public ShowcaseItem apply(@Nullable Item input) {
-                ShowcaseItem showcaseItem = new ShowcaseItem();
-                showcaseItem.setItem(input);
-                if (includeNumIids.contains(input.getNumIid())) {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
-                } else if (excludeNumIids.contains(input.getNumIid())) {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
-                } else {
-                    showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
+        if (null==itemPage||CollectionUtils.isNotEmpty(itemPage.getItems())) {
+            List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
+                @Nullable
+                @Override
+                public ShowcaseItem apply(@Nullable Item input) {
+                    ShowcaseItem showcaseItem = new ShowcaseItem();
+                    showcaseItem.setItem(input);
+                    if (includeNumIids.contains(input.getNumIid())) {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+                    } else if (excludeNumIids.contains(input.getNumIid())) {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
+                    } else {
+                        showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
+                    }
+                    return showcaseItem;
                 }
-                return showcaseItem;
-            }
-        });
-        Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
-                itemPage.getPageSize(), showcaseItems);
-        return showcaseItemPage;
+            });
+            Page<ShowcaseItem> showcaseItemPage = Page.create(itemPage.getTotalSize(), itemPage.getPageNum(),
+                    itemPage.getPageSize(), showcaseItems);
+            return showcaseItemPage;
+        } else {
+            return Page.empty();
+        }
     }
 
     /**
