@@ -256,6 +256,10 @@ public class SettingService {
                 order);
         Setting setting = settingMapper.selectByUserId(userId);
 
+        if (null == setting) {
+            return Page.empty();
+        }
+
         final List<Long> includeNumIids = Lists.newArrayList();
         if (StringUtils.isNotBlank(setting.getIncludeItemNumIids())) {
             includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
@@ -392,7 +396,11 @@ public class SettingService {
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
             TaobaoAccessControlException, TaobaoEnhancedApiException {
         Setting setting = settingMapper.selectByUserId(userId);
-        if (null == setting || StringUtils.isBlank(setting.getIncludeSellerCids())) {
+        if (null == setting) {
+            return Lists.newArrayList();
+        }
+
+        if (StringUtils.isBlank(setting.getIncludeSellerCids())) {
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, Lists.<Long>newArrayList());
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
