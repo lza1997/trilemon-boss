@@ -271,7 +271,7 @@ public class SettingService {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
 
-        if (null==itemPage||CollectionUtils.isNotEmpty(itemPage.getItems())) {
+        if (null == itemPage || CollectionUtils.isNotEmpty(itemPage.getItems())) {
             List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
                 @Nullable
                 @Override
@@ -318,8 +318,8 @@ public class SettingService {
                                                   long pageNum,
                                                   long pageSize,
                                                   boolean fuzzy,
-                                                  String order) throws TaobaoEnhancedApiException,
-            TaobaoSessionExpiredException, TaobaoAccessControlException {
+                                                  String order)
+            throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         Page<Item> itemPage = taobaoApiShopService.paginateOnSaleItems(userId,
                 query,
                 ShowcaseConstants.ITEM_FIELDS,
@@ -345,7 +345,7 @@ public class SettingService {
         if (StringUtils.isNotBlank(setting.getExcludeItemNumIids())) {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
-        if (null==itemPage||CollectionUtils.isNotEmpty(itemPage.getItems())) {
+        if (null == itemPage || CollectionUtils.isNotEmpty(itemPage.getItems())) {
             List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
                 @Nullable
                 @Override
@@ -392,7 +392,7 @@ public class SettingService {
                                             boolean fuzzy,
                                             String order) throws TaobaoEnhancedApiException,
             TaobaoSessionExpiredException, TaobaoAccessControlException {
-        return taobaoApiShopService.paginateOnSaleItems(userId,
+        Page<Item> page = taobaoApiShopService.paginateOnSaleItems(userId,
                 query,
                 ShowcaseConstants.ITEM_FIELDS,
                 null == sellerCatIds ? null : Collections3.stringList2LongList(sellerCatIds),
@@ -401,6 +401,11 @@ public class SettingService {
                 fuzzy,
                 true,
                 order);
+        if (null == page || null == page.getItems()) {
+            return Page.empty();
+        } else {
+            return page;
+        }
     }
 
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
