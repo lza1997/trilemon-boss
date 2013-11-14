@@ -52,6 +52,7 @@ body {
 
 // 橱窗规则表单
 .rule-form {
+  // inline 的输入框
   .input-sm {
     display: inline;
     width: 80px;
@@ -84,6 +85,10 @@ input.ng-invalid.ng-dirty:focus {
 
 .form-action {
   margin-top: 30px;
+}
+
+.wrap {
+  margin-bottom: 20px;
 }
 
 .ajax-spinner {

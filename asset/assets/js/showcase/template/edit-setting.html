@@ -1,10 +1,10 @@
-<div class="row" ng-show="setting.isPaused">
+<div class="row" ng-show="setting.paused">
     <div class="well col-lg-5">
         自动橱窗推荐管理尚未开启
         <button class="btn btn-primary" ng-click="setPaused(false)">立刻开启</button>
     </div>
 </div>
-<form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.isPaused && sellerCats">
+<form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.paused && sellerCats.$resolved">
     <div class="form-group">
         <label class="col-md-1 control-label">选择分类</label>
 
@@ -18,9 +18,9 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
-                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)"/>
+                    <input type="checkbox" ng-model="sellercat.checked" ng-change="sellercat.toggleChecked()"/>
                 </label>
-                <label ng-click="toggleSellerCat(sellercat)">
+                <label ng-click="sellercat.toggleExpand()">
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
                     <span class="icon-caret-down"></span>
                 </label>
@@ -28,7 +28,7 @@
                 <div class="checkbox" ng-show="sellercat.expand"
                      ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)"/>
+                        <input type="checkbox" ng-model="childCat.checked" ng-change="childCat.toggleChecked()"/>
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>
@@ -47,11 +47,12 @@
                     排除
                 </label>
                 <label>
-                    <input type="number" ng-disabled="!setting.isExcludeItemDelistingWithin"
-                           ng-model="setting.excludeItemDelistingWithin" class="form-control input-sm"/>
-                    分钟内要下架的商宝贝
+                    <input type="number" ng-disabled="!setting.isExcludeItemDelistingWithin" min="1" max="5"
+                           ng-model="setting.excludeItemDelistingWithin" class="form-control input-sm" name="xx"/>
+                    分钟内要下架的商宝贝{{form.xx.$invalid}}
                 </label>
             </div>
+            <label class="error" ng-show="form.xx.$invalid"><i class="icon-exclamation-sign"></i> budui</label>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" ng-model="setting.isExcludeItemInventoryLt"/>

@@ -12,6 +12,10 @@ define(function(require, exports, module) {
             'showcase/editSetting': require('./template/edit-setting.html'),
             'showcase/indexShowcase': require('./template/index-showcase.html'),
             'showcase/excludeItem': require('./template/exclude-item.html')
+        },
+        factories: {
+            'Setting': require('./service/setting'),
+            'Sellercat': require('./service/sellercat')
         }
     };
 

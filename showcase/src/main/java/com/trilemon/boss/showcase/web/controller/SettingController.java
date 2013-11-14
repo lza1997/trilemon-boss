@@ -19,7 +19,7 @@ import javax.validation.Valid;
  * 橱窗规则设置
  */
 @Controller
-@RequestMapping("/settings")
+@RequestMapping("/setting")
 public class SettingController {
     @Autowired
     private SettingService settingService;

@@ -1,10 +1,12 @@
-<div class="alert alert-info">
-    <i class="icon-info-sign"></i>
-    您可以<a class="alert-link" href="#/showcase/setting/edit">编辑规则</a>，
-    <a class="alert-link" href="#/showcase/exclude-item">排除宝贝</a>，
-    或者<a class="alert-link" href="#/showcase/exclude-item">设置固定推荐</a>
+<div class="wrap">
+    <p class="text-info">
+        <i class="icon-info-sign"></i>
+        您可以<a href="#/showcase/setting/edit"><strong>编辑规则</strong></a>，
+        <a href="#/showcase/exclude-item"><strong>排除宝贝</strong></a>，
+        或者<a href="#/showcase/exclude-item"><strong>设置固定推荐</strong></a>
+    </p>
 </div>
-<form ng-submit="search()" class="form-inline well">
+<form ng-submit="search()" class="form-inline wrap">
     <div class="form-group">
         <input type="text" class="form-control" placeholder="宝贝标题、编号" ng-model="searchKey" size="40"/>
     </div>

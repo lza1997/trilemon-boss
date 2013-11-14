@@ -1,12 +1,13 @@
 package com.trilemon.boss.showcase.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.trilemon.boss.showcase.ShowcaseConstants;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
+@JsonIgnoreProperties(value="id", ignoreUnknown = true)
 public class Setting implements Comparable<Setting> {
-    @JsonIgnore
     private Integer id;
     private Long userId;
     //是否开启橱窗
@@ -199,6 +200,10 @@ public class Setting implements Comparable<Setting> {
 
     public void setIsExcludeItemDelistingWithin(Boolean isExcludeItemDelistingWithin) {
         this.isExcludeItemDelistingWithin = isExcludeItemDelistingWithin;
+    }
+
+    public boolean isPaused() {
+        return this.getStatus().equals(ShowcaseConstants.SETTING_STATUS_PAUSED);
     }
 
     @Override

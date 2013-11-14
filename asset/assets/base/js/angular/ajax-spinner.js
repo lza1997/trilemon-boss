@@ -4,21 +4,30 @@
 angular.module('ajax-spinner', []).config(['$httpProvider', function($httpProvider) {
 
         $httpProvider.interceptors.push(['$rootScope', '$q', '$timeout', function($rootScope, $q, $timeout) {
-            var t;
+            var requestQueue = [];
+            var SHOW_AFTER = 200;
 
             return {
                 'request': function(config) {
-                    t = $timeout(function() {
+                    config.reqTimeout = $timeout(function() {
                         $rootScope.ajaxing = true;
                         $rootScope.ajaxingMethod = config.method;
-                    }, 100);
+                    }, SHOW_AFTER);
+                    config.requestStartAt = new Date().getTime();
+                    requestQueue.push(config);
 
                     return config || $q.when(config);
                 },
-
                 'response': function(response) {
-                    $timeout.cancel(t);
-                    $rootScope.ajaxing = false;
+                    var config = response.config;
+                    requestQueue = _.without(requestQueue, config);
+                    $timeout.cancel(config.reqTimeout);
+                    $timeout(function() {
+                        if (requestQueue.length === 0) {
+                            $rootScope.ajaxing = false;
+                        }
+                    }, config.requestStartAt + SHOW_AFTER + 700 - new Date().getTime());
+
                     return response || $q.when(response);
                 }
             };

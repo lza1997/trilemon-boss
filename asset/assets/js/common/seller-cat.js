@@ -45,18 +45,18 @@ angular.module('common').factory('SellerCat', ['$q', function($q) {
             // 联动所有子分类
             if (currCat.parentCid === 0) {
                 _.chain(sellerCats).where({parentCid: currCat.cid}).each(function(childSellerCat) {
-                    if (childSellerCat.used && !childSellerCat.wasSelected) {
+                    if (childSellerCat.used && !childSellerCat.wasChecked) {
                         return;
                     }
-                    childSellerCat.selected = currCat.selected;
+                    childSellerCat.checked = currCat.checked;
                 });
             }
             // 联动父分类，所有兄弟都选中时才选中父分类
             else {
                 var parentCat = _.findWhere(sellerCats, {cid: currCat.parentCid});
                 var childCats = _.where(sellerCats, {parentCid: currCat.parentCid});
-                parentCat.selected = _.every(childCats, function(cat) {
-                    return cat.selected;
+                parentCat.checked = _.every(childCats, function(cat) {
+                    return cat.checked;
                 });
             }
         },

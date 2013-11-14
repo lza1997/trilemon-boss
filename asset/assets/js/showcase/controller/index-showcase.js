@@ -7,9 +7,9 @@ define(function(require, exports, module) {
         $scope.lastSearchKey = '';  // 上一次搜索的关键词
         getItems($scope); // 初始化时取第一页数据
 
-        REST.SHOWCASE_SETTING.get().then(function(data) {
-            // TODO
-        });
+//        REST.SHOWCASE_SETTING.get().then(function(data) {
+//            // TODO
+//        });
 
         // 搜索
         $scope.search = function() {

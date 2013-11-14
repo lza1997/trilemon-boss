@@ -16,7 +16,7 @@ angular.module('common').provider('REST', function() {
         // 针对服务器有分页的列表数据
         var RestPageAngular = Restangular.withConfig(function(config) {
             config.setResponseExtractor(function(data, operation, what, url, response, deferred) {
-                if (operation === 'getList' && data.pageNum) {
+                if (operation === 'getList' && data.items) {
                     var items = data.items;
                     items.totalPage = data.pages;
                     items.currPage = data.pageNum;

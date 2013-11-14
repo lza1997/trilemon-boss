@@ -26,6 +26,8 @@ input.ng-invalid.ng-dirty:focus { border-color: #953b39; -webkit-box-shadow: ins
 
 .form-action { margin-top: 30px; }
 
+.wrap { margin-bottom: 20px; }
+
 .ajax-spinner { position: absolute; left: 50%; top: 70px; width: 300px; margin-left: -150px; border-radius: 0 0 5px 5px; color: #c09853; text-align: center; padding: 2px 0; background: #FCF6CF; box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); -webkit-transition: top 0.2s ease-out; transition: top 0.2s ease-out; }
 .ajax-spinner .icon-spin { -webkit-animation: spin 0.7s infinite linear; animation: spin 0.7s infinite linear; }
 

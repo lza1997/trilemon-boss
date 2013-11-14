@@ -2,44 +2,34 @@
  * 设置规则
  */
 define(function(require, exports, module) {
-    var EditRuleController = ['$scope', 'REST', 'SellerCat', 'SHOWCASE_SETTING_STATUS', '$location', function($scope, REST, SellerCat, SHOWCASE_SETTING_STATUS, $location) {
-        REST.SHOWCASE_SETTING.get().then(function(data) {
-            $scope.setting = wrapSetting(data);
+    var EditRuleController = ['$scope', 'Setting', 'REST', 'Sellercat', 'SHOWCASE_SETTING_STATUS', '$location', '$q', function($scope, Setting, REST, Sellercat, SHOWCASE_SETTING_STATUS, $location, $q) {
 
-            // 获取卖家的宝贝分类
-            SellerCat.setREST(REST.SHOWCASE_SELLERCAT);
-            SellerCat.fetch({selectedCids: data.includeSellerCids.split(',')}).then(function(data) {
-                $scope.sellerCats = data;
-            });
+        $scope.setting = Setting.get();
+        $scope.sellerCats = Sellercat.query();
+
+        $q.all([$scope.setting.$promise, $scope.sellerCats.$promise]).then(function() {
+            // 显示页面时回填
+            Sellercat.setCheckedByIds($scope.sellerCats, $scope.setting.includeSellerCids);
 
             // 将选中分类的 id 写入 setting 对象
             $scope.$watch('sellerCats', function(value) {
-                var selectedCids = _.chain(value).where({selected: true}).pluck('cid').value();
+                var selectedCids = _.chain(value).where({checked: true}).pluck('cid').value();
                 $scope.setting.includeSellerCids = selectedCids.join(',');
             }, true);
         });
 
         // 设置规则开启
         $scope.setPaused = function(flag) {
-            var method = flag ? 'post' : 'remove';
-            REST.SHOWCASE_SETTING.one('pause')[method]().then(function(data) {
+            var method = flag ? 'pause' : 'resume';
+            Setting[method](function(data) {
                 $scope.setting = data;
-                $scope.setting.isPaused = data.status === SHOWCASE_SETTING_STATUS.PAUSED;
             });
         };
-
-        // 分类的父子联动选择
-        $scope.check = function(cat) {
-            SellerCat.checkSellerCat(cat, $scope.sellerCats);
-        };
-
-        // 展开或折叠父分类
-        $scope.toggleSellerCat = SellerCat.toggleSellerCat;
 
         // 保存
         $scope.save = function() {
             if (isValidate()) {
-                $scope.setting.put().then(function() {
+                $scope.setting.$save().then(function() {
                     $location.path('/showcase/showcase-item');
                 });
             }
@@ -57,7 +47,7 @@ define(function(require, exports, module) {
 
         // 包装一下 setting 对象
         function wrapSetting(setting) {
-            setting.isPaused = (setting.status === SHOWCASE_SETTING_STATUS.PAUSED);
+            $scope.isPaused = (setting.status === SHOWCASE_SETTING_STATUS.PAUSED);
             setting.includeSellerCids = setting.includeSellerCids || '';
             return setting;
         }
