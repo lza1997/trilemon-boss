@@ -6,7 +6,7 @@ import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.shelf.model.Plan;
 import com.trilemon.boss.shelf.model.PlanSetting;
-import com.trilemon.boss.shelf.web.controller.ItemController;
+import com.trilemon.boss.shelf.model.dto.ShelfItem;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
@@ -20,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+//import com.trilemon.boss.shelf.web.controller.ItemController;
 
 /**
  * @author kevin
@@ -251,14 +253,15 @@ public class ShelfUtils {
      * @param plans
      * @return
      */
-    public static List<ItemController.Item> planToItem(List<Plan> plans) {
-        List<ItemController.Item> items = Lists.newArrayList();
+    public static List<ShelfItem> planToItem(List<Plan> plans) {
+        List<ShelfItem> items = Lists.newArrayList();
         for (Plan plan : plans) {
-            ItemController.Item item = new ItemController.Item();
+            ShelfItem item = new ShelfItem();
             item.setTitle(plan.getItemTitle());
             item.setNumIid(plan.getItemNumIid());
             item.setPicUrl(plan.getItemPicUrl());
-            item.setExclude(plan.getStatus().equals(ShelfConstants.PLAN_STATUS_EXCLUDED));  // just for u，草
+            // just for chaos
+            item.setExclude(plan.getStatus().equals(ShelfConstants.PLAN_STATUS_EXCLUDED));
             items.add(item);
         }
         return items;

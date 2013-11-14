@@ -5,6 +5,7 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiExcep
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.shelf.ShelfUtils;
 import com.trilemon.boss.shelf.model.Plan;
+import com.trilemon.boss.shelf.model.dto.ShelfItem;
 import com.trilemon.boss.shelf.service.PlanSettingService;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,59 +28,17 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    Page<Item> index(String key, @RequestParam(defaultValue = "") Long[] cids, @RequestParam(defaultValue = "1") int
-            page, @RequestParam(required = false) Long pid) throws TaobaoEnhancedApiException,
+    Page<ShelfItem> index(String key,
+                          @RequestParam(defaultValue = "") Long[] cids,
+                          @RequestParam(defaultValue = "1") int page,
+                          @RequestParam(required = false) Long pid) throws TaobaoEnhancedApiException,
             TaobaoSessionExpiredException {
         Page<Plan> plans = planSettingService.paginatePlans(56912708L, pid, key, page, 2);
-        Page<Item> itemPage = Page.empty();
+        Page<ShelfItem> itemPage = Page.empty();
         itemPage.setTotalSize(plans.getTotalSize());
         itemPage.setPageSize(plans.getPageSize());
         itemPage.setPageNum(plans.getPageNum());
         itemPage.setItems(ShelfUtils.planToItem(plans.getItems()));
         return itemPage;
-    }
-
-    /**
-     * 需要一个与淘宝提供的 Item 略有不同的 class
-     */
-    public static class Item {
-        private String title;
-        private Long numIid;
-        private String picUrl;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public Long getNumIid() {
-            return numIid;
-        }
-
-        public void setNumIid(Long numIid) {
-            this.numIid = numIid;
-        }
-
-        public String getPicUrl() {
-            return picUrl;
-        }
-
-        public void setPicUrl(String picUrl) {
-            this.picUrl = picUrl;
-        }
-
-        public boolean isExclude() {
-            return exclude;
-        }
-
-        public void setExclude(boolean exclude) {
-            this.exclude = exclude;
-        }
-
-        private boolean exclude;
-
     }
 }

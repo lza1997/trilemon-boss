@@ -257,12 +257,12 @@ public class SettingService {
         Setting setting = settingMapper.selectByUserId(userId);
 
         final List<Long> includeNumIids = Lists.newArrayList();
-        if (null != setting.getIncludeItemNumIids()) {
+        if (StringUtils.isNotBlank(setting.getIncludeItemNumIids())) {
             includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
         }
 
         final List<Long> excludeNumIids = Lists.newArrayList();
-        if (null != setting.getExcludeItemNumIids()) {
+        if (StringUtils.isNotBlank(setting.getExcludeItemNumIids())) {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
 
@@ -320,14 +320,21 @@ public class SettingService {
                 order);
         Setting setting = settingMapper.selectByUserId(userId);
 
+        if (null == setting) {
+            return Page.empty();
+        }
+
         final List<Long> includeNumIids = Lists.newArrayList();
-        if (null != setting.getIncludeItemNumIids()) {
+        if (StringUtils.isNotBlank(setting.getIncludeSellerCids())) {
             includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
         }
+
+
         final List<Long> excludeNumIids = Lists.newArrayList();
-        if (null != setting.getExcludeItemNumIids()) {
+        if (StringUtils.isNotBlank(setting.getExcludeItemNumIids())) {
             excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
         }
+
         List<ShowcaseItem> showcaseItems = Lists.transform(itemPage.getItems(), new Function<Item, ShowcaseItem>() {
             @Nullable
             @Override
@@ -385,7 +392,7 @@ public class SettingService {
     public List<SellerCatExtended> getSellerCatsExtended(Long userId) throws TaobaoSessionExpiredException,
             TaobaoAccessControlException, TaobaoEnhancedApiException {
         Setting setting = settingMapper.selectByUserId(userId);
-        if (null == setting || null == setting.getIncludeSellerCids()) {
+        if (null == setting || StringUtils.isBlank(setting.getIncludeSellerCids())) {
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, Lists.<Long>newArrayList());
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
