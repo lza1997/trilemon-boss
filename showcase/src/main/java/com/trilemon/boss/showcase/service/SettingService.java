@@ -1,5 +1,7 @@
 package com.trilemon.boss.showcase.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
@@ -14,7 +16,6 @@ import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.commons.Collections3;
-import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,13 +41,6 @@ public class SettingService {
     @Autowired
     private AdjustService adjustService;
 
-    public static void main(String[] args) {
-        Test test = new Test();
-        test.setTestStr("test");
-        String json = JsonMapper.nonDefaultMapper().toJson(test);
-        System.out.println(json);
-    }
-
     public void updateSetting(Long userId, Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         setting.setUserId(userId);
         settingMapper.updateByUserIdSelective(setting);
@@ -66,18 +60,7 @@ public class SettingService {
             TaobaoEnhancedApiException, TaobaoAccessControlException {
         Setting setting = settingMapper.selectByUserId(userId);
         if (null == setting) {
-            setting = new Setting();
-            setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
-            setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
-            setting.setIsExcludeItemDelistingAfter(false);
-            setting.setIsExcludeItemDelistingWithin(false);
-            setting.setIsExcludeItemInventoryLt(false);
-            //六天半
-            setting.setExcludeItemDelistingAfter(9360);
-            setting.setExcludeItemDelistingWithin(10);
-            setting.setExcludeItemInventoryLt(1);
-            setting.setUserId(userId);
-            setting.setAddTime(DateTime.now().toDate());
+            setting = getDefaultSetting(userId);
             settingMapper.insertSelective(setting);
         } else {
             settingMapper.updateStatusByUserId(userId, ShowcaseConstants.SETTING_STATUS_RUNNING);
@@ -85,6 +68,23 @@ public class SettingService {
                 adjustService.adjust(userId);
             }
         }
+    }
+
+    private Setting getDefaultSetting(Long userId) {
+        Setting setting;
+        setting = new Setting();
+        setting.setRuleType(ShowcaseConstants.RULE_TYPE_INCLUDE_SELLER_CIDS);
+        setting.setStatus(ShowcaseConstants.SETTING_STATUS_RUNNING);
+        setting.setIsExcludeItemDelistingAfter(false);
+        setting.setIsExcludeItemDelistingWithin(false);
+        setting.setIsExcludeItemInventoryLt(false);
+        //六天半
+        setting.setExcludeItemDelistingAfter(9360);
+        setting.setExcludeItemDelistingWithin(10);
+        setting.setExcludeItemInventoryLt(1);
+        setting.setUserId(userId);
+        setting.setAddTime(DateTime.now().toDate());
+        return setting;
     }
 
     public void pauseSetting(Long userId) throws ShowcaseException, TaobaoSessionExpiredException,
@@ -401,7 +401,7 @@ public class SettingService {
                 fuzzy,
                 true,
                 order);
-        if (null == page || null == page.getItems()) {
+        if (null == page) {
             return Page.empty();
         } else {
             return page;
@@ -420,22 +420,6 @@ public class SettingService {
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, includeSellCatIds);
-        }
-    }
-
-    static class Test {
-        private String testStr;
-
-        public String getTestStr() {
-            return testStr;
-        }
-
-        public void setTestStr(String testStr) {
-            this.testStr = testStr;
-        }
-
-        public Boolean getTest() {
-            return true;
         }
     }
 }
