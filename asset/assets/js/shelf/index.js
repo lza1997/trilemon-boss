@@ -11,6 +11,7 @@ define(function(require, exports, module) {
             'shelf.distribution': require('./controller/distribution')
         },
         factories: {
+            'PlanSetting': require('./service/plan-setting'),
             'PlanSettingForm': require('./service/plan-setting-form'),
             'Confirm': require('./service/confirm')
         },

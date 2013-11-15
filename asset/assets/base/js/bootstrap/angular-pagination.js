@@ -23,7 +23,7 @@ angular.module('ui.bootstrap.pagination', []).directive('pagination', function()
         link: function(scope, element, attrs) {
             scope.omit = OMIT_STR;
 
-            scope.$watch('items', function(items) {
+            scope.$watchCollection('items', function(items) {
                 scope.isShow = items && items.totalPage && items.totalPage > 1;
                 if (scope.isShow) {
                     scope.currPage = items.currPage;

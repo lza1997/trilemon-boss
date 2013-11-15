@@ -1,4 +1,4 @@
-<form class="form-horizontal plan-form" name="form" novalidate ng-show="sellerCats">
+<form class="form-horizontal plan-form" name="form" novalidate ng-show="sellerCats.$resolved">
     <div class="form-group">
         <label class="col-md-1 control-label">计划名称</label>
 
@@ -19,15 +19,15 @@
         <div class="col-md-6">
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
-                    <input type="checkbox" ng-model="sellercat.selected" ng-change="check(sellercat)" ng-disabled="sellercat.used && !sellercat.wasSelected"  />
+                    <input type="checkbox" ng-model="sellercat.checked" ng-change="sellercat.toggleChecked()" ng-disabled="sellercat.used && !sellercat.wasChecked"  />
                 </label>
-                <label ng-click="toggleSellerCat(sellercat)" >
+                <label ng-click="sellercat.toggleExpand()" >
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
                     <span class="icon-caret-down"></span>
                 </label>
                 <div class="checkbox" ng-show="sellercat.expand" ng-repeat="childCat in sellerCats | filter:{parentCid:sellercat.cid}:true">
                     <label>
-                        <input type="checkbox" ng-model="childCat.selected" ng-change="check(childCat)" ng-disabled="childCat.used && !childCat.wasSelected" />
+                        <input type="checkbox" ng-model="childCat.checked" ng-change="childCat.toggleChecked()" ng-disabled="childCat.used && !childCat.wasChecked" />
                         {{childCat.name}} ({{childCat.itemNum}})
                     </label>
                 </div>

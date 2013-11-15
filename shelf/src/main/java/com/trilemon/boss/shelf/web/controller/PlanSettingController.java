@@ -4,7 +4,6 @@ import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
-import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.ShelfException;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
@@ -37,7 +36,7 @@ public class PlanSettingController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Page<PlanSetting> index(@RequestParam(defaultValue = "1") int page) {
-        return planSettingService.paginatePlanSettings(56912708L, page, 5);
+        return planSettingService.paginatePlanSettings(56912708L, page, 2);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -90,9 +89,9 @@ public class PlanSettingController {
      */
     @RequestMapping(value = "/{planSettingId}/pause", method = RequestMethod.POST)
     @ResponseBody
-    public byte pause(@PathVariable Long planSettingId) {
+    public PlanSetting pause(@PathVariable Long planSettingId) {
         planSettingService.pausePlanSetting(56912708L, planSettingId);
-        return ShelfConstants.PLAN_SETTING_STATUS_PAUSED;
+        return planSettingService.getPlanSetting(56912708L, planSettingId);
     }
 
     /**
@@ -103,9 +102,9 @@ public class PlanSettingController {
      */
     @RequestMapping(value = "/{planSettingId}/pause", method = RequestMethod.DELETE)
     @ResponseBody
-    public byte resume(@PathVariable Long planSettingId) {
+    public PlanSetting resume(@PathVariable Long planSettingId) {
         planSettingService.resumePlanSetting(56912708L, planSettingId);
-        return ShelfConstants.PLAN_SETTING_STATUS_RUNNING;
+        return planSettingService.getPlanSetting(56912708L, planSettingId);
     }
 
     /**

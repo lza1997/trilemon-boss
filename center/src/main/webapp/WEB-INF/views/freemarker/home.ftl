@@ -44,7 +44,7 @@
     <script src="${asset}/js/common/index.js"></script>
     <script src="${asset}/js/common/flash.js"></script>
     <script src="${asset}/js/common/rest.js"></script>
-    <script src="${asset}/js/common/seller-cat.js"></script>
+    <script src="${asset}/js/common/seller-cat-factory.js"></script>
     <script src="${asset}/js/common/controller/nav.js"></script>
     <script src="${asset}/js/common/constant.js"></script>
 

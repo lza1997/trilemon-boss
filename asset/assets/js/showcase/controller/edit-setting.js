@@ -2,14 +2,16 @@
  * 设置规则
  */
 define(function(require, exports, module) {
-    var EditRuleController = ['$scope', 'Setting', 'REST', 'Sellercat', 'SHOWCASE_SETTING_STATUS', '$location', '$q', function($scope, Setting, REST, Sellercat, SHOWCASE_SETTING_STATUS, $location, $q) {
+    var EditRuleController = ['$scope', 'Setting', 'SellerCatFactory', '$location', '$q', function($scope, Setting, SellerCatFactory, $location, $q) {
+
+        var SellerCat = SellerCatFactory.create('/showcase/sellercats');
 
         $scope.setting = Setting.get();
-        $scope.sellerCats = Sellercat.query();
+        $scope.sellerCats = SellerCat.query();
 
         $q.all([$scope.setting.$promise, $scope.sellerCats.$promise]).then(function() {
             // 显示页面时回填
-            Sellercat.setCheckedByIds($scope.sellerCats, $scope.setting.includeSellerCids);
+            $scope.sellerCats.setCheckedByIds($scope.setting.includeSellerCids);
 
             // 将选中分类的 id 写入 setting 对象
             $scope.$watch('sellerCats', function(value) {
@@ -43,13 +45,6 @@ define(function(require, exports, module) {
                 }
             }
             return $scope.form.$valid;
-        }
-
-        // 包装一下 setting 对象
-        function wrapSetting(setting) {
-            $scope.isPaused = (setting.status === SHOWCASE_SETTING_STATUS.PAUSED);
-            setting.includeSellerCids = setting.includeSellerCids || '';
-            return setting;
         }
     }];
 

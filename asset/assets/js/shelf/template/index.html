@@ -1,8 +1,8 @@
 <div class="alert alert-success" ng-if="flashSuccess" ng-bind-html="flashSuccess"></div>
-<div ng-show="planSettings.length>0">
+<div ng-show="planSettings.$resolved && planSettings.length>0">
     <a class="pull-right" href="" ng-click="showChart()"><i class="icon-bar-chart"></i> 当前上下架统计</a>
 </div>
-<table ng-show="planSettings.length>0" class="table table-hover">
+<table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover">
     <col width="150px"/>
     <col/>
     <col/>

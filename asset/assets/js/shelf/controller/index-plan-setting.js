@@ -2,10 +2,9 @@
  * 计划列表
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'REST', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, REST, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
+    var IndexController = ['$scope', 'REST', 'PlanSetting', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, REST, PlanSetting, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
         // 初始化
         $scope.init = function() {
-            $scope.planSettings = [];
             $scope.flashSuccess = Flash.success();
             $scope.PLAN_STATUS = PLAN_STATUS;
             $scope.jumpPage($routeParams.page);
@@ -13,16 +12,20 @@ define(function(require, exports, module) {
 
         // 暂停或继续
         $scope.pause = function(planSetting, flag) {
-            var method = flag ? 'post' : 'remove';
-            planSetting.one('pause')[method]().then(function(status) {
-                planSetting.status = parseInt(status, 10);
+            var method = flag ? '$pause' : '$resume';
+            planSetting[method](function() {
+
             });
+            //            var method = flag ? 'post' : 'remove';
+            //            planSetting.one('pause')[method]().then(function(status) {
+            //                planSetting.status = parseInt(status, 10);
+            //            });
         };
 
         // 删除计划
         $scope.remove = function(planSetting) {
             Confirm.open('确定要删除“' + planSetting.name + '”？').then(function() {
-                planSetting.remove().then(function() {
+                planSetting.$remove(function() {
                     $scope.jumpPage($scope.planSettings.currPage).then(function(data) {
                         if (data.length === 0) {
                             $scope.jumpPage($scope.planSettings.currPage - 1);
@@ -41,13 +44,11 @@ define(function(require, exports, module) {
         // 处理分页
         $scope.jumpPage = function(page) {
             $location.search('page', page);
-            var promise = REST.PLAN_SETTING.getList({page: (page || 1) });
-            promise.then(function(data) {
-                $scope.planSettings = data;
-            });
-            return promise;
+            $scope.planSettings = PlanSetting.query({page: page || 1});
+            return $scope.planSettings.$promise;
         };
 
+        // 统计图表
         $scope.showChart = function() {
             var modal = $modal.open({
                 templateUrl: 'shelf/chart',

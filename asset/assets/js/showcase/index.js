@@ -14,8 +14,7 @@ define(function(require, exports, module) {
             'showcase/excludeItem': require('./template/exclude-item.html')
         },
         factories: {
-            'Setting': require('./service/setting'),
-            'Sellercat': require('./service/sellercat')
+            'Setting': require('./service/setting')
         }
     };
 

@@ -3,12 +3,9 @@
  */
 define(function(require, exports, module) {
 
-    var EditController = ['$scope', 'REST', 'PlanSettingForm', '$routeParams', function($scope, REST, PlanSettingForm, $routeParams) {
+    var EditController = ['$scope', 'PlanSetting', 'PlanSettingForm', '$routeParams', function($scope, PlanSetting, PlanSettingForm, $routeParams) {
 
-        REST.PLAN_SETTING.get($routeParams.id).then(function(planSetting) {
-            // 选中的分类 ID
-            $scope.includeSellerCids = planSetting.includeSellerCids.split(',');
-
+        PlanSetting.get({id: $routeParams.id}, function(planSetting) {
             PlanSettingForm.initScope($scope, planSetting);
         });
     }];
