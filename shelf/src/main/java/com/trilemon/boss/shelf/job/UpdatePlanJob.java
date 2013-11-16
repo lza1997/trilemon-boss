@@ -2,12 +2,13 @@ package com.trilemon.boss.shelf.job;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.trilemon.boss.infra.base.service.AbstractQueueService;
 import com.trilemon.boss.infra.base.service.AppService;
+import com.trilemon.jobqueue.service.AbstractRedisQueueService;
 import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
+import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import java.util.List;
  * @author kevin
  */
 @Service
-public class UpdatePlanJob extends AbstractQueueService<Long> {
+public class UpdatePlanJob extends AbstractRedisQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private PlanService planService;
@@ -32,22 +33,30 @@ public class UpdatePlanJob extends AbstractQueueService<Long> {
     @Autowired
     private AppService appService;
 
+    @Autowired
+    private JobQueue<Long> jobQueue;
+
     @PostConstruct
     public void init() {
-        reboot();
-        startPoll();
+        setJobQueue(jobQueue);
+        setTag("shelf-update-queue");
+        start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());
     }
 
     @Override
-    public void timeout() {
+    public void process(Long userId) throws Exception {
+        List<PlanSetting> planSettings = planSettingMapper.selectByUserId(userId);
+        for (PlanSetting planSetting : planSettings) {
+            planService.updatePlan(planSetting.getId());
+        }
     }
 
     @Override
     public void fillQueue() {
         logger.info("start to fill update queue.");
-        //自动纳入宝贝的才更新
+        int elemCount = 0;
         long hitUserId = 0;
         while (true) {
             try {
@@ -58,19 +67,12 @@ public class UpdatePlanJob extends AbstractQueueService<Long> {
                 } else {
                     hitUserId = Iterables.getLast(userIds);
                     fillQueue(userIds);
+                    elemCount += userIds.size();
                 }
             } catch (Throwable e) {
                 logger.error("poll update error", e);
             }
         }
-        logger.info("end to fill update queue[{}].", getQueue().size());
-    }
-
-    @Override
-    public void process(Long userId) throws Exception {
-        List<PlanSetting> planSettings = planSettingMapper.selectByUserId(userId);
-        for (PlanSetting planSetting : planSettings) {
-            planService.updatePlan(planSetting.getId());
-        }
+        logger.info("end to fill update queue[{}].", elemCount);
     }
 }

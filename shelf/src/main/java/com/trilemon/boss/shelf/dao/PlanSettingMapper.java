@@ -59,6 +59,7 @@ public interface PlanSettingMapper {
 
     List<PlanSetting> paginateAutoAddItemPlanSettings(@Param("hitId") Long hitId, @Param("limit") Integer limit);
 
-    List<Long> paginateUserIdByStatus( @Param("hitUserId") Long hitUserId,@Param("limit") Integer limit,
-                                       @Param("statusList")  List<Byte> statusList);
+    List<Long> paginateUserIdByStatus(@Param("hitUserId") Long hitUserId, @Param("limit") Integer limit,
+                                      @Param("statusList") List<Byte> statusList);
+
 }
