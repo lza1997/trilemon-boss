@@ -1,5 +1,6 @@
 package com.trilemon.boss.showcase.dao;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.model.SettingExample;
 import org.apache.ibatis.annotations.Param;
@@ -34,4 +35,8 @@ public interface SettingMapper {
     void updateStatusByUserId(@Param("userId")Long userId,@Param("status") Byte status);
 
     void updateByUserIdSelective(Setting setting);
+
+    List<Long> paginateUserIdByStatus(@Param("hitUserId") Long hitUserId,
+                                      @Param("limit") Integer limit,
+                                      @Param("statusList") ImmutableList<Byte> statusList);
 }

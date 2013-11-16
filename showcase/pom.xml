@@ -22,10 +22,19 @@
         <trilemon.boss.center.client.version>
             1.0-SNAPSHOT
         </trilemon.boss.center.client.version>
+        <trilemon.jobqueue.version>
+            1.0-SNAPSHOT
+        </trilemon.jobqueue.version>
     </properties>
 
     <!-- 依赖项定义 -->
     <dependencies>
+        <dependency>
+            <groupId>com.trilemom</groupId>
+            <artifactId>trilemon-job-queue</artifactId>
+            <version>${trilemon.jobqueue.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.trilemon</groupId>
             <artifactId>trilemon-commons</artifactId>

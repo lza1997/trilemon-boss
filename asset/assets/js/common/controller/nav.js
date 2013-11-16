@@ -16,7 +16,7 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
             url: '/showcase',
             children: [
                 {name: '橱窗规则', url: '/showcase/setting/edit', navClass: 'showcaseEdit'},
-                {name: '固定推荐', url: '/showcase/pla', navClass: 'showcase'},
+                {name: '固定推荐', url: '/showcase/plan', navClass: 'showcase'},
                 {name: '橱窗宝贝', url: '/showcase/showcase-item', navClass: 'showcaseItem'}
             ]
         },

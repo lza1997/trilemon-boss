@@ -3,6 +3,7 @@ package com.trilemon.boss.showcase.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;

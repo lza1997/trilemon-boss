@@ -525,4 +525,17 @@
         </set>
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
+    <select id="paginateUserIdByStatus" resultType="long" parameterType="map">
+        select user_id
+        from setting
+        where user_id > #{hitUserId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        group by user_id
+        order by user_id asc
+        LIMIT 0, #{limit,jdbcType=INTEGER}
+    </select>
 </mapper>

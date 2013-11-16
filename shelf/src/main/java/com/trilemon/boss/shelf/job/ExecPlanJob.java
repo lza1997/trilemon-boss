@@ -7,12 +7,13 @@ import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
-import com.trilemon.jobqueue.service.AbstractRedisQueueService;
+import com.trilemon.jobqueue.service.AbstractQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,8 +24,8 @@ import java.util.List;
  *
  * @author kevin
  */
-@Service
-public class ExecPlanJob extends AbstractRedisQueueService<Long> {
+@Component
+public class ExecPlanJob extends AbstractQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(ExecPlanJob.class);
     @Autowired
     private PlanService planService;
