@@ -11,6 +11,7 @@ import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.taobao.api.response.ItemUpdateDelistingResponse;
 import com.taobao.api.response.ItemUpdateListingResponse;
 import com.taobao.api.response.ItemsOnsaleGetResponse;
+import com.trilemon.boss.center.PlanDistributionUtils;
 import com.trilemon.boss.infra.base.client.BaseClient;
 import com.trilemon.boss.infra.base.model.TaobaoSession;
 import com.trilemon.boss.infra.base.service.AppService;
@@ -142,7 +143,7 @@ public class PlanService {
             return;
         }
         List<Plan> validPlans = ShelfUtils.getPlans(runningPlans, existAndOnSaleItemNumIids);
-        Table<Integer, LocalTimeInterval, Integer> currDistribution = ShelfUtils.getDistribution(validPlans);
+        Table<Integer, LocalTimeInterval, Integer> currDistribution = PlanDistributionUtils.getDistribution(validPlans);
         //为新添宝贝安排具体的调整时间
         Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, planSetting,
                 currDistribution);
@@ -271,11 +272,11 @@ public class PlanService {
         Table<Integer, LocalTimeInterval, Integer> planDistribution = null;
         switch (planSetting.getDistributionType()) {
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
-                planDistribution = ShelfUtils.getDefaultZeroFilledDistribution();
+                planDistribution = PlanDistributionUtils.getDefaultZeroFilledDistribution();
                 break;
             case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
                 try {
-                    planDistribution = ShelfUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
+                    planDistribution = PlanDistributionUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
                 } catch (Exception e) {
                     throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
                 }
@@ -285,9 +286,9 @@ public class PlanService {
             throw new ShelfException("planDistribution is null, itemSize[" + items.size() + "], " +
                     "planSettingId[" + planSetting.getId() + "].");
         }
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = ShelfUtils.getNewItemDistribution(items.size(),
+        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = PlanDistributionUtils.getNewItemDistribution(items.size(),
                 planDistribution, currDistribution);
-        return ShelfUtils.assignItems(items, newItemDistribution);
+        return PlanDistributionUtils.assignItems(items, newItemDistribution);
     }
 
     /**
@@ -297,8 +298,8 @@ public class PlanService {
      * @return
      */
     private Table<Integer, LocalTimeInterval, List<Item>> autoAssignItems(List<Item> items) {
-        Table<Integer, LocalTimeInterval, Integer> distribution = ShelfUtils.getDefaultDistribution(items.size());
-        return ShelfUtils.assignItems(items, distribution);
+        Table<Integer, LocalTimeInterval, Integer> distribution = PlanDistributionUtils.getDefaultDistribution(items.size());
+        return PlanDistributionUtils.assignItems(items, distribution);
     }
 
     /**
@@ -311,12 +312,12 @@ public class PlanService {
     public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) throws ShelfException {
         Table<Integer, LocalTimeInterval, Integer> distribution;
         try {
-            distribution = ShelfUtils.parseAndFillZeroDistribution(planSetting
+            distribution = PlanDistributionUtils.parseAndFillZeroDistribution(planSetting
                     .getDistribution());
         } catch (Exception e) {
             throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
         }
-        return ShelfUtils.assignItems(items, distribution);
+        return PlanDistributionUtils.assignItems(items, distribution);
     }
 
     public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {

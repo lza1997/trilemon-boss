@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.taobao.api.request.ItemsOnsaleGetRequest;
 import com.taobao.api.response.ItemsOnsaleGetResponse;
+import com.trilemon.boss.center.PlanDistributionUtils;
 import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
@@ -116,7 +117,7 @@ public class PlanSettingService {
             //处理额外字段（总共需要调整宝贝数量，新加入宝贝数量，待调整宝贝数量）
             for (PlanSetting planSetting : planSettings) {
                 if (PLAN_SETTING_DISTRIBUTE_TYPE_AUTO == planSetting.getDistributionType()) {
-                    planSetting.setDistribution(ShelfUtils.getDefaultDistribution());
+                    planSetting.setDistribution(PlanDistributionUtils.getDefaultDistribution());
                 }
                 PlanStatus planStatus = planMapper.calcPlanStatus(planSetting.getId(), planSetting.getLastPlanTime());
                 if (null != planStatus) {
@@ -193,7 +194,7 @@ public class PlanSettingService {
     public PlanSetting getPlanSetting(Long userId, Long planSettingId) {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
         if (PLAN_SETTING_DISTRIBUTE_TYPE_AUTO == planSetting.getDistributionType()) {
-            planSetting.setDistribution(ShelfUtils.getDefaultDistribution());
+            planSetting.setDistribution(PlanDistributionUtils.getDefaultDistribution());
         }
         return planSetting;
     }
@@ -293,7 +294,7 @@ public class PlanSettingService {
         request.setFields("delist_time");
         ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(userId, request);
         List<Integer> listItemNum = Lists.newArrayList();
-        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDayOfWeekNum(result.getItems());
+        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDelistDayOfWeekNum(result.getItems());
         ShelfStatus shelfStatus = new ShelfStatus();
         shelfStatus.setDayOfWeek(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7));
         listItemNum.add(dayOfWeekNum.count(1));

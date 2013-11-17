@@ -1,11 +1,12 @@
 package com.trilemon.boss.shelf.model;
 
+import com.trilemon.boss.center.model.PlanDistribution;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 
 import java.util.Date;
 
-public class Plan implements Comparable<Plan> {
+public class Plan implements Comparable<Plan>,PlanDistribution {
     private Long id;
     private Long planSettingId;
     private Long userId;
