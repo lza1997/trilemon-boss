@@ -423,4 +423,11 @@ public class TestController {
         return planSettingService.getShelfStatus(56912708L);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getPlan", method = RequestMethod.GET)
+    public Plan getPlan(@RequestParam long numIid) throws
+            ShelfException, TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
+        return planSettingService.getPlan(56912708L,numIid);
+    }
+
 }

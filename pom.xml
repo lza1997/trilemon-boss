@@ -32,7 +32,7 @@
         <module>rate</module>
     </modules>
 
-    <name>Trilemon-boss</name>
+    <name>trilemon-boss</name>
     <packaging>pom</packaging>
 
     <description>boss</description>

@@ -2,8 +2,9 @@ package com.trilemon.boss.inventory.dao;
 
 import com.trilemon.boss.inventory.model.InventoryListItem;
 import com.trilemon.boss.inventory.model.InventoryListItemExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface InventoryListItemMapper {
     int countByExample(InventoryListItemExample example);
@@ -27,4 +28,13 @@ public interface InventoryListItemMapper {
     int updateByPrimaryKeySelective(InventoryListItem record);
 
     int updateByPrimaryKey(InventoryListItem record);
+
+    int countByUserIdAndSettingIdAndStatus(long userId, long settingId, List<Byte> statusList, String query);
+
+    List<InventoryListItem> paginateByUserIdAndSettingIdAndStatus(long userId,
+                                                                  long settingId,
+                                                                  List<Byte> statusList,
+                                                                  String query,
+                                                                  int offset,
+                                                                  int limit);
 }

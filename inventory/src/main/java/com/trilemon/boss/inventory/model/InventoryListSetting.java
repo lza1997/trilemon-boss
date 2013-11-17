@@ -7,16 +7,20 @@ public class InventoryListSetting {
 
     private Long userId;
 
+    //仓库类型
     private String includeInventoryTypes;
 
     private Byte autoAddNewItem;
 
     private String distribution;
 
+    //调整规则类型，均匀还是间隔
     private Byte listType;
 
+    //调整间隔时间
     private Integer listInterval;
 
+    //上一次执行时间
     private Date lastPlanTime;
 
     private Date addTime;

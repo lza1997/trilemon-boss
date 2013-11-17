@@ -30,4 +30,6 @@ public interface InventoryListSettingMapper {
     int updateByPrimaryKey(InventoryListSetting record);
 
     void updateByUserIdSelective(InventoryListSetting inventoryListSetting);
+
+    InventoryListSetting selectByUserId(Long userId);
 }

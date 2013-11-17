@@ -313,4 +313,8 @@ public class PlanSettingService {
         List<Long> plannedSellerCatIds = getUsedSellerCatIds(userId);
         return taobaoApiShopService.getOnsaleSellerCatExtended(userId, plannedSellerCatIds);
     }
+
+    public Plan getPlan(Long userId,Long numIid){
+       return  planMapper.selectByUserIdAndNumIid(userId,numIid);
+    }
 }
