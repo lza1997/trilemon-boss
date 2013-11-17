@@ -1,9 +1,6 @@
 package com.trilemon.boss.showcase.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
@@ -421,6 +418,41 @@ public class SettingService {
         } else {
             final List<Long> includeSellCatIds = Collections3.getLongList(setting.getIncludeSellerCids());
             return taobaoApiShopService.getOnsaleSellerCatExtended(userId, includeSellCatIds);
+        }
+    }
+
+    public ShowcaseItem getShowcaseItem(Long userId, Long numIid) throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        Item item = taobaoApiShopService.getItem(userId, numIid, ShowcaseConstants.ITEM_FIELDS);
+        if (null == item) {
+            return null;
+        } else {
+            Setting setting = settingMapper.selectByUserId(userId);
+
+            if (null == setting) {
+                return null;
+            }
+
+            final List<Long> includeNumIids = Lists.newArrayList();
+            if (StringUtils.isNotBlank(setting.getIncludeSellerCids())) {
+                includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
+            }
+
+
+            final List<Long> excludeNumIids = Lists.newArrayList();
+            if (StringUtils.isNotBlank(setting.getExcludeItemNumIids())) {
+                excludeNumIids.addAll(Collections3.getLongList(setting.getExcludeItemNumIids()));
+            }
+
+            ShowcaseItem showcaseItem = new ShowcaseItem();
+            showcaseItem.setItem(item);
+            if (includeNumIids.contains(item.getNumIid())) {
+                showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+            } else if (excludeNumIids.contains(item.getNumIid())) {
+                showcaseItem.setStatus(ShowcaseConstants.ITEM_EXCLUDE);
+            } else {
+                showcaseItem.setStatus(ShowcaseConstants.ITEM_SHOWCASE);
+            }
+            return showcaseItem;
         }
     }
 }

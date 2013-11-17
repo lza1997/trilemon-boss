@@ -202,4 +202,11 @@ public class TestController {
                 true,
                 ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/getShowcaseItem", method = RequestMethod.GET)
+    public ShowcaseItem getShowcaseItem(@RequestParam() Long numIid) throws
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
+        return settingService.getShowcaseItem(56912708L, numIid);
+    }
 }
