@@ -110,28 +110,26 @@ public class PlanSettingController {
     /**
      * 排除宝贝
      *
-     * @param planSettingId
      * @param numIid
      * @return
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.POST)
     @ResponseBody
-    public String excludeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
-        planService.excludeItem(planSettingId, numIid);
+    public String excludeItem(@PathVariable Long numIid) {
+        planService.excludeItem(56912708L,numIid);
         return "";
     }
 
     /**
      * 取消排除宝贝
      *
-     * @param planSettingId
      * @param numIid
      * @return
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String includeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
-        planService.includeItem(planSettingId, numIid);
+    public String includeItem(@PathVariable Long numIid) {
+        planService.excludeItem(56912708L,numIid);
         return "";
     }
 

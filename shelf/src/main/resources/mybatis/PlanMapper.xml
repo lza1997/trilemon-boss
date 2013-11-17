@@ -536,4 +536,53 @@
         where user_id = #{userId,jdbcType=BIGINT}
         and item_num_iid = #{itemNumIid,jdbcType=BIGINT}
     </select>
+    <update id="updateByUserIdAndNumIid" parameterType="com.trilemon.boss.shelf.model.Plan">
+        update plan
+        <set>
+            <if test="planSettingId != null">
+                plan_setting_id = #{planSettingId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="itemNumIid != null">
+                item_num_iid = #{itemNumIid,jdbcType=BIGINT},
+            </if>
+            <if test="itemTitle != null">
+                item_title = #{itemTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="itemTitlePinyin != null">
+                item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPicUrl != null">
+                item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="failedCause != null">
+                failed_cause = #{failedCause,jdbcType=VARCHAR},
+            </if>
+            <if test="planAdjustDay != null">
+                plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planAdjustStartTime != null">
+                plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
+            </if>
+            <if test="planAdjustEndTime != null">
+                plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
+            </if>
+            <if test="adjustTime != null">
+                adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updTime != null">
+                upd_time = #{updTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where item_num_iid = #{itemNumIid,jdbcType=BIGINT}
+        and user_id = #{userId,jdbcType=BIGINT}
+    </update>
 </mapper>

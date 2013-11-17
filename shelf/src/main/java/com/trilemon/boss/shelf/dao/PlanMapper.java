@@ -69,4 +69,7 @@ public interface PlanMapper {
     List<Long> selectNumIidsByUserId(Long userId);
 
     Plan selectByUserIdAndNumIid(@Param("userId") Long userId, @Param("itemNumIid") Long numIid);
+
+    void updateByUserIdAndNumIid(Plan plan);
+
 }

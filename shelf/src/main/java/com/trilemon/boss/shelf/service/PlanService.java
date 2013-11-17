@@ -384,20 +384,20 @@ public class PlanService {
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
     }
 
-    public void excludeItem(Long planSettingId, Long numIid) {
+    public void excludeItem(Long userId,Long numIid) {
         Plan plan = new Plan();
-        plan.setPlanSettingId(planSettingId);
+        plan.setUserId(userId);
         plan.setItemNumIid(numIid);
         plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
-        planMapper.updateByPlanSettingIdAndNumIid(plan);
+        planMapper.updateByUserIdAndNumIid(plan);
     }
 
-    public void includeItem(Long planSettingId, Long numIid) {
+    public void includeItem(Long userId,Long numIid) {
         Plan plan = new Plan();
-        plan.setPlanSettingId(planSettingId);
+        plan.setUserId(userId);
         plan.setItemNumIid(numIid);
         plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
-        planMapper.updateByPlanSettingIdAndNumIid(plan);
+        planMapper.updateByUserIdAndNumIid(plan);
     }
 
     public void setAppService(AppService appService) {
