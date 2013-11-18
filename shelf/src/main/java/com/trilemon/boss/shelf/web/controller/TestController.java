@@ -397,17 +397,17 @@ public class TestController {
 
     @ResponseBody
     @RequestMapping(value = "/excludeItem", method = RequestMethod.GET)
-    public String excludeItem(@RequestParam long numIid) throws
+    public String excludeItem(@RequestParam long planSettingId,@RequestParam long numIid) throws
             ShelfException {
-        planService.excludeItem(56912708L,numIid);
+        planService.excludeItem(56912708L,planSettingId,numIid);
         return "success";
     }
 
     @ResponseBody
     @RequestMapping(value = "/includeItem", method = RequestMethod.GET)
-    public String includeItem( @RequestParam long numIid) throws
+    public String includeItem( @RequestParam long planSettingId,@RequestParam long numIid) throws
             ShelfException {
-        planService.includeItem(56912708L,numIid);
+        planService.includeItem(56912708L,planSettingId,numIid);
         return "success";
     }
 

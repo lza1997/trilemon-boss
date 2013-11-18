@@ -29,6 +29,7 @@ import com.trilemon.boss.shelf.dao.PlanMapper;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.Plan;
 import com.trilemon.boss.shelf.model.PlanSetting;
+import com.trilemon.commons.Collections3;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.LocalTimeInterval;
 import com.trilemon.commons.mybatis.MyBatisBatchWriter;
@@ -131,7 +132,7 @@ public class PlanService {
         List<Long> newItemNumIids = ListUtils.removeAll(onSaleNumIids, existAndOnSaleItemNumIids);
 
         //需要加入计划的新加入宝贝
-        List<Item> newItems = ShelfUtils.getItems(onSaleItems, newItemNumIids);
+        List<Item> newItems = TopApiUtils.getItems(onSaleItems, newItemNumIids);
 
         //1. 删除计划中失效宝贝
         if (CollectionUtils.isNotEmpty(invalidPlanItemNumIids)) {
@@ -384,20 +385,40 @@ public class PlanService {
         planMapper.deleteByUserIdAndPlanSettingId(userId, planSettingId);
     }
 
-    public void excludeItem(Long userId,Long numIid) {
-        Plan plan = new Plan();
-        plan.setUserId(userId);
-        plan.setItemNumIid(numIid);
-        plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
-        planMapper.updateByUserIdAndNumIid(plan);
+    public void excludeItem(Long userId, Long planSettingId, Long numIid) {
+        excludeOrIncludeItem(userId, planSettingId, numIid, true);
     }
 
-    public void includeItem(Long userId,Long numIid) {
+    public void includeItem(Long userId, Long planSettingId, Long numIid) {
+        excludeOrIncludeItem(userId, planSettingId, numIid, false);
+    }
+
+    @Transactional
+    public void excludeOrIncludeItem(Long userId, Long planSettingId, Long numIid, boolean exclude) {
         Plan plan = new Plan();
         plan.setUserId(userId);
         plan.setItemNumIid(numIid);
-        plan.setStatus(ShelfConstants.PLAN_STATUS_WAITING_ADJUST);
+        if (exclude) {
+            plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
+        } else {
+            plan.setStatus(ShelfConstants.PLAN_SETTING_STATUS_WAITING_PLAN);
+        }
         planMapper.updateByUserIdAndNumIid(plan);
+
+        PlanSetting planSetting = planSettingMapper.selectByPrimaryKeyAndUserId(planSettingId, userId);
+        String excludeItemNumIidsStr = planSetting.getExcludeItemNumIids();
+        excludeItemNumIidsStr = (null == excludeItemNumIidsStr ? "" : excludeItemNumIidsStr);
+        List<Long> excludeNumIids = Collections3.getLongList(excludeItemNumIidsStr);
+        if (exclude) {
+            excludeNumIids.add(numIid);
+        } else {
+            excludeNumIids.remove(numIid);
+        }
+
+        PlanSetting updateSetting = new PlanSetting();
+        updateSetting.setId(planSetting.getId());
+        updateSetting.setExcludeItemNumIids(Collections3.COMMA_JOINER.join(excludeNumIids));
+        planSettingMapper.updateByPrimaryKeySelective(updateSetting);
     }
 
     public void setAppService(AppService appService) {

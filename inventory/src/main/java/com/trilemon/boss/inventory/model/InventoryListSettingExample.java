@@ -225,73 +225,213 @@ public class InventoryListSettingExample {
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesIsNull() {
-            addCriterion("include_inventory_types is null");
+        public Criteria andIncludeSellerCidsIsNull() {
+            addCriterion("include_seller_cids is null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesIsNotNull() {
-            addCriterion("include_inventory_types is not null");
+        public Criteria andIncludeSellerCidsIsNotNull() {
+            addCriterion("include_seller_cids is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesEqualTo(String value) {
-            addCriterion("include_inventory_types =", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsEqualTo(String value) {
+            addCriterion("include_seller_cids =", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesNotEqualTo(String value) {
-            addCriterion("include_inventory_types <>", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsNotEqualTo(String value) {
+            addCriterion("include_seller_cids <>", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesGreaterThan(String value) {
-            addCriterion("include_inventory_types >", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsGreaterThan(String value) {
+            addCriterion("include_seller_cids >", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesGreaterThanOrEqualTo(String value) {
-            addCriterion("include_inventory_types >=", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsGreaterThanOrEqualTo(String value) {
+            addCriterion("include_seller_cids >=", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesLessThan(String value) {
-            addCriterion("include_inventory_types <", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsLessThan(String value) {
+            addCriterion("include_seller_cids <", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesLessThanOrEqualTo(String value) {
-            addCriterion("include_inventory_types <=", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsLessThanOrEqualTo(String value) {
+            addCriterion("include_seller_cids <=", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesLike(String value) {
-            addCriterion("include_inventory_types like", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsLike(String value) {
+            addCriterion("include_seller_cids like", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesNotLike(String value) {
-            addCriterion("include_inventory_types not like", value, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsNotLike(String value) {
+            addCriterion("include_seller_cids not like", value, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesIn(List<String> values) {
-            addCriterion("include_inventory_types in", values, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsIn(List<String> values) {
+            addCriterion("include_seller_cids in", values, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesNotIn(List<String> values) {
-            addCriterion("include_inventory_types not in", values, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsNotIn(List<String> values) {
+            addCriterion("include_seller_cids not in", values, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesBetween(String value1, String value2) {
-            addCriterion("include_inventory_types between", value1, value2, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsBetween(String value1, String value2) {
+            addCriterion("include_seller_cids between", value1, value2, "includeSellerCids");
             return (Criteria) this;
         }
 
-        public Criteria andIncludeInventoryTypesNotBetween(String value1, String value2) {
-            addCriterion("include_inventory_types not between", value1, value2, "includeInventoryTypes");
+        public Criteria andIncludeSellerCidsNotBetween(String value1, String value2) {
+            addCriterion("include_seller_cids not between", value1, value2, "includeSellerCids");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersIsNull() {
+            addCriterion("include_banners is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersIsNotNull() {
+            addCriterion("include_banners is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersEqualTo(String value) {
+            addCriterion("include_banners =", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersNotEqualTo(String value) {
+            addCriterion("include_banners <>", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersGreaterThan(String value) {
+            addCriterion("include_banners >", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersGreaterThanOrEqualTo(String value) {
+            addCriterion("include_banners >=", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersLessThan(String value) {
+            addCriterion("include_banners <", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersLessThanOrEqualTo(String value) {
+            addCriterion("include_banners <=", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersLike(String value) {
+            addCriterion("include_banners like", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersNotLike(String value) {
+            addCriterion("include_banners not like", value, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersIn(List<String> values) {
+            addCriterion("include_banners in", values, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersNotIn(List<String> values) {
+            addCriterion("include_banners not in", values, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersBetween(String value1, String value2) {
+            addCriterion("include_banners between", value1, value2, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andIncludeBannersNotBetween(String value1, String value2) {
+            addCriterion("include_banners not between", value1, value2, "includeBanners");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsIsNull() {
+            addCriterion("exclude_item_num_iids is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsIsNotNull() {
+            addCriterion("exclude_item_num_iids is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsEqualTo(String value) {
+            addCriterion("exclude_item_num_iids =", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsNotEqualTo(String value) {
+            addCriterion("exclude_item_num_iids <>", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsGreaterThan(String value) {
+            addCriterion("exclude_item_num_iids >", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsGreaterThanOrEqualTo(String value) {
+            addCriterion("exclude_item_num_iids >=", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsLessThan(String value) {
+            addCriterion("exclude_item_num_iids <", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsLessThanOrEqualTo(String value) {
+            addCriterion("exclude_item_num_iids <=", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsLike(String value) {
+            addCriterion("exclude_item_num_iids like", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsNotLike(String value) {
+            addCriterion("exclude_item_num_iids not like", value, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsIn(List<String> values) {
+            addCriterion("exclude_item_num_iids in", values, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsNotIn(List<String> values) {
+            addCriterion("exclude_item_num_iids not in", values, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsBetween(String value1, String value2) {
+            addCriterion("exclude_item_num_iids between", value1, value2, "excludeItemNumIids");
+            return (Criteria) this;
+        }
+
+        public Criteria andExcludeItemNumIidsNotBetween(String value1, String value2) {
+            addCriterion("exclude_item_num_iids not between", value1, value2, "excludeItemNumIids");
             return (Criteria) this;
         }
 
@@ -352,6 +492,66 @@ public class InventoryListSettingExample {
 
         public Criteria andAutoAddNewItemNotBetween(Byte value1, Byte value2) {
             addCriterion("auto_add_new_item not between", value1, value2, "autoAddNewItem");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusEqualTo(Byte value) {
+            addCriterion("status =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotEqualTo(Byte value) {
+            addCriterion("status <>", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThan(Byte value) {
+            addCriterion("status >", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusGreaterThanOrEqualTo(Byte value) {
+            addCriterion("status >=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThan(Byte value) {
+            addCriterion("status <", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusLessThanOrEqualTo(Byte value) {
+            addCriterion("status <=", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusIn(List<Byte> values) {
+            addCriterion("status in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotIn(List<Byte> values) {
+            addCriterion("status not in", values, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusBetween(Byte value1, Byte value2) {
+            addCriterion("status between", value1, value2, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatusNotBetween(Byte value1, Byte value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 
@@ -482,66 +682,6 @@ public class InventoryListSettingExample {
 
         public Criteria andListTypeNotBetween(Byte value1, Byte value2) {
             addCriterion("list_type not between", value1, value2, "listType");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalIsNull() {
-            addCriterion("list_interval is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalIsNotNull() {
-            addCriterion("list_interval is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalEqualTo(Integer value) {
-            addCriterion("list_interval =", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalNotEqualTo(Integer value) {
-            addCriterion("list_interval <>", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalGreaterThan(Integer value) {
-            addCriterion("list_interval >", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalGreaterThanOrEqualTo(Integer value) {
-            addCriterion("list_interval >=", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalLessThan(Integer value) {
-            addCriterion("list_interval <", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalLessThanOrEqualTo(Integer value) {
-            addCriterion("list_interval <=", value, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalIn(List<Integer> values) {
-            addCriterion("list_interval in", values, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalNotIn(List<Integer> values) {
-            addCriterion("list_interval not in", values, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalBetween(Integer value1, Integer value2) {
-            addCriterion("list_interval between", value1, value2, "listInterval");
-            return (Criteria) this;
-        }
-
-        public Criteria andListIntervalNotBetween(Integer value1, Integer value2) {
-            addCriterion("list_interval not between", value1, value2, "listInterval");
             return (Criteria) this;
         }
 

@@ -1,8 +1,6 @@
 package com.trilemon.boss.center;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Table;
-import com.google.common.collect.TreeBasedTable;
+import com.google.common.collect.*;
 import com.google.common.math.IntMath;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.center.model.PlanDistribution;
@@ -207,4 +205,21 @@ public class PlanDistributionUtils {
         }
         return assignTable;
     }
+
+    /**
+     * 获取商品的下架分布日期（周几）分布
+     * @param items
+     * @return
+     */
+    public static Multiset<Integer> getItemDelistDayOfWeekNum(List<Item> items) {
+        Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
+        for (Item item : items) {
+            if (null != item.getDelistTime()) {
+                DateTime delistDateTime = new DateTime(item.getDelistTime());
+                dayOfWeekNum.add(delistDateTime.getDayOfWeek());
+            }
+        }
+        return dayOfWeekNum;
+    }
+
 }

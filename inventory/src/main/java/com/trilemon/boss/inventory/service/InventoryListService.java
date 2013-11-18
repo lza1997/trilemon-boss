@@ -2,9 +2,8 @@ package com.trilemon.boss.inventory.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.trilemon.boss.center.PlanDistributionUtils;
 import com.trilemon.boss.infra.base.service.AppService;
-import com.trilemon.boss.infra.base.service.TaobaoApiService;
-import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -17,12 +16,15 @@ import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.trilemon.boss.inventory.InventoryConstants.*;
+import static com.trilemon.commons.Collections3.COMMA_JOINER;
 
 /**
  * @author kevin
@@ -36,48 +38,50 @@ public class InventoryListService {
     @Autowired
     private AppService appService;
     @Autowired
-    private TaobaoApiService taobaoApiService;
-    @Autowired
-    private TaobaoApiShopService taobaoApiShopService;
+    private InventoryListAdjustService adjustService;
 
     /**
-     * 根据仓库类型创建计划
+     * 根据仓库类型创建/恢复计划
      *
      * @param userId
-     * @param inventoryTypes
+     * @param banners
      * @throws InventoryException
      */
-    public void createSetting(Long userId, List<String> inventoryTypes) throws InventoryException {
-        if (isSettingExist(userId)) {
-            throw new InventoryException("userId[" + userId + "] exist.");
-        }
-        InventoryListSetting setting;
-        setting = new InventoryListSetting();
-        setting.setUserId(userId);
-        setting.setIncludeInventoryTypes(Collections3.COMMA_JOINER.join(inventoryTypes));
-        setting.setAddTime(appService.getLocalSystemTime().toDate());
-        inventoryListSettingMapper.insertSelective(setting);
-    }
-
-    public boolean isSettingExist(Long userId) {
+    public void resumeSetting(Long userId, List<String> banners) throws InventoryException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         InventoryListSetting setting = inventoryListSettingMapper.selectByUserId(userId);
-        return null != setting;
+        if (null != setting) {
+            setting.setStatus(SETTING_STATUS_WAITING_PLAN);
+            inventoryListSettingMapper.updateByPrimaryKeySelective(setting);
+            if (StringUtils.isNotBlank(setting.getIncludeBanners())) {
+                adjustService.update(userId);
+            }
+        } else {
+            setting = new InventoryListSetting();
+            setting.setUserId(userId);
+            setting.setAutoAddNewItem(SETTING_AUTO_ADD_NEW_ITEM_ON);
+            setting.setDistribution(PlanDistributionUtils.getDefaultDistribution());
+            setting.setStatus(SETTING_STATUS_WAITING_PLAN);
+            setting.setIncludeBanners(COMMA_JOINER.join(banners));
+            setting.setAddTime(appService.getLocalSystemTime().toDate());
+            inventoryListSettingMapper.insertSelective(setting);
+        }
     }
 
     /**
-     * 创建新的计划
-     *
+     * 暂定计划
      * @param userId
-     * @param inventoryListSetting
      * @throws InventoryException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoEnhancedApiException
      */
-    public void createSetting(Long userId, InventoryListSetting inventoryListSetting) throws InventoryException {
-        if (isSettingExist(userId)) {
-            throw new InventoryException("userId[" + userId + "] exist.");
+    public void pauseSetting(Long userId) throws InventoryException, TaobaoSessionExpiredException,
+            TaobaoEnhancedApiException {
+        InventoryListSetting setting = inventoryListSettingMapper.selectByUserId(userId);
+        if (null != setting) {
+            setting.setStatus(SETTING_STATUS_PAUSED);
+            inventoryListSettingMapper.updateByPrimaryKeySelective(setting);
         }
-        inventoryListSetting.setUserId(userId);
-        inventoryListSetting.setAddTime(appService.getLocalSystemTime().toDate());
-        inventoryListSettingMapper.insertSelective(inventoryListSetting);
+
     }
 
     /**
@@ -90,13 +94,12 @@ public class InventoryListService {
         return inventoryListSettingMapper.selectByUserId(userId);
     }
 
-    public void updateSetting(Long userId, InventoryListSetting inventoryListSetting) {
-        inventoryListSetting.setUserId(userId);
-        if (isSettingExist(userId)) {
-            inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
-        }
-    }
-
+    /**
+     * 更新计划时间
+     *
+     * @param userId
+     * @param distribution
+     */
     public void updateDistribution(Long userId, String distribution) {
         InventoryListSetting inventoryListSetting = new InventoryListSetting();
         inventoryListSetting.setUserId(userId);
@@ -104,75 +107,17 @@ public class InventoryListService {
         inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
     }
 
-    public void updateIncludeInventoryTypes(Long userId, String includeInventoryTypes) {
-        InventoryListSetting inventoryListSetting = new InventoryListSetting();
-        inventoryListSetting.setUserId(userId);
-        inventoryListSetting.setIncludeInventoryTypes(includeInventoryTypes);
-        inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
-    }
-
-    public void updateListType(Long userId, byte listType, int listInterval) {
-        InventoryListSetting inventoryListSetting = new InventoryListSetting();
-        inventoryListSetting.setUserId(userId);
-        if (LIST_TYPE_AVG == listType) {
-            inventoryListSetting.setListType(listType);
-            inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
-            return;
-        } else {
-            if (LIST_TYPE_INTERVAL == listType) {
-                inventoryListSetting.setListType(listType);
-                inventoryListSetting.setListInterval(listInterval);
-                inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
-            }
-        }
-    }
-
     /**
-     * 执行计划
-     *
-     * @param inventoryListSetting
-     */
-    public void list(InventoryListSetting inventoryListSetting) {
-
-    }
-
-    /**
-     * 上架某个商品
-     *
-     * @param inventoryListItem
-     */
-    public void list(InventoryListItem inventoryListItem) {
-
-    }
-
-    /**
-     * 下架某个商品
+     * 更新库存类型
      *
      * @param userId
-     * @param numIid
+     * @param banners
      */
-    public void  delist(Long userId,Long numIid) {
-        try {
-            taobaoApiShopService.delistItem(userId, numIid);
-        } catch (TaobaoAccessControlException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoEnhancedApiException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoSessionExpiredException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    public void  list(Long userId,Long numIid) {
-        try {
-            taobaoApiShopService.listItem(userId, numIid);
-        } catch (TaobaoAccessControlException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoEnhancedApiException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoSessionExpiredException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+    public void updateIncludeBanners(Long userId, List<String> banners) {
+        InventoryListSetting inventoryListSetting = new InventoryListSetting();
+        inventoryListSetting.setUserId(userId);
+        inventoryListSetting.setIncludeBanners(COMMA_JOINER.join(banners));
+        inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
     }
 
     /**
@@ -182,23 +127,27 @@ public class InventoryListService {
      * @param query
      * @param pageNum
      * @param pageSize
+     * @param statusList
+     * @param banners
      * @return
      */
     public Page<InventoryListItem> paginationInventoryListItems(long userId,
                                                                 long settingId,
                                                                 String query,
                                                                 int pageNum,
-                                                                int pageSize) {
-        List<Byte> statusList = ImmutableList.of(LIST_STATUS_EXCLUDED, LIST_STATUS_WAITING_ADJUST,
-                LIST_STATUS_EXCLUDED);
-        int totalSize = inventoryListItemMapper.countByUserIdAndSettingIdAndStatus(userId,
-                settingId,
-                statusList,
-                query);
-        List<InventoryListItem> plans = inventoryListItemMapper.paginateByUserIdAndSettingIdAndStatus(userId,
+                                                                int pageSize,
+                                                                List<Byte> statusList,
+                                                                List<String> banners) {
+        int totalSize = inventoryListItemMapper.countByUserIdAndSettingIdAndStatusAndBanners(userId,
                 settingId,
                 statusList,
                 query,
+                banners);
+        List<InventoryListItem> plans = inventoryListItemMapper.paginateByUserIdAndSettingIdAndStatusAndBanners(userId,
+                settingId,
+                statusList,
+                query,
+                banners,
                 (pageNum - 1) * pageSize,
                 pageSize);
         if (CollectionUtils.isEmpty(plans)) {
@@ -206,5 +155,67 @@ public class InventoryListService {
         } else {
             return Page.create(totalSize, pageNum, pageSize, plans);
         }
+    }
+
+    /**
+     * 立刻上架
+     *
+     * @param userId
+     * @param numIid
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoAccessControlException
+     * @throws TaobaoSessionExpiredException
+     */
+    public void list(Long userId, Long numIid) throws TaobaoEnhancedApiException, TaobaoAccessControlException, TaobaoSessionExpiredException {
+        InventoryListItem listItem = inventoryListItemMapper.selectByUserIdAndNumIid(userId, numIid);
+        adjustService.execPlan(listItem);
+    }
+
+    /**
+     * 排除宝贝
+     *
+     * @param userId
+     * @param numIid
+     */
+    public void excludeItem(Long userId, Long numIid) {
+        includeOrExcludeItem(userId, numIid, true);
+    }
+
+    /**
+     * 恢复宝贝
+     *
+     * @param userId
+     * @param numIid
+     */
+    public void includeItem(Long userId, Long numIid) {
+        includeOrExcludeItem(userId, numIid, false);
+    }
+
+    @Transactional
+    private void includeOrExcludeItem(Long userId, Long numIid, boolean exclude) {
+        InventoryListItem listItem = new InventoryListItem();
+        listItem.setUserId(userId);
+        listItem.setItemNumIid(numIid);
+        if (exclude) {
+            listItem.setStatus(InventoryConstants.LIST_STATUS_EXCLUDED);
+        } else {
+            listItem.setStatus(InventoryConstants.LIST_STATUS_WAITING_ADJUST);
+        }
+        inventoryListItemMapper.updateByUserIdAndNumIid(listItem);
+
+        InventoryListSetting setting = inventoryListSettingMapper.selectByUserId(userId);
+        String excludeItemNumIidsStr = setting.getExcludeItemNumIids();
+        excludeItemNumIidsStr = (null == excludeItemNumIidsStr ? "" : excludeItemNumIidsStr);
+        List<Long> excludeNumIids = Collections3.getLongList(excludeItemNumIidsStr);
+        if (exclude) {
+            excludeNumIids.remove(numIid);
+        } else {
+            excludeNumIids.add(numIid);
+        }
+
+        InventoryListSetting updateSetting = new InventoryListSetting();
+        updateSetting.setId(setting.getId());
+        updateSetting.setExcludeItemNumIids(Collections3.COMMA_JOINER.join(excludeNumIids));
+        inventoryListSettingMapper.updateByPrimaryKeySelective(updateSetting);
     }
 }

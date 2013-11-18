@@ -1,5 +1,6 @@
 package com.trilemon.boss.inventory.dao;
 
+import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.boss.inventory.model.InventoryListSettingExample;
 import org.apache.ibatis.annotations.Param;
@@ -32,4 +33,7 @@ public interface InventoryListSettingMapper {
     void updateByUserIdSelective(InventoryListSetting inventoryListSetting);
 
     InventoryListSetting selectByUserId(Long userId);
+
+    List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> of);
+
 }

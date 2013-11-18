@@ -1,8 +1,10 @@
 package com.trilemon.boss.inventory.model;
 
+import com.trilemon.boss.center.model.PlanDistribution;
+
 import java.util.Date;
 
-public class InventoryListItem {
+public class InventoryListItem implements PlanDistribution{
     private Long id;
 
     private Long inventoryListSettingId;
@@ -17,13 +19,19 @@ public class InventoryListItem {
 
     private String itemPicUrl;
 
-    private Date planListDay;
+    private Date planAdjustDay;
 
-    private Date planListStartTime;
+    private Date planAdjustStartTime;
 
-    private Date planListEndTime;
+    private Date planAdjustEndTime;
 
-    private Date listTime;
+    private String banner;
+
+    private Byte status;
+
+    private String failedCause;
+
+    private Date adjustTime;
 
     private Date addTime;
 
@@ -85,36 +93,60 @@ public class InventoryListItem {
         this.itemPicUrl = itemPicUrl == null ? null : itemPicUrl.trim();
     }
 
-    public Date getPlanListDay() {
-        return planListDay;
+    public Date getPlanAdjustDay() {
+        return planAdjustDay;
     }
 
-    public void setPlanListDay(Date planListDay) {
-        this.planListDay = planListDay;
+    public void setPlanAdjustDay(Date planAdjustDay) {
+        this.planAdjustDay = planAdjustDay;
     }
 
-    public Date getPlanListStartTime() {
-        return planListStartTime;
+    public Date getPlanAdjustStartTime() {
+        return planAdjustStartTime;
     }
 
-    public void setPlanListStartTime(Date planListStartTime) {
-        this.planListStartTime = planListStartTime;
+    public void setPlanAdjustStartTime(Date planAdjustStartTime) {
+        this.planAdjustStartTime = planAdjustStartTime;
     }
 
-    public Date getPlanListEndTime() {
-        return planListEndTime;
+    public Date getPlanAdjustEndTime() {
+        return planAdjustEndTime;
     }
 
-    public void setPlanListEndTime(Date planListEndTime) {
-        this.planListEndTime = planListEndTime;
+    public void setPlanAdjustEndTime(Date planAdjustEndTime) {
+        this.planAdjustEndTime = planAdjustEndTime;
     }
 
-    public Date getListTime() {
-        return listTime;
+    public String getBanner() {
+        return banner;
     }
 
-    public void setListTime(Date listTime) {
-        this.listTime = listTime;
+    public void setBanner(String banner) {
+        this.banner = banner == null ? null : banner.trim();
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getFailedCause() {
+        return failedCause;
+    }
+
+    public void setFailedCause(String failedCause) {
+        this.failedCause = failedCause == null ? null : failedCause.trim();
+    }
+
+    public Date getAdjustTime() {
+        return adjustTime;
+    }
+
+    public void setAdjustTime(Date adjustTime) {
+        this.adjustTime = adjustTime;
     }
 
     public Date getAddTime() {

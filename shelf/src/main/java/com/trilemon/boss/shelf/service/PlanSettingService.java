@@ -11,6 +11,7 @@ import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.infra.base.util.TopApiUtils;
 import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.ShelfException;
 import com.trilemon.boss.shelf.ShelfUtils;
@@ -294,7 +295,7 @@ public class PlanSettingService {
         request.setFields("delist_time");
         ItemsOnsaleGetResponse result = taobaoApiShopService.getOnSaleItems(userId, request);
         List<Integer> listItemNum = Lists.newArrayList();
-        Multiset<Integer> dayOfWeekNum = ShelfUtils.getItemDelistDayOfWeekNum(result.getItems());
+        Multiset<Integer> dayOfWeekNum = PlanDistributionUtils.getItemDelistDayOfWeekNum(result.getItems());
         ShelfStatus shelfStatus = new ShelfStatus();
         shelfStatus.setDayOfWeek(Lists.newArrayList(1, 2, 3, 4, 5, 6, 7));
         listItemNum.add(dayOfWeekNum.count(1));

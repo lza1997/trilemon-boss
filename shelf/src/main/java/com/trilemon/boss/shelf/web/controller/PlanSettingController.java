@@ -115,8 +115,8 @@ public class PlanSettingController {
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.POST)
     @ResponseBody
-    public String excludeItem(@PathVariable Long numIid) {
-        planService.excludeItem(56912708L,numIid);
+    public String excludeItem(@PathVariable Long planSettingId,@PathVariable Long numIid) {
+        planService.excludeItem(56912708L,planSettingId,numIid);
         return "";
     }
 
@@ -128,8 +128,8 @@ public class PlanSettingController {
      */
     @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String includeItem(@PathVariable Long numIid) {
-        planService.excludeItem(56912708L,numIid);
+    public String includeItem(@PathVariable Long planSettingId,@PathVariable Long numIid) {
+        planService.includeItem(56912708L,planSettingId,numIid);
         return "";
     }
 

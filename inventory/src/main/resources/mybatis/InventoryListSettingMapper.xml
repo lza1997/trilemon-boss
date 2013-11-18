@@ -4,8 +4,11 @@
   <resultMap id="BaseResultMap" type="com.trilemon.boss.inventory.model.InventoryListSetting" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="include_inventory_types" property="includeInventoryTypes" jdbcType="VARCHAR" />
+    <result column="include_seller_cids" property="includeSellerCids" jdbcType="VARCHAR" />
+    <result column="include_banners" property="includeBanners" jdbcType="VARCHAR" />
+    <result column="exclude_item_num_iids" property="excludeItemNumIids" jdbcType="VARCHAR" />
     <result column="auto_add_new_item" property="autoAddNewItem" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
     <result column="distribution" property="distribution" jdbcType="VARCHAR" />
     <result column="list_type" property="listType" jdbcType="TINYINT" />
     <result column="list_interval" property="listInterval" jdbcType="INTEGER" />
@@ -72,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, include_inventory_types, auto_add_new_item, distribution, list_type, 
-    list_interval, last_plan_time, add_time, upd_time
+    id, user_id, include_seller_cids, include_banners, exclude_item_num_iids, auto_add_new_item, 
+    status, distribution, list_type, list_interval, last_plan_time, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.inventory.model.InventoryListSettingExample" >
     select
@@ -106,12 +109,14 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
-    insert into inventory_list_setting (id, user_id, include_inventory_types, 
-      auto_add_new_item, distribution, list_type, 
+    insert into inventory_list_setting (id, user_id, include_seller_cids, 
+      include_banners, exclude_item_num_iids, auto_add_new_item, 
+      status, distribution, list_type, 
       list_interval, last_plan_time, add_time, 
       upd_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeInventoryTypes,jdbcType=VARCHAR}, 
-      #{autoAddNewItem,jdbcType=TINYINT}, #{distribution,jdbcType=VARCHAR}, #{listType,jdbcType=TINYINT}, 
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeSellerCids,jdbcType=VARCHAR}, 
+      #{includeBanners,jdbcType=VARCHAR}, #{excludeItemNumIids,jdbcType=VARCHAR}, #{autoAddNewItem,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{distribution,jdbcType=VARCHAR}, #{listType,jdbcType=TINYINT}, 
       #{listInterval,jdbcType=INTEGER}, #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updTime,jdbcType=TIMESTAMP})
   </insert>
@@ -124,11 +129,20 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="includeInventoryTypes != null" >
-        include_inventory_types,
+      <if test="includeSellerCids != null" >
+        include_seller_cids,
+      </if>
+      <if test="includeBanners != null" >
+        include_banners,
+      </if>
+      <if test="excludeItemNumIids != null" >
+        exclude_item_num_iids,
       </if>
       <if test="autoAddNewItem != null" >
         auto_add_new_item,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="distribution != null" >
         distribution,
@@ -156,11 +170,20 @@
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
       </if>
-      <if test="includeInventoryTypes != null" >
-        #{includeInventoryTypes,jdbcType=VARCHAR},
+      <if test="includeSellerCids != null" >
+        #{includeSellerCids,jdbcType=VARCHAR},
+      </if>
+      <if test="includeBanners != null" >
+        #{includeBanners,jdbcType=VARCHAR},
+      </if>
+      <if test="excludeItemNumIids != null" >
+        #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="autoAddNewItem != null" >
         #{autoAddNewItem,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
       </if>
       <if test="distribution != null" >
         #{distribution,jdbcType=VARCHAR},
@@ -197,11 +220,20 @@
       <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=BIGINT},
       </if>
-      <if test="record.includeInventoryTypes != null" >
-        include_inventory_types = #{record.includeInventoryTypes,jdbcType=VARCHAR},
+      <if test="record.includeSellerCids != null" >
+        include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
+      </if>
+      <if test="record.includeBanners != null" >
+        include_banners = #{record.includeBanners,jdbcType=VARCHAR},
+      </if>
+      <if test="record.excludeItemNumIids != null" >
+        exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="record.autoAddNewItem != null" >
         auto_add_new_item = #{record.autoAddNewItem,jdbcType=TINYINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
       </if>
       <if test="record.distribution != null" >
         distribution = #{record.distribution,jdbcType=VARCHAR},
@@ -230,8 +262,11 @@
     update inventory_list_setting
     set id = #{record.id,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
-      include_inventory_types = #{record.includeInventoryTypes,jdbcType=VARCHAR},
+      include_seller_cids = #{record.includeSellerCids,jdbcType=VARCHAR},
+      include_banners = #{record.includeBanners,jdbcType=VARCHAR},
+      exclude_item_num_iids = #{record.excludeItemNumIids,jdbcType=VARCHAR},
       auto_add_new_item = #{record.autoAddNewItem,jdbcType=TINYINT},
+      status = #{record.status,jdbcType=TINYINT},
       distribution = #{record.distribution,jdbcType=VARCHAR},
       list_type = #{record.listType,jdbcType=TINYINT},
       list_interval = #{record.listInterval,jdbcType=INTEGER},
@@ -248,11 +283,20 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=BIGINT},
       </if>
-      <if test="includeInventoryTypes != null" >
-        include_inventory_types = #{includeInventoryTypes,jdbcType=VARCHAR},
+      <if test="includeSellerCids != null" >
+        include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
+      </if>
+      <if test="includeBanners != null" >
+        include_banners = #{includeBanners,jdbcType=VARCHAR},
+      </if>
+      <if test="excludeItemNumIids != null" >
+        exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
       </if>
       <if test="autoAddNewItem != null" >
         auto_add_new_item = #{autoAddNewItem,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
       </if>
       <if test="distribution != null" >
         distribution = #{distribution,jdbcType=VARCHAR},
@@ -278,8 +322,11 @@
   <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
     update inventory_list_setting
     set user_id = #{userId,jdbcType=BIGINT},
-      include_inventory_types = #{includeInventoryTypes,jdbcType=VARCHAR},
+      include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
+      include_banners = #{includeBanners,jdbcType=VARCHAR},
+      exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
       auto_add_new_item = #{autoAddNewItem,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
       distribution = #{distribution,jdbcType=VARCHAR},
       list_type = #{listType,jdbcType=TINYINT},
       list_interval = #{listInterval,jdbcType=INTEGER},

@@ -7,20 +7,20 @@ public class InventoryListSetting {
 
     private Long userId;
 
-    //仓库类型
-    private String includeInventoryTypes;
+    private String includeSellerCids;
+
+    private String includeBanners;
+
+    private String excludeItemNumIids;
 
     private Byte autoAddNewItem;
 
+    private Byte status;
+
     private String distribution;
 
-    //调整规则类型，均匀还是间隔
     private Byte listType;
 
-    //调整间隔时间
-    private Integer listInterval;
-
-    //上一次执行时间
     private Date lastPlanTime;
 
     private Date addTime;
@@ -43,12 +43,28 @@ public class InventoryListSetting {
         this.userId = userId;
     }
 
-    public String getIncludeInventoryTypes() {
-        return includeInventoryTypes;
+    public String getIncludeSellerCids() {
+        return includeSellerCids;
     }
 
-    public void setIncludeInventoryTypes(String includeInventoryTypes) {
-        this.includeInventoryTypes = includeInventoryTypes == null ? null : includeInventoryTypes.trim();
+    public void setIncludeSellerCids(String includeSellerCids) {
+        this.includeSellerCids = includeSellerCids == null ? null : includeSellerCids.trim();
+    }
+
+    public String getIncludeBanners() {
+        return includeBanners;
+    }
+
+    public void setIncludeBanners(String includeBanners) {
+        this.includeBanners = includeBanners == null ? null : includeBanners.trim();
+    }
+
+    public String getExcludeItemNumIids() {
+        return excludeItemNumIids;
+    }
+
+    public void setExcludeItemNumIids(String excludeItemNumIids) {
+        this.excludeItemNumIids = excludeItemNumIids == null ? null : excludeItemNumIids.trim();
     }
 
     public Byte getAutoAddNewItem() {
@@ -57,6 +73,14 @@ public class InventoryListSetting {
 
     public void setAutoAddNewItem(Byte autoAddNewItem) {
         this.autoAddNewItem = autoAddNewItem;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public String getDistribution() {
@@ -73,14 +97,6 @@ public class InventoryListSetting {
 
     public void setListType(Byte listType) {
         this.listType = listType;
-    }
-
-    public Integer getListInterval() {
-        return listInterval;
-    }
-
-    public void setListInterval(Integer listInterval) {
-        this.listInterval = listInterval;
     }
 
     public Date getLastPlanTime() {

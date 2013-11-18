@@ -148,8 +148,14 @@ public class SettingService {
      */
     public boolean includeItem(Long userId, Long numIid, boolean addOrDelete) throws ShowcaseException {
         Setting setting = settingMapper.selectByUserId(userId);
-        final List<Long> includeNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
-        final List<Long> excludeNumIids = Collections3.getLongList(setting.getExcludeItemNumIids());
+
+        String includeItemNumIidsStr = setting.getIncludeItemNumIids();
+        includeItemNumIidsStr = (null == includeItemNumIidsStr ? "" : includeItemNumIidsStr);
+        String excludeItemNumIidsStr = setting.getExcludeItemNumIids();
+        excludeItemNumIidsStr = (null == excludeItemNumIidsStr ? "" : excludeItemNumIidsStr);
+
+        final List<Long> includeNumIids = Collections3.getLongList(includeItemNumIidsStr);
+        final List<Long> excludeNumIids = Collections3.getLongList(excludeItemNumIidsStr);
         if (addOrDelete) {
             if (excludeNumIids.contains(numIid)) {
                 throw new ShowcaseException("userId[" + userId + "] can not add include item[" + numIid + "], " +
@@ -176,8 +182,15 @@ public class SettingService {
      */
     public boolean excludeItem(Long userId, Long numIid, boolean addOrDelete) throws ShowcaseException {
         Setting setting = settingMapper.selectByUserId(userId);
-        final List<Long> includeNumIids = Collections3.getLongList(setting.getIncludeItemNumIids());
-        final List<Long> excludeNumIids = Collections3.getLongList(setting.getExcludeItemNumIids());
+
+        String includeItemNumIidsStr = setting.getIncludeItemNumIids();
+        includeItemNumIidsStr = (null == includeItemNumIidsStr ? "" : includeItemNumIidsStr);
+        String excludeItemNumIidsStr = setting.getExcludeItemNumIids();
+        excludeItemNumIidsStr = (null == excludeItemNumIidsStr ? "" : excludeItemNumIidsStr);
+
+        final List<Long> includeNumIids = Collections3.getLongList(includeItemNumIidsStr);
+        final List<Long> excludeNumIids = Collections3.getLongList(excludeItemNumIidsStr);
+
         if (addOrDelete) {
             if (includeNumIids.contains(numIid)) {
                 throw new ShowcaseException("userId[" + userId + "] can not add include item[" + numIid + "], it already in exclude items.");

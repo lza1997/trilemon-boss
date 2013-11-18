@@ -14,6 +14,10 @@
         <property name="threadCount" value="${redis.threadCount}"/>
     </bean>
 
+    <bean id="jedisTemplate" class="com.trilemon.commons.redis.JedisTemplate">
+        <constructor-arg ref="jedisPool"/>
+    </bean>
+
     <!-- local development环境 -->
     <beans profile="development">
         <context:property-placeholder ignore-resource-not-found="true"
