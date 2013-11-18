@@ -485,7 +485,7 @@
                         </systemProperty>
                     </systemProperties>
                     <webAppConfig>
-                        <contextPath>/shelf</contextPath>
+                        <contextPath>/inventory</contextPath>
                     </webAppConfig>
                 </configuration>
             </plugin>

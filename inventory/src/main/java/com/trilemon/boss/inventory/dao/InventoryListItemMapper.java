@@ -1,6 +1,5 @@
 package com.trilemon.boss.inventory.dao;
 
-import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.inventory.model.InventoryListItem;
 import com.trilemon.boss.inventory.model.InventoryListItemExample;
 import org.apache.ibatis.annotations.Param;
@@ -31,26 +30,34 @@ public interface InventoryListItemMapper {
 
     int updateByPrimaryKey(InventoryListItem record);
 
-    int countByUserIdAndSettingIdAndStatusAndBanners(long userId, long settingId, List<Byte> statusList,
-                                                     String query, List<String> banners);
+    int countByUserIdAndSettingIdAndStatusAndBanners(@Param("userId") Long userId,
+                                                     @Param("inventoryListSettingId") Long settingId,
+                                                     @Param("statusList") List<Byte> statusList,
+                                                     @Param("query") String query,
+                                                     @Param("banners") List<String> banners);
 
-    List<InventoryListItem> paginateByUserIdAndSettingIdAndStatusAndBanners(long userId,
-                                                                  long settingId,
-                                                                  List<Byte> statusList,
-                                                                  String query,
-                                                                  List<String> banners,
-                                                                  int offset,
-                                                                  int limit);
+    List<InventoryListItem> paginateByUserIdAndSettingIdAndStatusAndBanners(@Param("userId") Long userId,
+                                                                            @Param("inventoryListSettingId") Long settingId,
+                                                                            @Param("statusList") List<Byte> statusList,
+                                                                            @Param("query") String query,
+                                                                            @Param("banners") List<String> banners,
+                                                                            @Param("offset") Integer offset,
+                                                                            @Param("limit") Integer limit);
 
     List<InventoryListItem> selectBySettingId(Long settingId);
 
-    void deleteByNumIids(Long userId, List<Long> numIids);
+    void deleteByNumIids(@Param("userId") Long userId,
+                         @Param("numIids") List<Long> numIids);
 
-    List<InventoryListItem> selectBySettingIdAndStatusAndPlanTime(Long settingId, ImmutableList<Byte> statusList, Date date1, Date date);
+    List<InventoryListItem> selectBySettingIdAndStatusAndPlanTime(@Param("inventoryListSettingId") Long settingId,
+                                                                  @Param("statusList") List<Byte> statusList,
+                                                                  @Param("planAdjustDay") Date planAdjustDay,
+                                                                  @Param("planAdjustEndTime") Date planAdjustEndTime);
 
     List<Long> selectNumIidsByUserId(Long userId);
 
     void updateByUserIdAndNumIid(InventoryListItem listItem);
 
-    InventoryListItem selectByUserIdAndNumIid(Long userId, Long numIid);
+    InventoryListItem selectByUserIdAndNumIid(@Param("userId") Long userId,
+                                              @Param("numIids") Long numIid);
 }
