@@ -2,11 +2,13 @@
  * 橱窗宝贝
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'ShowcaseItem', 'ShowcaseSetting', '$location', '$routeParams', function($scope, ShowcaseItem, ShowcaseSetting, $location, $routeParams) {
+    var IndexController = ['$scope', 'ShowcaseItemFactory', 'ShowcaseSetting', '$location', '$routeParams', function($scope, ShowcaseItemFactory, ShowcaseSetting, $location, $routeParams) {
+
+        var Item = ShowcaseItemFactory.create({baseUrl: '/showcase/showcase-items'});
 
         $scope.searchKey = $routeParams.key;
-        getItems(); // 初始化时取第一页数据
         $scope.setting = ShowcaseSetting.get();
+        getItems(); // 初始化时取第一页数据
 
         // 搜索
         $scope.search = function() {
@@ -22,7 +24,7 @@ define(function(require, exports, module) {
         function getItems(options) {
             options = _.defaults(options || {}, $routeParams);
             $location.search(options);
-            $scope.items = ShowcaseItem.query(options);
+            $scope.items = Item.query(options);
         }
     }];
 
