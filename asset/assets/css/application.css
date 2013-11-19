@@ -41,3 +41,6 @@ input.ng-invalid.ng-dirty:focus { border-color: #953b39; -webkit-box-shadow: ins
 footer { margin-top: 50px; border-top: 1px solid #eee; }
 
 footer .container { margin: 40px auto; }
+
+.normal-link { color: inherit; }
+.normal-link:hover { text-decoration: none; }

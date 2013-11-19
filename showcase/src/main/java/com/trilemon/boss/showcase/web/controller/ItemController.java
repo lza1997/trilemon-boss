@@ -3,6 +3,7 @@ package com.trilemon.boss.showcase.web.controller;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.boss.showcase.service.SettingService;
@@ -12,45 +13,48 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 规则对应的宝贝，也就是分类对应的
+ * 所有的宝贝，用于固定推荐
  *
  * @author edokeh
  */
 @Controller
-@RequestMapping("/setting-items")
-public class SettingItemController {
+@RequestMapping("/items")
+public class ItemController {
     @Autowired
     private SettingService settingService;
 
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<ShowcaseItem> index(String key, @RequestParam(defaultValue = "1") Integer page, String category) throws
+    public Page<ShowcaseItem> index(String key, @RequestParam(defaultValue = "1") Integer page, String category, String order) throws
             ShowcaseException,
             TaobaoSessionExpiredException,
             TaobaoEnhancedApiException, TaobaoAccessControlException {
+        if ("asc".equals(order)) {
+            order = ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME;
+        } else {
+            order = ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME;
+        }
         // 库存中还是销售中
         if ("inventory".equals(category)) {
-            return settingService.paginateInventoryGeneralRuleItems(56912708L, key, page, 2);
+            return settingService.paginateInventoryItems(56912708L, key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
         } else {
-            return settingService.paginateOnSaleGeneralRuleItems(56912708L, key, page, 2);
+            return settingService.paginateOnSaleItems(56912708L, key, null, page, 2, false, order);
         }
     }
 
     /**
-     * 排除宝贝或取消排除
+     * 设置固定推荐或取消
      *
-     * @param numIid
-     * @return
      */
-    @RequestMapping(value = "/exclude", method = RequestMethod.PUT)
+    @RequestMapping(value = "/include", method = RequestMethod.PUT)
     @ResponseBody
-    public String excludeItem(@RequestBody ExcludeJSONParam excludeParam) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-        for (Long numIid : excludeParam.numIids) {
-            if (excludeParam.exclude) {
-                settingService.addExcludeItem(56912708L, numIid);
+    public String includeItem(@RequestBody IncludeJSONParam jsonParam) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
+        for (Long numIid : jsonParam.numIids) {
+            if (jsonParam.include) {
+                settingService.addIncludeItem(56912708L, numIid);
             } else {
-                settingService.deleteExcludeItem(56912708L, numIid);
+                settingService.deleteIncludeItem(56912708L, numIid);
             }
         }
         return "";
@@ -59,8 +63,8 @@ public class SettingItemController {
     /**
      * 辅助，用于接收 JSON Request
      */
-    public static class ExcludeJSONParam {
+    public static class IncludeJSONParam {
         public Long[] numIids;
-        public boolean exclude;
+        public boolean include;
     }
 }

@@ -1,0 +1,65 @@
+<div class="wrap">
+    <p class="text-info">
+        <i class="icon-info-sign"></i> 单独设置宝贝参加橱窗推荐
+    </p>
+</div>
+
+<form class="form-inline wrap" role="form" ng-submit="search()">
+    <div class="form-group">
+        <select class="form-control" ng-model="category">
+            <option value="onsale">出售中的宝贝</option>
+            <option value="inventory">仓库中的宝贝</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <select class="form-control">
+            <option value="x">所有状态</option>
+            <option value="y">固定推荐</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="宝贝标题、编号" maxlength="20" ng-model="searchKey"/>
+    </div>
+    <button type="submit" class="btn btn-primary">搜 索</button>
+</form>
+<div>
+    <button class="btn btn-default" ng-disabled="items.length == 0" ng-click="setIncludeAll(true)">固定推荐</button>
+    <button class="btn btn-default" ng-disabled="items.length == 0" ng-click="setIncludeAll(false)">全部取消</button>
+</div>
+<table class="table table-hover">
+    <col width="5%"/>
+    <col width="15%"/>
+    <col/>
+    <col width="10%"/>
+    <col width="15%"/>
+    <col width="10%"/>
+    <thead>
+    <tr>
+        <th><input type="checkbox" ng-model="allChecked" ng-change="toggleCheckedAll()"/></th>
+        <th>图片</th>
+        <th>宝贝名称</th>
+        <th class="text-right">价格</th>
+        <th>
+            <a class="normal-link" href="" ng-click="changeOrder()">
+                下架时间 <i class="icon-caret-down" ng-class="{'icon-caret-up': (order=='desc')}"></i>
+            </a>
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr ng-repeat="item in items" ng-class="{success:item.include}">
+        <td><input type="checkbox" ng-model="item.checked" ng-change="toggleChecked()"/></td>
+        <td><img ng-src="{{item.picUrl}}_sum.jpg" ng-if="item.picUrl"/></td>
+        <td>{{ item.title }}</td>
+        <td class="text-right">{{ item.price }}</td>
+        <td>{{ item.delistTime | date:'yyyy-MM-dd HH:ss' }}</td>
+        <td>
+            <a ng-if="!item.include" href="" ng-click="setInclude(item, true)">加入固定推荐</a>
+            <a ng-if="item.include" href="" ng-click="setInclude(item, false)">取消固定推荐</a>
+        </td>
+    </tr>
+</table>
+<div class="pagination-wrap clearfix">
+    <pagination class="pull-right" items="items" pager-click="jumpPage(page)"></pagination>
+</div>
+</div>

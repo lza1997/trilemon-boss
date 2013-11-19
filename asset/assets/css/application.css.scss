@@ -141,3 +141,10 @@ footer {
 footer .container {
   margin: 40px auto;
 }
+
+.normal-link {
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
+}
