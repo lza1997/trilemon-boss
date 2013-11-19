@@ -5,7 +5,10 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlExc
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.shelf.ShelfException;
+import com.trilemon.boss.shelf.ShelfUtils;
+import com.trilemon.boss.shelf.model.Plan;
 import com.trilemon.boss.shelf.model.PlanSetting;
+import com.trilemon.boss.shelf.model.dto.ShelfItem;
 import com.trilemon.boss.shelf.service.PlanService;
 import com.trilemon.boss.shelf.service.PlanSettingService;
 import com.trilemon.commons.web.Page;
@@ -108,16 +111,42 @@ public class PlanSettingController {
     }
 
     /**
+     * 计划对应的宝贝
+     *
+     * @param key
+     * @param page
+     * @param planSettingId
+     * @return
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{planSettingId}/items", method = RequestMethod.GET)
+    public Page<ShelfItem> indexItem(String key,
+                                     @RequestParam(defaultValue = "1") int page,
+                                     @PathVariable Long planSettingId) throws TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException {
+        Page<Plan> plans = planSettingService.paginatePlans(56912708L, planSettingId, key, page, 2);
+        Page<ShelfItem> itemPage = Page.empty();
+        itemPage.setTotalSize(plans.getTotalSize());
+        itemPage.setPageSize(plans.getPageSize());
+        itemPage.setPageNum(plans.getPageNum());
+        itemPage.setItems(ShelfUtils.planToItem(plans.getItems()));
+        return itemPage;
+    }
+
+    /**
      * 排除宝贝
      *
      * @param numIid
      * @return
      */
-    @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{planSettingId}/items/{numIid}/exclude", method = RequestMethod.POST)
     @ResponseBody
-    public String excludeItem(@PathVariable Long planSettingId,@PathVariable Long numIid) {
-        planService.excludeItem(56912708L,planSettingId,numIid);
-        return "";
+    public ShelfItem excludeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
+        planService.excludeItem(56912708L, planSettingId, numIid);
+        Plan plan = planSettingService.getPlan(56912708L, numIid);
+        return ShelfUtils.planToItem(plan);
     }
 
     /**
@@ -126,11 +155,12 @@ public class PlanSettingController {
      * @param numIid
      * @return
      */
-    @RequestMapping(value = "/{planSettingId}/exclude-item/{numIid}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{planSettingId}/items/{numIid}/exclude", method = RequestMethod.DELETE)
     @ResponseBody
-    public String includeItem(@PathVariable Long planSettingId,@PathVariable Long numIid) {
-        planService.includeItem(56912708L,planSettingId,numIid);
-        return "";
+    public ShelfItem includeItem(@PathVariable Long planSettingId, @PathVariable Long numIid) {
+        planService.includeItem(56912708L, planSettingId, numIid);
+        Plan plan = planSettingService.getPlan(56912708L, numIid);
+        return ShelfUtils.planToItem(plan);
     }
 
     /**

@@ -2,6 +2,8 @@ package com.trilemon.boss.shelf;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.TreeMultiset;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.shelf.model.Plan;
 import com.trilemon.boss.shelf.model.PlanSetting;
@@ -51,6 +53,17 @@ public class ShelfUtils {
         });
     }
 
+    public static List<Item> getItems(List<Item> items, Collection<Long> numIids) {
+        List<Item> filterItems = Lists.newArrayList();
+
+        for (Item item : items) {
+            if (numIids.contains(item.getNumIid())) {
+                filterItems.add(item);
+            }
+        }
+        return filterItems;
+    }
+
     public static List<Plan> getPlans(List<Plan> plans, Collection<Long> numIids) {
         List<Plan> filerPlans = Lists.newArrayList();
 
@@ -71,13 +84,28 @@ public class ShelfUtils {
     public static List<ShelfItem> planToItem(List<Plan> plans) {
         List<ShelfItem> items = Lists.newArrayList();
         for (Plan plan : plans) {
-            ShelfItem item = new ShelfItem();
-            item.setTitle(plan.getItemTitle());
-            item.setNumIid(plan.getItemNumIid());
-            item.setPicUrl(plan.getItemPicUrl());
-            item.setExclude(plan.getStatus().equals(ShelfConstants.PLAN_STATUS_EXCLUDED));
-            items.add(item);
+            items.add(planToItem(plan));
         }
         return items;
+    }
+
+    public static ShelfItem planToItem(Plan plan) {
+        ShelfItem item = new ShelfItem();
+        item.setTitle(plan.getItemTitle());
+        item.setNumIid(plan.getItemNumIid());
+        item.setPicUrl(plan.getItemPicUrl());
+        item.setExclude(plan.getStatus().equals(ShelfConstants.PLAN_STATUS_EXCLUDED));
+        return item;
+    }
+
+    public static Multiset<Integer> getItemDelistDayOfWeekNum(List<Item> items) {
+        Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
+        for (Item item : items) {
+            if (null != item.getDelistTime()) {
+                DateTime delistDateTime = new DateTime(item.getDelistTime());
+                dayOfWeekNum.add(delistDateTime.getDayOfWeek());
+            }
+        }
+        return dayOfWeekNum;
     }
 }

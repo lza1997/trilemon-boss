@@ -3,39 +3,33 @@
  */
 define(function(require, exports, module) {
 
-    var FilterController = ['$scope', 'REST', '$routeParams', function($scope, REST, $routeParams) {
+    var FilterController = ['$scope', 'PlanItem', '$routeParams', '$location', function($scope, PlanItem, $routeParams, $location) {
 
-        $scope.items = [];
-        $scope.lastSearchKey = '';  // 上一次搜索的关键词
-        getItems($scope); // 初始化时取第一页数据
+        $scope.searchKey = $routeParams.key;  // 上一次搜索的关键词
+        getItems(); // 初始化时取第一页数据
 
         // 搜索
         $scope.search = function() {
-            getItems($scope, {key: $scope.searchKey});
-            $scope.lastSearchKey = $scope.searchKey;
+            getItems({key: $scope.searchKey, page: 1});
         };
 
         // 处理分页
         $scope.jumpPage = function(page) {
-            getItems($scope, {page: page, key: $scope.lastSearchKey});
+            getItems({page: page});
         };
 
         // 排除宝贝
         $scope.setExclude = function(item, flag) {
-            item.exclude = flag;
-            var method = flag ? 'post' : 'remove';
-            var planSetting = REST.PLAN_SETTING.one($routeParams.id);
-            planSetting.one('exclude-item', item.numIid)[method]();
+            var method = flag ? '$exclude' : '$include';
+            item[method]({id: $routeParams.id});
         };
 
         // 获取宝贝列表，可以传入关键词、页码等
-        function getItems($scope, options) {
-            options = options || {};
-            options.pid = $routeParams.id;
+        function getItems(options) {
+            options = _.defaults(options || {}, $routeParams);
+            $location.search(_.omit(options, 'id'));
 
-            REST.ITEM.getList(options).then(function(data) {
-                $scope.items = data;
-            });
+            $scope.items = PlanItem.query(options);
         }
     }];
 

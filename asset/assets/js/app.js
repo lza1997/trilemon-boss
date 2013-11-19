@@ -8,7 +8,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
 
     $routeProvider
         .when('/shelf/plan-setting/new', shelf.routeFor('shelf.newPlanSetting'))
-        .when('/shelf/plan-setting/:id/filter', shelf.routeFor('shelf.filter'))
+        .when('/shelf/plan-setting/:id/filter', shelf.routeFor('shelf.filter', {reloadOnSearch: false}))
         .when('/shelf/plan-setting/:id/edit', shelf.routeFor('shelf.editPlanSetting'))
         .when('/shelf/plan-setting/:id/distribution', shelf.routeFor('shelf.distribution'))
         .when('/shelf/plan-setting', shelf.routeFor('shelf.indexPlanSetting', {reloadOnSearch: false}))

@@ -9,7 +9,6 @@ define(function(require, exports, module) {
         var PLAN_URL = BASE_URL + '/:id';
         var CHART_URL = BASE_URL + '/chart';
         var PAUSE_URL = BASE_URL + '/pause';
-        var EXCLUDE_URL = PLAN_URL + '/exclude-item/:itemId';
 
         var PlanSetting = $resource(PLAN_URL, {id: '@id'}, {
             update: {
@@ -22,14 +21,6 @@ define(function(require, exports, module) {
             resume: {
                 method: 'DELETE',
                 url: PAUSE_URL
-            },
-            exclude: {
-                method: 'POST',
-                url: EXCLUDE_URL
-            },
-            include: {
-                method: 'DELETE',
-                url: EXCLUDE_URL
             },
             chart: {
                 method: 'GET',

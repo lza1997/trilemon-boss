@@ -12,6 +12,7 @@ define(function(require, exports, module) {
         },
         factories: {
             'PlanSetting': require('./service/plan-setting'),
+            'PlanItem': require('./service/plan-item'),
             'PlanSettingForm': require('./service/plan-setting-form'),
             'Confirm': require('./service/confirm')
         },
