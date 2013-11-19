@@ -2,12 +2,16 @@
  * 计划
  */
 define(function(require, exports, module) {
-    module.exports = ['$resource', '$http', function($resource, $http) {
-        var URL = '/shelf/plan-settings/:id';
-        var CHART_URL = '/shelf/plan-settings/chart';
-        var PAUSE_URL = URL + '/pause';
+    var paginateResource = require('../../common/paginate-resource');
 
-        var PlanSetting = $resource(URL, {id: '@id'}, {
+    module.exports = ['$resource', '$http', function($resource, $http) {
+        var BASE_URL = '/shelf/plan-settings';
+        var PLAN_URL = BASE_URL + '/:id';
+        var CHART_URL = BASE_URL + '/chart';
+        var PAUSE_URL = BASE_URL + '/pause';
+        var EXCLUDE_URL = PLAN_URL + '/exclude-item/:itemId';
+
+        var PlanSetting = $resource(PLAN_URL, {id: '@id'}, {
             update: {
                 method: 'PUT'
             },
@@ -18,6 +22,14 @@ define(function(require, exports, module) {
             resume: {
                 method: 'DELETE',
                 url: PAUSE_URL
+            },
+            exclude: {
+                method: 'POST',
+                url: EXCLUDE_URL
+            },
+            include: {
+                method: 'DELETE',
+                url: EXCLUDE_URL
             },
             chart: {
                 method: 'GET',
@@ -32,20 +44,10 @@ define(function(require, exports, module) {
             query: {
                 method: 'GET',
                 isArray: true,
-                transformResponse: $http.defaults.transformResponse.concat([function(data) {
-                    var items = data.items;
-                    items.totalPage = data.pages;
-                    items.currPage = data.pageNum;
-                    return items;
-                }]),
+                transformResponse: paginateResource.createTransform($http),
                 interceptor: {
-                    response: function(response) {
-                        response.resource.totalPage = response.data.totalPage;
-                        response.resource.currPage = response.data.currPage;
-                        return response.resource;
-                    }
+                    response: paginateResource.responseInterceptor
                 }
-
             }
         });
 

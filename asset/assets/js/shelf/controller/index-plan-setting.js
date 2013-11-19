@@ -2,7 +2,7 @@
  * 计划列表
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'REST', 'PlanSetting', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, REST, PlanSetting, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
+    var IndexController = ['$scope', 'PlanSetting', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, PlanSetting, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
         // 初始化
         $scope.init = function() {
             $scope.flashSuccess = Flash.success();
@@ -13,13 +13,7 @@ define(function(require, exports, module) {
         // 暂停或继续
         $scope.pause = function(planSetting, flag) {
             var method = flag ? '$pause' : '$resume';
-            planSetting[method](function() {
-
-            });
-            //            var method = flag ? 'post' : 'remove';
-            //            planSetting.one('pause')[method]().then(function(status) {
-            //                planSetting.status = parseInt(status, 10);
-            //            });
+            planSetting[method]();
         };
 
         // 删除计划
