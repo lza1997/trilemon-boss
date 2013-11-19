@@ -2,11 +2,11 @@
  * 设置规则
  */
 define(function(require, exports, module) {
-    var EditRuleController = ['$scope', 'Setting', 'SellerCatFactory', '$location', '$q', function($scope, Setting, SellerCatFactory, $location, $q) {
+    var EditRuleController = ['$scope', 'ShowcaseSetting', 'SellerCatFactory', '$location', '$q', function($scope, ShowcaseSetting, SellerCatFactory, $location, $q) {
 
         var SellerCat = SellerCatFactory.create('/showcase/sellercats');
 
-        $scope.setting = Setting.get();
+        $scope.setting = ShowcaseSetting.get();
         $scope.sellerCats = SellerCat.query();
 
         $q.all([$scope.setting.$promise, $scope.sellerCats.$promise]).then(function() {
@@ -19,14 +19,6 @@ define(function(require, exports, module) {
                 $scope.setting.includeSellerCids = selectedCids.join(',');
             }, true);
         });
-
-        // 设置规则开启
-        $scope.setPaused = function(flag) {
-            var method = flag ? 'pause' : 'resume';
-            Setting[method](function(data) {
-                $scope.setting = data;
-            });
-        };
 
         // 保存
         $scope.save = function() {

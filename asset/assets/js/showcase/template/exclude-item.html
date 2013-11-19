@@ -6,15 +6,22 @@
 
 <form class="form-inline wrap" role="form" ng-submit="search()">
     <div class="form-group">
-        <select class="form-control" ng-model="category" ng-options="c.value as c.name for c in categories"></select>
+        <select class="form-control" ng-model="category">
+            <option value="onsale">出售中的宝贝</option>
+            <option value="inventory">仓库中的宝贝</option>
+        </select>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" placeholder="宝贝标题、编号" size="30" ng-model="searchKey"/>
     </div>
     <button type="submit" class="btn btn-primary">搜 索</button>
 </form>
+<div>
+    <button class="btn btn-default" ng-disabled="items.length == 0" ng-click="setExcludeAll(true)">全部排除</button>
+    <button class="btn btn-default" ng-disabled="items.length == 0" ng-click="setExcludeAll(false)">全部取消</button>
+</div>
 <table class="table table-hover">
-    <col/>
+    <col width="5%"/>
     <col width="15%"/>
     <col/>
     <col width="10%"/>
@@ -22,7 +29,7 @@
     <col width="15%"/>
     <thead>
     <tr>
-        <th><input type="checkbox"/></th>
+        <th><input type="checkbox" ng-model="allChecked" ng-disabled="items.length == 0" ng-change="toggleCheckedAll()"  /></th>
         <th>图片</th>
         <th>宝贝名称</th>
         <th class="text-right">价格</th>
@@ -31,7 +38,7 @@
     </tr>
     </thead>
     <tr ng-repeat="item in items" ng-class="{danger:item.exclude}">
-        <td><input type="checkbox"/></td>
+        <td><input type="checkbox" ng-model="item.checked" ng-change="toggleChecked()" /></td>
         <td><img ng-src="{{item.picUrl}}_sum.jpg"/></td>
         <td>{{ item.title }}</td>
         <td class="text-right">{{ item.price }}</td>
@@ -48,5 +55,4 @@
 </table>
 <div class="pagination-wrap clearfix">
     <pagination class="pull-right" items="items" pager-click="jumpPage(page)"></pagination>
-</div>
 </div>

@@ -1,7 +1,7 @@
 <div class="row" ng-show="setting.paused">
     <div class="well col-lg-5">
         自动橱窗推荐管理尚未开启
-        <button class="btn btn-primary" ng-click="setPaused(false)">立刻开启</button>
+        <button class="btn btn-primary" ng-click="setting.$resume()">立刻开启</button>
     </div>
 </div>
 <form class="form-horizontal rule-form" name="form" novalidate ng-show="!setting.paused && sellerCats.$resolved">
@@ -74,7 +74,7 @@
     <div class="form-group form-action">
         <div class="col-md-offset-1 col-md-10">
             <button class="btn btn-primary btn-lg" ng-click="save()">保存</button>
-            <button class="btn btn-default btn-lg" ng-click="setPaused(true)">关闭自动推荐</button>
+            <button class="btn btn-default btn-lg" ng-click="setting.$pause()">关闭自动推荐</button>
         </div>
     </div>
 </form>

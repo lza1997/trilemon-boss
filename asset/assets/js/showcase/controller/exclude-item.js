@@ -2,52 +2,53 @@
  * 排除宝贝
  */
 define(function(require, exports, module) {
-    var ExcludeItemController = ['$scope', 'REST', 'SHOWCASE_ITEM_STATUS', function($scope, REST, SHOWCASE_ITEM_STATUS) {
-        $scope.items = [];
-        $scope.lastSearchKey = '';  // 上一次搜索的关键词
-        $scope.categories = [
-            {name: '出售中的宝贝', value: 'onsale'},
-            {name: '仓库中的宝贝', value: 'inventory'}
-        ];
-        $scope.category = 'onsale';
+    var ExcludeItemController = ['$scope', 'ShowcaseSettingItem', '$location', '$routeParams', function($scope, ShowcaseSettingItem, $location, $routeParams) {
+        $scope.searchKey = $routeParams.key;
+        $scope.category = $routeParams.category || 'onsale';
+
+        // 全选与单独选择的联动
+        $scope.toggleCheckedAll = function() {
+            _.each($scope.items, function(item) {
+                item.checked = $scope.allChecked;
+            });
+        };
+        $scope.toggleChecked = function() {
+            $scope.allChecked = _.all($scope.items, function(item) {
+                return item.checked;
+            });
+        };
+
+        // 设置排除
+        $scope.setExclude = ShowcaseSettingItem.setExclude;
+
+        $scope.setExcludeAll = function(flag) {
+            var items = _.where($scope.items, {checked: true});
+            if(items.length > 0){
+                ShowcaseSettingItem.setExclude(items, flag);
+            }
+        };
 
         // 切换下拉框即请求数据，初始化时也会执行一次
-        $scope.$watch('category', function() {
-            getItems($scope);
+        $scope.$watch('category', function(value) {
+            getItems({'category': value, page: 1});
         });
-
         // 搜索
         $scope.search = function() {
-            getItems($scope, {key: $scope.searchKey});
-            $scope.lastSearchKey = $scope.searchKey;
+            getItems({'key': $scope.searchKey, page: 1});
         };
-
-        // 排除或取消排除
-        $scope.setExclude = function(item, flag) {
-            item.exclude = flag;
-            var method = flag ? 'post' : 'remove';
-            REST.SHOWCASE_SETTING_ITEM.one(item.numIid).one('exclude')[method]();
-        };
-
+        // 分页
         $scope.jumpPage = function(page) {
-            getItems($scope, {
-                page: page,
-                key: $scope.lastSearchKey
-            });
+            getItems({'page': page});
         };
 
         // 获取宝贝列表，可以传入关键词、页码等
-        function getItems($scope, options) {
-            options = _.extend(options || {}, {category: $scope.category});
+        function getItems(options) {
+            // 合并 URL 上的参数，并将新参数再次写入 URL
+            options = _.defaults(options, $routeParams);
+            $location.search(options);
 
-            REST.SHOWCASE_SETTING_ITEM.getList(options).then(function(data) {
-                // 服务器数据再组装
-                data = _.map(data, function(item) {
-                    item.exclude = item.status === SHOWCASE_ITEM_STATUS.EXCLUDE;
-                    return _.extend(item.item, _.omit(item, 'item'));
-                });
-                $scope.items = data;
-            });
+            $scope.items = ShowcaseSettingItem.query(options);
+            $scope.allChecked = false;
         }
     }];
 

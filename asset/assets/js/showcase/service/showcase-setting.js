@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         var URL = '/showcase/setting';
         var PAUSE_URL = URL + '/pause';
 
-        var Setting = $resource(URL, null, {
+        var ShowcaseSetting = $resource(URL, null, {
             save: {
                 method: 'PUT'
             },
@@ -20,6 +20,6 @@ define(function(require, exports, module) {
             }
         });
 
-        return Setting;
+        return ShowcaseSetting;
     }];
 });

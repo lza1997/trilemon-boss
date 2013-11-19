@@ -15,8 +15,9 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/shelf', {redirectTo: '/shelf/plan-setting'})
 
         .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
-        .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase'))
-        .when('/showcase/exclude-item', showCase.routeFor('showcase.excludeItem'))
+        .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase', {reloadOnSearch: false}))
+        .when('/showcase/exclude-item', showCase.routeFor('showcase.excludeItem', {reloadOnSearch: false}))
+        .when('/showcase/include-item', showCase.routeFor('showcase.includeItem', {reloadOnSearch: false}))
         .when('/showcase', {redirectTo: '/showcase/setting/edit'})
 
         .otherwise({redirectTo: '/shelf'});

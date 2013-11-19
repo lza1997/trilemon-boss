@@ -47,6 +47,7 @@
     <script src="${asset}/js/common/seller-cat-factory.js"></script>
     <script src="${asset}/js/common/controller/nav.js"></script>
     <script src="${asset}/js/common/constant.js"></script>
+    <script src="${asset}/js/common/http-method-override.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />

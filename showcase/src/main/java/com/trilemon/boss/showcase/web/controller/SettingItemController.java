@@ -3,7 +3,6 @@ package com.trilemon.boss.showcase.web.controller;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
-import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.model.dto.ShowcaseItem;
 import com.trilemon.boss.showcase.service.SettingService;
@@ -38,36 +37,19 @@ public class SettingItemController {
         }
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/sb", method = RequestMethod.GET)
-    public Page<ShowcaseItem> index2(String key, @RequestParam(defaultValue = "1") Integer page, String category, String order) throws
-            ShowcaseException,
-            TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException, TaobaoAccessControlException {
-        if ("asc".equals(order)) {
-            order = ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME;
-        } else {
-            order = ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME;
-        }
-        // 库存中还是销售中
-        if ("inventory".equals(category)) {
-            return settingService.paginateInventoryItems(56912708L, key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
-        } else {
-            return settingService.paginateOnSaleItems(56912708L, key, null, page, 2, false, order);
-        }
-    }
-
     /**
      * 排除宝贝
      *
      * @param numIid
      * @return
      */
-    @RequestMapping(value = "/{numIid}/exclude", method = RequestMethod.POST)
+    @RequestMapping(value = "/exclude", method = RequestMethod.POST)
     @ResponseBody
-    public String excludeItem(@PathVariable Long numIid) throws ShowcaseException {
-        settingService.addExcludeItem(56912708L, numIid);
-        return "ok";
+    public String excludeItem(@RequestBody ExcludeJSONParam excludeParam) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
+        for (Long numIid : excludeParam.numIids) {
+            settingService.addExcludeItem(56912708L, numIid);
+        }
+        return "";
     }
 
     /**
@@ -76,10 +58,19 @@ public class SettingItemController {
      * @param numIid
      * @return
      */
-    @RequestMapping(value = "/{numIid}/exclude", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/exclude", method = RequestMethod.DELETE)
     @ResponseBody
-    public String includeItem(@PathVariable Long numIid) throws ShowcaseException {
-        settingService.deleteExcludeItem(56912708L, numIid);
-        return "ok";
+    public String includeItem(@RequestParam Long[] numIids) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
+        for (Long numIid : numIids) {
+            settingService.deleteExcludeItem(56912708L, numIid);
+        }
+        return "";
+    }
+
+    /**
+     * 辅助用于接收 JSON Request
+     */
+    public static class ExcludeJSONParam{
+        public Long[] numIids;
     }
 }

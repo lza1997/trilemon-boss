@@ -2,32 +2,27 @@
  * 橱窗宝贝
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'REST', function($scope, REST) {
-        $scope.items = [];
-        $scope.lastSearchKey = '';  // 上一次搜索的关键词
-        getItems($scope); // 初始化时取第一页数据
+    var IndexController = ['$scope', 'ShowcaseItem', 'ShowcaseSetting', '$location', '$routeParams', function($scope, ShowcaseItem, ShowcaseSetting, $location, $routeParams) {
 
-//        REST.SHOWCASE_SETTING.get().then(function(data) {
-//            // TODO
-//        });
+        $scope.searchKey = $routeParams.key;
+        getItems(); // 初始化时取第一页数据
+        $scope.setting = ShowcaseSetting.get();
 
         // 搜索
         $scope.search = function() {
-            getItems($scope, {key: $scope.searchKey});
-            $scope.lastSearchKey = $scope.searchKey;
+            getItems({key: $scope.searchKey, page: 1});
         };
 
+        // 分页
         $scope.jumpPage = function(page) {
-            getItems($scope, {page: page, key: $scope.lastSearchKey});
+            getItems({page: page});
         };
 
         // 获取宝贝列表，可以传入关键词、页码等
-        function getItems($scope, options) {
-            options = options || {};
-
-            REST.SHOWCASE_ITEM.getList(options).then(function(data) {
-                $scope.items = data;
-            });
+        function getItems(options) {
+            options = _.defaults(options || {}, $routeParams);
+            $location.search(options);
+            $scope.items = ShowcaseItem.query(options);
         }
     }];
 
