@@ -50,7 +50,7 @@ public class UpdatePlanJob extends AbstractQueueService<Long> {
     public void process(Long userId) throws Exception {
         List<PlanSetting> planSettings = planSettingMapper.selectByUserId(userId);
         for (PlanSetting planSetting : planSettings) {
-            planService.updatePlan(planSetting.getId());
+            planService.updatePlan(planSetting.getUserId(),planSetting.getId());
         }
     }
 

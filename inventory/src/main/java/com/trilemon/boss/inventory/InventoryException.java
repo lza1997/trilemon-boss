@@ -12,4 +12,8 @@ public class InventoryException extends Exception {
     public InventoryException(String msg,Exception e) {
         super(msg,e);
     }
+
+    public InventoryException(Exception e) {
+        super(e);
+    }
 }

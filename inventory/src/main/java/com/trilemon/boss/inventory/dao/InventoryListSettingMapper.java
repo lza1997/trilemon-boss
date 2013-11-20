@@ -34,6 +34,8 @@ public interface InventoryListSettingMapper {
 
     InventoryListSetting selectByUserId(Long userId);
 
-    List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> of);
+    List<Long> paginateUserIdByStatus(@Param("hitUserId") Long hitUserId,
+                                      @Param("limit") Integer limit,
+                                      @Param("statusList") ImmutableList<Byte> statusList);
 
 }

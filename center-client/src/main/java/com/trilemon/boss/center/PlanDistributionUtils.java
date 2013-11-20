@@ -1,25 +1,40 @@
 package com.trilemon.boss.center;
 
+import com.google.common.base.Function;
 import com.google.common.collect.*;
-import com.google.common.math.IntMath;
-import com.taobao.api.domain.Item;
 import com.trilemon.boss.center.model.PlanDistribution;
 import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.LocalTimeInterval;
+import com.trilemon.commons.NumberUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
-import java.math.RoundingMode;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * 安排计划的公共类
+ * <p/>
+ * 1. TimeDistribution item在哪些周天和时间段有分布 * <p/> 2. NumDistribution item在哪些周天和时间段有分布
+ * <p/>
+ * 3. ItemDistributionTable item分布矩阵
+ * <p/>
+ * 4. ItemDistributionInstanceTable 生成一个item分布实例
+ *
  * @author kevin
  */
 public class PlanDistributionUtils {
-    public static String getDefaultDistribution() {
+    /**
+     * 得到默认的计划分布（周一到周七，每天9点到23点）
+     *
+     * @return json 串
+     */
+    public static String getDefaultTimeDistributionJson() {
         Map<String, Map<String, Boolean>> map = Maps.newTreeMap();
         for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
             Map<String, Boolean> hourMap = Maps.newTreeMap();
@@ -32,13 +47,24 @@ public class PlanDistributionUtils {
     }
 
     /**
-     * 根据宝贝获取时间分布。
+     * 从 time dist json 获取TimeDistribution
+     *
+     * @param timeDistributionJson
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, Map<String, Boolean>> getTimeDistribution(String timeDistributionJson) throws Exception {
+        return (Map<String, Map<String, Boolean>>) JsonMapper.nonEmptyMapper().fromJson2Map(timeDistributionJson);
+    }
+
+    /**
+     * 根据宝贝获取时间周天小时分布。
      *
      * @param planDistributions
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, Integer> getDistribution(Iterable<? extends PlanDistribution>
-                                                                                     planDistributions) {
+    public static Table<Integer, LocalTimeInterval, Integer> getNumDistributionTable(
+            Iterable<? extends PlanDistribution> planDistributions) {
         Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
         for (PlanDistribution planDistribution : planDistributions) {
             DateTime adjustDay = new DateTime(planDistribution.getPlanAdjustDay());
@@ -58,22 +84,38 @@ public class PlanDistributionUtils {
     }
 
     /**
-     * @param distribution
+     * 根据宝贝获取时间周天分布。
+     *
+     * @param planDistributions
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, Integer> parseAndFillZeroDistribution(String distribution) throws Exception {
+    public static HashMultiset<Integer> getDayOfWeekNumDist(
+            Iterable<? extends PlanDistribution> planDistributions) {
+        HashMultiset<Integer> dist = HashMultiset.create();
+        for (PlanDistribution planDistribution : planDistributions) {
+            DateTime adjustDay = new DateTime(planDistribution.getPlanAdjustDay());
+            int dayOfWeek = adjustDay.getDayOfWeek();
+            dist.add(dayOfWeek);
+        }
+        return dist;
+    }
+
+    /**
+     * 解析宝贝的分布并且用0填充个数
+     *
+     * @param timeDistributionJson 时间分布json
+     * @return
+     */
+    public static Table<Integer, LocalTimeInterval, Integer> getEmptyNumDistributionTable
+    (String timeDistributionJson) throws Exception {
         Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
-        Map<String, Map<String, Boolean>> distributionMap = (Map<String, Map<String, Boolean>>) JsonMapper.nonEmptyMapper().fromJson2Map(distribution);
-        for (Map.Entry<String, Map<String, Boolean>> day : distributionMap.entrySet()) {
+        Map<String, Map<String, Boolean>> timeDistribution = getTimeDistribution(timeDistributionJson);
+        for (Map.Entry<String, Map<String, Boolean>> day : timeDistribution.entrySet()) {
             for (Map.Entry<String, Boolean> hour : day.getValue().entrySet()) {
-                if (true == hour.getValue()) {
-                    LocalTime startTime = new LocalTime(Integer.valueOf(hour.getKey()), 0);
-                    LocalTime endTime;
-                    if (Integer.valueOf(hour.getKey()) == 23) {
-                        endTime = new LocalTime(0, 0);
-                    } else {
-                        endTime = new LocalTime(Integer.valueOf(hour.getKey()) + 1, 0);
-                    }
+                if (hour.getValue()) {
+                    int hourOfDay = Integer.valueOf(hour.getKey());
+                    LocalTime startTime = new LocalTime(hourOfDay, 0);
+                    LocalTime endTime = new LocalTime((hourOfDay + 1) == 24 ? 0 : (hourOfDay + 1), 0);
                     table.put(Integer.valueOf(day.getKey()), new LocalTimeInterval(startTime, endTime), 0);
                 }
             }
@@ -82,69 +124,28 @@ public class PlanDistributionUtils {
     }
 
     /**
-     * 从周一到周日，每日的9点到23点平均安排宝贝上下架数量
+     * 寻找分布矩阵中最小的单元格
      *
-     * @param itemNum 宝贝数量
+     * @param numDistributionTable
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, Integer> getDefaultDistribution(int itemNum) {
-        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
-        int cellDivision = IntMath.divide(itemNum, 7 * (23 - 9), RoundingMode.CEILING);
-
-        for (int hourOfDay = 9; hourOfDay <= 22; hourOfDay++) {
-            for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
-                if (itemNum == 0) {
-                    break;
-                }
-                LocalTime startHour = new LocalTime(hourOfDay, 0);
-                LocalTime endHour = new LocalTime(hourOfDay + 1, 0);
-                table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), cellDivision);
-                itemNum -= cellDivision;
-            }
-            if (itemNum == 0) {
-                break;
-            }
-        }
-        return table;
-    }
-
-    public static Table<Integer, LocalTimeInterval, Integer> getDefaultZeroFilledDistribution() {
-        Table<Integer, LocalTimeInterval, Integer> table = TreeBasedTable.create();
-        for (int dayOfWeek = 1; dayOfWeek <= 7; dayOfWeek++) {
-            for (int hourOfDay = 9; hourOfDay <= 23; hourOfDay++) {
-                LocalTime startHour = new LocalTime(hourOfDay, 0);
-                int endHourInt = hourOfDay + 1;
-                LocalTime endHour = new LocalTime(endHourInt == 24 ? 0 : endHourInt, 0);
-                table.put(dayOfWeek, new LocalTimeInterval(startHour, endHour), 0);
-            }
-        }
-
-        return table;
-    }
-
-    public static Table.Cell<Integer, LocalTimeInterval, Integer> findMinCellOfDistribution(Table<Integer,
-            LocalTimeInterval, Integer> distribution) {
-        Integer minCellValue = Integer.MAX_VALUE;
+    public static Table.Cell<Integer, LocalTimeInterval, Integer> findMinCell(Table<Integer,
+            LocalTimeInterval, Integer> numDistributionTable) {
+        //最小单元格
         Table.Cell<Integer, LocalTimeInterval, Integer> minCell = null;
-        Table.Cell<Integer, LocalTimeInterval, Integer> currentCell = null;
-        Set<Table.Cell<Integer, LocalTimeInterval, Integer>> cells = distribution.cellSet();
-        for (LocalTimeInterval column : distribution.columnKeySet()) {
-            for (Integer row : distribution.rowKeySet()) {
-                for (Table.Cell<Integer, LocalTimeInterval, Integer> c : cells) {
-                    if (c.getRowKey() == row && c.getColumnKey().equals(column)) {
-                        currentCell = c;
-                        break;
-                    }
-                }
-                if (null == currentCell) {
-                    continue;
-                }
-                if ((null == currentCell.getValue()) || currentCell.getValue() == 0) {
-                    return currentCell;
-                } else {
-                    if (currentCell.getValue() < minCellValue) {
-                        minCellValue = currentCell.getValue();
-                        minCell = currentCell;
+        //先搜索小时，在搜索天
+        for (LocalTimeInterval column : numDistributionTable.columnKeySet()) {
+            for (Integer row : numDistributionTable.rowKeySet()) {
+                for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : numDistributionTable.cellSet()) {
+                    if (cell.getRowKey() == row && cell.getColumnKey() == column) {
+                        minCell = cell;
+                        if (cell.getValue() == 0) {
+                            return cell;
+                        } else {
+                            if (cell.getValue() < minCell.getValue()) {
+                                minCell = cell;
+                            }
+                        }
                     }
                 }
             }
@@ -152,24 +153,13 @@ public class PlanDistributionUtils {
         return minCell;
     }
 
-    public static Table<Integer, LocalTimeInterval, Integer> getNewItemDistribution(int itemNum,
-                                                                                    Table<Integer, LocalTimeInterval, Integer> planDistribution,
-                                                                                    Table<Integer, LocalTimeInterval, Integer> currDistribution) {
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = TreeBasedTable.create();
-        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = combineDistribution(planDistribution, currDistribution);
-        for (int index = 0; index < itemNum; index++) {
-            Table.Cell<Integer, LocalTimeInterval, Integer> minCell = findMinCellOfDistribution(combinedDistribution);
-            //对新的安排表赋值
-            Integer newCellValue = newItemDistribution.get(minCell.getRowKey(), minCell.getColumnKey());
-            newItemDistribution.put(minCell.getRowKey(), minCell.getColumnKey(), null == newCellValue ? 1 : (newCellValue += 1));
-            //更新全计划表
-            Integer cellValue = combinedDistribution.get(minCell.getRowKey(), minCell.getColumnKey());
-            combinedDistribution.put(minCell.getRowKey(), minCell.getColumnKey(), null == cellValue ? 1 : (cellValue += 1));
-        }
-        return newItemDistribution;
-    }
-
-    public static Table<Integer, LocalTimeInterval, Integer> combineDistribution(Table<Integer, LocalTimeInterval,
+    /**
+     * 合并多个分布矩阵
+     *
+     * @param distributions
+     * @return
+     */
+    public static Table<Integer, LocalTimeInterval, Integer> combineNumDistributionTable(Table<Integer, LocalTimeInterval,
             Integer>... distributions) {
         Table<Integer, LocalTimeInterval, Integer> combinedDistribution = TreeBasedTable.create();
         for (Table<Integer, LocalTimeInterval, Integer> distribution : distributions) {
@@ -188,38 +178,184 @@ public class PlanDistributionUtils {
     }
 
     /**
-     * 把宝贝平均的安排到计划时间段
+     * 获取时间分布中的小时，从小到大排序.
      *
-     * @param items
-     * @param distribution
+     * @param timeDistribution
      * @return
      */
-    public static Table<Integer, LocalTimeInterval, List<Item>> assignItems(List<Item> items, Table<Integer,
-            LocalTimeInterval, Integer> distribution) {
-        Table<Integer, LocalTimeInterval, List<Item>> assignTable = TreeBasedTable.create();
-        int fromIndex = 0;
-        for (Table.Cell<Integer, LocalTimeInterval, Integer> cell : distribution.cellSet()) {
-            assignTable.put(cell.getRowKey(), cell.getColumnKey(),
-                    items.subList(fromIndex, fromIndex + cell.getValue()));
-            fromIndex += cell.getValue();
+    public static List<Integer> getSortedHoursTimeDist(Map<String, Map<String, Boolean>> timeDistribution) {
+        Set<String> hourStrSet = Sets.newHashSet();
+        for (Map<String, Boolean> value : timeDistribution.values()) {
+            hourStrSet.addAll(value.keySet());
         }
-        return assignTable;
+        List<Integer> hours = Lists.transform(Lists.newArrayList(hourStrSet), new Function<String, Integer>() {
+            @Nullable
+            @Override
+            public Integer apply(@Nullable String input) {
+                return Integer.valueOf(NumberUtils.toNumberString(input));
+            }
+        });
+
+        List<Integer> sortedHours = Ordering.natural().sortedCopy(hours);
+        return sortedHours;
     }
 
     /**
-     * 获取商品的下架分布日期（周几）分布
-     * @param items
+     * 判断指定时间是否在允许的时间分布表中
+     *
+     * @param timeDistribution
+     * @param day
+     * @param hour
      * @return
      */
-    public static Multiset<Integer> getItemDelistDayOfWeekNum(List<Item> items) {
-        Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
-        for (Item item : items) {
-            if (null != item.getDelistTime()) {
-                DateTime delistDateTime = new DateTime(item.getDelistTime());
-                dayOfWeekNum.add(delistDateTime.getDayOfWeek());
+    public static boolean isInTimeDist(Map<String, Map<String, Boolean>> timeDistribution, String day, String hour) {
+        Map<String, Boolean> hoursMap = timeDistribution.get(day);
+        if (null != hoursMap) {
+            Boolean cell = hoursMap.get(hour);
+            if (null != cell && cell) {
+                return true;
             }
         }
-        return dayOfWeekNum;
+        return false;
     }
 
+    /**
+     * @param items
+     * @param timeDistribution
+     * @param startDay
+     * @param startHour
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> Table<DateTime, LocalTimeInterval, List<T>> getItemDistributionInstanceTable(List<T> items,
+                                                                                                   Map<String, Map<String, Boolean>> timeDistribution,
+                                                                                                   DateTime startDay,
+                                                                                                   int startHour) throws Exception {
+        checkArgument(startHour <= 23, "startHour should lg 23");
+
+        Table<DateTime, LocalTimeInterval, List<T>> resultTable = TreeBasedTable.create();
+        if (CollectionUtils.isEmpty(items)) {
+            return resultTable;
+        }
+        //已经处理分配的 item 指针
+        int itemIndex = 0;
+
+        //给起始时间分配一个宝贝
+        Map<String, Boolean> startHourDist = timeDistribution.get(String.valueOf(startDay.getDayOfWeek()));
+        if (null != startHourDist) {
+            //给起始小时分配一个宝贝（如果不存在就向后寻找一个最近的小时）
+            for (int hourIndex = startHour; hourIndex <= 23; hourIndex++) {
+                if (null != startHourDist.get(String.valueOf(hourIndex)) && startHourDist.get(String.valueOf(hourIndex))) {
+                    LocalTime startHourLocalTime = new LocalTime(hourIndex, 0);
+                    LocalTime endHourLocalTime = new LocalTime((hourIndex + 1) == 24 ? 0 : (hourIndex + 1), 0);
+                    resultTable.put(startDay, new LocalTimeInterval(startHourLocalTime, endHourLocalTime), items.subList(itemIndex, 1));
+                    itemIndex++;
+                    break;
+                }
+            }
+        }
+
+        //然后从第二天开始分配item
+        int startDayOfWeek = startDay.getDayOfWeek();
+        int currDayOfWeek = startDayOfWeek + 1;
+        List<Integer> hours = getSortedHoursTimeDist(timeDistribution);
+        while (true) {
+            for (Integer hour : hours) {
+                //然后从第二天开始循环到一下周今天分配宝贝
+                for (int dayIndex = currDayOfWeek; dayIndex <= currDayOfWeek + 7; dayIndex++) {
+                    int dayOfWeek = (dayIndex > 7) ? (dayIndex - 7) : dayIndex;
+                    if (isInTimeDist(timeDistribution, String.valueOf(dayOfWeek), String.valueOf(hour))) {
+                        if (itemIndex >= items.size()) {
+                            return resultTable;
+                        }
+
+                        LocalTime startHourLocalTime = new LocalTime(hour, 0);
+                        LocalTime endHourLocalTime = new LocalTime((hour + 1) == 24 ? 0 : (hour + 1), 0);
+                        LocalTimeInterval localTimeInterval = new LocalTimeInterval(startHourLocalTime, endHourLocalTime);
+                        //判断日期
+                        DateTime day;
+                        if (dayOfWeek >= startDayOfWeek) {
+                            day = startDay.plusDays(dayOfWeek - startDayOfWeek);
+                        } else {
+                            day = startDay.plusDays(7 - startDayOfWeek + dayOfWeek);
+                        }
+                        List<T> cellItems = resultTable.get(day, localTimeInterval);
+                        if (CollectionUtils.isNotEmpty(cellItems)) {
+                            cellItems.add(items.get(itemIndex));
+                        } else {
+                            resultTable.put(day, new LocalTimeInterval(startHourLocalTime, endHourLocalTime),
+                                   Lists.newArrayList(items.get(itemIndex)));
+                        }
+                        itemIndex++;
+                    }
+                }
+            }
+            if (itemIndex >= items.size()) {
+                break;
+            }
+        }
+        return resultTable;
+    }
+
+    /**
+     * 把宝贝平均的安排到计划时间段
+     * <p/>
+     * 1. 首先指定的周天的某个小时开始安排1个宝贝
+     * <p/>
+     * 2. 然后从第二天开始（到下一个周的今天的startHour前一个小时结束）从最早的时间开始平均安排剩下的宝贝
+     *
+     * @param items
+     * @param timeDistributionJson
+     * @param startDay             起始安排的周天
+     * @param startHour            起始安排的小时
+     * @param <T>
+     * @return
+     */
+    public static <T> Table<DateTime, LocalTimeInterval, List<T>> getItemDistributionInstanceTable(List<T> items,
+                                                                                                   String timeDistributionJson,
+                                                                                                   DateTime startDay,
+                                                                                                   int startHour) throws Exception {
+        Map<String, Map<String, Boolean>> timeDistribution = getTimeDistribution(timeDistributionJson);
+        return getItemDistributionInstanceTable(items, timeDistribution, startDay, startHour);
+    }
+
+    /**
+     * 加入新的 item，得到新加入的 item 的时间分布表
+     *
+     * @param timeDistribution
+     * @param plans
+     * @param items
+     * @param startDay
+     * @param startHour
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> Table<DateTime, LocalTimeInterval, List<T>> getNewNumDistributionInstanceTable(String
+                                                                                                             timeDistribution,
+                                                                                                     List<? extends PlanDistribution> plans,
+                                                                                                     List<T> items,
+                                                                                                     DateTime startDay,
+                                                                                                     int startHour) throws Exception {
+        Table<Integer, LocalTimeInterval, Integer> numDistributionTable = getNumDistributionTable(plans);
+        Table<Integer, LocalTimeInterval, Integer> emptyNumDistributionTable = getEmptyNumDistributionTable(timeDistribution);
+        Table<Integer, LocalTimeInterval, Integer> combinedDistribution = combineNumDistributionTable(numDistributionTable, emptyNumDistributionTable);
+
+        Table<Integer, LocalTimeInterval, List<T>> newNumDistTable = TreeBasedTable.create();
+        for (T t : items) {
+            Table.Cell<Integer, LocalTimeInterval, Integer> minCell = findMinCell(combinedDistribution);
+            List<T> addedItems = newNumDistTable.get(minCell.getRowKey(), minCell.getColumnKey());
+            if (null == addedItems) {
+                addedItems = Lists.newArrayList();
+                newNumDistTable.put(minCell.getRowKey(), minCell.getColumnKey(), addedItems);
+            }
+            addedItems.add(t);
+            //更新全计划表
+            Integer cellValue = combinedDistribution.get(minCell.getRowKey(), minCell.getColumnKey());
+            combinedDistribution.put(minCell.getRowKey(), minCell.getColumnKey(), null == cellValue ? 1 : (cellValue += 1));
+        }
+
+        return getItemDistributionInstanceTable(items, timeDistribution, startDay, startHour);
+    }
 }

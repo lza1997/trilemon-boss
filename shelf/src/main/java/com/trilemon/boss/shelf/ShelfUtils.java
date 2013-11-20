@@ -53,17 +53,6 @@ public class ShelfUtils {
         });
     }
 
-    public static List<Item> getItems(List<Item> items, Collection<Long> numIids) {
-        List<Item> filterItems = Lists.newArrayList();
-
-        for (Item item : items) {
-            if (numIids.contains(item.getNumIid())) {
-                filterItems.add(item);
-            }
-        }
-        return filterItems;
-    }
-
     public static List<Plan> getPlans(List<Plan> plans, Collection<Long> numIids) {
         List<Plan> filerPlans = Lists.newArrayList();
 
@@ -98,6 +87,12 @@ public class ShelfUtils {
         return item;
     }
 
+    /**
+     * 获取商品的下架分布日期（周几）分布
+     *
+     * @param items
+     * @return
+     */
     public static Multiset<Integer> getItemDelistDayOfWeekNum(List<Item> items) {
         Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
         for (Item item : items) {

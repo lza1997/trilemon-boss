@@ -11,7 +11,6 @@
     <result column="status" property="status" jdbcType="TINYINT" />
     <result column="distribution" property="distribution" jdbcType="VARCHAR" />
     <result column="list_type" property="listType" jdbcType="TINYINT" />
-    <result column="list_interval" property="listInterval" jdbcType="INTEGER" />
     <result column="last_plan_time" property="lastPlanTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
@@ -76,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, user_id, include_seller_cids, include_banners, exclude_item_num_iids, auto_add_new_item, 
-    status, distribution, list_type, list_interval, last_plan_time, add_time, upd_time
+    status, distribution, list_type, last_plan_time, add_time, upd_time
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.inventory.model.InventoryListSettingExample" >
     select
@@ -99,8 +98,8 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from inventory_list_setting
-    where id = #{id,jdbcType=BIGINT}
+    DELETE FROM inventory_list_setting
+    WHERE id = #{id,jdbcType=BIGINT}
   </delete>
   <delete id="deleteByExample" parameterType="com.trilemon.boss.inventory.model.InventoryListSettingExample" >
     delete from inventory_list_setting
@@ -109,18 +108,19 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
-    insert into inventory_list_setting (id, user_id, include_seller_cids, 
+    INSERT INTO inventory_list_setting (id, user_id, include_seller_cids,
       include_banners, exclude_item_num_iids, auto_add_new_item, 
       status, distribution, list_type, 
-      list_interval, last_plan_time, add_time, 
-      upd_time)
-    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeSellerCids,jdbcType=VARCHAR}, 
+      last_plan_time, add_time, upd_time
+      )
+    VALUES (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{includeSellerCids,jdbcType=VARCHAR},
       #{includeBanners,jdbcType=VARCHAR}, #{excludeItemNumIids,jdbcType=VARCHAR}, #{autoAddNewItem,jdbcType=TINYINT}, 
       #{status,jdbcType=TINYINT}, #{distribution,jdbcType=VARCHAR}, #{listType,jdbcType=TINYINT}, 
-      #{listInterval,jdbcType=INTEGER}, #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, 
-      #{updTime,jdbcType=TIMESTAMP})
+      #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
+  <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" useGeneratedKeys="true"
+          keyProperty="id">
     insert into inventory_list_setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -149,9 +149,6 @@
       </if>
       <if test="listType != null" >
         list_type,
-      </if>
-      <if test="listInterval != null" >
-        list_interval,
       </if>
       <if test="lastPlanTime != null" >
         last_plan_time,
@@ -190,9 +187,6 @@
       </if>
       <if test="listType != null" >
         #{listType,jdbcType=TINYINT},
-      </if>
-      <if test="listInterval != null" >
-        #{listInterval,jdbcType=INTEGER},
       </if>
       <if test="lastPlanTime != null" >
         #{lastPlanTime,jdbcType=TIMESTAMP},
@@ -241,9 +235,6 @@
       <if test="record.listType != null" >
         list_type = #{record.listType,jdbcType=TINYINT},
       </if>
-      <if test="record.listInterval != null" >
-        list_interval = #{record.listInterval,jdbcType=INTEGER},
-      </if>
       <if test="record.lastPlanTime != null" >
         last_plan_time = #{record.lastPlanTime,jdbcType=TIMESTAMP},
       </if>
@@ -269,7 +260,6 @@
       status = #{record.status,jdbcType=TINYINT},
       distribution = #{record.distribution,jdbcType=VARCHAR},
       list_type = #{record.listType,jdbcType=TINYINT},
-      list_interval = #{record.listInterval,jdbcType=INTEGER},
       last_plan_time = #{record.lastPlanTime,jdbcType=TIMESTAMP},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       upd_time = #{record.updTime,jdbcType=TIMESTAMP}
@@ -304,9 +294,6 @@
       <if test="listType != null" >
         list_type = #{listType,jdbcType=TINYINT},
       </if>
-      <if test="listInterval != null" >
-        list_interval = #{listInterval,jdbcType=INTEGER},
-      </if>
       <if test="lastPlanTime != null" >
         last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
       </if>
@@ -320,8 +307,8 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
-    update inventory_list_setting
-    set user_id = #{userId,jdbcType=BIGINT},
+    UPDATE inventory_list_setting
+    SET user_id = #{userId,jdbcType=BIGINT},
       include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
       include_banners = #{includeBanners,jdbcType=VARCHAR},
       exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
@@ -329,10 +316,67 @@
       status = #{status,jdbcType=TINYINT},
       distribution = #{distribution,jdbcType=VARCHAR},
       list_type = #{listType,jdbcType=TINYINT},
-      list_interval = #{listInterval,jdbcType=INTEGER},
       last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       upd_time = #{updTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    WHERE id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="updateByUserIdSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
+        update inventory_list_setting
+        <set >
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="includeSellerCids != null" >
+                include_seller_cids = #{includeSellerCids,jdbcType=VARCHAR},
+            </if>
+            <if test="includeBanners != null" >
+                include_banners = #{includeBanners,jdbcType=VARCHAR},
+            </if>
+            <if test="excludeItemNumIids != null" >
+                exclude_item_num_iids = #{excludeItemNumIids,jdbcType=VARCHAR},
+            </if>
+            <if test="autoAddNewItem != null" >
+                auto_add_new_item = #{autoAddNewItem,jdbcType=TINYINT},
+            </if>
+            <if test="status != null" >
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="distribution != null" >
+                distribution = #{distribution,jdbcType=VARCHAR},
+            </if>
+            <if test="listType != null" >
+                list_type = #{listType,jdbcType=TINYINT},
+            </if>
+            <if test="lastPlanTime != null" >
+                last_plan_time = #{lastPlanTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null" >
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updTime != null" >
+                upd_time = #{updTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from inventory_list_setting
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="paginateUserIdByStatus" resultType="long" parameterType="map">
+        select user_id
+        from inventory_list_setting
+        where user_id > #{hitUserId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        group by user_id
+        order by user_id asc
+        LIMIT 0, #{limit,jdbcType=INTEGER}
+    </select>
 </mapper>

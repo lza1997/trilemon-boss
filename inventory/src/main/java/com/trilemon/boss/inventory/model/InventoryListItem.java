@@ -4,7 +4,7 @@ import com.trilemon.boss.center.model.PlanDistribution;
 
 import java.util.Date;
 
-public class InventoryListItem implements PlanDistribution{
+public class InventoryListItem  implements PlanDistribution{
     private Long id;
 
     private Long inventoryListSettingId;
