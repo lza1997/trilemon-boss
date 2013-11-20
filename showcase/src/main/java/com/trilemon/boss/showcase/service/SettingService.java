@@ -468,4 +468,41 @@ public class SettingService {
             return showcaseItem;
         }
     }
+
+    /**
+     * 获取全部固定推荐宝贝
+     *
+     * @param userId
+     * @return
+     * @throws TaobaoAccessControlException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     */
+    public List<ShowcaseItem> getIncludeShowcaseItems(Long userId) throws TaobaoAccessControlException,
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        Setting setting = settingMapper.selectByUserId(userId);
+
+        if (null == setting) {
+            return null;
+        }
+
+        final List<Long> includeNumIids = Lists.newArrayList();
+        if (StringUtils.isNotBlank(setting.getIncludeSellerCids())) {
+            includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
+        }
+
+        List<Item> items = taobaoApiShopService.getItemsOneByOne(userId, includeNumIids, ShowcaseConstants.ITEM_FIELDS);
+
+        List<ShowcaseItem> showcaseItems = Lists.transform(items, new Function<Item, ShowcaseItem>() {
+            @Nullable
+            @Override
+            public ShowcaseItem apply(@Nullable Item input) {
+                ShowcaseItem showcaseItem = new ShowcaseItem();
+                showcaseItem.setItem(input);
+                showcaseItem.setStatus(ShowcaseConstants.ITEM_INCLUDE);
+                return showcaseItem;
+            }
+        });
+        return showcaseItems;
+    }
 }

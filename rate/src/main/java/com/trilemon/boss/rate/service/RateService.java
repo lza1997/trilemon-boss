@@ -158,7 +158,7 @@ public class RateService {
                     continue;
                 }
                 if (filterBuyerByRegisterDay(rateSetting, buyer)) {
-                    logger.info("filter by registerDay[] buyerNick[{}] userId[{}]",
+                    logger.info("filter by registerDay[{}] buyerNick[{}] userId[{}]",
                             DateUtils.format(buyer.getCreated(), DateUtils.yyyy_MM_dd_HH_mm_ss),
                             buyer.getNick(),
                             rateSetting.getUserId());

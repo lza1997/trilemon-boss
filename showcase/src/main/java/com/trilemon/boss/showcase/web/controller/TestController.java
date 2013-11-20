@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * @author kevin
  */
@@ -208,5 +210,12 @@ public class TestController {
     public ShowcaseItem getShowcaseItem(@RequestParam() Long numIid) throws
             TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         return settingService.getShowcaseItem(56912708L, numIid);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getIncludeShowcaseItems", method = RequestMethod.GET)
+    public List<ShowcaseItem> getIncludeShowcaseItems() throws
+            TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
+        return settingService.getIncludeShowcaseItems(56912708L);
     }
 }
