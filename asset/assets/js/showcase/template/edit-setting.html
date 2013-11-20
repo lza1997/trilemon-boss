@@ -47,21 +47,22 @@
                     排除
                 </label>
                 <label>
-                    <input type="number" ng-disabled="!setting.isExcludeItemDelistingWithin" min="1" max="5"
-                           ng-model="setting.excludeItemDelistingWithin" class="form-control input-sm" name="xx"/>
-                    分钟内要下架的商宝贝{{form.xx.$invalid}}
+                    <input type="number" ng-disabled="!setting.isExcludeItemDelistingWithin" required min="0"
+                           ng-model="setting.excludeItemDelistingWithin" class="form-control input-sm" name="excludeItemDelistingWithin"/>
+                    分钟内要下架的商宝贝
                 </label>
+                <label class="error" ng-show="form.excludeItemDelistingWithin.$invalid"><i class="icon-exclamation-sign"></i> 请输入大于0的数字</label>
             </div>
-            <label class="error" ng-show="form.xx.$invalid"><i class="icon-exclamation-sign"></i> budui</label>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" ng-model="setting.isExcludeItemInventoryLt"/>
                     排除库存低于
                 </label>
                 <label>
-                    <input type="number" ng-disabled="!setting.isExcludeItemInventoryLt"
-                           ng-model="setting.excludeItemInventoryLt" class="form-control input-sm" min="1" max="100"/> 的宝贝
+                    <input type="number" ng-disabled="!setting.isExcludeItemInventoryLt" required min="1"
+                           ng-model="setting.excludeItemInventoryLt" class="form-control input-sm" name="excludeItemInventoryLt"/> 的宝贝
                 </label>
+                <label class="error" ng-show="form.excludeItemInventoryLt.$invalid"><i class="icon-exclamation-sign"></i> 请输入大于1的数字</label>
             </div>
             <div class="checkbox">
                 <label>
