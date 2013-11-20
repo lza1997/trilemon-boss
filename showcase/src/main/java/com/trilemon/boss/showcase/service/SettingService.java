@@ -472,13 +472,15 @@ public class SettingService {
     /**
      * 获取全部固定推荐宝贝
      *
+     *
      * @param userId
      * @return
      * @throws TaobaoAccessControlException
      * @throws TaobaoEnhancedApiException
      * @throws TaobaoSessionExpiredException
      */
-    public List<ShowcaseItem> getIncludeShowcaseItems(Long userId) throws TaobaoAccessControlException,
+    public Page<ShowcaseItem> getIncludeShowcaseItems(Long userId, int pageNum,
+                                                      int pageSize) throws TaobaoAccessControlException,
             TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         Setting setting = settingMapper.selectByUserId(userId);
 
@@ -490,8 +492,11 @@ public class SettingService {
         if (StringUtils.isNotBlank(setting.getIncludeSellerCids())) {
             includeNumIids.addAll(Collections3.getLongList(setting.getIncludeItemNumIids()));
         }
+        int offset = (pageNum - 1) * pageSize;
 
-        List<Item> items = taobaoApiShopService.getItemsOneByOne(userId, includeNumIids, ShowcaseConstants.ITEM_FIELDS);
+        List<Long> pageOfIncludeNumIids = includeNumIids.subList(offset, Math.min(offset + pageSize,
+                includeNumIids.size()));
+        List<Item> items = taobaoApiShopService.getItemsOneByOne(userId, pageOfIncludeNumIids, ShowcaseConstants.ITEM_FIELDS);
 
         List<ShowcaseItem> showcaseItems = Lists.transform(items, new Function<Item, ShowcaseItem>() {
             @Nullable
@@ -503,6 +508,6 @@ public class SettingService {
                 return showcaseItem;
             }
         });
-        return showcaseItems;
+        return Page.create(includeNumIids.size(),pageNum,pageSize,showcaseItems);
     }
 }
