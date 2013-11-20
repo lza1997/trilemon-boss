@@ -176,6 +176,12 @@ public class PlanSettingController {
         return planSettingService.getShelfStatus(56912708L).getListItemNum();
     }
 
+    /**
+     * 获取计划的上架时间安排，用于调整时间
+     * @param planSettingId
+     * @param resp
+     * @throws IOException
+     */
     @RequestMapping(value = "/{planSettingId}/distribution", method = RequestMethod.GET)
     public void getDistribution(@PathVariable Long planSettingId, HttpServletResponse resp) throws IOException {
         PlanSetting planSetting = planSettingService.getPlanSetting(56912708L, planSettingId);
@@ -183,6 +189,15 @@ public class PlanSettingController {
         resp.getWriter().write(planSetting.getDistribution());
     }
 
+    /**
+     * 修改计划的上架时间安排
+     * @param planSettingId
+     * @param distribution
+     * @throws TaobaoSessionExpiredException
+     * @throws ShelfException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoAccessControlException
+     */
     @ResponseBody
     @RequestMapping(value = "/{planSettingId}/distribution", method = RequestMethod.PUT)
     public void updateDistribution(@PathVariable Long planSettingId, @RequestBody Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, ShelfException, TaobaoEnhancedApiException, TaobaoAccessControlException {

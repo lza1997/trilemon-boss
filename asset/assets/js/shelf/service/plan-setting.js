@@ -7,8 +7,9 @@ define(function(require, exports, module) {
     module.exports = ['$resource', '$http', function($resource, $http) {
         var BASE_URL = '/shelf/plan-settings';
         var PLAN_URL = BASE_URL + '/:id';
+        var PAUSE_URL = PLAN_URL + '/pause';
+        var DISTR_URL = PLAN_URL + '/distribution';
         var CHART_URL = BASE_URL + '/chart';
-        var PAUSE_URL = BASE_URL + '/pause';
 
         var PlanSetting = $resource(PLAN_URL, {id: '@id'}, {
             update: {
@@ -21,6 +22,14 @@ define(function(require, exports, module) {
             resume: {
                 method: 'DELETE',
                 url: PAUSE_URL
+            },
+            getDistribution: {
+                method: 'GET',
+                url: DISTR_URL
+            },
+            saveDistribution: {
+                method: 'PUT',
+                url: DISTR_URL
             },
             chart: {
                 method: 'GET',
