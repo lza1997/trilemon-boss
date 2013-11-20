@@ -30,7 +30,6 @@ define(function(require, exports, module) {
 
         // 设置排除
         $scope.setExclude = Item.setExclude;
-
         $scope.setExcludeAll = function(flag) {
             var items = _.where($scope.items, {checked: true});
             if (items.length > 0) {
@@ -38,10 +37,10 @@ define(function(require, exports, module) {
             }
         };
 
-        // 切换下拉框即请求数据，初始化时也会执行一次
-        $scope.$watch('category', function(value) {
-            getItems({'category': value, page: 1});
-        });
+        // 切换下拉框
+        $scope.changeCategory = function(value) {
+            getItems({'category': $scope.category, page: 1});
+        };
         // 搜索
         $scope.search = function() {
             getItems({'key': $scope.searchKey, page: 1});

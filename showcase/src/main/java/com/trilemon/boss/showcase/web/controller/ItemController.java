@@ -26,26 +26,31 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<ShowcaseItem> index(String key, @RequestParam(defaultValue = "1") Integer page, String category, String order) throws
+    public Page<ShowcaseItem> index(String key, @RequestParam(defaultValue = "1") Integer page, String category, String order, String tab) throws
             ShowcaseException,
             TaobaoSessionExpiredException,
             TaobaoEnhancedApiException, TaobaoAccessControlException {
-        if ("asc".equals(order)) {
-            order = ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME;
+        // tab 是固定推荐还是全部宝贝
+        if ("include".equals(tab)) {
+            return settingService.getIncludeShowcaseItems(56912708L, page, 2);
         } else {
-            order = ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME;
+            if ("asc".equals(order)) {
+                order = ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME;
+            } else {
+                order = ShowcaseConstants.DESC_ORDER_BY_DELIST_TIME;
+            }
+            // 库存中还是销售中
+            if ("inventory".equals(category)) {
+                return settingService.paginateInventoryItems(56912708L, key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
+            } else {
+                return settingService.paginateOnSaleItems(56912708L, key, null, page, 2, false, order);
+            }
         }
-        // 库存中还是销售中
-        if ("inventory".equals(category)) {
-            return settingService.paginateInventoryItems(56912708L, key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
-        } else {
-            return settingService.paginateOnSaleItems(56912708L, key, null, page, 2, false, order);
-        }
+
     }
 
     /**
      * 设置固定推荐或取消
-     *
      */
     @RequestMapping(value = "/include", method = RequestMethod.PUT)
     @ResponseBody
