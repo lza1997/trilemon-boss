@@ -2,6 +2,7 @@ package com.trilemon.boss.inventory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.inventory.model.InventoryListItem;
 import com.trilemon.boss.inventory.model.InventoryListSetting;
@@ -10,9 +11,11 @@ import com.trilemon.commons.Languages;
 import com.trilemon.commons.LocalTimeInterval;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.joda.time.DateTime;
+import org.joda.time.Minutes;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.trilemon.boss.inventory.InventoryConstants.LIST_STATUS_WAITING_ADJUST;
@@ -42,7 +45,8 @@ public class InventoryUtils {
         return filerListItems;
     }
 
-    public static InventoryListItem buildListItem(InventoryListSetting setting, InventoryItem inventoryItem,
+    public static InventoryListItem buildListItem(InventoryListSetting setting,
+                                                  InventoryItem inventoryItem,
                                                   DateTime planListingDay,
                                                   LocalTimeInterval hourInterval) throws
             InventoryException {
@@ -108,5 +112,25 @@ public class InventoryUtils {
                 return input.getItem();
             }
         });
+    }
+
+    public static Map<Item, InventoryItem> getInventoryItemMap(List<InventoryItem> inventoryItems) {
+        Map<Item, InventoryItem> map = Maps.newHashMap();
+        for (InventoryItem inventoryItem : inventoryItems) {
+            map.put(inventoryItem.getItem(), inventoryItem);
+        }
+        return map;
+    }
+
+    public static DateTime getFirstAdjustDay() {
+        DateTime now = DateTime.now();
+        DateTime tomorrow = now.plusDays(1).withTimeAtStartOfDay();
+        //第一次调整是周几
+        DateTime firstAdjustDay = now;
+        //如果离第二天小于10分钟，就把首次调整计划安排到第二天
+        if (Minutes.minutesBetween(now, tomorrow).getMinutes() < 10) {
+            firstAdjustDay = now.plusDays(1);
+        }
+        return firstAdjustDay;
     }
 }

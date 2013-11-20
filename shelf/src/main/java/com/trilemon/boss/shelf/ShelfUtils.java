@@ -2,6 +2,8 @@ package com.trilemon.boss.shelf;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.TreeMultiset;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.shelf.model.Plan;
 import com.trilemon.boss.shelf.model.PlanSetting;
@@ -79,5 +81,21 @@ public class ShelfUtils {
             items.add(item);
         }
         return items;
+    }
+    /**
+     * 获取商品的下架分布日期（周几）分布
+     *
+     * @param items
+     * @return
+     */
+    public static Multiset<Integer> getItemDelistDayOfWeekNum(List<Item> items) {
+        Multiset<Integer> dayOfWeekNum = TreeMultiset.create();
+        for (Item item : items) {
+            if (null != item.getDelistTime()) {
+                DateTime delistDateTime = new DateTime(item.getDelistTime());
+                dayOfWeekNum.add(delistDateTime.getDayOfWeek());
+            }
+        }
+        return dayOfWeekNum;
     }
 }

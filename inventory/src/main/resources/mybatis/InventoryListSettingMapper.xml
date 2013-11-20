@@ -119,7 +119,8 @@
       #{lastPlanTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" >
+  <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListSetting" useGeneratedKeys="true"
+          keyProperty="id">
     insert into inventory_list_setting
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
-import com.trilemon.boss.inventory.InventoryConstants;
 import com.trilemon.boss.inventory.InventoryException;
 import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.boss.inventory.service.InventoryListService;
@@ -16,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
+
+import static com.trilemon.boss.inventory.InventoryConstants.BANNER_NEVER_ON_SHELF;
+import static com.trilemon.boss.inventory.InventoryConstants.BANNER_REGULAR_SHELVED;
 
 /**
  * @author kevin
@@ -36,7 +38,7 @@ public class TestController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public void create() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        inventoryListService.createSetting(56912708L, ImmutableList.of(InventoryConstants.BANNER_REGULAR_SHELVED));
+        inventoryListService.createSetting(56912708L, ImmutableList.of(BANNER_REGULAR_SHELVED,BANNER_NEVER_ON_SHELF));
     }
 
     @ResponseBody
@@ -63,8 +65,8 @@ public class TestController {
     @RequestMapping(value = "/updateIncludeBanners", method = RequestMethod.GET)
     public void updateIncludeBanners() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        inventoryListService.updateIncludeBanners(56912708L, ImmutableList.of(InventoryConstants.BANNER_REGULAR_SHELVED,
-                InventoryConstants.BANNER_NEVER_ON_SHELF));
+        inventoryListService.updateIncludeBanners(56912708L, ImmutableList.of(BANNER_REGULAR_SHELVED,
+                BANNER_NEVER_ON_SHELF));
     }
 
     @ResponseBody

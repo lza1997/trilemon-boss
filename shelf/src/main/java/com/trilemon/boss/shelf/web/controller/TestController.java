@@ -5,6 +5,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
+import com.trilemon.boss.center.PlanDistributionUtils;
 import com.trilemon.boss.center.web.auth.shiro.ShiroTaobaoAuthenticationToken;
 import com.trilemon.boss.infra.base.BaseConstants;
 import com.trilemon.boss.infra.base.client.BaseClient;
@@ -247,7 +248,7 @@ public class TestController {
         PlanSetting planSetting = new PlanSetting();
         planSetting.setAddTime(appService.getLocalSystemTime().toDate());
         planSetting.setAutoAddNewItems(true);
-        planSetting.setDistribution("test");
+        planSetting.setDistribution(PlanDistributionUtils.getDefaultTimeDistributionJson());
         planSetting.setDistributionType(ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO);
         planSetting.setExcludeItemNumIids("19491833743");
         planSetting.setIncludeSellerCids("791686717,809023016,804731967");

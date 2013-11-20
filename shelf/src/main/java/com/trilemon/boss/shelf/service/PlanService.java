@@ -12,6 +12,7 @@ import com.taobao.api.response.ItemUpdateDelistingResponse;
 import com.taobao.api.response.ItemUpdateListingResponse;
 import com.taobao.api.response.ItemsOnsaleGetResponse;
 import com.trilemon.boss.center.PlanDistributionUtils;
+import com.trilemon.boss.center.model.PlanDistribution;
 import com.trilemon.boss.infra.base.client.BaseClient;
 import com.trilemon.boss.infra.base.model.TaobaoSession;
 import com.trilemon.boss.infra.base.service.AppService;
@@ -46,9 +47,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -81,7 +80,8 @@ public class PlanService {
      *
      * @throws ShelfException
      */
-    public void updatePlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException, ShelfException {
+    public void updatePlan(Long userId, Long planSettingId) throws TaobaoSessionExpiredException,
+            TaobaoEnhancedApiException, TaobaoAccessControlException, ShelfException {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKey(planSettingId);
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
         //所有在售宝贝
@@ -144,22 +144,23 @@ public class PlanService {
             return;
         }
         List<Plan> validPlans = ShelfUtils.getPlans(runningPlans, existAndOnSaleItemNumIids);
-        Table<Integer, LocalTimeInterval, Integer> currDistribution = PlanDistributionUtils.getDistribution(validPlans);
-        //为新添宝贝安排具体的调整时间
-        Table<Integer, LocalTimeInterval, List<Item>> assignTable = avgAssignNewItems(newItems, planSetting,
-                currDistribution);
         //安排计划
-        List<Plan> plans = plan(planSetting, assignTable);
-
-        //为排除宝贝计划生成标志位
-        if (null != excludeItemNumIids) {
-            for (Plan plan : plans) {
-                if (Iterables.contains(excludeItemNumIids, plan.getItemNumIid())) {
-                    plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
+        try {
+            List<Plan> plans = getPlans4Update(planSetting, validPlans, newItems);
+            //为排除宝贝计划生成标志位
+            if (null != excludeItemNumIids) {
+                for (Plan plan : plans) {
+                    if (Iterables.contains(excludeItemNumIids, plan.getItemNumIid())) {
+                        plan.setStatus(ShelfConstants.PLAN_STATUS_EXCLUDED);
+                    }
                 }
             }
+            savePlan(planSetting.getId(), plans);
+            logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
+            savePlan(planSetting.getId(), plans);
+        } catch (Exception e) {
+            throw new ShelfException(e);
         }
-        savePlan(planSetting.getId(), plans);
     }
 
     /**
@@ -169,7 +170,7 @@ public class PlanService {
      * @throws ShelfException
      */
     public void createPlan(Long userId, PlanSetting planSetting) throws ShelfException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-        checkArgument(userId == planSetting.getUserId(), "userId[%s] is not equal with userId of planSetting[%s]",
+        checkArgument(userId.equals(planSetting.getUserId()), "userId[%s] is not equal with userId of planSetting[%s]",
                 userId, planSetting.getUserId());
         ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
         request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
@@ -178,10 +179,13 @@ public class PlanService {
 
         //获取已经计划的宝贝
         List<Long> usedItemNumIids = planMapper.selectNumIidsByUserId(userId);
-
-        List<Plan> plans = plan(planSetting, TopApiUtils.excludeItems(result.getItems(), usedItemNumIids));
-        logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
-        savePlan(planSetting.getId(), plans);
+        try {
+            List<Plan> plans = getPlans4Create(planSetting, TopApiUtils.excludeItems(result.getItems(), usedItemNumIids));
+            logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
+            savePlan(planSetting.getId(), plans);
+        } catch (Exception e) {
+            throw new ShelfException(e);
+        }
     }
 
     @Transactional
@@ -206,34 +210,52 @@ public class PlanService {
      * @param items       需要纳入计划的宝贝
      * @return 不会返回 null，如果没有计划，返回一个空的集合
      */
-    @NotNull
-    private List<Plan> plan(PlanSetting planSetting, List<Item> items) throws ShelfException {
-        Table<Integer, LocalTimeInterval, List<Item>> assignTable = null;
-        switch (planSetting.getDistributionType()) {
-            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
-                assignTable = autoAssignItems(items);
-                break;
-            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
-                assignTable = manualAssignItems(planSetting, items);
-                break;
-        }
-        if (null == assignTable) {
-            throw new ShelfException("plan for userId[" + planSetting.getUserId() + "], planSettingId[" + planSetting
-                    .getId() + "] error, assign table is null.");
-        }
-        return plan(planSetting, assignTable);
+    private List<Plan> getPlans4Create(PlanSetting planSetting, List<Item> items) throws Exception {
+        DateTime startDay = getPlanStartDay();
+        Table<DateTime, LocalTimeInterval, List<Item>> itemDistTable = PlanDistributionUtils
+                .getItemDistributionInstanceTable(items, planSetting.getDistribution(),
+                        startDay,
+                        startDay.getHourOfDay());
+        return plan(planSetting, itemDistTable);
     }
 
-    /**
-     * 将新加入宝贝纳入计划
-     *
-     * @param planSetting 计划设置
-     * @param assignTable 需要加入计划的宝贝的<周几，时段，宝贝>
-     * @return
-     */
-    public List<Plan> plan(PlanSetting planSetting, Table<Integer, LocalTimeInterval, List<Item>> assignTable) {
-        List<Plan> plans = Lists.newArrayList();
+    public List<Plan> getPlans4Update(PlanSetting setting, List<? extends PlanDistribution> assignedPlans,
+                                      List<Item> items)
+            throws Exception {
+        DateTime firstAdjustDay = getPlanStartDay();
+        Table<DateTime, LocalTimeInterval, List<Item>> itemDistTable = PlanDistributionUtils.getNewNumDistributionInstanceTable(setting.getDistribution(),
+                assignedPlans,
+                items,
+                firstAdjustDay,
+                firstAdjustDay.getHourOfDay());
+        if (null == itemDistTable) {
+            throw new ShelfException("userId[" + setting.getUserId() + "] assign table is null.");
+        }
+        return plan(setting, itemDistTable);
+    }
 
+    private List<Plan> plan(PlanSetting planSetting, Table<DateTime, LocalTimeInterval, List<Item>> itemDistTable) {
+        List<Plan> plans = Lists.newArrayList();
+        for (Table.Cell<DateTime, LocalTimeInterval, List<Item>> cell : itemDistTable.cellSet()) {
+            List<Item> items = cell.getValue();
+            if (CollectionUtils.isNotEmpty(items)) {
+                for (Item item : items) {
+                    try {
+                        Plan plan = buildPlan(planSetting,
+                                item,
+                                cell.getRowKey(),
+                                cell.getColumnKey());
+                        plans.add(plan);
+                    } catch (ShelfException e) {
+                        logger.error("plan error, planSettingId[" + planSetting.getId() + "]", e);
+                    }
+                }
+            }
+        }
+        return plans;
+    }
+
+    private DateTime getPlanStartDay() {
         DateTime now = appService.getLocalSystemTime();
         DateTime tomorrow = now.plusDays(1).withTimeAtStartOfDay();
         //第一次调整是周几
@@ -242,84 +264,9 @@ public class PlanService {
         if (Minutes.minutesBetween(now, tomorrow).getMinutes() < 10) {
             firstAdjustDay = now.plusDays(1);
         }
-        int firstAdjustDayOfWeek = firstAdjustDay.getDayOfWeek();
-        for (Map.Entry<Integer, Map<LocalTimeInterval, List<Item>>> assignDay : assignTable.rowMap().entrySet()) {
-            for (Map.Entry<LocalTimeInterval, List<Item>> assignHour : assignDay.getValue().entrySet()) {
-                LocalTimeInterval assignHourTimeInterval = assignHour.getKey();
-                List<Item> items = assignHour.getValue();
-                for (Item item : items) {
-                    int planListingDayOffset = assignDay.getKey() - firstAdjustDayOfWeek;
-                    if (planListingDayOffset < 0) {
-                        planListingDayOffset += 7;
-                    }
-                    DateTime planListingDateTime = firstAdjustDay.plusDays(planListingDayOffset);
-                    try {
-                        Plan plan = buildPlan(planSetting, item, planListingDateTime.withTimeAtStartOfDay(),
-                                assignHourTimeInterval);
-                        plans.add(plan);
-                    } catch (ShelfException e) {
-                        logger.error("createPlan error, planSettingID[" + planSetting.getId() + "]", e);
-                    }
-                }
-            }
-        }
-        return plans;
+        return firstAdjustDay;
     }
 
-    private Table<Integer, LocalTimeInterval, List<Item>> avgAssignNewItems(List<Item> items,
-                                                                            PlanSetting planSetting,
-                                                                            Table<Integer, LocalTimeInterval, Integer> currDistribution)
-            throws ShelfException {
-        Table<Integer, LocalTimeInterval, Integer> planDistribution = null;
-        switch (planSetting.getDistributionType()) {
-            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_AUTO:
-                planDistribution = PlanDistributionUtils.getDefaultZeroFilledDistribution();
-                break;
-            case ShelfConstants.PLAN_SETTING_DISTRIBUTE_TYPE_MANUAL:
-                try {
-                    planDistribution = PlanDistributionUtils.parseAndFillZeroDistribution(planSetting.getDistribution());
-                } catch (Exception e) {
-                    throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
-                }
-                break;
-        }
-        if (null == planDistribution) {
-            throw new ShelfException("planDistribution is null, itemSize[" + items.size() + "], " +
-                    "planSettingId[" + planSetting.getId() + "].");
-        }
-        Table<Integer, LocalTimeInterval, Integer> newItemDistribution = PlanDistributionUtils.getNewItemDistribution(items.size(),
-                planDistribution, currDistribution);
-        return PlanDistributionUtils.assignItems(items, newItemDistribution);
-    }
-
-    /**
-     * 平均分布商品
-     *
-     * @param items
-     * @return
-     */
-    private Table<Integer, LocalTimeInterval, List<Item>> autoAssignItems(List<Item> items) {
-        Table<Integer, LocalTimeInterval, Integer> distribution = PlanDistributionUtils.getDefaultDistribution(items.size());
-        return PlanDistributionUtils.assignItems(items, distribution);
-    }
-
-    /**
-     * 平均分布商品到用户指定的时段
-     *
-     * @param planSetting
-     * @param items
-     * @return
-     */
-    public Table<Integer, LocalTimeInterval, List<Item>> manualAssignItems(PlanSetting planSetting, List<Item> items) throws ShelfException {
-        Table<Integer, LocalTimeInterval, Integer> distribution;
-        try {
-            distribution = PlanDistributionUtils.parseAndFillZeroDistribution(planSetting
-                    .getDistribution());
-        } catch (Exception e) {
-            throw new ShelfException("parse distribution error, planSettingId[" + planSetting.getId() + "]", e);
-        }
-        return PlanDistributionUtils.assignItems(items, distribution);
-    }
 
     public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         DateTime now = appService.getLocalSystemTime();

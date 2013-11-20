@@ -65,12 +65,13 @@ public class InventoryListService {
             setting = new InventoryListSetting();
             setting.setUserId(userId);
             setting.setAutoAddNewItem(SETTING_AUTO_ADD_NEW_ITEM_ON);
-            setting.setDistribution(PlanDistributionUtils.getDefaultDistribution());
+            setting.setDistribution(PlanDistributionUtils.getDefaultTimeDistributionJson());
             setting.setStatus(SETTING_STATUS_WAITING_PLAN);
             setting.setListType(LIST_TYPE_AVG);
             setting.setIncludeBanners(COMMA_JOINER.join(banners));
             setting.setAddTime(appService.getLocalSystemTime().toDate());
             inventoryListSettingMapper.insertSelective(setting);
+            adjustService.createPlan(userId,setting);
         }
     }
 
