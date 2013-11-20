@@ -13,8 +13,13 @@ define(function(require, exports, module) {
             }
         });
 
-        $scope.searchKey = $routeParams.key;
-        $scope.category = $routeParams.category || 'onsale';
+        // 初始化
+        $scope.init = function() {
+            $scope.searchKey = $routeParams.key;
+            $scope.category = $routeParams.category || 'onsale';
+            getItems();
+        };
+
 
         // 全选与单独选择的联动
         $scope.toggleCheckedAll = function() {
@@ -39,7 +44,7 @@ define(function(require, exports, module) {
 
         // 切换下拉框
         $scope.changeCategory = function(value) {
-            getItems({'category': $scope.category, page: 1});
+            getItems({'category': value, page: 1});
         };
         // 搜索
         $scope.search = function() {
@@ -53,12 +58,14 @@ define(function(require, exports, module) {
         // 获取宝贝列表，可以传入关键词、页码等
         function getItems(options) {
             // 合并 URL 上的参数，并将新参数再次写入 URL
-            options = _.defaults(options, $routeParams);
+            options = _.defaults(options || {}, $routeParams);
             $location.search(options);
 
             $scope.items = Item.query(options);
             $scope.allChecked = false;
         }
+
+        $scope.init();
     }];
 
     ExcludeItemController.template = 'showcase/excludeItem';
