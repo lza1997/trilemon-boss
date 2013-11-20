@@ -230,9 +230,9 @@ public class InventoryListService {
         excludeItemNumIidsStr = (null == excludeItemNumIidsStr ? "" : excludeItemNumIidsStr);
         List<Long> excludeNumIids = Collections3.getLongList(excludeItemNumIidsStr);
         if (exclude) {
-            excludeNumIids.remove(numIid);
-        } else {
             excludeNumIids.add(numIid);
+        } else {
+            excludeNumIids.remove(numIid);
         }
 
         InventoryListSetting updateSetting = new InventoryListSetting();
