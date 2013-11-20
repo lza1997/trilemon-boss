@@ -22,7 +22,7 @@
                 </label>
                 <label ng-click="sellercat.toggleExpand()">
                     <span>{{sellercat.name}} ({{sellercat.itemNum}})</span>
-                    <span class="icon-caret-down"></span>
+                    <span ng-if="sellercat.hasChild" class="icon-caret-down"></span>
                 </label>
 
                 <div class="checkbox" ng-show="sellercat.expand"
