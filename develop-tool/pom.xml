@@ -19,7 +19,7 @@
                         <contextHandler implementation="org.eclipse.jetty.webapp.WebAppContext">
                             <contextPath>/base</contextPath>
                             <resourceBase>
-                                ${basedir}/../../Trilemon-360boss-Infrastructure/base/target/trilemon-boss-infra-base-1.0-SNAPSHOT
+                                ${basedir}/../../trilemon-boss-infra/base/target/trilemon-boss-infra-base-1.0-SNAPSHOT
                             </resourceBase>
                         </contextHandler>
 
