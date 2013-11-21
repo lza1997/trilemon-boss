@@ -26,7 +26,7 @@ angular.module('ajax-spinner', []).config(['$httpProvider', function($httpProvid
                         if (requestQueue.length === 0) {
                             $rootScope.ajaxing = false;
                         }
-                    }, config.requestStartAt + SHOW_AFTER + 700 - new Date().getTime());
+                    }, config.requestStartAt + SHOW_AFTER + 500 + 200 - new Date().getTime());
 
                     return response || $q.when(response);
                 }
