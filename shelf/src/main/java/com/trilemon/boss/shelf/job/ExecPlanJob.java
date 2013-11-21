@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author kevin
  */
-@Component
+//@Component
 public class ExecPlanJob extends AbstractQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(ExecPlanJob.class);
     @Autowired

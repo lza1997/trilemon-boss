@@ -86,7 +86,7 @@ public class PlanService {
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
         //清理过期宝贝
         planMapper.deleteByPlanSettingIdAndStatusAndPlanTime(planSettingId,
-                ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING),
+                ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST),
                 appService.getLocalSystemTime().withTimeAtStartOfDay().toDate(),
                 appService.getLocalSystemTime().toDate());
 
@@ -162,7 +162,6 @@ public class PlanService {
             }
             savePlan(planSetting.getId(), plans);
             logger.info("userId[{}] generate {} plans for planSettingId[{}].", userId, plans.size(), planSetting.getId());
-            savePlan(planSetting.getId(), plans);
         } catch (Exception e) {
             throw new ShelfException(e);
         }
