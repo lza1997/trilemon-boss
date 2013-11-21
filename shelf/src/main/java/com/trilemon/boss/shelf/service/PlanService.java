@@ -84,7 +84,8 @@ public class PlanService {
             TaobaoEnhancedApiException, TaobaoAccessControlException, ShelfException {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKey(planSettingId);
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
-        //清理过期宝贝 TODO 过期的宝贝用另外一种标识符代替，现在在界面上会并入「新加入宝贝」显示，参见issue-51
+        //清理过期宝贝
+        // TODO 过期的宝贝用另外一种标识符代替，现在在界面上会并入「新加入宝贝」显示，参见 issue-51。
         planMapper.deleteByPlanSettingIdAndStatusAndPlanTime(planSettingId,
                 ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST),
                 appService.getLocalSystemTime().withTimeAtStartOfDay().toDate(),
@@ -270,7 +271,6 @@ public class PlanService {
         }
         return firstAdjustDay;
     }
-
 
     public void execPlan(Long planSettingId) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         DateTime now = appService.getLocalSystemTime();
