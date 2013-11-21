@@ -473,7 +473,8 @@
             </foreach>
         </trim>
         and plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP}
-        and plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustEndTime,jdbcType=TIME}
+        and plan_adjust_start_time <![CDATA[ <= ]]> #{planAdjustTime,jdbcType=TIME}
+        and plan_adjust_end_time <![CDATA[ >= ]]> #{planAdjustTime,jdbcType=TIME}
     </select>
     <update id="updateByPlanSettingIdAndNumIid" parameterType="com.trilemon.boss.shelf.model.Plan">
         update plan
@@ -585,4 +586,22 @@
         where item_num_iid = #{itemNumIid,jdbcType=BIGINT}
         and user_id = #{userId,jdbcType=BIGINT}
     </update>
+    <delete id="deleteByPlanSettingIdAndStatusAndPlanTime" parameterType="map">
+        delete from plan
+        where plan_setting_id = #{planSettingId,jdbcType=BIGINT} and
+        <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="statusList" item="status" separator="or">
+                `status` = #{status,jdbcType=TINYINT}
+            </foreach>
+        </trim>
+        and
+        (
+          plan_adjust_day <![CDATA[ < ]]> #{planAdjustDay,jdbcType=TIMESTAMP}
+          or
+          (
+           plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP} and
+           plan_adjust_start_time <![CDATA[ <= ]]> #{planAdjustTime,jdbcType=TIME}
+          )
+        )
+    </delete>
 </mapper>

@@ -60,14 +60,14 @@ public class ExecPlanJob extends AbstractQueueService<Long> {
         long hitUserId = 0;
         while (true) {
             try {
-                List<Long> planSettingUserIds = planSettingMapper.paginateUserIdByStatus(hitUserId, 100,
+                List<Long> userIds = planSettingMapper.paginateUserIdByStatus(hitUserId, 100,
                         ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING));
-                if (CollectionUtils.isEmpty(planSettingUserIds)) {
+                if (CollectionUtils.isEmpty(userIds)) {
                     break;
                 } else {
-                    hitUserId = Iterables.getLast(planSettingUserIds);
-                    fillQueue(planSettingUserIds);
-                    elemCount += planSettingUserIds.size();
+                    hitUserId = Iterables.getLast(userIds);
+                    fillQueue(userIds);
+                    elemCount += userIds.size();
                 }
             } catch (Throwable e) {
                 logger.error("exec plan error", e);
