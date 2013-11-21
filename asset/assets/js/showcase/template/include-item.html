@@ -6,10 +6,12 @@
 <div class="tab-content">
     <form class="form-inline wrap" role="form" ng-submit="search()" ng-if="tab === 'all'">
         <div class="form-group">
-            <select class="form-control" ng-model="category" ng-change="changeCategory()">
+            {{cao}}
+            <select class="form-control" ng-model="category" ng-change="changeCategory(category)">
                 <option value="onsale">出售中的宝贝</option>
                 <option value="inventory">仓库中的宝贝</option>
             </select>
+
         </div>
         <div class="form-group">
             <input type="text" class="form-control" placeholder="宝贝标题、编号" maxlength="20" ng-model="searchKey"/>

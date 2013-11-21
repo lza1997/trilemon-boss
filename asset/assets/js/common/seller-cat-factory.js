@@ -19,10 +19,14 @@ angular.module('common').factory('SellerCatFactory', ['$resource', function($res
                                 delete item.sellerCat;
                             });
 
-                            // 展开第一个有子分类的
-                            var firstHasChild = _.find(data, function(cat) {
-                                return _.where(data, {parentCid: cat.cid}).length > 0;
+                            // 添加是否有子分类的属性，并展开第一个有子分类的父类
+                            _.each(data, function(cat) {
+                                if (cat.parentCid !== 0) {
+                                    var parentCat = _.findWhere(data, {cid: cat.parentCid});
+                                    parentCat.hasChild = true;
+                                }
                             });
+                            var firstHasChild = _.findWhere(data, {hasChild: true});
                             if (firstHasChild) {
                                 firstHasChild.expand = true;
                             }
