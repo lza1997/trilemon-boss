@@ -62,7 +62,7 @@ public interface PlanMapper {
     List<Plan> selectByPlanSettingIdAndStatusAndPlanTime(@Param("planSettingId") Long planSettingId,
                                                          @Param("statusList") ImmutableList<Byte> statusList,
                                                          @Param("planAdjustDay") Date planAdjustDay,
-                                                         @Param("planAdjustEndTime") Date planAdjustEndTime);
+                                                         @Param("planAdjustTime") Date planAdjustTime);
 
     void updateByPlanSettingIdAndNumIid(Plan plan);
 
@@ -72,4 +72,8 @@ public interface PlanMapper {
 
     void updateByUserIdAndNumIid(Plan plan);
 
+    void deleteByPlanSettingIdAndStatusAndPlanTime(@Param("planSettingId") Long planSettingId,
+                                                   @Param("statusList") ImmutableList<Byte> statusList,
+                                                   @Param("planAdjustDay") Date planAdjustDay,
+                                                   @Param("planAdjustTime") Date planAdjustTime);
 }

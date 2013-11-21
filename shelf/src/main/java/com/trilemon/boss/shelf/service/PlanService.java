@@ -84,8 +84,13 @@ public class PlanService {
             TaobaoEnhancedApiException, TaobaoAccessControlException, ShelfException {
         PlanSetting planSetting = planSettingMapper.selectByPrimaryKey(planSettingId);
         checkNotNull(planSetting, "planSetting[%s] is null.", planSettingId);
-        //所有在售宝贝
+        //清理过期宝贝
+        planMapper.deleteByPlanSettingIdAndStatusAndPlanTime(planSettingId,
+                ImmutableList.of(ShelfConstants.PLAN_SETTING_STATUS_RUNNING),
+                appService.getLocalSystemTime().withTimeAtStartOfDay().toDate(),
+                appService.getLocalSystemTime().toDate());
 
+        //所有在售宝贝
         ItemsOnsaleGetRequest request = new ItemsOnsaleGetRequest();
         request.setFields(Joiner.on(",").join(ShelfConstants.ITEM_FIELDS));
         request.setSellerCids(planSetting.getIncludeSellerCids());
@@ -273,7 +278,7 @@ public class PlanService {
         List<Plan> plans = planMapper.selectByPlanSettingIdAndStatusAndPlanTime(planSettingId,
                 ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST, ShelfConstants.PLAN_STATUS_FAILED),
                 now.withTimeAtStartOfDay().toDate(),
-                now.toLocalTime().plusHours(1).toDateTimeToday().toDate());
+                now.toLocalTime().toDateTimeToday().toDate());
         logger.info("planSetting[{}] get [{}] plan to adjust", planSettingId, plans.size());
         for (Plan plan : plans) {
             execPlan(plan);
