@@ -91,7 +91,8 @@ public class PlanService {
                 ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST),
                 now.withTimeAtStartOfDay().toDate(),
                 now.toDate());
-        logger.info("delete [{}] expired items, checkpoint[{}].", deletedPlanNum, now.toString(DateUtils.yyyy_MM_dd_HH_mm_ss));
+        logger.debug("delete [{}] expired plans, checkpoint[{}].", deletedPlanNum,
+                now.toString(DateUtils.yyyy_MM_dd_HH_mm_ss));
         if (deletedPlanNum > 0) {
             logger.info("delete [{}] expired items, checkpoint[{}].", deletedPlanNum, now.toString(DateUtils.yyyy_MM_dd_HH_mm_ss));
         }

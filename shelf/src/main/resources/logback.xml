@@ -34,7 +34,7 @@
     </appender>
 
     <!-- project default level -->
-    <logger name="com.trilemon" level="INFO"/>
+    <logger name="com.trilemon" level="DEBUG"/>
 
     <!--<logger name="org.dbunit" level="DEBUG"/>-->
     <logger name="java.sql.Statement" level="INFO"/>

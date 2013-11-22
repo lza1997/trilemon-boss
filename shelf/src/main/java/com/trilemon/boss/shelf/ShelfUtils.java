@@ -27,7 +27,7 @@ public class ShelfUtils {
         Plan plan = new Plan();
         plan.setPlanSettingId(planSetting.getId());
         plan.setUserId(planSetting.getUserId());
-        plan.setPlanAdjustDay(planListingDay.toDate());
+        plan.setPlanAdjustDay(planListingDay.withTimeAtStartOfDay().toDate());
         plan.setPlanAdjustStartTime(hourInterval.getFrom().toDateTimeToday().toDate());
         plan.setPlanAdjustEndTime(hourInterval.getTo().toDateTimeToday().toDate());
         plan.setItemNumIid(item.getNumIid());
