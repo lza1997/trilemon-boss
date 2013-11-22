@@ -600,7 +600,7 @@
           or
           (
            plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP} and
-           plan_adjust_start_time <![CDATA[ <= ]]> #{planAdjustTime,jdbcType=TIME}
+           plan_adjust_end_time <![CDATA[ <= ]]> #{planAdjustTime,jdbcType=TIME}
           )
         )
     </delete>

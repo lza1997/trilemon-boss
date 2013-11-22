@@ -282,7 +282,7 @@ public class PlanService {
         List<Plan> plans = planMapper.selectByPlanSettingIdAndStatusAndPlanTime(planSettingId,
                 ImmutableList.of(ShelfConstants.PLAN_STATUS_WAITING_ADJUST, ShelfConstants.PLAN_STATUS_FAILED),
                 now.withTimeAtStartOfDay().toDate(),
-                now.toLocalTime().toDateTimeToday().toDate());
+                now.toDate());
         logger.info("planSetting[{}] get [{}] plan to adjust", planSettingId, plans.size());
         for (Plan plan : plans) {
             execPlan(plan);
