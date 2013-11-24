@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -40,6 +39,9 @@ public class ExecPlanJob extends AbstractQueueService<Long> {
     public void init() {
         setJobQueue(jobQueue);
         setTag("shelf-exec-queue");
+        setSleepMinutes(10);
+        setMinSleepMinutes(1);
+        setQueuePollMinutes(10);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

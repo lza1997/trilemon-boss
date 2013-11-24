@@ -39,6 +39,9 @@ public class ExecPlanJob extends AbstractQueueService<Long> {
     public void init() {
         setJobQueue(jobQueue);
         setTag("inventory-exec-queue");
+        setSleepMinutes(10);
+        setMinSleepMinutes(1);
+        setQueuePollMinutes(10);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

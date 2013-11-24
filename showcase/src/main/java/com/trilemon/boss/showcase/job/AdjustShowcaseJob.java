@@ -37,6 +37,9 @@ public class AdjustShowcaseJob  extends AbstractQueueService<Long> {
     public void init() {
         setJobQueue(jobQueue);
         setTag("queue-job-showcase-adjust");
+        setSleepMinutes(10);
+        setMinSleepMinutes(1);
+        setQueuePollMinutes(10);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());
