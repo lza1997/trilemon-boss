@@ -1,0 +1,11 @@
+<!DOCTYPE "rules.dtd">
+<rules>
+    <rule>
+        <namespace>trade</namespace>
+        <shards>partition2</shards>
+    </rule>
+    <rule>
+        <namespace>item</namespace>
+        <shards>partition1</shards>
+    </rule>
+</rules>
