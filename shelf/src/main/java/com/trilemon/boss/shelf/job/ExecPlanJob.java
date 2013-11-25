@@ -7,7 +7,7 @@ import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
-import com.trilemon.jobqueue.service.AbstractFixQueueService;
+import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author kevin
  */
 @Component
-public class ExecPlanJob extends AbstractFixQueueService<Long> {
+public class ExecPlanJob extends AbstractFixRateQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(ExecPlanJob.class);
     @Autowired
     private PlanService planService;

@@ -7,13 +7,12 @@ import com.trilemon.boss.inventory.InventoryConstants;
 import com.trilemon.boss.inventory.dao.InventoryListSettingMapper;
 import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.boss.inventory.service.InventoryListAdjustService;
-import com.trilemon.jobqueue.service.AbstractFixQueueService;
+import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  * @author kevin
  */
 //@Component
-public class UpdatePlanJob extends AbstractFixQueueService<Long> {
+public class UpdatePlanJob extends AbstractFixRateQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private InventoryListAdjustService inventoryListAdjustService;
@@ -40,7 +39,7 @@ public class UpdatePlanJob extends AbstractFixQueueService<Long> {
     public void init() {
         setJobQueue(jobQueue);
         setTag("inventory-update-queue");
-        setFixSeconds(10*60);
+        setFixSeconds(10 * 60);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

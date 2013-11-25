@@ -6,7 +6,7 @@ import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.service.AdjustService;
-import com.trilemon.jobqueue.service.AbstractFixQueueService;
+import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import java.util.List;
  * @author kevin
  */
 @Component
-public class AdjustShowcaseJob  extends AbstractFixQueueService<Long> {
+public class AdjustShowcaseJob  extends AbstractFixRateQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(AdjustShowcaseJob.class);
     @Autowired
     private SettingMapper settingMapper;

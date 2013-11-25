@@ -6,7 +6,7 @@ import com.google.common.collect.Iterables;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
 import com.trilemon.boss.rate.sync.service.RateCalcService;
-import com.trilemon.jobqueue.service.AbstractFixQueueService;
+import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import static com.trilemon.boss.rate.sync.RateSyncConstants.*;
  * @author kevin
  */
 @Component
-public class SellerDayRateCalcJob extends AbstractFixQueueService<Long> {
+public class SellerDayRateCalcJob extends AbstractFixRateQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(SellerDayRateCalcJob.class);
     @Autowired
     private RateCalcService rateCalcService;
