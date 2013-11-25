@@ -3,6 +3,8 @@ package com.trilemon.boss.rate.sync.dao.impl;
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.alibaba.cobarclient.route.ShardTableRouter;
 import com.trilemon.boss.rate.sync.dao.SyncRateDAO;
+import com.trilemon.boss.rate.sync.model.CalcMemberDayRate;
+import com.trilemon.boss.rate.sync.model.CalcSellerDayRate;
 import com.trilemon.boss.rate.sync.model.SyncRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -42,6 +44,16 @@ public class SyncRateDAOImpl extends MysdalCobarSqlMapClientDaoSupport implement
             syncRateRouter.routeAndSetTableId(record);
         }
         return batchInsert("sync_rate.insertSelective", records);
+    }
+
+    @Override
+    public CalcSellerDayRate calcSellerDayRate(Long userId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public CalcMemberDayRate calcMemberDayRate(String buyerNick) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public SyncRate selectByPrimaryKey(Long userId) {

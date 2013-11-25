@@ -10,18 +10,19 @@ import com.taobao.api.request.TraderateAddRequest;
 import com.taobao.api.request.TradesSoldIncrementGetRequest;
 import com.taobao.api.response.TradesSoldIncrementGetResponse;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiTradeService;
-import com.trilemon.boss.infra.base.service.api.TaobaoApiUserService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.rate.RateConstants;
+import com.trilemon.boss.rate.cache.RateCache;
+import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.dao.RateSettingDAO;
 import com.trilemon.boss.rate.dao.RateSyncDAO;
 import com.trilemon.boss.rate.model.RateFilterTrade;
 import com.trilemon.boss.rate.model.RateOrder;
 import com.trilemon.boss.rate.model.RateSetting;
+import com.trilemon.boss.rate.model.dto.RateLog;
 import com.trilemon.boss.rate.model.dto.RateStatus;
-import com.trilemon.boss.rate.model.dto.RateSyncStatus;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.DateUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -48,34 +49,35 @@ public class RateService {
     @Autowired
     private TaobaoApiTradeService taobaoApiTradeService;
     @Autowired
-    private TaobaoApiUserService taobaoApiUserService;
-    @Autowired
     private RateSettingService rateSettingService;
+    @Autowired
+    private RateOrderDAO rateOrderDAO;
     @Autowired
     private RateSyncDAO rateSyncDAO;
     @Autowired
     private RateSettingDAO rateSettingDAO;
+    @Autowired
+    private RateCache rateCache;
 
     public void rate(RateSetting rateSetting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        //放置淘宝自己漏单，往前推5分钟
+        //防止淘宝自己漏单，往前推5分钟
         DateTime now = DateTime.now().plusMinutes(RATE_TRADE_OFFSET_MINUS);
         DateTime lastRateTime = getLastRateTime(rateSetting, now);
 
         //这里防止订单过多，需要分段分页处理
-        List<Interval> intervals = DateUtils.partitionByMinute(lastRateTime, now, 30);
+        List<Interval> intervals = DateUtils.partitionByMinute(lastRateTime, now, 24 * 60);
         Stopwatch stopwatch = Stopwatch.createStarted();
         logger.info("start to rate, rateSettingId[{}] userId[{}]", rateSetting.getId(), rateSetting.getUserId());
         //获取卖家的所有预设评论
         List<String> commentContents = rateSettingService.getComments(rateSetting.getUserId());
         //统计信息
-        RateStatus rateStatus = new RateStatus();
+        RateLog rateLog = new RateLog();
+        List<Trade> trades = Lists.newArrayList();
 
         //分时间段
         for (Interval interval : intervals) {
             long pageNo = 1;
-            long pageSize = 50;
-            List<Trade> trades = Lists.newArrayList();
-            //分页
+            long pageSize = 100;
             while (true) {
                 TradesSoldIncrementGetRequest request = new TradesSoldIncrementGetRequest();
                 request.setFields(RATE_TRADE_FIELDS);
@@ -86,20 +88,19 @@ public class RateService {
                 request.setPageNo(pageNo);
                 request.setPageSize(pageSize);
                 request.setUseHasNext(true);
-                TradesSoldIncrementGetResponse response = taobaoApiTradeService.getTrades(rateSetting.getUserId(),
-                        request);
+                TradesSoldIncrementGetResponse response = taobaoApiTradeService.getTrades(rateSetting.getUserId(), request);
                 if (null != response.getTrades()) {
                     trades.addAll(response.getTrades());
                     if (trades.size() > 100) {
                         try {
-                            RateStatus rateStatus2 = rate(rateSetting, trades, commentContents);
-                            rateStatus.combine(rateStatus2);
+                            RateLog batchRateLog = rate(rateSetting, trades, commentContents);
+                            rateLog.combine(batchRateLog);
                             trades.clear();
                             pageNo++;
                         } catch (Exception e) {
                             stopwatch.stop();
                             fail(rateSetting, interval.getStart().toDateTime());
-                            logger.info("fail to rate userId[{}] rateSettingId[{}] spend[{} mins]",
+                            logger.info("fail to rate userId[{}] rateSettingId[{}] spend time [{} mins]",
                                     rateSetting.getUserId(),
                                     rateSetting.getId(),
                                     stopwatch.elapsed(TimeUnit.MINUTES));
@@ -110,24 +111,38 @@ public class RateService {
                     break;
                 }
             }
+            //flush
+            try {
+                RateLog flushRateLog = rate(rateSetting, trades, commentContents);
+                rateLog.combine(flushRateLog);
+                trades.clear();
+            } catch (Exception e) {
+                stopwatch.stop();
+                fail(rateSetting, interval.getStart().toDateTime());
+                logger.info("fail to rate userId[{}] rateSettingId[{}] spend time [{} mins]",
+                        rateSetting.getUserId(),
+                        rateSetting.getId(),
+                        stopwatch.elapsed(TimeUnit.MINUTES));
+                throw e;
+            }
             success(rateSetting, interval.getEnd().toDateTime());
         }
         stopwatch.stop();
-        logger.info("end to rate userId[{}] rateStatus[{}], rateSettingId[{}] spend[{} mins]",
+        logger.info("end to rate userId[{}] rateLog[{}], rateSettingId[{}] spend[{} mins]",
                 rateSetting.getUserId(),
-                ToStringBuilder.reflectionToString(rateStatus),
+                ToStringBuilder.reflectionToString(rateLog),
                 rateSetting.getId(),
                 stopwatch.elapsed(TimeUnit.MINUTES));
     }
 
-    private RateStatus rate(RateSetting rateSetting, List<Trade> trades,
-                            List<String> commentContents) throws TaobaoSessionExpiredException,
-            TaobaoEnhancedApiException, TaobaoAccessControlException {
-        RateStatus rateStatus = new RateStatus();
+    private RateLog rate(RateSetting rateSetting, List<Trade> trades,
+                            List<String> commentContents)
+            throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+        RateLog rateLog = new RateLog();
         List<RateFilterTrade> rateFilterTrades = Lists.newArrayList();
         List<RateOrder> rateOrders = Lists.newArrayList();
 
-        rateStatus.setTradeNum(trades.size());
+        rateLog.setTradeNum(trades.size());
         for (Trade trade : trades) {
             if (trade.getSellerRate()) {
                 //已经评价
@@ -135,9 +150,9 @@ public class RateService {
             }
             List<Order> orders = trade.getOrders();
             if (null != orders) {
-                rateStatus.setOrderNum(orders.size());
+                rateLog.setOrderNum(orders.size());
                 //过滤买家
-                User buyer = taobaoApiUserService.getUser(rateSetting.getUserId(), trade.getBuyerNick(), BUYER_FIELDS);
+                User buyer = rateCache.getBuyer(rateSetting.getUserId(), trade.getBuyerNick(), BUYER_FIELDS);
                 if (filterBuyerByCredit(rateSetting, buyer)) {
                     logger.info("filter by creditLevel[{}], buyerNick[{}] userId[{}]",
                             buyer.getBuyerCredit().getLevel(),
@@ -145,16 +160,7 @@ public class RateService {
                             rateSetting.getUserId());
                     RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RATE_FILTER_TYPE_CREDIT);
                     rateFilterTrades.add(rateFilterTrade);
-                    rateStatus.incrFilterTradeNum(RATE_FILTER_TYPE_CREDIT);
-                    continue;
-                }
-                if (filterBuyerByGoodRate(rateSetting, buyer)) {
-                    logger.info("filter by goodNum[{}], buyerNick[{}] userId[{}]",
-                            buyer.getBuyerCredit().getGoodNum(),
-                            buyer.getNick(),
-                            rateSetting.getUserId());
-                    RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RATE_FILTER_TYPE_GOOD_RATE);
-                    rateFilterTrades.add(rateFilterTrade);
+                    rateLog.incrFilterTradeNum(RATE_FILTER_TYPE_CREDIT);
                     continue;
                 }
                 if (filterBuyerByRegisterDay(rateSetting, buyer)) {
@@ -164,7 +170,17 @@ public class RateService {
                             rateSetting.getUserId());
                     RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RATE_FILTER_TYPE_REGISTER_DAY);
                     rateFilterTrades.add(rateFilterTrade);
-                    rateStatus.incrFilterTradeNum(RATE_FILTER_TYPE_REGISTER_DAY);
+                    rateLog.incrFilterTradeNum(RATE_FILTER_TYPE_REGISTER_DAY);
+                    continue;
+                }
+                if (filterBuyerByGoodRate(rateSetting, buyer)) {
+                    logger.info("filter by goodNum[{}], buyerNick[{}] userId[{}]",
+                            buyer.getBuyerCredit().getGoodNum(),
+                            buyer.getNick(),
+                            rateSetting.getUserId());
+                    RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RATE_FILTER_TYPE_GOOD_RATE);
+                    rateFilterTrades.add(rateFilterTrade);
+                    rateLog.incrFilterTradeNum(RATE_FILTER_TYPE_GOOD_RATE);
                     continue;
                 }
                 if (filterBuyerByBadRate(rateSetting, buyer)) {
@@ -173,7 +189,7 @@ public class RateService {
                             rateSetting.getUserId());
                     RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RATE_FILTER_TYPE_BAD_RATE);
                     rateFilterTrades.add(rateFilterTrade);
-                    rateStatus.incrFilterTradeNum(RATE_FILTER_TYPE_BAD_RATE);
+                    rateLog.incrFilterTradeNum(RATE_FILTER_TYPE_BAD_RATE);
                     continue;
                 }
                 if (filterBuyerByBlacklist(rateSetting, buyer)) {
@@ -182,7 +198,7 @@ public class RateService {
                             rateSetting.getUserId());
                     RateFilterTrade rateFilterTrade = buildFilterTrade(rateSetting, trade, buyer, RateConstants.RATE_FILTER_TYPE_BLACKLIST);
                     rateFilterTrades.add(rateFilterTrade);
-                    rateStatus.incrFilterTradeNum(RATE_FILTER_TYPE_BLACKLIST);
+                    rateLog.incrFilterTradeNum(RATE_FILTER_TYPE_BLACKLIST);
                     continue;
                 }
                 //过滤订单
@@ -194,7 +210,7 @@ public class RateService {
                     if (order.getBuyerRate()) {
                         RateOrder rateOrder = rate(rateSetting, trade, order, commentContents);
                         rateOrders.add(rateOrder);
-                        rateStatus.incrDay15RateNum();
+                        rateLog.incrDay15RateNum();
                     } else {
                         //超过15天的不评，剩下的第14天评
                         DateTime endDateTime = new DateTime(order.getEndTime());
@@ -210,13 +226,24 @@ public class RateService {
                         } else if (days <= 15 && days >= 14) {
                             RateOrder rateOrder = rate(rateSetting, trade, order, commentContents);
                             rateOrders.add(rateOrder);
-                            rateStatus.incrDay14RateNum();
+                            rateLog.incrDay14RateNum();
                         }
                     }
                 }
             }
+            if (rateOrders.size() >= 100) {
+                int rows = rateOrderDAO.batchInsertSelective(rateOrders);
+                rateLog.incrInsertedRateOrderNum(rows);
+                rateOrders.clear();
+            }
         }
-        return rateStatus;
+        //flush
+        if (rateOrders.size() > 0) {
+            int rows = rateOrderDAO.batchInsertSelective(rateOrders);
+            rateLog.incrInsertedRateOrderNum(rows);
+            rateOrders.clear();
+        }
+        return rateLog;
     }
 
     private RateFilterTrade buildFilterTrade(RateSetting rateSetting, Trade trade, User buyer, byte rateFilterTypeCredit) {
@@ -244,6 +271,7 @@ public class RateService {
         request.setOid(order.getOid());
         request.setContent(Collections3.getRandomElem(commentContents));
         TradeRate tradeRate = taobaoApiTradeService.addRate(rateSetting.getUserId(), request);
+
         RateOrder rateOrder = new RateOrder();
         rateOrder.setUserId(rateSetting.getUserId());
         rateOrder.setComment(tradeRate.getContent());
@@ -295,8 +323,8 @@ public class RateService {
         if (rateSetting.getIsFilterBadRate()) {
             return false;
         } else {
-            RateSyncStatus rateSyncStatus = getRateSyncStatus(rateSetting.getUserId(), buyer.getNick());
-            return rateSyncStatus.getBadRateNum() > rateSetting.getFilterBadRateCount();
+            RateStatus rateStatus = getRateSyncStatus(rateSetting.getUserId(), buyer.getNick());
+            return rateStatus.getBadRateNum() > rateSetting.getFilterBadRateCount();
         }
     }
 
@@ -372,7 +400,7 @@ public class RateService {
         rateSettingDAO.updateByPrimaryKeySelective(update);
     }
 
-    public RateSyncStatus getRateSyncStatus(Long userId, String buyerNick) {
+    public RateStatus getRateSyncStatus(Long userId, String buyerNick) {
         return rateSyncDAO.selectRateSyncStatusByUserIdAndBuyerNick(userId, buyerNick);
     }
 

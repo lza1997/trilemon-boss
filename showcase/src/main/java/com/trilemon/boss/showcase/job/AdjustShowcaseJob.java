@@ -6,8 +6,7 @@ import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.showcase.ShowcaseConstants;
 import com.trilemon.boss.showcase.dao.SettingMapper;
 import com.trilemon.boss.showcase.service.AdjustService;
-import com.trilemon.boss.showcase.service.SettingService;
-import com.trilemon.jobqueue.service.AbstractQueueService;
+import com.trilemon.jobqueue.service.AbstractFixQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ import java.util.List;
  * @author kevin
  */
 @Component
-public class AdjustShowcaseJob  extends AbstractQueueService<Long> {
+public class AdjustShowcaseJob  extends AbstractFixQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(AdjustShowcaseJob.class);
     @Autowired
     private SettingMapper settingMapper;
@@ -36,10 +35,8 @@ public class AdjustShowcaseJob  extends AbstractQueueService<Long> {
     @PostConstruct
     public void init() {
         setJobQueue(jobQueue);
-        setTag("queue-job-showcase-adjust");
-        setSleepMinutes(10);
-        setMinSleepMinutes(1);
-        setQueuePollMinutes(10);
+        setTag("job-queue[showcase-adjust]");
+        setFixSeconds(10*60);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

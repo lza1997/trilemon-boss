@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.rate.sync.model.SyncStatus;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface
         SyncStatusDAO {
@@ -22,4 +24,6 @@ public interface
     SyncStatus selectByUserId(Long userId);
 
     int deleteByRateSyncOwnerAndStatus(String owner, ImmutableList<Byte> statusList);
+
+    List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> statusList);
 }

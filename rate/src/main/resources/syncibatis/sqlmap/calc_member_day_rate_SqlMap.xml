@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="calc_member_day_rate" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="buyer_nick" property="buyerNick" jdbcType="VARCHAR" />
+    <result column="good_rate_num" property="goodRateNum" jdbcType="INTEGER" />
+    <result column="neutral_rate_num" property="neutralRateNum" jdbcType="INTEGER" />
+    <result column="bad_rate_num" property="badRateNum" jdbcType="INTEGER" />
+    <result column="cal_time" property="calTime" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="INTEGER" />
+    <result column="upd_time" property="updTime" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, buyer_nick, good_rate_num, neutral_rate_num, bad_rate_num, cal_time, 
+    add_time, upd_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    select 
+    <include refid="calc_member_day_rate.Base_Column_List" />
+    from calc_member_day_rate
+    where id = #id:BIGINT#
+  </select>
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    delete from calc_member_day_rate
+    where id = #id:BIGINT#
+  </delete>
+  <insert id="insert" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    insert into calc_member_day_rate (id, user_id, buyer_nick, good_rate_num, 
+      neutral_rate_num, bad_rate_num, cal_time, add_time, 
+      upd_time)
+    values (#id:BIGINT#, #userId:INTEGER#, #buyerNick:VARCHAR#, #goodRateNum:INTEGER#, 
+      #neutralRateNum:INTEGER#, #badRateNum:INTEGER#, #calTime:INTEGER#, #addTime:INTEGER#, 
+      #updTime:INTEGER#)
+  </insert>
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    insert into calc_member_day_rate
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+        id
+      </isNotNull>
+      <isNotNull prepend="," property="userId" >
+        user_id
+      </isNotNull>
+      <isNotNull prepend="," property="buyerNick" >
+        buyer_nick
+      </isNotNull>
+      <isNotNull prepend="," property="goodRateNum" >
+        good_rate_num
+      </isNotNull>
+      <isNotNull prepend="," property="neutralRateNum" >
+        neutral_rate_num
+      </isNotNull>
+      <isNotNull prepend="," property="badRateNum" >
+        bad_rate_num
+      </isNotNull>
+      <isNotNull prepend="," property="calTime" >
+        cal_time
+      </isNotNull>
+      <isNotNull prepend="," property="addTime" >
+        add_time
+      </isNotNull>
+      <isNotNull prepend="," property="updTime" >
+        upd_time
+      </isNotNull>
+      )
+    </dynamic>
+    values
+    <dynamic prepend="(" >
+      <isNotNull prepend="," property="id" >
+        #id:BIGINT#
+      </isNotNull>
+      <isNotNull prepend="," property="userId" >
+        #userId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="buyerNick" >
+        #buyerNick:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="goodRateNum" >
+        #goodRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="neutralRateNum" >
+        #neutralRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="badRateNum" >
+        #badRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="calTime" >
+        #calTime:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="addTime" >
+        #addTime:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="updTime" >
+        #updTime:INTEGER#
+      </isNotNull>
+      )
+    </dynamic>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    update calc_member_day_rate
+    <dynamic prepend="set" >
+      <isNotNull prepend="," property="userId" >
+        user_id = #userId:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="buyerNick" >
+        buyer_nick = #buyerNick:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="goodRateNum" >
+        good_rate_num = #goodRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="neutralRateNum" >
+        neutral_rate_num = #neutralRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="badRateNum" >
+        bad_rate_num = #badRateNum:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="calTime" >
+        cal_time = #calTime:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="addTime" >
+        add_time = #addTime:INTEGER#
+      </isNotNull>
+      <isNotNull prepend="," property="updTime" >
+        upd_time = #updTime:INTEGER#
+      </isNotNull>
+    </dynamic>
+    where id = #id:BIGINT#
+  </update>
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.CalcMemberDayRate" >
+    update calc_member_day_rate
+    set user_id = #userId:INTEGER#,
+      buyer_nick = #buyerNick:VARCHAR#,
+      good_rate_num = #goodRateNum:INTEGER#,
+      neutral_rate_num = #neutralRateNum:INTEGER#,
+      bad_rate_num = #badRateNum:INTEGER#,
+      cal_time = #calTime:INTEGER#,
+      add_time = #addTime:INTEGER#,
+      upd_time = #updTime:INTEGER#
+    where id = #id:BIGINT#
+  </update>
+</sqlMap>

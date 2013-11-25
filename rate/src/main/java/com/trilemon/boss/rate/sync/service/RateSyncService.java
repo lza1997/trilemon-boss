@@ -8,7 +8,6 @@ import com.taobao.api.request.TraderatesGetRequest;
 import com.taobao.api.response.TraderatesGetResponse;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
-import com.trilemon.boss.infra.base.service.api.exception.BaseTaobaoApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -24,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -47,78 +45,82 @@ public class RateSyncService {
     @Autowired
     private TaobaoApiShopService taobaoApiShopService;
 
-    @PostConstruct
-    public void init() {
-        cleanExpiredSyncTasks();
-    }
-
     /**
      * 删除机器启动后没有执行完毕的任务，并置为失败状态，下次重新执行。
      */
     public void cleanExpiredSyncTasks() {
-        syncStatusDAO.deleteByRateSyncOwnerAndStatus(appService.getOwner(),
+        int rows = syncStatusDAO.deleteByRateSyncOwnerAndStatus(appService.getOwner(),
                 ImmutableList.of(RATE_SYNC_STATUS_DOING));
+        logger.info("delete [{}] rows, owner[{}]", rows, appService.getOwner());
 
     }
 
-    public void sync(Long userId) {
+    public void sync(Long userId) throws RateSyncException, TaobaoAccessControlException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
         SyncStatus syncStatus = syncStatusDAO.selectByUserId(userId);
-        try {
-            sync(syncStatus);
-        } catch (TaobaoEnhancedApiException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoSessionExpiredException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (TaobaoAccessControlException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (RateSyncException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        sync(syncStatus);
     }
 
     private void sync(SyncStatus syncStatus) throws RateSyncException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-        Date rateSyncEndDate = null;
+        Date rateStartDate = null;
         switch (syncStatus.getRateSyncStatus()) {
+            case RateSyncConstants.RATE_SYNC_STATUS_INIT:
+                rateStartDate = appService.getLocalSystemTime().minusMinutes(5).minusDays(30).toDate();
+                break;
             case RateSyncConstants.RATE_SYNC_STATUS_SUCCESSFUL:
-                rateSyncEndDate = syncStatus.getRateEndTime();
+                rateStartDate = syncStatus.getLastRateStartTime();
                 break;
             case RateSyncConstants.RATE_SYNC_STATUS_FAILED:
-                rateSyncEndDate = syncStatus.getRateStartTime();
+                rateStartDate = syncStatus.getLastRateStartTime();
                 break;
         }
 
-        if (null == rateSyncEndDate) {
-            throw new RateSyncException("rate[" + syncStatus.getUserId() + "] sync error, rateSyncEndDate is null");
+        if (null == rateStartDate) {
+            throw new RateSyncException("rate[" + syncStatus.getUserId() + "] sync error, rateSyncStartDate is null");
         }
 
         try {
-            setRateSyncDoing(syncStatus, rateSyncEndDate);
-            internalSync(syncStatus, rateSyncEndDate);
-            setRateSyncSuccessful(syncStatus, rateSyncEndDate);
-        } catch (BaseTaobaoApiException e) {
-            setRateSyncFailed(syncStatus, rateSyncEndDate);
+            Date rateSyncEndDate = appService.getLocalSystemTime().minusMinutes(5).toDate();
+            setRateSyncDoing(syncStatus.getUserId(), rateStartDate, rateSyncEndDate, syncStatus.getRateSyncStatus());
+            internalSync(syncStatus.getUserId(), rateStartDate, rateSyncEndDate);
+            setRateSyncSuccessful(syncStatus.getUserId());
+        } catch (Exception e) {
+            setRateSyncFailed(syncStatus.getUserId());
             throw e;
         }
     }
 
-    private void setRateSyncSuccessful(SyncStatus syncStatus, Date rateSyncEndDate) {
-
+    private void setRateSyncFailed(Long userId) {
+        SyncStatus syncStatus = new SyncStatus();
+        syncStatus.setUserId(userId);
+        syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_FAILED);
+        syncStatus.setLastRateSyncEndTime(appService.getLocalSystemTime().toDate());
+        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
     }
 
-    private void setRateSyncFailed(SyncStatus syncStatus, Date rateSyncEndDate) {
-        //To change body of created methods use File | Settings | File Templates.
+    private void setRateSyncSuccessful(Long userId) {
+        SyncStatus syncStatus = new SyncStatus();
+        syncStatus.setUserId(userId);
+        syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_SUCCESSFUL);
+        syncStatus.setLastRateSyncEndTime(appService.getLocalSystemTime().toDate());
+        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
     }
 
-    private void setRateSyncDoing(SyncStatus syncStatus, Date rateSyncEndDate) {
-        //To change body of created methods use File | Settings | File Templates.
+    private void setRateSyncDoing(Long userId, Date rateStartDate, Date rateEndDate, Byte syncType) {
+        SyncStatus syncStatus = new SyncStatus();
+        syncStatus.setUserId(userId);
+        syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_DOING);
+        syncStatus.setLastRateStartTime(rateStartDate);
+        syncStatus.setLastRateEndTime(rateEndDate);
+        syncStatus.setLastRateSyncStartTime(appService.getLocalSystemTime().toDate());
+        if (syncType == RATE_SYNC_STATUS_INIT) {
+            syncStatus.setRateStartTime(rateStartDate);
+        }
+        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
     }
 
-    private void internalSync(SyncStatus syncStatus, Date endDate) throws TaobaoAccessControlException,
+    private void internalSync(Long userId, Date startDate, Date endDate) throws TaobaoAccessControlException,
             TaobaoEnhancedApiException,
             TaobaoSessionExpiredException {
-        Long userId = syncStatus.getUserId();
-        Date startDate = syncStatus.getRateStartTime();
-
         Stopwatch stopwatch = Stopwatch.createStarted();
         logger.info("userId[{}] start to sync rate, startDate[{}] endDate[{}]",
                 userId,

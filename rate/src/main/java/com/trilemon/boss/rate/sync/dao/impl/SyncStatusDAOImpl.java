@@ -5,6 +5,8 @@ import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
 import com.trilemon.boss.rate.sync.model.SyncStatus;
 
+import java.util.List;
+
 public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements SyncStatusDAO {
 
     public SyncStatusDAOImpl() {
@@ -48,5 +50,10 @@ public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport impleme
 
     public int deleteByRateSyncOwnerAndStatus(String owner, ImmutableList<Byte> statusList) {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> statusList) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

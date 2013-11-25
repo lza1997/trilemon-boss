@@ -3,7 +3,7 @@ package com.trilemon.boss.rate.dao.impl;
 import com.trilemon.boss.rate.dao.RateSyncDAO;
 import com.trilemon.boss.rate.model.RateSync;
 import com.trilemon.boss.rate.model.RateSyncExample;
-import com.trilemon.boss.rate.model.dto.RateSyncStatus;
+import com.trilemon.boss.rate.model.dto.RateStatus;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import java.util.List;
@@ -75,7 +75,7 @@ public class RateSyncDAOImpl extends SqlMapClientDaoSupport implements RateSyncD
     }
 
     @Override
-    public RateSyncStatus selectRateSyncStatusByUserIdAndBuyerNick(Long userId, String buyerNick) {
+    public RateStatus selectRateSyncStatusByUserIdAndBuyerNick(Long userId, String buyerNick) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

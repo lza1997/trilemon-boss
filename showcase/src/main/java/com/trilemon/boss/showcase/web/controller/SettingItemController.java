@@ -39,9 +39,12 @@ public class SettingItemController {
 
     /**
      * 排除宝贝或取消排除
-     *
-     * @param numIid
+     * @param excludeParam
      * @return
+     * @throws ShowcaseException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoAccessControlException
+     * @throws TaobaoEnhancedApiException
      */
     @RequestMapping(value = "/exclude", method = RequestMethod.PUT)
     @ResponseBody

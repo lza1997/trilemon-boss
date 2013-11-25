@@ -24,7 +24,7 @@
 
     <description>job公共配置</description>
 
-    <bean id="jobQueue" class="com.trilemon.jobqueue.service.queue.redis.RedisJobQueue" init-method="start">
+    <bean id="jobQueue" class="com.trilemon.jobqueue.service.queue.redis.BlockingRedisJobQueue" init-method="start">
         <property name="jedisTemplate" ref="jedisTemplate"/>
         <property name="group" value="${service_name}"/>
         <property name="masterName" value="${service_id}"/>

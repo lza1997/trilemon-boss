@@ -7,7 +7,7 @@ import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
-import com.trilemon.jobqueue.service.AbstractQueueService;
+import com.trilemon.jobqueue.service.AbstractFixQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author kevin
  */
 @Component
-public class ExecPlanJob extends AbstractQueueService<Long> {
+public class ExecPlanJob extends AbstractFixQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(ExecPlanJob.class);
     @Autowired
     private PlanService planService;
@@ -38,10 +38,8 @@ public class ExecPlanJob extends AbstractQueueService<Long> {
     @PostConstruct
     public void init() {
         setJobQueue(jobQueue);
-        setTag("shelf-exec-queue");
-        setSleepMinutes(10);
-        setMinSleepMinutes(1);
-        setQueuePollMinutes(10);
+        setTag("job-queue[shelf-exec]");
+        setFixSeconds(10*60);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

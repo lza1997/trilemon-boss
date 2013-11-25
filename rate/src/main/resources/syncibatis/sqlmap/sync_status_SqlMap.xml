@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" class="com.trilemon.boss.infra.sync.model.SyncStatus" >
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="rate_sync_status" property="rateSyncStatus" jdbcType="TINYINT" />
+    <result column="rate_sync_status" property="rateStatus" jdbcType="TINYINT" />
     <result column="rate_sync_start_time" property="rateSyncStartTime" jdbcType="TIMESTAMP" />
     <result column="rate_sync_end_time" property="rateSyncEndTime" jdbcType="TIMESTAMP" />
     <result column="rate_start_time" property="rateStartTime" jdbcType="TIMESTAMP" />
@@ -30,7 +30,7 @@
     insert into sync_status (id, user_id, rate_sync_status, rate_sync_start_time, 
       rate_sync_end_time, rate_start_time, rate_end_time, 
       upd_time, add_time)
-    values (#id:INTEGER#, #userId:BIGINT#, #rateSyncStatus:TINYINT#, #rateSyncStartTime:TIMESTAMP#, 
+    values (#id:INTEGER#, #userId:BIGINT#, #rateStatus:TINYINT#, #rateSyncStartTime:TIMESTAMP#,
       #rateSyncEndTime:TIMESTAMP#, #rateStartTime:TIMESTAMP#, #rateEndTime:TIMESTAMP#, 
       #updTime:TIMESTAMP#, #addTime:TIMESTAMP#)
   </insert>
@@ -43,7 +43,7 @@
       <isNotNull prepend="," property="userId" >
         user_id
       </isNotNull>
-      <isNotNull prepend="," property="rateSyncStatus" >
+      <isNotNull prepend="," property="rateStatus" >
         rate_sync_status
       </isNotNull>
       <isNotNull prepend="," property="rateSyncStartTime" >
@@ -74,8 +74,8 @@
       <isNotNull prepend="," property="userId" >
         #userId:BIGINT#
       </isNotNull>
-      <isNotNull prepend="," property="rateSyncStatus" >
-        #rateSyncStatus:TINYINT#
+      <isNotNull prepend="," property="rateStatus" >
+        #rateStatus:TINYINT#
       </isNotNull>
       <isNotNull prepend="," property="rateSyncStartTime" >
         #rateSyncStartTime:TIMESTAMP#
@@ -104,8 +104,8 @@
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
       </isNotNull>
-      <isNotNull prepend="," property="rateSyncStatus" >
-        rate_sync_status = #rateSyncStatus:TINYINT#
+      <isNotNull prepend="," property="rateStatus" >
+        rate_sync_status = #rateStatus:TINYINT#
       </isNotNull>
       <isNotNull prepend="," property="rateSyncStartTime" >
         rate_sync_start_time = #rateSyncStartTime:TIMESTAMP#
@@ -131,7 +131,7 @@
   <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
     update sync_status
     set user_id = #userId:BIGINT#,
-      rate_sync_status = #rateSyncStatus:TINYINT#,
+      rate_sync_status = #rateStatus:TINYINT#,
       rate_sync_start_time = #rateSyncStartTime:TIMESTAMP#,
       rate_sync_end_time = #rateSyncEndTime:TIMESTAMP#,
       rate_start_time = #rateStartTime:TIMESTAMP#,

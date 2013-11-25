@@ -7,14 +7,13 @@ import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
-import com.trilemon.jobqueue.service.AbstractQueueService;
+import com.trilemon.jobqueue.service.AbstractFixQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.List;
  * @author kevin
  */
 @Component
-public class UpdatePlanJob extends AbstractQueueService<Long> {
+public class UpdatePlanJob extends AbstractFixQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private PlanService planService;
@@ -40,10 +39,8 @@ public class UpdatePlanJob extends AbstractQueueService<Long> {
     @PostConstruct
     public void init() {
         setJobQueue(jobQueue);
-        setTag("shelf-update-queue");
-        setSleepMinutes(10);
-        setMinSleepMinutes(1);
-        setQueuePollMinutes(10);
+        setTag("job-queue[shelf-update]");
+        setFixSeconds(10 * 60);
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());

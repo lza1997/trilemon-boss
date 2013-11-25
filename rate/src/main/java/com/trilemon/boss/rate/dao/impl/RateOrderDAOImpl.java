@@ -1,12 +1,15 @@
 package com.trilemon.boss.rate.dao.impl;
 
+import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.model.RateOrder;
 import com.trilemon.boss.rate.model.RateOrderExample;
-import java.util.List;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.stereotype.Repository;
 
-public class RateOrderDAOImpl extends SqlMapClientDaoSupport implements RateOrderDAO {
+import java.util.List;
+
+@Repository
+public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements RateOrderDAO {
 
     public RateOrderDAOImpl() {
         super();
@@ -70,6 +73,11 @@ public class RateOrderDAOImpl extends SqlMapClientDaoSupport implements RateOrde
     public int updateByPrimaryKey(RateOrder record) {
         int rows = getSqlMapClientTemplate().update("rate_order.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public int batchInsertSelective(List<RateOrder> rateOrders) {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected static class UpdateByExampleParms extends RateOrderExample {

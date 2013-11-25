@@ -26,4 +26,6 @@ public interface RateOrderDAO {
     int updateByPrimaryKeySelective(RateOrder record);
 
     int updateByPrimaryKey(RateOrder record);
+
+    int batchInsertSelective(List<RateOrder> rateOrders);
 }

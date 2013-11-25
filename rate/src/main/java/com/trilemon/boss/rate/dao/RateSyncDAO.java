@@ -2,7 +2,7 @@ package com.trilemon.boss.rate.dao;
 
 import com.trilemon.boss.rate.model.RateSync;
 import com.trilemon.boss.rate.model.RateSyncExample;
-import com.trilemon.boss.rate.model.dto.RateSyncStatus;
+import com.trilemon.boss.rate.model.dto.RateStatus;
 
 import java.util.List;
 
@@ -29,5 +29,5 @@ public interface RateSyncDAO {
 
     int updateByPrimaryKey(RateSync record);
 
-    RateSyncStatus selectRateSyncStatusByUserIdAndBuyerNick(Long userId, String buyerNick);
+    RateStatus selectRateSyncStatusByUserIdAndBuyerNick(Long userId, String buyerNick);
 }

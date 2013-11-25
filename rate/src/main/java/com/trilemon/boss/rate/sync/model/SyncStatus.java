@@ -7,15 +7,19 @@ public class SyncStatus {
 
     private Long userId;
 
-    private Byte rateSyncStatus;
-
-    private Date rateSyncStartTime;
-
-    private Date rateSyncEndTime;
-
     private Date rateStartTime;
 
-    private Date rateEndTime;
+    private Date lastRateStartTime;
+
+    private Date lastRateEndTime;
+
+    private Date lastRateSyncStartTime;
+
+    private Date lastRateSyncEndTime;
+
+    private Byte rateSyncStatus;
+
+    private String rateSyncOwner;
 
     private Date updTime;
 
@@ -37,30 +41,6 @@ public class SyncStatus {
         this.userId = userId;
     }
 
-    public Byte getRateSyncStatus() {
-        return rateSyncStatus;
-    }
-
-    public void setRateSyncStatus(Byte rateSyncStatus) {
-        this.rateSyncStatus = rateSyncStatus;
-    }
-
-    public Date getRateSyncStartTime() {
-        return rateSyncStartTime;
-    }
-
-    public void setRateSyncStartTime(Date rateSyncStartTime) {
-        this.rateSyncStartTime = rateSyncStartTime;
-    }
-
-    public Date getRateSyncEndTime() {
-        return rateSyncEndTime;
-    }
-
-    public void setRateSyncEndTime(Date rateSyncEndTime) {
-        this.rateSyncEndTime = rateSyncEndTime;
-    }
-
     public Date getRateStartTime() {
         return rateStartTime;
     }
@@ -69,12 +49,52 @@ public class SyncStatus {
         this.rateStartTime = rateStartTime;
     }
 
-    public Date getRateEndTime() {
-        return rateEndTime;
+    public Date getLastRateStartTime() {
+        return lastRateStartTime;
     }
 
-    public void setRateEndTime(Date rateEndTime) {
-        this.rateEndTime = rateEndTime;
+    public void setLastRateStartTime(Date lastRateStartTime) {
+        this.lastRateStartTime = lastRateStartTime;
+    }
+
+    public Date getLastRateEndTime() {
+        return lastRateEndTime;
+    }
+
+    public void setLastRateEndTime(Date lastRateEndTime) {
+        this.lastRateEndTime = lastRateEndTime;
+    }
+
+    public Date getLastRateSyncStartTime() {
+        return lastRateSyncStartTime;
+    }
+
+    public void setLastRateSyncStartTime(Date lastRateSyncStartTime) {
+        this.lastRateSyncStartTime = lastRateSyncStartTime;
+    }
+
+    public Date getLastRateSyncEndTime() {
+        return lastRateSyncEndTime;
+    }
+
+    public void setLastRateSyncEndTime(Date lastRateSyncEndTime) {
+        this.lastRateSyncEndTime = lastRateSyncEndTime;
+    }
+
+    public Byte getRateSyncStatus() {
+        return rateSyncStatus;
+    }
+
+    public void setRateSyncStatus(Byte rateSyncStatus) {
+        this.rateSyncStatus = rateSyncStatus;
+    }
+
+    public String getRateSyncOwner() {
+        return rateSyncOwner;
+    }
+
+    public void setRateSyncOwner(String rateSyncOwner) {
+        this.rateSyncOwner = rateSyncOwner == null ? null : rateSyncOwner.trim();
     }
 
     public Date getUpdTime() {
