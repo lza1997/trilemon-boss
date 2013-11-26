@@ -44,7 +44,7 @@ define(function(require, exports, module) {
 
         // 切换下拉框
         $scope.changeCategory = function(value) {
-            getItems({'category': value, page: 1});
+            getItems({'category': $scope.category, page: 1});
         };
         // 搜索
         $scope.search = function() {
