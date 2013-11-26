@@ -9,7 +9,9 @@ import com.taobao.api.domain.User;
 import com.taobao.api.request.TraderateAddRequest;
 import com.taobao.api.request.TradesSoldIncrementGetRequest;
 import com.taobao.api.response.TradesSoldIncrementGetResponse;
+import com.trilemon.boss.infra.base.model.BuyerBlacklist;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiTradeService;
+import com.trilemon.boss.infra.base.service.api.exception.BaseTaobaoApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -17,7 +19,6 @@ import com.trilemon.boss.rate.RateConstants;
 import com.trilemon.boss.rate.cache.RateCache;
 import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.dao.RateSettingDAO;
-import com.trilemon.boss.rate.dao.RateSyncDAO;
 import com.trilemon.boss.rate.model.RateFilterTrade;
 import com.trilemon.boss.rate.model.RateOrder;
 import com.trilemon.boss.rate.model.RateSetting;
@@ -35,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.trilemon.boss.rate.RateConstants.*;
@@ -52,8 +52,6 @@ public class RateService {
     private RateSettingService rateSettingService;
     @Autowired
     private RateOrderDAO rateOrderDAO;
-    @Autowired
-    private RateSyncDAO rateSyncDAO;
     @Autowired
     private RateSettingDAO rateSettingDAO;
     @Autowired
@@ -136,7 +134,7 @@ public class RateService {
     }
 
     private RateLog rate(RateSetting rateSetting, List<Trade> trades,
-                            List<String> commentContents)
+                         List<String> commentContents)
             throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         RateLog rateLog = new RateLog();
         List<RateFilterTrade> rateFilterTrades = Lists.newArrayList();
@@ -291,8 +289,8 @@ public class RateService {
      */
     public boolean filterBuyerByBlacklist(RateSetting rateSetting, User buyer) {
         if (rateSetting.getIsFilterBlacklist()) {
-            Set<String> blacklist = rateSettingService.getBlacklist(buyer.getNick());
-            return blacklist.contains(buyer.getNick());
+            BuyerBlacklist buyerBlacklist = rateCache.getBuyerBlacklist(rateSetting.getUserId(), buyer.getNick());
+            return null != buyerBlacklist;
         } else {
             return false;
         }
@@ -323,7 +321,7 @@ public class RateService {
         if (rateSetting.getIsFilterBadRate()) {
             return false;
         } else {
-            RateStatus rateStatus = getRateSyncStatus(rateSetting.getUserId(), buyer.getNick());
+            RateStatus rateStatus = getBuyerRateSyncStatus(rateSetting.getUserId(), buyer.getNick());
             return rateStatus.getBadRateNum() > rateSetting.getFilterBadRateCount();
         }
     }
@@ -400,15 +398,16 @@ public class RateService {
         rateSettingDAO.updateByPrimaryKeySelective(update);
     }
 
-    public RateStatus getRateSyncStatus(Long userId, String buyerNick) {
-        return rateSyncDAO.selectRateSyncStatusByUserIdAndBuyerNick(userId, buyerNick);
+    public RateStatus getBuyerRateSyncStatus(Long userId, String buyerNick) {
+        return rateCache.getBuyerRateSyncStatus(userId, buyerNick);
     }
 
-//    public Page<TradeRate> paginateRate(){
-//        TraderatesGetRequest request=new TraderatesGetRequest();
-//        request.setFields("tid,oid,role,rated_nick,nick,result,created,item_title,item_price,content,reply");
-//        request.setPageNo(1L);
-//        request.setPageSize(1L);
-//        request.set
-//    }
+    public void rate(Long userId) {
+        RateSetting rateSetting = rateSettingDAO.selectByUserId(userId);
+        try {
+            rate(rateSetting);
+        } catch (BaseTaobaoApiException e) {
+            logger.error("", e);
+        }
+    }
 }

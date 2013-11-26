@@ -6,13 +6,12 @@ import com.google.common.collect.Iterables;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
 import com.trilemon.boss.rate.sync.service.RateSyncService;
-import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
+import com.trilemon.jobqueue.service.AbstractCronQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -25,8 +24,8 @@ import static com.trilemon.boss.rate.sync.RateSyncConstants.*;
  *
  * @author kevin
  */
-@Component
-public class RateSyncJob extends AbstractFixRateQueueService<Long> {
+//@Component
+public class RateSyncJob extends AbstractCronQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(RateSyncJob.class);
     @Autowired
     private RateSyncService rateSyncService;
@@ -40,17 +39,11 @@ public class RateSyncJob extends AbstractFixRateQueueService<Long> {
     @PostConstruct
     public void init() {
         setJobQueue(jobQueue);
-        setTag("job-queue[rate-sync]");
-        //一天同步一次
-        //setFixSeconds(24 * 60 * 60);
+        setTag("job-queue[sync-rate]");
+        setCron("0 0 1 * * ?");
         start();
         appService.addThreads(getThreadPoolExecutorMap());
         logger.info("add [{}] thread[{}] to monitor.", getThreadPoolExecutorMap().size(), getThreadPoolExecutorMap());
-    }
-
-    @Override
-    protected void startAdd() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -78,8 +71,10 @@ public class RateSyncJob extends AbstractFixRateQueueService<Long> {
         long hitUserId = 0;
         while (true) {
             try {
-                List<Long> userIds = syncStatusDAO.paginateUserIdByStatus(hitUserId, 100,
-                        ImmutableList.of(RATE_SYNC_STATUS_INIT, RATE_SYNC_STATUS_FAILED, RATE_SYNC_STATUS_SUCCESSFUL));
+                List<Long> userIds = syncStatusDAO.paginateUserIdByRateSyncStatus(hitUserId, 100,
+                        ImmutableList.of(RATE_SYNC_STATUS_INIT,
+                                RATE_SYNC_STATUS_FAILED,
+                                RATE_SYNC_STATUS_SUCCESSFUL));
                 if (CollectionUtils.isEmpty(userIds)) {
                     break;
                 } else {

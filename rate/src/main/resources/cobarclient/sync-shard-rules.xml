@@ -1,0 +1,15 @@
+<!DOCTYPE "rules.dtd">
+<rules>
+    <rule>
+        <namespace>calc_seller_day_rate</namespace>
+        <shards>syncShard1</shards>
+    </rule>
+    <rule>
+        <namespace>sync_rate</namespace>
+        <shards>syncShard1</shards>
+    </rule>
+    <rule>
+        <namespace>sync_status</namespace>
+        <shards>syncShard1</shards>
+    </rule>
+</rules>

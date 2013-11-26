@@ -1,14 +1,10 @@
 package com.trilemon.boss.rate.sync.dao;
 
-import com.google.common.collect.ImmutableList;
 import com.trilemon.boss.rate.sync.model.SyncStatus;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface
-        SyncStatusDAO {
+public interface SyncStatusDAO {
     int deleteByPrimaryKey(Integer id);
 
     void insert(SyncStatus record);
@@ -21,9 +17,11 @@ public interface
 
     int updateByPrimaryKey(SyncStatus record);
 
+    List<Long> paginateUserIdByCalcSellerDayRateStatus(long hitUserId, int pageSize, List<Byte> statusList);
+
+    List<Long> paginateUserIdByRateSyncStatus(long hitUserId, int pageSize, List<Byte> statusList);
+
+    int deleteByRateSyncOwnerAndStatus(String owner, List<Byte> statusList);
+
     SyncStatus selectByUserId(Long userId);
-
-    int deleteByRateSyncOwnerAndStatus(String owner, ImmutableList<Byte> statusList);
-
-    List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> statusList);
 }

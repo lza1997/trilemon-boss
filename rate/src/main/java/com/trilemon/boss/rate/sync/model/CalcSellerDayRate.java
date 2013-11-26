@@ -1,9 +1,11 @@
 package com.trilemon.boss.rate.sync.model;
 
+import java.util.Date;
+
 public class CalcSellerDayRate {
     private Long id;
 
-    private Integer userId;
+    private Long userId;
 
     private Integer goodRateNum;
 
@@ -11,11 +13,11 @@ public class CalcSellerDayRate {
 
     private Integer badRateNum;
 
-    private Integer calTime;
+    private Date calTime;
 
-    private Integer addTime;
+    private Date addTime;
 
-    private Integer updTime;
+    private Date updTime;
 
     public Long getId() {
         return id;
@@ -25,11 +27,11 @@ public class CalcSellerDayRate {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -57,27 +59,27 @@ public class CalcSellerDayRate {
         this.badRateNum = badRateNum;
     }
 
-    public Integer getCalTime() {
+    public Date getCalTime() {
         return calTime;
     }
 
-    public void setCalTime(Integer calTime) {
+    public void setCalTime(Date calTime) {
         this.calTime = calTime;
     }
 
-    public Integer getAddTime() {
+    public Date getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(Integer addTime) {
+    public void setAddTime(Date addTime) {
         this.addTime = addTime;
     }
 
-    public Integer getUpdTime() {
+    public Date getUpdTime() {
         return updTime;
     }
 
-    public void setUpdTime(Integer updTime) {
+    public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
 }

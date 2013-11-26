@@ -21,6 +21,14 @@ public class SyncStatus {
 
     private String rateSyncOwner;
 
+    private Date lastCalcSellerDayRateStartTime;
+
+    private Date lastCalcSellerDayRateEndTime;
+
+    private Byte calcSellerDayRateStatus;
+
+    private String calcSellerDayRateOwner;
+
     private Date updTime;
 
     private Date addTime;
@@ -95,6 +103,38 @@ public class SyncStatus {
 
     public void setRateSyncOwner(String rateSyncOwner) {
         this.rateSyncOwner = rateSyncOwner == null ? null : rateSyncOwner.trim();
+    }
+
+    public Date getLastCalcSellerDayRateStartTime() {
+        return lastCalcSellerDayRateStartTime;
+    }
+
+    public void setLastCalcSellerDayRateStartTime(Date lastCalcSellerDayRateStartTime) {
+        this.lastCalcSellerDayRateStartTime = lastCalcSellerDayRateStartTime;
+    }
+
+    public Date getLastCalcSellerDayRateEndTime() {
+        return lastCalcSellerDayRateEndTime;
+    }
+
+    public void setLastCalcSellerDayRateEndTime(Date lastCalcSellerDayRateEndTime) {
+        this.lastCalcSellerDayRateEndTime = lastCalcSellerDayRateEndTime;
+    }
+
+    public Byte getCalcSellerDayRateStatus() {
+        return calcSellerDayRateStatus;
+    }
+
+    public void setCalcSellerDayRateStatus(Byte calcSellerDayRateStatus) {
+        this.calcSellerDayRateStatus = calcSellerDayRateStatus;
+    }
+
+    public String getCalcSellerDayRateOwner() {
+        return calcSellerDayRateOwner;
+    }
+
+    public void setCalcSellerDayRateOwner(String calcSellerDayRateOwner) {
+        this.calcSellerDayRateOwner = calcSellerDayRateOwner == null ? null : calcSellerDayRateOwner.trim();
     }
 
     public Date getUpdTime() {

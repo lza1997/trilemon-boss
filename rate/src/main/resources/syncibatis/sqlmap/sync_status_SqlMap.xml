@@ -1,40 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="sync_status" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.sync.model.SyncStatus" >
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
-    <result column="rate_sync_status" property="rateStatus" jdbcType="TINYINT" />
-    <result column="rate_sync_start_time" property="rateSyncStartTime" jdbcType="TIMESTAMP" />
-    <result column="rate_sync_end_time" property="rateSyncEndTime" jdbcType="TIMESTAMP" />
     <result column="rate_start_time" property="rateStartTime" jdbcType="TIMESTAMP" />
-    <result column="rate_end_time" property="rateEndTime" jdbcType="TIMESTAMP" />
+    <result column="last_rate_start_time" property="lastRateStartTime" jdbcType="TIMESTAMP" />
+    <result column="last_rate_end_time" property="lastRateEndTime" jdbcType="TIMESTAMP" />
+    <result column="last_rate_sync_start_time" property="lastRateSyncStartTime" jdbcType="TIMESTAMP" />
+    <result column="last_rate_sync_end_time" property="lastRateSyncEndTime" jdbcType="TIMESTAMP" />
+    <result column="rate_sync_status" property="rateSyncStatus" jdbcType="TINYINT" />
+    <result column="rate_sync_owner" property="rateSyncOwner" jdbcType="VARCHAR" />
+    <result column="last_calc_seller_day_rate_start_time" property="lastCalcSellerDayRateStartTime" jdbcType="TIMESTAMP" />
+    <result column="last_calc_seller_day_rate_end_time" property="lastCalcSellerDayRateEndTime" jdbcType="TIMESTAMP" />
+    <result column="calc_seller_day_rate_status" property="calcSellerDayRateStatus" jdbcType="TINYINT" />
+    <result column="calc_seller_day_rate_owner" property="calcSellerDayRateOwner" jdbcType="VARCHAR" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, rate_sync_status, rate_sync_start_time, rate_sync_end_time, rate_start_time, 
-    rate_end_time, upd_time, add_time
+    id, user_id, rate_start_time, last_rate_start_time, last_rate_end_time, last_rate_sync_start_time, 
+    last_rate_sync_end_time, rate_sync_status, rate_sync_owner, last_calc_seller_day_rate_start_time, 
+    last_calc_seller_day_rate_end_time, calc_seller_day_rate_status, calc_seller_day_rate_owner, 
+    upd_time, add_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
     select 
     <include refid="sync_status.Base_Column_List" />
     from sync_status
     where id = #id:INTEGER#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
     delete from sync_status
     where id = #id:INTEGER#
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
-    insert into sync_status (id, user_id, rate_sync_status, rate_sync_start_time, 
-      rate_sync_end_time, rate_start_time, rate_end_time, 
+  <insert id="insert" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
+    insert into sync_status (id, user_id, rate_start_time, last_rate_start_time, 
+      last_rate_end_time, last_rate_sync_start_time, last_rate_sync_end_time, 
+      rate_sync_status, rate_sync_owner, last_calc_seller_day_rate_start_time, 
+      last_calc_seller_day_rate_end_time, calc_seller_day_rate_status, calc_seller_day_rate_owner, 
       upd_time, add_time)
-    values (#id:INTEGER#, #userId:BIGINT#, #rateStatus:TINYINT#, #rateSyncStartTime:TIMESTAMP#,
-      #rateSyncEndTime:TIMESTAMP#, #rateStartTime:TIMESTAMP#, #rateEndTime:TIMESTAMP#, 
+    values (#id:INTEGER#, #userId:BIGINT#, #rateStartTime:TIMESTAMP#, #lastRateStartTime:TIMESTAMP#, 
+      #lastRateEndTime:TIMESTAMP#, #lastRateSyncStartTime:TIMESTAMP#, #lastRateSyncEndTime:TIMESTAMP#, 
+      #rateSyncStatus:TINYINT#, #rateSyncOwner:VARCHAR#, #lastCalcSellerDayRateStartTime:TIMESTAMP#, 
+      #lastCalcSellerDayRateEndTime:TIMESTAMP#, #calcSellerDayRateStatus:TINYINT#, #calcSellerDayRateOwner:VARCHAR#, 
       #updTime:TIMESTAMP#, #addTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
     insert into sync_status
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
@@ -43,20 +55,38 @@
       <isNotNull prepend="," property="userId" >
         user_id
       </isNotNull>
-      <isNotNull prepend="," property="rateStatus" >
-        rate_sync_status
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncStartTime" >
-        rate_sync_start_time
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncEndTime" >
-        rate_sync_end_time
-      </isNotNull>
       <isNotNull prepend="," property="rateStartTime" >
         rate_start_time
       </isNotNull>
-      <isNotNull prepend="," property="rateEndTime" >
-        rate_end_time
+      <isNotNull prepend="," property="lastRateStartTime" >
+        last_rate_start_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateEndTime" >
+        last_rate_end_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncStartTime" >
+        last_rate_sync_start_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncEndTime" >
+        last_rate_sync_end_time
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncStatus" >
+        rate_sync_status
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncOwner" >
+        rate_sync_owner
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateStartTime" >
+        last_calc_seller_day_rate_start_time
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateEndTime" >
+        last_calc_seller_day_rate_end_time
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateStatus" >
+        calc_seller_day_rate_status
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateOwner" >
+        calc_seller_day_rate_owner
       </isNotNull>
       <isNotNull prepend="," property="updTime" >
         upd_time
@@ -74,20 +104,38 @@
       <isNotNull prepend="," property="userId" >
         #userId:BIGINT#
       </isNotNull>
-      <isNotNull prepend="," property="rateStatus" >
-        #rateStatus:TINYINT#
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncStartTime" >
-        #rateSyncStartTime:TIMESTAMP#
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncEndTime" >
-        #rateSyncEndTime:TIMESTAMP#
-      </isNotNull>
       <isNotNull prepend="," property="rateStartTime" >
         #rateStartTime:TIMESTAMP#
       </isNotNull>
-      <isNotNull prepend="," property="rateEndTime" >
-        #rateEndTime:TIMESTAMP#
+      <isNotNull prepend="," property="lastRateStartTime" >
+        #lastRateStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateEndTime" >
+        #lastRateEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncStartTime" >
+        #lastRateSyncStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncEndTime" >
+        #lastRateSyncEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncStatus" >
+        #rateSyncStatus:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncOwner" >
+        #rateSyncOwner:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateStartTime" >
+        #lastCalcSellerDayRateStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateEndTime" >
+        #lastCalcSellerDayRateEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateStatus" >
+        #calcSellerDayRateStatus:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateOwner" >
+        #calcSellerDayRateOwner:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="updTime" >
         #updTime:TIMESTAMP#
@@ -98,26 +146,44 @@
       )
     </dynamic>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
     update sync_status
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
       </isNotNull>
-      <isNotNull prepend="," property="rateStatus" >
-        rate_sync_status = #rateStatus:TINYINT#
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncStartTime" >
-        rate_sync_start_time = #rateSyncStartTime:TIMESTAMP#
-      </isNotNull>
-      <isNotNull prepend="," property="rateSyncEndTime" >
-        rate_sync_end_time = #rateSyncEndTime:TIMESTAMP#
-      </isNotNull>
       <isNotNull prepend="," property="rateStartTime" >
         rate_start_time = #rateStartTime:TIMESTAMP#
       </isNotNull>
-      <isNotNull prepend="," property="rateEndTime" >
-        rate_end_time = #rateEndTime:TIMESTAMP#
+      <isNotNull prepend="," property="lastRateStartTime" >
+        last_rate_start_time = #lastRateStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateEndTime" >
+        last_rate_end_time = #lastRateEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncStartTime" >
+        last_rate_sync_start_time = #lastRateSyncStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastRateSyncEndTime" >
+        last_rate_sync_end_time = #lastRateSyncEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncStatus" >
+        rate_sync_status = #rateSyncStatus:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="rateSyncOwner" >
+        rate_sync_owner = #rateSyncOwner:VARCHAR#
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateStartTime" >
+        last_calc_seller_day_rate_start_time = #lastCalcSellerDayRateStartTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="lastCalcSellerDayRateEndTime" >
+        last_calc_seller_day_rate_end_time = #lastCalcSellerDayRateEndTime:TIMESTAMP#
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateStatus" >
+        calc_seller_day_rate_status = #calcSellerDayRateStatus:TINYINT#
+      </isNotNull>
+      <isNotNull prepend="," property="calcSellerDayRateOwner" >
+        calc_seller_day_rate_owner = #calcSellerDayRateOwner:VARCHAR#
       </isNotNull>
       <isNotNull prepend="," property="updTime" >
         upd_time = #updTime:TIMESTAMP#
@@ -128,16 +194,53 @@
     </dynamic>
     where id = #id:INTEGER#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.infra.sync.model.SyncStatus" >
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
     update sync_status
     set user_id = #userId:BIGINT#,
-      rate_sync_status = #rateStatus:TINYINT#,
-      rate_sync_start_time = #rateSyncStartTime:TIMESTAMP#,
-      rate_sync_end_time = #rateSyncEndTime:TIMESTAMP#,
       rate_start_time = #rateStartTime:TIMESTAMP#,
-      rate_end_time = #rateEndTime:TIMESTAMP#,
+      last_rate_start_time = #lastRateStartTime:TIMESTAMP#,
+      last_rate_end_time = #lastRateEndTime:TIMESTAMP#,
+      last_rate_sync_start_time = #lastRateSyncStartTime:TIMESTAMP#,
+      last_rate_sync_end_time = #lastRateSyncEndTime:TIMESTAMP#,
+      rate_sync_status = #rateSyncStatus:TINYINT#,
+      rate_sync_owner = #rateSyncOwner:VARCHAR#,
+      last_calc_seller_day_rate_start_time = #lastCalcSellerDayRateStartTime:TIMESTAMP#,
+      last_calc_seller_day_rate_end_time = #lastCalcSellerDayRateEndTime:TIMESTAMP#,
+      calc_seller_day_rate_status = #calcSellerDayRateStatus:TINYINT#,
+      calc_seller_day_rate_owner = #calcSellerDayRateOwner:VARCHAR#,
       upd_time = #updTime:TIMESTAMP#,
       add_time = #addTime:TIMESTAMP#
     where id = #id:INTEGER#
   </update>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.sync.model.SyncStatus" >
+        select
+        <include refid="sync_status.Base_Column_List" />
+        from sync_status
+        where user_id = #userId:BIGINT#
+    </select>
+    <delete id="deleteByRateSyncOwnerAndStatus" parameterClass="map" >
+        delete from sync_status
+        where rate_sync_owner = #rateSyncOwner:VARCHAR#
+        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+            rate_sync_status=#statusList[]#
+        </iterate>
+    </delete>
+    <select id="paginateUserIdByCalcSellerDayRateStatus" resultMap="BaseResultMap" parameterClass="map" >
+        select user_id
+        from sync_status
+        where user_id > #hitUserId:BIGINT#
+        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+            calc_seller_day_rate_status=#statusList[]#
+        </iterate>
+        limit 0, #pageSize:INTEGER#
+    </select>
+    <select id="paginateUserIdByRateSyncStatus" resultMap="BaseResultMap" parameterClass="map" >
+        select user_id
+        from sync_status
+        where user_id > #hitUserId:BIGINT#
+        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+            rate_sync_status=#statusList[]#
+        </iterate>
+        limit 0, #pageSize:INTEGER#
+    </select>
 </sqlMap>

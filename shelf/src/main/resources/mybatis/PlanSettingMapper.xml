@@ -475,7 +475,6 @@
         where id > #{hitId,jdbcType=BIGINT}
         and auto_add_new_items = 1
         and `status`=1
-        where
         LIMIT 0, #{limit,jdbcType=INTEGER}
     </select>
     <select id="paginateUserIdByStatus" resultType="long" parameterType="map">

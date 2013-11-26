@@ -14,4 +14,7 @@ public interface CalcSellerDayRateDAO {
     int updateByPrimaryKeySelective(CalcSellerDayRate record);
 
     int updateByPrimaryKey(CalcSellerDayRate record);
+
+    void replaceSelective(CalcSellerDayRate calcSellerDayRate);
+
 }

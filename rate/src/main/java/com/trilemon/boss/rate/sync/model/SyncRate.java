@@ -2,10 +2,11 @@ package com.trilemon.boss.rate.sync.model;
 
 import com.alibaba.cobarclient.ShardTable;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class SyncRate extends ShardTable {
+public class SyncRate extends ShardTable{
+    private Long id;
+
     private Long userId;
 
     private Long numIid;
@@ -28,7 +29,7 @@ public class SyncRate extends ShardTable {
 
     private String itemTitle;
 
-    private BigDecimal itemPrice;
+    private String itemPrice;
 
     private String content;
 
@@ -37,6 +38,14 @@ public class SyncRate extends ShardTable {
     private Date addTime;
 
     private Date updTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getUserId() {
         return userId;
@@ -126,12 +135,12 @@ public class SyncRate extends ShardTable {
         this.itemTitle = itemTitle == null ? null : itemTitle.trim();
     }
 
-    public BigDecimal getItemPrice() {
+    public String getItemPrice() {
         return itemPrice;
     }
 
-    public void setItemPrice(BigDecimal itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setItemPrice(String itemPrice) {
+        this.itemPrice = itemPrice == null ? null : itemPrice.trim();
     }
 
     public String getContent() {

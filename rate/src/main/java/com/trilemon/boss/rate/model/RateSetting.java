@@ -9,7 +9,7 @@ public class RateSetting {
 
     private String nick;
 
-    private Integer isExpired;
+    private Boolean isExpired;
 
     private Byte status;
 
@@ -69,11 +69,11 @@ public class RateSetting {
         this.nick = nick == null ? null : nick.trim();
     }
 
-    public Integer getIsExpired() {
+    public Boolean getIsExpired() {
         return isExpired;
     }
 
-    public void setIsExpired(Integer isExpired) {
+    public void setIsExpired(Boolean isExpired) {
         this.isExpired = isExpired;
     }
 

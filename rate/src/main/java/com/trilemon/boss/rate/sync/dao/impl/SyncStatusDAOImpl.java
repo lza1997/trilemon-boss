@@ -1,13 +1,16 @@
 package com.trilemon.boss.rate.sync.dao.impl;
 
-import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.trilemon.boss.rate.dao.BaseDAO;
 import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
 import com.trilemon.boss.rate.sync.model.SyncStatus;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
-public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements SyncStatusDAO {
+@Repository
+public class SyncStatusDAOImpl extends BaseDAO implements SyncStatusDAO {
 
     public SyncStatusDAOImpl() {
         super();
@@ -16,7 +19,8 @@ public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport impleme
     public int deleteByPrimaryKey(Integer id) {
         SyncStatus _key = new SyncStatus();
         _key.setId(id);
-        return getSqlMapClientTemplate().delete("sync_status.deleteByPrimaryKey", _key);
+        int rows = getSqlMapClientTemplate().delete("sync_status.deleteByPrimaryKey", _key);
+        return rows;
     }
 
     public void insert(SyncStatus record) {
@@ -30,30 +34,45 @@ public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport impleme
     public SyncStatus selectByPrimaryKey(Integer id) {
         SyncStatus _key = new SyncStatus();
         _key.setId(id);
-        return (SyncStatus) getSqlMapClientTemplate().queryForObject("sync_status.selectByPrimaryKey", _key);
+        SyncStatus record = (SyncStatus) getSqlMapClientTemplate().queryForObject("sync_status.selectByPrimaryKey", _key);
+        return record;
     }
 
     public int updateByPrimaryKeySelective(SyncStatus record) {
-        return getSqlMapClientTemplate().update("sync_status.updateByPrimaryKeySelective", record);
+        int rows = getSqlMapClientTemplate().update("sync_status.updateByPrimaryKeySelective", record);
+        return rows;
     }
 
     public int updateByPrimaryKey(SyncStatus record) {
-        return getSqlMapClientTemplate().update("sync_status.updateByPrimaryKey", record);
-    }
-
-    public SyncStatus selectByUserId(Long userId) {
-        SyncStatus _key = new SyncStatus();
-        _key.setUserId(userId);
-        return (SyncStatus) getSqlMapClientTemplate().queryForObject("sync_status.selectByUserId",
-                _key);
-    }
-
-    public int deleteByRateSyncOwnerAndStatus(String owner, ImmutableList<Byte> statusList) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        int rows = getSqlMapClientTemplate().update("sync_status.updateByPrimaryKey", record);
+        return rows;
     }
 
     @Override
-    public List<Long> paginateUserIdByStatus(long hitUserId, int i, ImmutableList<Byte> statusList) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Long> paginateUserIdByCalcSellerDayRateStatus(long hitUserId, int pageSize, List<Byte> statusList) {
+        Map<String, Object> paramMap = ImmutableMap.of("hitUserId", hitUserId, "pageSize", pageSize, "statusList", statusList);
+        return getSqlMapClientTemplate().queryForList("sync_status.paginateUserIdByCalcSellerDayRateStatus", paramMap);
+    }
+
+    @Override
+    public List<Long> paginateUserIdByRateSyncStatus(long hitUserId, int pageSize, List<Byte> statusList) {
+
+        Map<String, Object> paramMap = ImmutableMap.of("hitUserId", hitUserId, "pageSize", pageSize, "statusList", statusList);
+        return getSqlMapClientTemplate().queryForList("sync_status.paginateUserIdByRateSyncStatus", paramMap);
+    }
+
+    @Override
+    public int deleteByRateSyncOwnerAndStatus(String owner, List<Byte> statusList) {
+        Map<String, Object> paramMap = ImmutableMap.of("owner", owner, "statusList", statusList);
+        int rows = getSqlMapClientTemplate().delete("sync_status.deleteByRateSyncOwnerAndStatus", paramMap);
+        return rows;
+    }
+
+    @Override
+    public SyncStatus selectByUserId(Long userId) {
+        SyncStatus _key = new SyncStatus();
+        _key.setUserId(userId);
+        SyncStatus record = (SyncStatus) getSqlMapClientTemplate().queryForObject("sync_status.selectByUserId", _key);
+        return record;
     }
 }

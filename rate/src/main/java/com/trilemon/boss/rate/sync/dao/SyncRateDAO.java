@@ -1,9 +1,9 @@
 package com.trilemon.boss.rate.sync.dao;
 
-import com.trilemon.boss.rate.sync.model.CalcMemberDayRate;
-import com.trilemon.boss.rate.sync.model.CalcSellerDayRate;
+import com.trilemon.boss.rate.model.dto.RateStatus;
 import com.trilemon.boss.rate.sync.model.SyncRate;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SyncRateDAO {
@@ -19,9 +19,9 @@ public interface SyncRateDAO {
 
     int updateByPrimaryKey(SyncRate record);
 
-    int batchInsertSelective(List<SyncRate> records);
+    RateStatus calcSellerDayRate(Long userId, Date startDate, Date endDate);
 
-    CalcSellerDayRate calcSellerDayRate(Long userId);
+    int batchInsertSelective(List<SyncRate> syncRates);
 
-    CalcMemberDayRate calcMemberDayRate(String buyerNick);
+    RateStatus calcBuyerRateStatus(Long userId, String buyerNick);
 }

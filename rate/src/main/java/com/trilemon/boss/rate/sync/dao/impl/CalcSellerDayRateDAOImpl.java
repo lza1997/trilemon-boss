@@ -1,12 +1,12 @@
 package com.trilemon.boss.rate.sync.dao.impl;
 
+import com.trilemon.boss.rate.dao.BaseDAO;
 import com.trilemon.boss.rate.sync.dao.CalcSellerDayRateDAO;
 import com.trilemon.boss.rate.sync.model.CalcSellerDayRate;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CalcSellerDayRateDAOImpl extends SqlMapClientDaoSupport implements CalcSellerDayRateDAO {
+public class CalcSellerDayRateDAOImpl extends BaseDAO implements CalcSellerDayRateDAO {
 
     public CalcSellerDayRateDAOImpl() {
         super();
@@ -42,5 +42,10 @@ public class CalcSellerDayRateDAOImpl extends SqlMapClientDaoSupport implements 
     public int updateByPrimaryKey(CalcSellerDayRate record) {
         int rows = getSqlMapClientTemplate().update("calc_seller_day_rate.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public void replaceSelective(CalcSellerDayRate calcSellerDayRate) {
+        getSqlMapClientTemplate().insert("calc_seller_day_rate.replaceSelective", calcSellerDayRate);
     }
 }

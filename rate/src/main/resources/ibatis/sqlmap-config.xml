@@ -6,7 +6,8 @@
     <settings cacheModelsEnabled="true" enhancementEnabled="true"
               lazyLoadingEnabled="true" errorTracingEnabled="true"
               useStatementNamespaces="true" />
-    <sqlMap resource="syncibatis/sqlmap/calc_seller_day_rate_SqlMap.xml" />
-    <sqlMap resource="syncibatis/sqlmap/sync_rate_SqlMap.xml" />
-    <sqlMap resource="syncibatis/sqlmap/sync_status_SqlMap.xml" />
+    <sqlMap resource="ibatis/sqlmap/rate_comment_setting_SqlMap.xml" />
+    <sqlMap resource="ibatis/sqlmap/rate_filter_trade_SqlMap.xml" />
+    <sqlMap resource="ibatis/sqlmap/rate_order_SqlMap.xml" />
+    <sqlMap resource="ibatis/sqlmap/rate_setting_SqlMap.xml" />
 </sqlMapConfig>

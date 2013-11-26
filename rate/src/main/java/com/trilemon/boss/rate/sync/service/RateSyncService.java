@@ -157,7 +157,7 @@ public class RateSyncService {
                 TraderatesGetResponse response = taobaoApiShopService.getRates(userId, request);
                 List<TradeRate> rates = response.getTradeRates();
                 if (CollectionUtils.isNotEmpty(rates) && rates.size() == pageSize) {
-                    syncRates.addAll(buildSyncRates(rates));
+                    syncRates.addAll(buildSyncRates(userId, rates));
                 } else {
                     break;
                 }
@@ -205,7 +205,46 @@ public class RateSyncService {
                 stopwatch.elapsed(TimeUnit.SECONDS));
     }
 
-    private List<SyncRate> buildSyncRates(List<TradeRate> rates) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    private List<SyncRate> buildSyncRates(Long userId, List<TradeRate> tradeRates) {
+        List<SyncRate> syncRates = Lists.newArrayList();
+        for (TradeRate tradeRate : tradeRates) {
+            SyncRate syncRate = new SyncRate();
+            syncRate.setAddTime(appService.getLocalSystemTime().toDate());
+            syncRate.setContent(tradeRate.getContent());
+            syncRate.setCreated(tradeRate.getCreated());
+            syncRate.setItemPrice(tradeRate.getItemPrice());
+            syncRate.setItemTitle(tradeRate.getItemTitle());
+            syncRate.setNick(tradeRate.getNick());
+            syncRate.setNumIid(tradeRate.getNumIid());
+            syncRate.setOid(tradeRate.getOid());
+            syncRate.setRatedNick(tradeRate.getRatedNick());
+            syncRate.setReply(tradeRate.getReply());
+            syncRate.setResult(tradeRate.getResult());
+            syncRate.setRole(tradeRate.getRole());
+            syncRate.setTid(tradeRate.getTid());
+            syncRate.setUserId(userId);
+            syncRate.setValidScore(tradeRate.getValidScore());
+        }
+        return syncRates;
+    }
+
+    private SyncRate buildSyncRate(Long userId, TradeRate tradeRate) {
+        SyncRate syncRate = new SyncRate();
+        syncRate.setAddTime(appService.getLocalSystemTime().toDate());
+        syncRate.setContent(tradeRate.getContent());
+        syncRate.setCreated(tradeRate.getCreated());
+        syncRate.setItemPrice(tradeRate.getItemPrice());
+        syncRate.setItemTitle(tradeRate.getItemTitle());
+        syncRate.setNick(tradeRate.getNick());
+        syncRate.setNumIid(tradeRate.getNumIid());
+        syncRate.setOid(tradeRate.getOid());
+        syncRate.setRatedNick(tradeRate.getRatedNick());
+        syncRate.setReply(tradeRate.getReply());
+        syncRate.setResult(tradeRate.getResult());
+        syncRate.setRole(tradeRate.getRole());
+        syncRate.setTid(tradeRate.getTid());
+        syncRate.setUserId(userId);
+        syncRate.setValidScore(tradeRate.getValidScore());
+        return syncRate;
     }
 }
