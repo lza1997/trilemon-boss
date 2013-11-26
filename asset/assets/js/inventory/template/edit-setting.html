@@ -1,0 +1,42 @@
+<div class="row" ng-show="setting.empty">
+    <div class="well col-lg-5">
+        还没有仓库宝贝上架计划呢
+        <button class="btn btn-primary" ng-click="setting.$save()">立刻创建</button>
+    </div>
+</div>
+<form class="form-horizontal plan-form" name="form" novalidate ng-show="itemNum.$resolved && !setting.empty">
+    <div class="form-group">
+        <label class="col-md-1 control-label">仓库宝贝</label>
+
+        <div class="col-md-6">
+            <p class="form-control-static">共 {{ itemNum.regular_shelved + itemNum.never_on_shelf }} 个宝贝</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-1 control-label"></label>
+        <div class="col-md-6">
+            <div class="checkbox">
+                <label>
+                    <input ng-disabled="setting.paused" type="checkbox" ng-model="includeBanners.regular_shelved" />
+                    我下架的（{{itemNum.regular_shelved}}）
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input ng-disabled="setting.paused" type="checkbox" ng-model="includeBanners.never_on_shelf" />
+                    从未上架的（{{itemNum.never_on_shelf}}）
+                </label>
+            </div>
+            <input type="hidden" ng-model="planSetting.includeSellerCids" name="includeSellerCids" required />
+            <label class="error"><i class="icon-exclamation-sign"></i> 请选择分类</label>
+        </div>
+    </div>
+    <div class="form-group form-action">
+        <div class="col-md-offset-1 col-md-10">
+            <button class="btn btn-primary btn-lg" ng-disabled="setting.paused" ng-click="save()">保存</button>
+            <button class="btn btn-default btn-lg" ng-click="togglePaused()">
+                {{setting.paused ? "开启" : "停用"}}计划
+            </button>
+        </div>
+    </div>
+</form>

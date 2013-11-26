@@ -1,5 +1,7 @@
 package com.trilemon.boss.inventory.model;
 
+import com.trilemon.boss.inventory.InventoryConstants;
+
 import java.util.Date;
 
 public class InventoryListSetting {
@@ -15,7 +17,7 @@ public class InventoryListSetting {
 
     private Byte autoAddNewItem;
 
-    private Byte status;
+    private Byte status = InventoryConstants.SETTING_STATUS_EMPTY;
 
     private String distribution;
 
@@ -121,5 +123,13 @@ public class InventoryListSetting {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public boolean isEmpty() {
+        return InventoryConstants.SETTING_STATUS_EMPTY == this.getStatus();
+    }
+
+    public boolean isPaused() {
+        return InventoryConstants.SETTING_STATUS_PAUSED == this.getStatus();
     }
 }

@@ -21,8 +21,12 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
             ]
         },
         {
-            name: 'CMS',
-            url: '/sb'
+            name: '仓库宝贝上架',
+            url: '/inventory',
+            children: [
+                {name: '创建计划', url: '/inventory/plan/edit', navClass: 'inventoryEdit'},
+                {name: '计划详情', url: '/inventory/plan/edit', navClass: 'inventoryShow'}
+            ]
         }
     ];
 

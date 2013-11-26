@@ -13,7 +13,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
  *
  * @author kevin
  */
-@Component
+//@Component
 public class UpdatePlanJob extends AbstractFixQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired

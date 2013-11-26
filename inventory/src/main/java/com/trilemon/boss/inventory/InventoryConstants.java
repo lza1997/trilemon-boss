@@ -24,6 +24,7 @@ public interface InventoryConstants {
     byte LIST_STATUS_FAILED = 2;
     byte LIST_STATUS_EXCLUDED = 3;
     //setting status
+    byte SETTING_STATUS_EMPTY = -1;  // 并非数据库的状态
     byte SETTING_STATUS_WAITING_PLAN = 0;
     byte SETTING_STATUS_RUNNING = 1;
     byte SETTING_STATUS_PAUSED = 2;

@@ -1,3 +1,28 @@
+//
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//               佛祖保佑         永无BUG
+//
 var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ngResource', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
 
 app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
@@ -5,6 +30,7 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
     SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
     var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
     var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
+    var inventory = SeajsLazyModuleProvider.create('app/inventory/index');
 
     $routeProvider
         .when('/shelf/plan-setting/new', shelf.routeFor('shelf.newPlanSetting'))
@@ -19,6 +45,9 @@ app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazy
         .when('/showcase/exclude-item', showCase.routeFor('showcase.excludeItem', {reloadOnSearch: false}))
         .when('/showcase/include-item', showCase.routeFor('showcase.includeItem', {reloadOnSearch: false}))
         .when('/showcase', {redirectTo: '/showcase/setting/edit'})
+
+        .when('/inventory/setting/edit', inventory.routeFor('inventory.editSetting'))
+        .when('/inventory', {redirectTo: '/inventory/setting/edit'})
 
         .otherwise({redirectTo: '/shelf'});
 

@@ -112,7 +112,11 @@ public class InventoryListService {
      * @return
      */
     public InventoryListSetting getSetting(Long userId) {
-        return inventoryListSettingMapper.selectByUserId(userId);
+        InventoryListSetting setting =  inventoryListSettingMapper.selectByUserId(userId);
+        if(setting==null){
+            setting = new InventoryListSetting();
+        }
+        return setting;
     }
 
     /**
