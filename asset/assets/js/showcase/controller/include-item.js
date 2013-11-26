@@ -63,8 +63,8 @@ define(function(require, exports, module) {
         };
 
         // 切换分类
-        $scope.changeCategory = function(value) {
-            getItems({category: value, page: 1});
+        $scope.changeCategory = function() {
+            getItems({category: $scope.category, page: 1});
         };
 
         // 搜索
