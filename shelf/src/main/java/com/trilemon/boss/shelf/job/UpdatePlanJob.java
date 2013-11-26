@@ -7,12 +7,13 @@ import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.dao.PlanSettingMapper;
 import com.trilemon.boss.shelf.model.PlanSetting;
 import com.trilemon.boss.shelf.service.PlanService;
-import com.trilemon.jobqueue.service.AbstractFixQueueService;
+import com.trilemon.jobqueue.service.AbstractFixRateQueueService;
 import com.trilemon.jobqueue.service.queue.JobQueue;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -22,8 +23,8 @@ import java.util.List;
  *
  * @author kevin
  */
-//@Component
-public class UpdatePlanJob extends AbstractFixQueueService<Long> {
+@Component
+public class UpdatePlanJob extends AbstractFixRateQueueService<Long> {
     private final static Logger logger = LoggerFactory.getLogger(UpdatePlanJob.class);
     @Autowired
     private PlanService planService;
