@@ -1,9 +1,13 @@
 package com.trilemon.boss.inventory.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.trilemon.boss.center.PlanDistributionUtils;
 import com.trilemon.boss.inventory.InventoryConstants;
 
 import java.util.Date;
+import java.util.Map;
 
+@JsonIgnoreProperties(value = {"id", "userId", "distribution"}, ignoreUnknown = true)
 public class InventoryListSetting {
     private Long id;
 
@@ -17,7 +21,7 @@ public class InventoryListSetting {
 
     private Byte autoAddNewItem;
 
-    private Byte status = InventoryConstants.SETTING_STATUS_EMPTY;
+    private Byte status;
 
     private String distribution;
 
@@ -131,5 +135,9 @@ public class InventoryListSetting {
 
     public boolean isPaused() {
         return InventoryConstants.SETTING_STATUS_PAUSED == this.getStatus();
+    }
+
+    public Map<String, Map<String, Boolean>> getDistributionMap() throws Exception {
+        return PlanDistributionUtils.getTimeDistribution(getDistribution());
     }
 }

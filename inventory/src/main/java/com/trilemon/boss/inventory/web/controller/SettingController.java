@@ -9,9 +9,12 @@ import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.boss.inventory.service.InventoryListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
@@ -50,7 +53,7 @@ public class SettingController {
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public InventoryListSetting update(InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+    public InventoryListSetting update(@RequestBody InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         inventoryListService.updateIncludeBanners(56912708L, COMMA_SPLITTER.splitToList(setting.getIncludeBanners()));
         return inventoryListService.getSetting(56912708L);
     }
@@ -73,6 +76,15 @@ public class SettingController {
     public InventoryListSetting resumeSetting() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException, TaobaoEnhancedApiException {
         inventoryListService.resumeSetting(56912708L);
         return inventoryListService.getSetting(56912708L);
+    }
+
+    /**
+     * 开启规则
+     */
+    @ResponseBody
+    @RequestMapping(value = "/distribution", method = RequestMethod.GET)
+    public Map<String, Map<String,Boolean>> getDistribution() throws Exception {
+        return inventoryListService.getSetting(56912708L).getDistributionMap();
     }
 
 }

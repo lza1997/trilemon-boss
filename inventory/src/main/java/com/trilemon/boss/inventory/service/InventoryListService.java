@@ -115,6 +115,7 @@ public class InventoryListService {
         InventoryListSetting setting =  inventoryListSettingMapper.selectByUserId(userId);
         if(setting==null){
             setting = new InventoryListSetting();
+            setting.setStatus(InventoryConstants.SETTING_STATUS_EMPTY);
         }
         return setting;
     }
