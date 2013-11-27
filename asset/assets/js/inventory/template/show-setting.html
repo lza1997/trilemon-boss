@@ -50,17 +50,13 @@
 <div class="tab-content">
     <form class="form-inline wrap" role="form" ng-submit="search()">
         <div class="form-group">
-            <select class="form-control" ng-model="category" ng-change="changeCategory()">
-                <option value="onsale">全部待上架宝贝</option>
-                <option value="inventory">我上架的</option>
-                <option value="inventory">从未上架的</option>
+            <select class="form-control" ng-model="banner" ng-change="changeBanner()" ng-options="value as text for (value, text) in BANNER">
+                <option value="">全部上架宝贝</option>
             </select>
         </div>
         <div class="form-group">
-            <select class="form-control" ng-model="status" ng-change="changeStatus()">
-                <option value="onsale">全部状态</option>
-                <option value="inventory">已上架</option>
-                <option value="inventory">未上架</option>
+            <select class="form-control" ng-model="status" ng-change="changeStatus()" ng-options="value as text for (value, text) in STATUS">
+                <option value="">全部状态</option>
             </select>
         </div>
         <div class="form-group">
@@ -84,14 +80,13 @@
         </tr>
         </thead>
         <tr ng-repeat="item in items" ng-class="{success:item.include}">
-            <td><input type="checkbox" ng-model="item.checked" ng-change="toggleChecked()"/></td>
-            <td><img ng-src="{{item.picUrl}}_sum.jpg" ng-if="item.picUrl"/></td>
-            <td>{{ item.title }}</td>
+            <td><img ng-src="{{item.itemPicUrl}}_sum.jpg" ng-if="item.itemPicUrl"/></td>
+            <td>{{ item.itemTitle }}</td>
             <td class="text-right">{{ item.price }}</td>
-            <td>{{ item.status }}</td>
+            <td>{{ STATUS[item.status] }}</td>
             <td>
-                <a ng-if="!item.include" href="" ng-click="setInclude(item, true)">加入固定推荐</a>
-                <a ng-if="item.include" href="" ng-click="setInclude(item, false)">取消固定推荐</a>
+                <a href="" ng-click="setInclude(item, true)">立即上架</a>
+                <a href="" ng-click="setInclude(item, false)">移除</a>
             </td>
         </tr>
     </table>

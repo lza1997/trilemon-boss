@@ -10,7 +10,8 @@ define(function(require, exports, module) {
         },
         factories: {
             'InventorySetting': require('./service/inventory-setting'),
-            'InventoryItemNum': require('./service/inventory-item-num')
+            'InventoryItemNum': require('./service/inventory-item-num'),
+            'InventoryItem': require('./service/inventory-item')
         },
         templates: {
             'inventory/editSetting': require('./template/edit-setting.html'),
