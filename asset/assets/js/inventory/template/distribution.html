@@ -1,0 +1,29 @@
+<h4>设置上架时间</h4>
+<table>
+    <col width="100px"/>
+    <col width="200px"/>
+    <col/>
+    <tr ng-repeat="day in distribution">
+        <td>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="day.checked" ng-change="day.toggleChecked()"/> {{day.name}}
+                </label>
+            </div>
+        </td>
+        <td>
+            <div ng-if="day.checked">
+                {{day.hours | distributionText}}
+            </div>
+        </td>
+        <td>
+            <div ng-if="day.checked">
+                <a href="" ng-click="showModal(day)">选择时间段</a>
+            </div>
+        </td>
+    </tr>
+</table>
+<div class="form-action">
+    <button class="btn btn-primary" ng-click="save()">保存</button>
+    <a href="#/shelf/plan-setting">放弃</a>
+</div>

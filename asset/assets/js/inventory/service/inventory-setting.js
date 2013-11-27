@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     module.exports = ['$resource', function($resource) {
         var URL = '/inventory/setting';
         var PAUSE_URL = URL + '/pause';
+        var DISTR_URL = URL + '/distribution';
 
         var InventorySetting = $resource(URL, null, {
             create: {
