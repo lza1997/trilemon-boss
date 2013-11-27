@@ -1,5 +1,6 @@
 package com.trilemon.boss.inventory.web.controller;
 
+import com.google.common.collect.Lists;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
+
+import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
 /**
  * 仓库计划设置
@@ -43,18 +44,17 @@ public class SettingController {
     @RequestMapping(method = RequestMethod.POST)
     public InventoryListSetting create() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        inventoryListService.createSetting(56912708L, new ArrayList<String>());
+        inventoryListService.createSetting(56912708L, Lists.<String>newArrayList());
         return inventoryListService.getSetting(56912708L);
     }
 
     /**
      * 修改计划所属的仓库类型
-     *
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
     public InventoryListSetting update(@RequestBody @Valid InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        inventoryListService.updateIncludeBanners(56912708L, Arrays.asList(setting.getIncludeBanners().split(",")));
+        inventoryListService.updateIncludeBanners(56912708L, COMMA_SPLITTER.splitToList(setting.getIncludeBanners()));
         return inventoryListService.getSetting(56912708L);
     }
 
