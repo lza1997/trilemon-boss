@@ -2,11 +2,10 @@
  * 计划列表
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'PlanSetting', 'Flash', 'PLAN_STATUS', 'Confirm', '$location', '$routeParams', '$modal', function($scope, PlanSetting, Flash, PLAN_STATUS, Confirm, $location, $routeParams, $modal) {
+    var IndexController = ['$scope', 'PlanSetting', 'Flash', 'Confirm', '$location', '$routeParams', '$modal', function($scope, PlanSetting, Flash, Confirm, $location, $routeParams, $modal) {
         // 初始化
         $scope.init = function() {
             $scope.flashSuccess = Flash.success();
-            $scope.PLAN_STATUS = PLAN_STATUS;
             $scope.jumpPage($routeParams.page);
         };
 

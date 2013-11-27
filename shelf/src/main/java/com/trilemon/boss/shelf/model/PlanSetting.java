@@ -1,5 +1,7 @@
 package com.trilemon.boss.shelf.model;
 
+import com.trilemon.boss.shelf.ShelfConstants;
+
 import java.util.Date;
 
 public class PlanSetting implements Comparable<PlanSetting> {
@@ -152,5 +154,9 @@ public class PlanSetting implements Comparable<PlanSetting> {
     public int compareTo(PlanSetting o) {
         int lastPlanTime = (int) (o.getLastPlanTime().getTime() - this.getLastPlanTime().getTime());
         return lastPlanTime;
+    }
+
+    public boolean isPaused() {
+        return ShelfConstants.PLAN_SETTING_STATUS_PAUSED == getStatus();
     }
 }
