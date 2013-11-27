@@ -1,7 +1,6 @@
 package com.trilemon.boss.shelf.web.controller;
 
 import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
-import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -20,8 +19,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/sellercats")
 public class SellerCatController {
-    @Autowired
-    private TaobaoApiShopService taobaoApiShopService;
     @Autowired
     private PlanSettingService planSettingService;
 

@@ -36,6 +36,11 @@ public interface InventoryListItemMapper {
                                                      @Param("query") String query,
                                                      @Param("banners") List<String> banners);
 
+    int countByUserIdAndStatusAndBanners(@Param("userId") Long userId,
+                                         @Param("statusList") List<Byte> statusList,
+                                         @Param("query") String query,
+                                         @Param("banners") List<String> banners);
+
     List<InventoryListItem> paginateByUserIdAndSettingIdAndStatusAndBanners(@Param("userId") Long userId,
                                                                             @Param("inventoryListSettingId") Long settingId,
                                                                             @Param("statusList") List<Byte> statusList,
@@ -43,6 +48,13 @@ public interface InventoryListItemMapper {
                                                                             @Param("banners") List<String> banners,
                                                                             @Param("offset") Integer offset,
                                                                             @Param("limit") Integer limit);
+
+    List<InventoryListItem> paginateByUserIdAndStatusAndBanners(@Param("userId") Long userId,
+                                                                @Param("statusList") List<Byte> statusList,
+                                                                @Param("query") String query,
+                                                                @Param("banners") List<String> banners,
+                                                                @Param("offset") Integer offset,
+                                                                @Param("limit") Integer limit);
 
     List<InventoryListItem> selectBySettingId(Long settingId);
 
