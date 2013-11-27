@@ -3,40 +3,29 @@
  */
 define(function(require, exports, module) {
 
-    var DistributionController = ['$scope', 'PlanSetting', '$modal', '$routeParams', '$location', function($scope, PlanSetting, $modal, $routeParams, $location) {
-        $scope.weeks = _.map('周一 周二 周三 周四 周五 周六 周日'.split(' '), function(v, index) {
-            return {name: v, value: index + 1 + '', checked: false};
-        });
+    var DistributionController = ['$scope', 'DistributionFactory', '$modal', '$routeParams', '$location', function($scope, DistributionFactory, $modal, $routeParams, $location) {
+        var Distribution = DistributionFactory.create('/shelf/plan-settings/:id/distribution');
 
         // 格式为 {1: {1:true, 2:false, ... , 23:true}, ...}
-        $scope.distribution = PlanSetting.getDistribution({id: $routeParams.id}, function(data) {
-            // 回填周几是否被选中, data 包含多余的 key 所以要 pick
-            _.each(_.pick(data, _.range(1, 8)), function(v, k) {
-                var week = _.findWhere($scope.weeks, {value: k});
-                week.checked = _.any(v);
-            });
-        });
+        $scope.distribution = Distribution.query({id: $routeParams.id});
 
-        $scope.checkWeek = function(week) {
-            if (!week.checked) {
-                $scope.distribution[week.value] = {};
-            }
-        };
-
-        $scope.showModal = function(week) {
+        $scope.showModal = function(day) {
             $modal.open({
                 templateUrl: 'shelf/distributionModal',
                 controller: ModalController,
                 resolve: {
                     distribution: function() {
-                        return $scope.distribution[week.value];
+                        return day.hours;
                     }
                 }
             });
         };
 
         $scope.save = function() {
-            $scope.distribution.$saveDistribution({id: $routeParams.id}, function() {
+            Distribution.save({
+                id: $routeParams.id,
+                distribution: $scope.distribution
+            }, function() {
                 $location.url('/shelf/plan-setting');
             });
         };

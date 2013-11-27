@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns:ng="http://angularjs.org" lang="zh" id="ng-app" ng-app="app">
+<html xmlns:ng="http://angularjs.org" lang="zh">
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -40,14 +40,14 @@
     <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
     <script src="${asset}/base/js/angular/highchart.js"></script>
 
-    <script src="${asset}/js/app.js"></script>
     <script src="${asset}/js/common/index.js"></script>
     <script src="${asset}/js/common/flash.js"></script>
     <script src="${asset}/js/common/rest.js"></script>
     <script src="${asset}/js/common/seller-cat-factory.js"></script>
     <script src="${asset}/js/common/controller/nav.js"></script>
-    <script src="${asset}/js/common/constant.js"></script>
     <script src="${asset}/js/common/http-method-override.js"></script>
+    <script src="${asset}/js/common/filter/distribution-text.js"></script>
+    <script src="${asset}/js/common/distribution-factory.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
@@ -111,5 +111,8 @@
         </ul>
     </div>
 </footer>
+<script>
+    seajs.use('${asset}/js/app.js');
+</script>
 </body>
 </html>
