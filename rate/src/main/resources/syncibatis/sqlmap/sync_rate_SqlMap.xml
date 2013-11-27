@@ -243,7 +243,8 @@
   <select id="calcSellerDayRate" resultMap="RateStatusResultMap" parameterClass="map" >
       SELECT
           user_id as user_id,
-          count(if(result="good",1,null)) as good_rate_num,
+          '' as buyer_nick,
+          count(if(result='good',1,null)) as good_rate_num,
           count(if(result='neutral',1,null)) as neutral_rate_num,
           count(if(result='bad',1,null)) as bad_rate_num
       FROM <include refid="sync_rate.Base_Table_Name" />

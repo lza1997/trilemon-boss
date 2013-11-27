@@ -15,7 +15,7 @@ public class CalcSellerDayRate extends ShardTable {
 
     private Integer badRateNum;
 
-    private Date calTime;
+    private Date rateTime;
 
     private Date addTime;
 
@@ -61,12 +61,12 @@ public class CalcSellerDayRate extends ShardTable {
         this.badRateNum = badRateNum;
     }
 
-    public Date getCalTime() {
-        return calTime;
+    public Date getRateTime() {
+        return rateTime;
     }
 
-    public void setCalTime(Date calTime) {
-        this.calTime = calTime;
+    public void setRateTime(Date rateTime) {
+        this.rateTime = rateTime;
     }
 
     public Date getAddTime() {

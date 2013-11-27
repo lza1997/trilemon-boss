@@ -7,12 +7,12 @@
     <result column="good_rate_num" property="goodRateNum" jdbcType="INTEGER" />
     <result column="neutral_rate_num" property="neutralRateNum" jdbcType="INTEGER" />
     <result column="bad_rate_num" property="badRateNum" jdbcType="INTEGER" />
-    <result column="cal_time" property="calTime" jdbcType="TIMESTAMP" />
+    <result column="rate_time" property="rateTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, good_rate_num, neutral_rate_num, bad_rate_num, cal_time, add_time, upd_time
+    id, user_id, good_rate_num, neutral_rate_num, bad_rate_num, rate_time, add_time, upd_time
   </sql>
   <sql id="Base_Table_Name" >
       calc_seller_day_rate_#tableId#
@@ -30,10 +30,10 @@
   </delete>
   <insert id="insert" parameterClass="com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate" >
     insert into <include refid="calc_seller_day_rate.Base_Table_Name"/> (id, user_id, good_rate_num, neutral_rate_num,
-      bad_rate_num, cal_time, add_time, upd_time
+      bad_rate_num, rate_time, add_time, upd_time
       )
     values (#id:BIGINT#, #userId:BIGINT#, #goodRateNum:INTEGER#, #neutralRateNum:INTEGER#, 
-      #badRateNum:INTEGER#, #calTime:TIMESTAMP#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#
+      #badRateNum:INTEGER#, #rateTime:TIMESTAMP#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#
       )
   </insert>
   <insert id="insertSelective" parameterClass="com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate" >
@@ -54,8 +54,8 @@
       <isNotNull prepend="," property="badRateNum" >
         bad_rate_num
       </isNotNull>
-      <isNotNull prepend="," property="calTime" >
-        cal_time
+      <isNotNull prepend="," property="rateTime" >
+        rate_time
       </isNotNull>
       <isNotNull prepend="," property="addTime" >
         add_time
@@ -82,8 +82,8 @@
       <isNotNull prepend="," property="badRateNum" >
         #badRateNum:INTEGER#
       </isNotNull>
-      <isNotNull prepend="," property="calTime" >
-        #calTime:TIMESTAMP#
+      <isNotNull prepend="," property="rateTime" >
+        #rateTime:TIMESTAMP#
       </isNotNull>
       <isNotNull prepend="," property="addTime" >
         #addTime:TIMESTAMP#
@@ -109,8 +109,8 @@
       <isNotNull prepend="," property="badRateNum" >
         bad_rate_num = #badRateNum:INTEGER#
       </isNotNull>
-      <isNotNull prepend="," property="calTime" >
-        cal_time = #calTime:TIMESTAMP#
+      <isNotNull prepend="," property="rateTime" >
+        rate_time = #rateTime:TIMESTAMP#
       </isNotNull>
       <isNotNull prepend="," property="addTime" >
         add_time = #addTime:TIMESTAMP#
@@ -127,7 +127,7 @@
       good_rate_num = #goodRateNum:INTEGER#,
       neutral_rate_num = #neutralRateNum:INTEGER#,
       bad_rate_num = #badRateNum:INTEGER#,
-      cal_time = #calTime:TIMESTAMP#,
+      rate_time = #rateTime:TIMESTAMP#,
       add_time = #addTime:TIMESTAMP#,
       upd_time = #updTime:TIMESTAMP#
     where id = #id:BIGINT#
@@ -150,8 +150,8 @@
             <isNotNull prepend="," property="badRateNum" >
                 bad_rate_num
             </isNotNull>
-            <isNotNull prepend="," property="calTime" >
-                cal_time
+            <isNotNull prepend="," property="rateTime" >
+                rate_time
             </isNotNull>
             <isNotNull prepend="," property="addTime" >
                 add_time
@@ -178,8 +178,8 @@
             <isNotNull prepend="," property="badRateNum" >
                 #badRateNum:INTEGER#
             </isNotNull>
-            <isNotNull prepend="," property="calTime" >
-                #calTime:TIMESTAMP#
+            <isNotNull prepend="," property="rateTime" >
+                #rateTime:TIMESTAMP#
             </isNotNull>
             <isNotNull prepend="," property="addTime" >
                 #addTime:TIMESTAMP#

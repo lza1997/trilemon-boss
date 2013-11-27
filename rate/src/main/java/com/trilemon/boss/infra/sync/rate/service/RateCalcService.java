@@ -94,7 +94,8 @@ public class RateCalcService {
 
         startDateTime = startDateTime.withTimeAtStartOfDay();
         endDateTime = DateUtils.endOf(endDateTime);
-        for (; startDateTime.isBefore(endDateTime); startDateTime.plusDays(1)) {
+        DateTime tempStartDateTime = new DateTime(startDateTime);
+        for (; startDateTime.isBefore(endDateTime); startDateTime = startDateTime.plusDays(1)) {
             logger.info("calculating... userId[{}] startDate[{}] endDate[{}]",
                     userId,
                     startDateTime.toString(DateUtils.yyyy_MM_dd_HH_mm_ss),
@@ -103,9 +104,9 @@ public class RateCalcService {
             RateStatus rateStatus = syncRateDAO.calcSellerDayRate(userId,
                     startDateTime.toDate(),
                     DateUtils.endOf(startDateTime).toDate());
-            CalcSellerDayRate calcSellerDayRate=new CalcSellerDayRate();
+            CalcSellerDayRate calcSellerDayRate = new CalcSellerDayRate();
             calcSellerDayRate.setAddTime(appService.getLocalSystemTime().toDate());
-            calcSellerDayRate.setCalTime(appService.getLocalSystemTime().toDate());
+            calcSellerDayRate.setRateTime(startDateTime.withTimeAtStartOfDay().toDate());
             calcSellerDayRate.setUserId(userId);
             calcSellerDayRate.setGoodRateNum(rateStatus.getGoodRateNum());
             calcSellerDayRate.setNeutralRateNum(rateStatus.getNeutralRateNum());
@@ -117,7 +118,7 @@ public class RateCalcService {
         stopwatch.stop();
         logger.info("end to calc userId[{}] startDate[{}] endDate[{}], spend time [{}] sec",
                 userId,
-                startDateTime.toString(DateUtils.yyyy_MM_dd_HH_mm_ss),
+                tempStartDateTime.toString(DateUtils.yyyy_MM_dd_HH_mm_ss),
                 endDateTime.toString(DateUtils.yyyy_MM_dd_HH_mm_ss),
                 stopwatch.elapsed(TimeUnit.SECONDS));
     }
