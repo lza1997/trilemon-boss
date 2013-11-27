@@ -16,9 +16,6 @@ define(function(require, exports, module) {
             'PlanSettingForm': require('./service/plan-setting-form'),
             'Confirm': require('./service/confirm')
         },
-        filters: {
-            'distributionText': require('./filter/distribution-text.js')
-        },
         templates: {
             'shelf/distribution': require('./template/distribution.html'),
             'shelf/distributionModal': require('./template/distribution-modal.html'),
