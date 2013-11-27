@@ -5,7 +5,7 @@ angular.module('common').config(['$httpProvider', function($httpProvider) {
 
     $httpProvider.interceptors.push(['$q', function($q) {
         return {
-            'request2': function(config) {
+            'request': function(config) {
                 var method = config.method;
                 if (method === 'DELETE' || method === "PUT") {
                     config.method = 'POST';

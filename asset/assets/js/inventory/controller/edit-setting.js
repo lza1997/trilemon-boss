@@ -24,7 +24,7 @@ define(function(require, exports, module) {
                 }
             });
             $scope.setting.includeBanners = arr.join(',');
-            $scope.setting.$save();
+            $scope.setting.$update();
         };
 
         // 停用或开启

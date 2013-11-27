@@ -9,12 +9,9 @@ import com.trilemon.boss.inventory.model.InventoryListSetting;
 import com.trilemon.boss.inventory.service.InventoryListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.validation.Valid;
 
 import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
@@ -53,7 +50,7 @@ public class SettingController {
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public InventoryListSetting update(@RequestBody @Valid InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+    public InventoryListSetting update(InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
         inventoryListService.updateIncludeBanners(56912708L, COMMA_SPLITTER.splitToList(setting.getIncludeBanners()));
         return inventoryListService.getSetting(56912708L);
     }
