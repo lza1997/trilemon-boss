@@ -85,8 +85,6 @@
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <property name="requestContextAttribute" value="requestContext"/>
-        <!--<property name="viewClass"-->
-        <!--value="com.trilemon.commons.web.spring.csrf.CsrfFreeMarkerView"/>-->
         <property name="viewClass"
                   value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
         <property name="cache" value="true"/>

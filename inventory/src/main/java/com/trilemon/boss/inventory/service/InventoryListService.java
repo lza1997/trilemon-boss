@@ -150,7 +150,6 @@ public class InventoryListService {
      * 搜索仓库上架计划执行情况
      *
      * @param userId
-     * @param settingId
      * @param query
      * @param pageNum
      * @param pageSize
@@ -159,19 +158,18 @@ public class InventoryListService {
      * @return
      */
     public Page<InventoryListItem> paginationInventoryListItems(long userId,
-                                                                long settingId,
                                                                 String query,
                                                                 int pageNum,
                                                                 int pageSize,
                                                                 List<Byte> statusList,
                                                                 List<String> banners) {
-        int totalSize = inventoryListItemMapper.countByUserIdAndSettingIdAndStatusAndBanners(userId,
-                settingId,
+        int totalSize = inventoryListItemMapper.countByUserIdAndStatusAndBanners(
+                userId,
                 statusList,
                 query,
                 banners);
-        List<InventoryListItem> plans = inventoryListItemMapper.paginateByUserIdAndSettingIdAndStatusAndBanners(userId,
-                settingId,
+        List<InventoryListItem> plans = inventoryListItemMapper.paginateByUserIdAndStatusAndBanners(
+                userId,
                 statusList,
                 query,
                 banners,
