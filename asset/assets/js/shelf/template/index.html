@@ -19,7 +19,7 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="planSetting in planSettings" ng-class="{danger: (planSetting.status === PLAN_STATUS.PAUSED)}">
+    <tr ng-repeat="planSetting in planSettings" ng-class="{danger: planSetting.paused}">
         <td>{{ planSetting.name }}</td>
         <td>{{ planSetting.itemNum }}</td>
         <td>{{ planSetting.newItemNum }} 个宝贝自动加入</td>
@@ -28,10 +28,10 @@
             {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
         <td>
-            <button class="btn btn-primary" ng-click="pause(planSetting, true)" ng-if="planSetting.status != PLAN_STATUS.PAUSED">
+            <button class="btn btn-primary" ng-click="pause(planSetting, true)" ng-if="!planSetting.paused">
                 <i class="icon-pause"></i> 暂停
             </button>
-            <button class="btn btn-primary" ng-click="pause(planSetting, false)" ng-if="planSetting.status == PLAN_STATUS.PAUSED">
+            <button class="btn btn-primary" ng-click="pause(planSetting, false)" ng-if="planSetting.paused">
                 <i class="icon-play"></i> 执行
             </button>
             &nbsp;
