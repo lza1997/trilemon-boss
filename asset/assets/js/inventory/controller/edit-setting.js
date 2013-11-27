@@ -2,7 +2,7 @@
  * 仓库计划编辑
  */
 define(function(require, exports, module) {
-    var EditController = ['$scope', 'InventorySetting', 'InventoryItemNum', function($scope, InventorySetting, InventoryItemNum) {
+    var EditController = ['$scope', 'InventorySetting', 'InventoryItemNum', '$location', function($scope, InventorySetting, InventoryItemNum, $location) {
 
         $scope.includeBanners = {};
         $scope.itemNum = InventoryItemNum.get();
@@ -24,7 +24,9 @@ define(function(require, exports, module) {
                 }
             });
             $scope.setting.includeBanners = arr.join(',');
-            $scope.setting.$update();
+            $scope.setting.$update(function(){
+                $location.url('/inventory/setting');
+            });
         };
 
         // 停用或开启

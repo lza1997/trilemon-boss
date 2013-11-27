@@ -1,21 +1,38 @@
-<div class="well well-sm">
+<div class="row" ng-show="setting.empty">
+    <div class="well col-lg-5">
+        还没有仓库宝贝上架计划呢
+        <button class="btn btn-primary" ng-click="setting.$save()">立刻创建</button>
+    </div>
+</div>
+<div class="well well-sm clearfix" ng-show="setting.$resolved">
     <form class="form-horizontal">
+        <div class="form-group" ng-if="setting.paused">
+            <div class="col-md-offset-2 col-md-4">
+                <p class="form-control-static text-warning"><i class="icon-warning-sign"></i> 计划尚未启用</p>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-md-2 control-label">创建时间：</label>
-            <div class="col-md-10">
-                <p class="form-control-static">2012</p>
+            <div class="col-md-4">
+                <p class="form-control-static">{{setting.addTime | date:'yyyy-MM-dd HH:mm'}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">宝贝范围：</label>
-            <div class="col-md-10">
-                <p class="form-control-static">我下架的、从未上架的</p>
+            <div class="col-md-4">
+                <p class="form-control-static">{{ includeBannersText.join('，') }}</p>
+            </div>
+            <div class="col-md-1" ng-if="!setting.paused">
+                <a href="#/inventory/setting/edit">修改</a>
             </div>
         </div>
         <div class="form-group">
             <label class="col-md-2 control-label">时间段：</label>
-            <div class="col-md-10">
-                <p class="form-control-static">周一、周二</p>
+            <div class="col-md-4">
+                <p class="form-control-static">{{ distributionText.join('，') }}</p>
+            </div>
+            <div class="col-md-1" ng-if="!setting.paused">
+                <a href="#/inventory/distribution">修改</a>
             </div>
         </div>
         <div class="form-group">
@@ -23,6 +40,10 @@
             <div class="col-md-10">
                 <p class="form-control-static">所选时间段均匀上架</p>
             </div>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-default" ng-if="!setting.paused" ng-click="togglePaused()">停用计划</button>
+            <button class="btn btn-primary" ng-if="setting.paused" ng-click="togglePaused()">启用计划</button>
         </div>
     </form>
 </div>
