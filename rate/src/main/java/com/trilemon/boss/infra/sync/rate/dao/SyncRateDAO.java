@@ -1,7 +1,7 @@
-package com.trilemon.boss.rate.sync.dao;
+package com.trilemon.boss.infra.sync.rate.dao;
 
 import com.trilemon.boss.rate.model.dto.RateStatus;
-import com.trilemon.boss.rate.sync.model.SyncRate;
+import com.trilemon.boss.infra.sync.rate.model.SyncRate;
 
 import java.util.Date;
 import java.util.List;

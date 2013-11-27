@@ -5,13 +5,13 @@ import com.trilemon.boss.rate.model.RateOrder;
 import java.util.List;
 
 public interface RateOrderDAO {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long userId,Long id);
 
     void insert(RateOrder record);
 
     void insertSelective(RateOrder record);
 
-    RateOrder selectByPrimaryKey(Long id);
+    RateOrder selectByPrimaryKey(Long userId,Long id);
 
     int updateByPrimaryKeySelective(RateOrder record);
 

@@ -1,5 +1,5 @@
 /**
- * 橱窗规则
+ * 仓库
  */
 define(function(require, exports, module) {
     module.exports = ['$resource', function($resource) {

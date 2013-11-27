@@ -18,18 +18,15 @@
 
     <bean id="rateShard" class="com.alibaba.cobarclient.Shard">
         <property name="id" value="rateShard"/>
-        <property name="description" value="rate"/>
         <property name="dataSource" ref="rateDataSource"/>
     </bean>
 
     <bean id="syncShard1" class="com.alibaba.cobarclient.Shard">
         <property name="id" value="syncShard1"/>
-        <property name="description" value="syncShard1"/>
         <property name="dataSource" ref="syncDataSource1"/>
     </bean>
     <bean id="syncShard2" class="com.alibaba.cobarclient.Shard">
         <property name="id" value="syncShard2"/>
-        <property name="description" value="syncShard2"/>
         <property name="dataSource" ref="syncDataSource2"/>
     </bean>
 
@@ -40,13 +37,14 @@
                 <value>classpath*:/syncibatis/sqlmap-config.xml</value>
             </list>
         </property>
-        <!--<property name="mappingLocations">-->
-            <!--<list>-->
-                <!--<value>classpath*:/ibatis/sqlmap/*SqlMap.xml</value>-->
-                <!--<value>classpath*:/syncibatis/sqlmap/*SqlMap.xml</value>-->
-            <!--</list>-->
-        <!--</property>-->
     </bean>
+
+    <!--<bean id="hashFunction" class="com.raycloud.db.router.rules.support.HashFunction"></bean>-->
+
+    <!--<util:map id="functionsMap">-->
+    <!--<entry key="hash" value-ref="hashFunction">-->
+    <!--</entry>-->
+    <!--</util:map>-->
 
     <!-- 定义总router -->
     <bean id="router" class="com.alibaba.cobarclient.config.SimpleRouterFactoryBean">
@@ -57,9 +55,11 @@
             </list>
         </property>
         <property name="shards" ref="shards"/>
+        <!--<property name="functions" ref="functionsMap"></property>-->
     </bean>
 
     <bean id="sqlMapClientTemplate" class="com.alibaba.cobarclient.MysdalSqlMapClientTemplate">
+        <property name="dataSource" ref="rateDataSource"/>
         <property name="sqlMapClient" ref="sqlMapClient"/>
         <property name="shards" ref="shards"/>
         <property name="router" ref="router"/>

@@ -1,15 +1,15 @@
-package com.trilemon.boss.rate.sync.dao;
+package com.trilemon.boss.infra.sync.rate.dao;
 
-import com.trilemon.boss.rate.sync.model.CalcSellerDayRate;
+import com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate;
 
 public interface CalcSellerDayRateDAO {
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Long userId,Long id);
 
     void insert(CalcSellerDayRate record);
 
     void insertSelective(CalcSellerDayRate record);
 
-    CalcSellerDayRate selectByPrimaryKey(Long id);
+    CalcSellerDayRate selectByPrimaryKey(Long userId,Long id);
 
     int updateByPrimaryKeySelective(CalcSellerDayRate record);
 

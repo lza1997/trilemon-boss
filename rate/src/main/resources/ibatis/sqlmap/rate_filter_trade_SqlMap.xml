@@ -15,21 +15,24 @@
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, buyer_nick, tid, is_seller_rate, is_buyer_rate, status, filter_type, 
+    id, user_id, buyer_nick, tid, is_seller_rate, is_buyer_rate, status, filter_type,
     filter_time, add_time, upd_time
+  </sql>
+  <sql id="Base_Table_Name" >
+     ate_filter_trade_#tableId#
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
     select 
     <include refid="rate_filter_trade.Base_Column_List" />
-    from rate_filter_trade
+    from <include refid="rate_filter_trade.Base_Table_Name" />
     where id = #id:BIGINT#
   </select>
   <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
-    delete from rate_filter_trade
+    delete from <include refid="rate_filter_trade.Base_Table_Name" />
     where id = #id:BIGINT#
   </delete>
   <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
-    insert into rate_filter_trade (id, user_id, buyer_nick, tid, is_seller_rate, 
+    insert into <include refid="rate_filter_trade.Base_Table_Name" /> (id, user_id, buyer_nick, tid, is_seller_rate,
       is_buyer_rate, status, filter_type, filter_time, 
       add_time, upd_time)
     values (#id:BIGINT#, #userId:BIGINT#, #buyerNick:VARCHAR#, #tid:BIGINT#, #isSellerRate:BIT#, 
@@ -37,7 +40,7 @@
       #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
   </insert>
   <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
-    insert into rate_filter_trade
+    insert into <include refid="rate_filter_trade.Base_Table_Name" />
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
         id
@@ -113,7 +116,7 @@
     </dynamic>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
-    update rate_filter_trade
+    update <include refid="rate_filter_trade.Base_Table_Name" />
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
@@ -149,7 +152,7 @@
     where id = #id:BIGINT#
   </update>
   <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateFilterTrade" >
-    update rate_filter_trade
+    update <include refid="rate_filter_trade.Base_Table_Name" />
     set user_id = #userId:BIGINT#,
       buyer_nick = #buyerNick:VARCHAR#,
       tid = #tid:BIGINT#,

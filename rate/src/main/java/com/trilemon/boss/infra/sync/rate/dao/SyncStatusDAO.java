@@ -1,6 +1,6 @@
-package com.trilemon.boss.rate.sync.dao;
+package com.trilemon.boss.infra.sync.rate.dao;
 
-import com.trilemon.boss.rate.sync.model.SyncStatus;
+import com.trilemon.boss.infra.sync.rate.model.SyncStatus;
 
 import java.util.List;
 
@@ -24,4 +24,6 @@ public interface SyncStatusDAO {
     int deleteByRateSyncOwnerAndStatus(String owner, List<Byte> statusList);
 
     SyncStatus selectByUserId(Long userId);
+
+    int updateByUserIdSelective(SyncStatus syncStatus);
 }

@@ -1,7 +1,7 @@
 package com.trilemon.boss.rate.dao.impl;
 
+import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.google.common.collect.ImmutableMap;
-import com.trilemon.boss.rate.dao.BaseDAO;
 import com.trilemon.boss.rate.dao.RateSettingDAO;
 import com.trilemon.boss.rate.model.RateSetting;
 import org.springframework.stereotype.Repository;
@@ -10,11 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class RateSettingDAOImpl extends BaseDAO implements RateSettingDAO {
-
-    public RateSettingDAOImpl() {
-        super();
-    }
+public class RateSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements RateSettingDAO {
 
     public int deleteByPrimaryKey(Long id) {
         RateSetting _key = new RateSetting();

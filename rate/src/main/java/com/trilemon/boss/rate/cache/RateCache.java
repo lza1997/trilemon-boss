@@ -8,7 +8,7 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlExc
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.rate.model.dto.RateStatus;
-import com.trilemon.boss.rate.sync.dao.SyncRateDAO;
+import com.trilemon.boss.infra.sync.rate.dao.SyncRateDAO;
 import com.trilemon.commons.redis.JedisTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

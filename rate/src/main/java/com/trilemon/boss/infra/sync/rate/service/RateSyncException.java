@@ -1,4 +1,4 @@
-package com.trilemon.boss.rate.sync.service;
+package com.trilemon.boss.infra.sync.rate.service;
 
 /**
  * @author kevin

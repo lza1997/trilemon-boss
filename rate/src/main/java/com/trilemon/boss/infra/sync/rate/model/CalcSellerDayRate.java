@@ -1,8 +1,10 @@
-package com.trilemon.boss.rate.sync.model;
+package com.trilemon.boss.infra.sync.rate.model;
+
+import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
 
-public class CalcSellerDayRate {
+public class CalcSellerDayRate extends ShardTable {
     private Long id;
 
     private Long userId;

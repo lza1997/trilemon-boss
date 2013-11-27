@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="sync_rate" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.sync.model.SyncRate" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="num_iid" property="numIid" jdbcType="BIGINT" />
@@ -31,18 +31,21 @@
     id, user_id, num_iid, valid_score, tid, oid, role, nick, result, created, rated_nick, 
     item_title, item_price, content, reply, add_time, upd_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
+  <sql id="Base_Table_Name" >
+      sync_rate_#tableId#
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
     select 
     <include refid="sync_rate.Base_Column_List" />
-    from sync_rate
+    from <include refid="sync_rate.Base_Table_Name" />
     where id = #id:BIGINT#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
-    delete from sync_rate
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+    delete from <include refid="sync_rate.Base_Table_Name" />
     where id = #id:BIGINT#
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
-    insert into sync_rate (id, user_id, num_iid, valid_score, tid, 
+  <insert id="insert" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+    insert into <include refid="sync_rate.Base_Table_Name" /> (id, user_id, num_iid, valid_score, tid,
       oid, role, nick, result, created, 
       rated_nick, item_title, item_price, content, 
       reply, add_time, upd_time)
@@ -51,8 +54,8 @@
       #ratedNick:VARCHAR#, #itemTitle:VARCHAR#, #itemPrice:VARCHAR#, #content:VARCHAR#, 
       #reply:VARCHAR#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
-    insert into sync_rate
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+    insert into <include refid="sync_rate.Base_Table_Name" />
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
         id
@@ -163,8 +166,8 @@
       )
     </dynamic>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
-    update sync_rate
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+    update <include refid="sync_rate.Base_Table_Name" />
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
@@ -217,8 +220,8 @@
     </dynamic>
     where id = #id:BIGINT#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.sync.model.SyncRate" >
-    update sync_rate
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+    update <include refid="sync_rate.Base_Table_Name" />
     set user_id = #userId:BIGINT#,
       num_iid = #numIid:BIGINT#,
       valid_score = #validScore:BIT#,
@@ -243,7 +246,7 @@
           count(if(result="good",1,null)) as good_rate_num,
           count(if(result='neutral',1,null)) as neutral_rate_num,
           count(if(result='bad',1,null)) as bad_rate_num
-      FROM sync_rate
+      FROM <include refid="sync_rate.Base_Table_Name" />
       WHERE
           user_id = #userId:BIGINT#
           AND role='buyer'
@@ -253,13 +256,125 @@
         SELECT
             user_id as user_id,
             nick as buyer_nick,
-            count(if(result="good",1,null)) as good_rate_num,
+            count(if(result='good',1,null)) as good_rate_num,
             count(if(result='neutral',1,null)) as neutral_rate_num,
             count(if(result='bad',1,null)) as bad_rate_num
-        FROM sync_rate
+        FROM <include refid="sync_rate.Base_Table_Name" />
         WHERE
             user_id = #userId:BIGINT#
             AND role='buyer'
             AND nick=#buyerNick:VARCHAR#
   </select>
+    <insert id="replaceSelective" parameterClass="com.trilemon.boss.infra.sync.rate.model.SyncRate" >
+        replace into <include refid="sync_rate.Base_Table_Name" />
+        <dynamic prepend="(" >
+            <isNotNull prepend="," property="id" >
+                id
+            </isNotNull>
+            <isNotNull prepend="," property="userId" >
+                user_id
+            </isNotNull>
+            <isNotNull prepend="," property="numIid" >
+                num_iid
+            </isNotNull>
+            <isNotNull prepend="," property="validScore" >
+                valid_score
+            </isNotNull>
+            <isNotNull prepend="," property="tid" >
+                tid
+            </isNotNull>
+            <isNotNull prepend="," property="oid" >
+                oid
+            </isNotNull>
+            <isNotNull prepend="," property="role" >
+                role
+            </isNotNull>
+            <isNotNull prepend="," property="nick" >
+                nick
+            </isNotNull>
+            <isNotNull prepend="," property="result" >
+                result
+            </isNotNull>
+            <isNotNull prepend="," property="created" >
+                created
+            </isNotNull>
+            <isNotNull prepend="," property="ratedNick" >
+                rated_nick
+            </isNotNull>
+            <isNotNull prepend="," property="itemTitle" >
+                item_title
+            </isNotNull>
+            <isNotNull prepend="," property="itemPrice" >
+                item_price
+            </isNotNull>
+            <isNotNull prepend="," property="content" >
+                content
+            </isNotNull>
+            <isNotNull prepend="," property="reply" >
+                reply
+            </isNotNull>
+            <isNotNull prepend="," property="addTime" >
+                add_time
+            </isNotNull>
+            <isNotNull prepend="," property="updTime" >
+                upd_time
+            </isNotNull>
+            )
+        </dynamic>
+        values
+        <dynamic prepend="(" >
+            <isNotNull prepend="," property="id" >
+                #id:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="userId" >
+                #userId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="numIid" >
+                #numIid:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="validScore" >
+                #validScore:BIT#
+            </isNotNull>
+            <isNotNull prepend="," property="tid" >
+                #tid:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="oid" >
+                #oid:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="role" >
+                #role:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="nick" >
+                #nick:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="result" >
+                #result:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="created" >
+                #created:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="ratedNick" >
+                #ratedNick:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="itemTitle" >
+                #itemTitle:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="itemPrice" >
+                #itemPrice:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="content" >
+                #content:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="reply" >
+                #reply:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime" >
+                #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime" >
+                #updTime:TIMESTAMP#
+            </isNotNull>
+            )
+        </dynamic>
+    </insert>
 </sqlMap>

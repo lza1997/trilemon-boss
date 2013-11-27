@@ -1,4 +1,4 @@
-package com.trilemon.boss.rate.sync.service;
+package com.trilemon.boss.infra.sync.rate.service;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
@@ -11,11 +11,11 @@ import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
-import com.trilemon.boss.rate.sync.RateSyncConstants;
-import com.trilemon.boss.rate.sync.dao.SyncRateDAO;
-import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
-import com.trilemon.boss.rate.sync.model.SyncRate;
-import com.trilemon.boss.rate.sync.model.SyncStatus;
+import com.trilemon.boss.infra.sync.rate.RateSyncConstants;
+import com.trilemon.boss.infra.sync.rate.dao.SyncRateDAO;
+import com.trilemon.boss.infra.sync.rate.dao.SyncStatusDAO;
+import com.trilemon.boss.infra.sync.rate.model.SyncRate;
+import com.trilemon.boss.infra.sync.rate.model.SyncStatus;
 import com.trilemon.commons.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.trilemon.boss.rate.sync.RateSyncConstants.*;
+import static com.trilemon.boss.infra.sync.rate.RateSyncConstants.*;
 import static com.trilemon.commons.Collections3.COMMA_JOINER;
 
 /**
@@ -64,10 +64,10 @@ public class RateSyncService {
         Date rateStartDate = null;
         switch (syncStatus.getRateSyncStatus()) {
             case RateSyncConstants.RATE_SYNC_STATUS_INIT:
-                rateStartDate = appService.getLocalSystemTime().minusMinutes(5).minusDays(30).toDate();
+                rateStartDate = appService.getLocalSystemTime().minusMinutes(5).minusDays(180).toDate();
                 break;
             case RateSyncConstants.RATE_SYNC_STATUS_SUCCESSFUL:
-                rateStartDate = syncStatus.getLastRateStartTime();
+                rateStartDate = syncStatus.getLastRateEndTime();
                 break;
             case RateSyncConstants.RATE_SYNC_STATUS_FAILED:
                 rateStartDate = syncStatus.getLastRateStartTime();
@@ -94,7 +94,7 @@ public class RateSyncService {
         syncStatus.setUserId(userId);
         syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_FAILED);
         syncStatus.setLastRateSyncEndTime(appService.getLocalSystemTime().toDate());
-        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
+        syncStatusDAO.updateByUserIdSelective(syncStatus);
     }
 
     private void setRateSyncSuccessful(Long userId) {
@@ -102,7 +102,7 @@ public class RateSyncService {
         syncStatus.setUserId(userId);
         syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_SUCCESSFUL);
         syncStatus.setLastRateSyncEndTime(appService.getLocalSystemTime().toDate());
-        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
+        syncStatusDAO.updateByUserIdSelective(syncStatus);
     }
 
     private void setRateSyncDoing(Long userId, Date rateStartDate, Date rateEndDate, Byte syncType) {
@@ -111,11 +111,12 @@ public class RateSyncService {
         syncStatus.setRateSyncStatus(RATE_SYNC_STATUS_DOING);
         syncStatus.setLastRateStartTime(rateStartDate);
         syncStatus.setLastRateEndTime(rateEndDate);
+        syncStatus.setRateSyncOwner(appService.getOwner());
         syncStatus.setLastRateSyncStartTime(appService.getLocalSystemTime().toDate());
         if (syncType == RATE_SYNC_STATUS_INIT) {
             syncStatus.setRateStartTime(rateStartDate);
         }
-        syncStatusDAO.updateByPrimaryKeySelective(syncStatus);
+        syncStatusDAO.updateByUserIdSelective(syncStatus);
     }
 
     private void internalSync(Long userId, Date startDate, Date endDate) throws TaobaoAccessControlException,
@@ -156,8 +157,11 @@ public class RateSyncService {
 
                 TraderatesGetResponse response = taobaoApiShopService.getRates(userId, request);
                 List<TradeRate> rates = response.getTradeRates();
-                if (CollectionUtils.isNotEmpty(rates) && rates.size() == pageSize) {
+                if (CollectionUtils.isNotEmpty(rates)) {
                     syncRates.addAll(buildSyncRates(userId, rates));
+                    if (rates.size() < pageSize) {
+                        break;
+                    }
                 } else {
                     break;
                 }
@@ -188,14 +192,16 @@ public class RateSyncService {
             }
         }
         //flush
-        int rows = syncRateDAO.batchInsertSelective(syncRates);
-        logger.info("userId[{}] flush batch insert [{}/{}], startDate[{}] endDate[{}]",
-                userId,
-                rows,
-                syncRates.size(),
-                DateUtils.format(startDate, DateUtils.yyyy_MM_dd_HH_mm_ss),
-                DateUtils.format(endDate, DateUtils.yyyy_MM_dd_HH_mm_ss));
-        syncRates.clear();
+        if (CollectionUtils.isNotEmpty(syncRates)) {
+            int rows = syncRateDAO.batchInsertSelective(syncRates);
+            logger.info("userId[{}] flush batch insert [{}/{}], startDate[{}] endDate[{}]",
+                    userId,
+                    rows,
+                    syncRates.size(),
+                    DateUtils.format(startDate, DateUtils.yyyy_MM_dd_HH_mm_ss),
+                    DateUtils.format(endDate, DateUtils.yyyy_MM_dd_HH_mm_ss));
+            syncRates.clear();
+        }
 
         stopwatch.stop();
         logger.info("userId[{}] end sync rate, startDate[{}] endDate[{}], spend time [{} sec]",
@@ -224,6 +230,8 @@ public class RateSyncService {
             syncRate.setTid(tradeRate.getTid());
             syncRate.setUserId(userId);
             syncRate.setValidScore(tradeRate.getValidScore());
+
+            syncRates.add(syncRate);
         }
         return syncRates;
     }

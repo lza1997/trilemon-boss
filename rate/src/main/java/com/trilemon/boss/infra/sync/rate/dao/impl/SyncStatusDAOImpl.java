@@ -1,21 +1,16 @@
-package com.trilemon.boss.rate.sync.dao.impl;
+package com.trilemon.boss.infra.sync.rate.dao.impl;
 
+import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.google.common.collect.ImmutableMap;
-import com.trilemon.boss.rate.dao.BaseDAO;
-import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
-import com.trilemon.boss.rate.sync.model.SyncStatus;
+import com.trilemon.boss.infra.sync.rate.dao.SyncStatusDAO;
+import com.trilemon.boss.infra.sync.rate.model.SyncStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class SyncStatusDAOImpl extends BaseDAO implements SyncStatusDAO {
-
-    public SyncStatusDAOImpl() {
-        super();
-    }
-
+public class SyncStatusDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements SyncStatusDAO {
     public int deleteByPrimaryKey(Integer id) {
         SyncStatus _key = new SyncStatus();
         _key.setId(id);
@@ -74,5 +69,11 @@ public class SyncStatusDAOImpl extends BaseDAO implements SyncStatusDAO {
         _key.setUserId(userId);
         SyncStatus record = (SyncStatus) getSqlMapClientTemplate().queryForObject("sync_status.selectByUserId", _key);
         return record;
+    }
+
+    @Override
+    public int updateByUserIdSelective(SyncStatus syncStatus) {
+        int rows = getSqlMapClientTemplate().update("sync_status.updateByUserIdSelective", syncStatus);
+        return rows;
     }
 }

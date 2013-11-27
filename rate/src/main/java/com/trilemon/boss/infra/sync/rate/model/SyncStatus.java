@@ -1,4 +1,4 @@
-package com.trilemon.boss.rate.sync.model;
+package com.trilemon.boss.infra.sync.rate.model;
 
 import java.util.Date;
 

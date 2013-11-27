@@ -1,10 +1,10 @@
-package com.trilemon.boss.rate.sync.model;
+package com.trilemon.boss.infra.sync.rate.model;
 
-import com.alibaba.cobarclient.ShardTable;
+import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
 
-public class SyncRate extends ShardTable{
+public class SyncRate extends ShardTable {
     private Long id;
 
     private Long userId;

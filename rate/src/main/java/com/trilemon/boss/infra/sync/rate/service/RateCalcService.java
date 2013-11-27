@@ -1,13 +1,13 @@
-package com.trilemon.boss.rate.sync.service;
+package com.trilemon.boss.infra.sync.rate.service;
 
 import com.google.common.base.Stopwatch;
 import com.trilemon.boss.infra.base.service.AppService;
+import com.trilemon.boss.infra.sync.rate.dao.CalcSellerDayRateDAO;
+import com.trilemon.boss.infra.sync.rate.dao.SyncRateDAO;
+import com.trilemon.boss.infra.sync.rate.dao.SyncStatusDAO;
+import com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate;
+import com.trilemon.boss.infra.sync.rate.model.SyncStatus;
 import com.trilemon.boss.rate.model.dto.RateStatus;
-import com.trilemon.boss.rate.sync.dao.CalcSellerDayRateDAO;
-import com.trilemon.boss.rate.sync.dao.SyncRateDAO;
-import com.trilemon.boss.rate.sync.dao.SyncStatusDAO;
-import com.trilemon.boss.rate.sync.model.CalcSellerDayRate;
-import com.trilemon.boss.rate.sync.model.SyncStatus;
 import com.trilemon.commons.DateUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static com.trilemon.boss.rate.sync.RateSyncConstants.*;
+import static com.trilemon.boss.infra.sync.rate.RateSyncConstants.*;
 
 /**
  * @author kevin

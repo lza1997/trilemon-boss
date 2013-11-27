@@ -1,4 +1,4 @@
-package com.trilemon.boss.rate.sync;
+package com.trilemon.boss.infra.sync.rate;
 
 import com.google.common.collect.ImmutableList;
 

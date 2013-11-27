@@ -16,18 +16,21 @@
   <sql id="Base_Column_List" >
     id, user_id, comment, item_num_iid, buyer_nick, tid, oid, rate_time, add_time, upd_time
   </sql>
+  <sql id="Base_Table_Name" >
+      rate_order_#tableId#
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
     select 
     <include refid="rate_order.Base_Column_List" />
-    from rate_order
+    from <include refid="rate_order.Base_Table_Name" />
     where id = #id:BIGINT#
   </select>
   <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
-    delete from rate_order
+    delete from <include refid="rate_order.Base_Table_Name" />
     where id = #id:BIGINT#
   </delete>
   <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
-    insert into rate_order (id, user_id, comment, item_num_iid, buyer_nick, 
+    insert into <include refid="rate_order.Base_Table_Name" /> (id, user_id, comment, item_num_iid, buyer_nick,
       tid, oid, rate_time, add_time, upd_time
       )
     values (#id:BIGINT#, #userId:BIGINT#, #comment:VARCHAR#, #itemNumIid:BIGINT#, #buyerNick:VARCHAR#, 
@@ -35,7 +38,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
-    insert into rate_order
+    insert into <include refid="rate_order.Base_Table_Name" />
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
         id
@@ -105,7 +108,7 @@
     </dynamic>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
-    update rate_order
+    update <include refid="rate_order.Base_Table_Name" />
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
@@ -138,7 +141,7 @@
     where id = #id:BIGINT#
   </update>
   <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateOrder" >
-    update rate_order
+    update <include refid="rate_order.Base_Table_Name" />
     set user_id = #userId:BIGINT#,
       comment = #comment:VARCHAR#,
       item_num_iid = #itemNumIid:BIGINT#,

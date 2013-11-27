@@ -3,10 +3,22 @@
     <rule>
         <namespace>calc_seller_day_rate</namespace>
         <shards>syncShard1</shards>
+        <shardingExpression>tableId <![CDATA[ <= ]]> 1 </shardingExpression>
+    </rule>
+    <rule>
+        <namespace>calc_seller_day_rate</namespace>
+        <shards>syncShard2</shards>
+        <shardingExpression>tableId <![CDATA[ > ]]> 1 </shardingExpression>
     </rule>
     <rule>
         <namespace>sync_rate</namespace>
         <shards>syncShard1</shards>
+        <shardingExpression>tableId <![CDATA[ <= ]]> 2 </shardingExpression>
+    </rule>
+    <rule>
+        <namespace>sync_rate</namespace>
+        <shards>syncShard2</shards>
+        <shardingExpression>tableId <![CDATA[ > ]]> 2 </shardingExpression>
     </rule>
     <rule>
         <namespace>sync_status</namespace>
