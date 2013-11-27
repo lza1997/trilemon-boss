@@ -35,7 +35,7 @@ define(function(require, exports, module) {
     }];
 
     EditController.template = 'inventory/editSetting';
-    EditController.title = '编辑计划';
+    EditController.title = '修改计划';
     EditController.navClass = 'inventoryEdit';
 
     module.exports = EditController;

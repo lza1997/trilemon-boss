@@ -22,7 +22,7 @@ define(function(require, exports, module) {
 
         $scope.save = function() {
             Distribution.save({distribution: $scope.distribution}, function() {
-                $location.url('/inventory/show-setting');
+                $location.url('/inventory/setting');
             });
         };
 
@@ -51,7 +51,7 @@ define(function(require, exports, module) {
     }];
 
     DistributionController.template = 'inventory/distribution';
-    DistributionController.title = "设置上架时间";
+    DistributionController.title = "设定时间";
 
     module.exports = DistributionController;
 });

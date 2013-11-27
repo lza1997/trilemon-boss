@@ -79,12 +79,21 @@ public class SettingController {
     }
 
     /**
-     * 开启规则
+     * 获取时间设定
      */
     @ResponseBody
     @RequestMapping(value = "/distribution", method = RequestMethod.GET)
-    public Map<String, Map<String,Boolean>> getDistribution() throws Exception {
+    public Map<String, Map<String, Boolean>> getDistribution() throws Exception {
         return inventoryListService.getSetting(56912708L).getDistributionMap();
+    }
+
+    /**
+     * 获取时间设定
+     */
+    @ResponseBody
+    @RequestMapping(value = "/distribution", method = RequestMethod.PUT)
+    public void updateDistribution(@RequestBody Map<String, Map<String, Boolean>> distribution) {
+        inventoryListService.updateDistribution(56912708L, distribution);
     }
 
 }
