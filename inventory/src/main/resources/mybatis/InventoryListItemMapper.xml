@@ -487,7 +487,7 @@
     </select>
     <delete id="deleteByNumIids" parameterType="java.lang.Long">
         DELETE FROM inventory_list_item
-        WHERE item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
+        WHERE item_num_iid = #{record.itemNumIid,jdbcType=BIGINT}
     </delete>
     <select id="selectBySettingIdAndStatusAndPlanTime" resultMap="BaseResultMap" parameterType="map">
         select
