@@ -48,6 +48,7 @@ define(function() {
             .when('/showcase', {redirectTo: '/showcase/setting/edit'})
 
             .when('/inventory/setting/edit', inventory.routeFor('inventory.editSetting'))
+            .when('/inventory/setting', inventory.routeFor('inventory.showSetting'))
             .when('/inventory/distribution', inventory.routeFor('inventory.distribution'))
             .when('/inventory', {redirectTo: '/inventory/setting/edit'})
 

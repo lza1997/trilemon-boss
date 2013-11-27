@@ -8,8 +8,8 @@ define(function(require, exports, module) {
     }];
 
     EditController.template = 'inventory/editSetting';
-    EditController.title = '编辑计划';
-    EditController.navClass = 'inventoryEdit';
+    EditController.title = '计划详情';
+    EditController.navClass = 'inventoryShow';
 
     module.exports = EditController;
 });
