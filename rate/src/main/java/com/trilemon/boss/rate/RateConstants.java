@@ -30,25 +30,26 @@ public interface RateConstants {
     String RATE_TRADE_FIELDS = Collections3.COMMA_JOINER.join(RATE_TRADE_FIELDS_LIST);
     String RATE_TRADE_STATUS = Collections3.COMMA_JOINER.join(RATE_TRADE_STATUS_LIST);
     String TRADE_TYPE = Collections3.COMMA_JOINER.join(TRADE_TYPE_LIST);
-
     //buyer_field
     List<String> BUYER_FIELDS = ImmutableList.of("user_id", "buyer_credit", "created", "type");
-    //comment setting status
+    //comment setting status，暂时都是0
     byte RATE_COMMENT_SETTING_STATUS_VALID = 0;
     byte RATE_COMMENT_SETTING_STATUS_INVALID = 1;
     //rate filter type
-    byte RATE_FILTER_TYPE_CREDIT=1;
-    byte RATE_FILTER_TYPE_GOOD_RATE=2;
-    byte RATE_FILTER_TYPE_REGISTER_DAY=3;
-    byte RATE_FILTER_TYPE_BAD_RATE=4;
-    byte RATE_FILTER_TYPE_BLACKLIST=5;
+    byte RATE_FILTER_TYPE_CREDIT = 1;
+    byte RATE_FILTER_TYPE_REGISTER_DAY = 2;
+    byte RATE_FILTER_TYPE_GOOD_RATE = 3;
+    byte RATE_FILTER_TYPE_BAD_RATE = 4;
+    byte RATE_FILTER_TYPE_BLACKLIST = 5;
     //rate filter type
-    byte RATE_FILTER_STATUS_FILTERED=1;
-    byte RATE_FILTER_STATUS_RATE=2;
-    //rate_setting_status
-    byte RATE_SETTING_STATUS_SUCCESSFUL=0;
-    byte RATE_SETTING_STATUS_FAILED=0;
-    //rate setting expired flag
-    byte RATE_SETTING_NOT_EXPIRED = 0;
-    byte RATE_SETTING_EXPIRED = 1;
+    byte RATE_FILTER_STATUS_FILTERED = 1;
+    //评论job标志位
+    byte RATE_SETTING_RATE_STATUS_INIT = 0;
+    byte RATE_SETTING_RATE_STATUS_SUCCESSFUL = 1;
+    byte RATE_SETTING_RATE_STATUS_FAILED = 2;
+    byte RATE_SETTING_RATE_STATUS_DOING = 3;
+    //使用评论的用户
+    byte RATE_SETTING_STATUS_RUNNING = 0;
+    byte RATE_SETTING_STATUS_PAUSE = 1;
+    byte RATE_SETTING_STATUS_EXPIRED = 2;
 }

@@ -1,49 +1,61 @@
 package com.trilemon.boss.rate.model;
 
+import com.google.common.collect.Lists;
+
 import java.util.Date;
+import java.util.List;
 
 public class RateSetting {
     private Long id;
 
     private Long userId;
 
-    private String nick;
-
-    private Boolean isExpired;
-
     private Byte status;
 
-    private Byte autoRate;
+    private Boolean autoGoodRate;
 
-    private Byte notify;
+    private Boolean autoNeutralRate;
+
+    private Boolean autoBadRate;
+
+    private Boolean enableSmsNotify;
 
     private String smsNotifyPhone;
 
-    private Boolean isFilterCredit;
+    private Boolean enableCreditFilter;
 
-    private Integer filterCreditMin;
+    private Integer creditFilterMin;
 
-    private Integer filterCreditMax;
+    private Integer creditFilterMax;
 
-    private Boolean isFilterGoodRate;
+    private Boolean enableGoodRateFilter;
 
-    private Float filterGoodRate;
+    private Float goodRateFilter;
 
-    private Boolean isFilterBadRate;
+    private Boolean enableBadRateFilter;
 
-    private Float filterBadRateCount;
+    private Float badRateFilter;
 
-    private Boolean isFilterRegisterDay;
+    private Boolean enableRegisterDayFilter;
 
-    private Integer filterRegisterDay;
+    private Integer registerDayFilter;
 
-    private Boolean isFilterBlacklist;
+    private Boolean enableBlacklistFilter;
 
-    private Date lastRateTime;
+    private Date lastRateStartTime;
+
+    private Date lastRateEndTime;
+
+    private Byte rateStatus;
+
+    private String rateOwner;
 
     private Date addTime;
 
     private Date updTime;
+
+    //用于黑名单
+    private List<String> blacklistBuyerNicks = Lists.newArrayList();
 
     public Long getId() {
         return id;
@@ -61,22 +73,6 @@ public class RateSetting {
         this.userId = userId;
     }
 
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick == null ? null : nick.trim();
-    }
-
-    public Boolean getIsExpired() {
-        return isExpired;
-    }
-
-    public void setIsExpired(Boolean isExpired) {
-        this.isExpired = isExpired;
-    }
-
     public Byte getStatus() {
         return status;
     }
@@ -85,20 +81,36 @@ public class RateSetting {
         this.status = status;
     }
 
-    public Byte getAutoRate() {
-        return autoRate;
+    public Boolean getAutoGoodRate() {
+        return autoGoodRate;
     }
 
-    public void setAutoRate(Byte autoRate) {
-        this.autoRate = autoRate;
+    public void setAutoGoodRate(Boolean autoGoodRate) {
+        this.autoGoodRate = autoGoodRate;
     }
 
-    public Byte getNotify() {
-        return notify;
+    public Boolean getAutoNeutralRate() {
+        return autoNeutralRate;
     }
 
-    public void setNotify(Byte notify) {
-        this.notify = notify;
+    public void setAutoNeutralRate(Boolean autoNeutralRate) {
+        this.autoNeutralRate = autoNeutralRate;
+    }
+
+    public Boolean getAutoBadRate() {
+        return autoBadRate;
+    }
+
+    public void setAutoBadRate(Boolean autoBadRate) {
+        this.autoBadRate = autoBadRate;
+    }
+
+    public Boolean getEnableSmsNotify() {
+        return enableSmsNotify;
+    }
+
+    public void setEnableSmsNotify(Boolean enableSmsNotify) {
+        this.enableSmsNotify = enableSmsNotify;
     }
 
     public String getSmsNotifyPhone() {
@@ -109,92 +121,116 @@ public class RateSetting {
         this.smsNotifyPhone = smsNotifyPhone == null ? null : smsNotifyPhone.trim();
     }
 
-    public Boolean getIsFilterCredit() {
-        return isFilterCredit;
+    public Boolean getEnableCreditFilter() {
+        return enableCreditFilter;
     }
 
-    public void setIsFilterCredit(Boolean isFilterCredit) {
-        this.isFilterCredit = isFilterCredit;
+    public void setEnableCreditFilter(Boolean enableCreditFilter) {
+        this.enableCreditFilter = enableCreditFilter;
     }
 
-    public Integer getFilterCreditMin() {
-        return filterCreditMin;
+    public Integer getCreditFilterMin() {
+        return creditFilterMin;
     }
 
-    public void setFilterCreditMin(Integer filterCreditMin) {
-        this.filterCreditMin = filterCreditMin;
+    public void setCreditFilterMin(Integer creditFilterMin) {
+        this.creditFilterMin = creditFilterMin;
     }
 
-    public Integer getFilterCreditMax() {
-        return filterCreditMax;
+    public Integer getCreditFilterMax() {
+        return creditFilterMax;
     }
 
-    public void setFilterCreditMax(Integer filterCreditMax) {
-        this.filterCreditMax = filterCreditMax;
+    public void setCreditFilterMax(Integer creditFilterMax) {
+        this.creditFilterMax = creditFilterMax;
     }
 
-    public Boolean getIsFilterGoodRate() {
-        return isFilterGoodRate;
+    public Boolean getEnableGoodRateFilter() {
+        return enableGoodRateFilter;
     }
 
-    public void setIsFilterGoodRate(Boolean isFilterGoodRate) {
-        this.isFilterGoodRate = isFilterGoodRate;
+    public void setEnableGoodRateFilter(Boolean enableGoodRateFilter) {
+        this.enableGoodRateFilter = enableGoodRateFilter;
     }
 
-    public Float getFilterGoodRate() {
-        return filterGoodRate;
+    public Float getGoodRateFilter() {
+        return goodRateFilter;
     }
 
-    public void setFilterGoodRate(Float filterGoodRate) {
-        this.filterGoodRate = filterGoodRate;
+    public void setGoodRateFilter(Float goodRateFilter) {
+        this.goodRateFilter = goodRateFilter;
     }
 
-    public Boolean getIsFilterBadRate() {
-        return isFilterBadRate;
+    public Boolean getEnableBadRateFilter() {
+        return enableBadRateFilter;
     }
 
-    public void setIsFilterBadRate(Boolean isFilterBadRate) {
-        this.isFilterBadRate = isFilterBadRate;
+    public void setEnableBadRateFilter(Boolean enableBadRateFilter) {
+        this.enableBadRateFilter = enableBadRateFilter;
     }
 
-    public Float getFilterBadRateCount() {
-        return filterBadRateCount;
+    public Float getBadRateFilter() {
+        return badRateFilter;
     }
 
-    public void setFilterBadRateCount(Float filterBadRateCount) {
-        this.filterBadRateCount = filterBadRateCount;
+    public void setBadRateFilter(Float badRateFilter) {
+        this.badRateFilter = badRateFilter;
     }
 
-    public Boolean getIsFilterRegisterDay() {
-        return isFilterRegisterDay;
+    public Boolean getEnableRegisterDayFilter() {
+        return enableRegisterDayFilter;
     }
 
-    public void setIsFilterRegisterDay(Boolean isFilterRegisterDay) {
-        this.isFilterRegisterDay = isFilterRegisterDay;
+    public void setEnableRegisterDayFilter(Boolean enableRegisterDayFilter) {
+        this.enableRegisterDayFilter = enableRegisterDayFilter;
     }
 
-    public Integer getFilterRegisterDay() {
-        return filterRegisterDay;
+    public Integer getRegisterDayFilter() {
+        return registerDayFilter;
     }
 
-    public void setFilterRegisterDay(Integer filterRegisterDay) {
-        this.filterRegisterDay = filterRegisterDay;
+    public void setRegisterDayFilter(Integer registerDayFilter) {
+        this.registerDayFilter = registerDayFilter;
     }
 
-    public Boolean getIsFilterBlacklist() {
-        return isFilterBlacklist;
+    public Boolean getEnableBlacklistFilter() {
+        return enableBlacklistFilter;
     }
 
-    public void setIsFilterBlacklist(Boolean isFilterBlacklist) {
-        this.isFilterBlacklist = isFilterBlacklist;
+    public void setEnableBlacklistFilter(Boolean enableBlacklistFilter) {
+        this.enableBlacklistFilter = enableBlacklistFilter;
     }
 
-    public Date getLastRateTime() {
-        return lastRateTime;
+    public Date getLastRateStartTime() {
+        return lastRateStartTime;
     }
 
-    public void setLastRateTime(Date lastRateTime) {
-        this.lastRateTime = lastRateTime;
+    public void setLastRateStartTime(Date lastRateStartTime) {
+        this.lastRateStartTime = lastRateStartTime;
+    }
+
+    public Date getLastRateEndTime() {
+        return lastRateEndTime;
+    }
+
+    public void setLastRateEndTime(Date lastRateEndTime) {
+        this.lastRateEndTime = lastRateEndTime;
+    }
+
+    public Byte getRateStatus() {
+        return rateStatus;
+    }
+
+    public void setRateStatus(Byte rateStatus) {
+        this.rateStatus = rateStatus;
+    }
+
+    public String getRateOwner() {
+        return rateOwner;
+    }
+
+    public void setRateOwner(String rateOwner) {
+        this.rateOwner = rateOwner == null ? null : rateOwner.trim();
     }
 
     public Date getAddTime() {
@@ -211,5 +247,13 @@ public class RateSetting {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public List<String> getBlacklistBuyerNicks() {
+        return blacklistBuyerNicks;
+    }
+
+    public void setBlacklistBuyerNicks(List<String> blacklistBuyerNicks) {
+        this.blacklistBuyerNicks = blacklistBuyerNicks;
     }
 }

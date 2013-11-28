@@ -14,13 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-import static com.trilemon.boss.rate.RateConstants.RATE_SETTING_NOT_EXPIRED;
+import static com.trilemon.boss.rate.RateConstants.*;
+
 
 /**
  * @author kevin
  */
-public class SyncRateJob extends AbstractFixRateQueueService<Long> {
-    private final static Logger logger = LoggerFactory.getLogger(SyncRateJob.class);
+public class RateJob extends AbstractFixRateQueueService<Long> {
+    private final static Logger logger = LoggerFactory.getLogger(RateJob.class);
     @Autowired
     private RateService rateService;
     @Autowired
@@ -54,7 +55,8 @@ public class SyncRateJob extends AbstractFixRateQueueService<Long> {
         while (true) {
             try {
                 List<Long> userIds = rateSettingDAO.paginateUserIdByStatus((pageNum - 1) * pageSize, pageSize,
-                        ImmutableList.of(RATE_SETTING_NOT_EXPIRED));
+                        ImmutableList.of(RATE_SETTING_RATE_STATUS_INIT, RATE_SETTING_RATE_STATUS_SUCCESSFUL,
+                                RATE_SETTING_RATE_STATUS_FAILED));
                 if (CollectionUtils.isEmpty(userIds)) {
                     break;
                 } else {

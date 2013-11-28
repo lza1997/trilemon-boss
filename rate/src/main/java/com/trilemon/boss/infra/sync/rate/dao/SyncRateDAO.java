@@ -1,5 +1,6 @@
 package com.trilemon.boss.infra.sync.rate.dao;
 
+import com.trilemon.boss.infra.sync.rate.client.RatePageRequest;
 import com.trilemon.boss.rate.model.dto.RateStatus;
 import com.trilemon.boss.infra.sync.rate.model.SyncRate;
 
@@ -24,4 +25,7 @@ public interface SyncRateDAO {
     int batchInsertSelective(List<SyncRate> syncRates);
 
     RateStatus calcBuyerRateStatus(Long userId, String buyerNick);
+
+    int countByRatePageRequestWithUserId(RatePageRequest request);
+    List<SyncRate> selectByRatePageRequestWithUserId(RatePageRequest request);
 }

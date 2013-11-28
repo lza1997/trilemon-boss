@@ -18,4 +18,7 @@ public interface RateOrderDAO {
     int updateByPrimaryKey(RateOrder record);
 
     int batchInsertSelective(List<RateOrder> rateOrders);
+
+    RateOrder selectByUserIdAndOid(Long userId, Long oid);
+
 }

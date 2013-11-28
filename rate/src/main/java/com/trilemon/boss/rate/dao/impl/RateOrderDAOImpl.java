@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.dao.router.RateOrderRouter;
 import com.trilemon.boss.rate.model.RateOrder;
+import com.trilemon.commons.db.ShardTableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +21,7 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
         _key.setId(id);
         _key.setUserId(userId);
         router.routeAndSetTableId(_key);
-        int rows = getSqlMapClientTemplate().delete("rate_order.deleteByPrimaryKey", _key);
-        return rows;
+        return getSqlMapClientTemplate().delete("rate_order.deleteByPrimaryKey", _key);
     }
 
     public void insert(RateOrder record) {
@@ -41,22 +41,19 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
         _key.setId(id);
         _key.setUserId(userId);
         router.routeAndSetTableId(_key);
-        RateOrder record = (RateOrder) getSqlMapClientTemplate().queryForObject("rate_order.selectByPrimaryKey", _key);
-        return record;
+        return (RateOrder) getSqlMapClientTemplate().queryForObject("rate_order.selectByPrimaryKey", _key);
     }
 
     public int updateByPrimaryKeySelective(RateOrder record) {
         Preconditions.checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        int rows = getSqlMapClientTemplate().update("rate_order.updateByPrimaryKeySelective", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_order.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(RateOrder record) {
         Preconditions.checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        int rows = getSqlMapClientTemplate().update("rate_order.updateByPrimaryKey", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_order.updateByPrimaryKey", record);
     }
 
     @Override
@@ -66,5 +63,16 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
             router.routeAndSetTableId(rateOrder);
         }
         return batchInsert("rate_order.insertSelective", rateOrders);
+    }
+
+    @Override
+    public RateOrder selectByUserIdAndOid(Long userId, Long oid) {
+        Preconditions.checkNotNull(userId);
+        RateOrder rateOrder = new RateOrder();
+        rateOrder.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(rateOrder);
+        shardTableMap.put("userId", userId);
+        shardTableMap.put("oid", oid);
+        return (RateOrder) getSqlMapClientTemplate().queryForObject("rate_order.selectByUserIdAndOid", shardTableMap);
     }
 }

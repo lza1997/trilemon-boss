@@ -16,4 +16,8 @@
         <namespace>rate_setting</namespace>
         <shards>rateShard</shards>
     </rule>
+    <rule>
+        <namespace>rate_log</namespace>
+        <shards>rateShard</shards>
+    </rule>
 </rules>

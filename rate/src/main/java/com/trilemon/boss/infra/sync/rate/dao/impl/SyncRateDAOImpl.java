@@ -2,6 +2,7 @@ package com.trilemon.boss.infra.sync.rate.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.google.common.base.Preconditions;
+import com.trilemon.boss.infra.sync.rate.client.RatePageRequest;
 import com.trilemon.boss.infra.sync.rate.dao.SyncRateDAO;
 import com.trilemon.boss.infra.sync.rate.dao.router.SyncRateRouter;
 import com.trilemon.boss.infra.sync.rate.model.SyncRate;
@@ -77,12 +78,10 @@ public class SyncRateDAOImpl extends MysdalCobarSqlMapClientDaoSupport implement
         Preconditions.checkNotNull(userId);
         SyncRate syncRate = new SyncRate();
         syncRate.setUserId(userId);
-        int tableId = router.route(syncRate);
-        ShardTableMap shardTableMap=new ShardTableMap();
+        ShardTableMap shardTableMap = router.getRouteMap(syncRate);
         shardTableMap.put("userId", userId);
         shardTableMap.put("startDate", startDate);
         shardTableMap.put("endDate", endDate);
-        shardTableMap.setTableId(tableId);
         return (RateStatus) getSqlMapClientTemplate().queryForObject("sync_rate.calcSellerDayRate", shardTableMap);
     }
 
@@ -90,12 +89,33 @@ public class SyncRateDAOImpl extends MysdalCobarSqlMapClientDaoSupport implement
     public RateStatus calcBuyerRateStatus(Long userId, String buyerNick) {
         SyncRate syncRate = new SyncRate();
         syncRate.setUserId(userId);
-        int tableId = router.route(syncRate);
-        ShardTableMap shardTableMap=new ShardTableMap();
+        ShardTableMap shardTableMap = router.getRouteMap(syncRate);
         shardTableMap.put("userId", userId);
         shardTableMap.put("buyerNick", buyerNick);
-        shardTableMap.setTableId(tableId);
 
         return (RateStatus) getSqlMapClientTemplate().queryForObject("sync_rate.calcBuyerRateStatus", shardTableMap);
+    }
+
+    @Override
+    public int countByRatePageRequestWithUserId(RatePageRequest request) {
+        Preconditions.checkNotNull(request.getUserId(), "userId is null.");
+
+        SyncRate syncRate = new SyncRate();
+        syncRate.setUserId(request.getUserId());
+        ShardTableMap shardTableMap = router.getRouteMap(syncRate);
+        shardTableMap.put("request", request);
+        return (int) getSqlMapClientTemplate().queryForObject("sync_rate.countByRatePageRequestWithUserId", shardTableMap);
+    }
+
+    @Override
+    public List<SyncRate> selectByRatePageRequestWithUserId(RatePageRequest request) {
+        Preconditions.checkNotNull(request.getUserId(), "userId is null.");
+
+        SyncRate syncRate = new SyncRate();
+        syncRate.setUserId(request.getUserId());
+        ShardTableMap shardTableMap = router.getRouteMap(syncRate);
+        shardTableMap.put("request", request);
+        return getSqlMapClientTemplate().queryForList("sync_rate.selectByRatePageRequestWithUserId",
+                shardTableMap);
     }
 }

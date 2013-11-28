@@ -15,6 +15,8 @@ public class RateOrder extends ShardTable {
 
     private String buyerNick;
 
+    private String result;
+
     private Long tid;
 
     private Long oid;
@@ -63,6 +65,14 @@ public class RateOrder extends ShardTable {
 
     public void setBuyerNick(String buyerNick) {
         this.buyerNick = buyerNick == null ? null : buyerNick.trim();
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result == null ? null : result.trim();
     }
 
     public Long getTid() {

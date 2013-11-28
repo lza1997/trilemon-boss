@@ -19,8 +19,7 @@ public class RateFilterTradeDAOImpl extends MysdalCobarSqlMapClientDaoSupport im
         _key.setUserId(userId);
         router.routeAndSetTableId(_key);
 
-        int rows = getSqlMapClientTemplate().delete("rate_filter_trade.deleteByPrimaryKey", _key);
-        return rows;
+        return getSqlMapClientTemplate().delete("rate_filter_trade.deleteByPrimaryKey", _key);
     }
 
     public void insert(RateFilterTrade record) {
@@ -40,21 +39,18 @@ public class RateFilterTradeDAOImpl extends MysdalCobarSqlMapClientDaoSupport im
         _key.setId(id);
         _key.setUserId(userId);
         router.routeAndSetTableId(_key);
-        RateFilterTrade record = (RateFilterTrade) getSqlMapClientTemplate().queryForObject("rate_filter_trade.selectByPrimaryKey", _key);
-        return record;
+        return (RateFilterTrade) getSqlMapClientTemplate().queryForObject("rate_filter_trade.selectByPrimaryKey", _key);
     }
 
     public int updateByPrimaryKeySelective(RateFilterTrade record) {
         Preconditions.checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        int rows = getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKeySelective", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(RateFilterTrade record) {
         Preconditions.checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        int rows = getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKey", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKey", record);
     }
 }

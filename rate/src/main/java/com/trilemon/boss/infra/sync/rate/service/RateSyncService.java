@@ -12,11 +12,13 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlExc
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.infra.sync.rate.RateSyncConstants;
+import com.trilemon.boss.infra.sync.rate.client.RatePageRequest;
 import com.trilemon.boss.infra.sync.rate.dao.SyncRateDAO;
 import com.trilemon.boss.infra.sync.rate.dao.SyncStatusDAO;
 import com.trilemon.boss.infra.sync.rate.model.SyncRate;
 import com.trilemon.boss.infra.sync.rate.model.SyncStatus;
 import com.trilemon.commons.DateUtils;
+import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -254,5 +256,17 @@ public class RateSyncService {
         syncRate.setUserId(userId);
         syncRate.setValidScore(tradeRate.getValidScore());
         return syncRate;
+    }
+
+    /**
+     * 翻页获取评论
+     *
+     * @param request
+     * @return
+     */
+    public Page<SyncRate> getSyncRatePage(RatePageRequest request) {
+        int count = syncRateDAO.countByRatePageRequestWithUserId(request);
+        List<SyncRate> syncRates = syncRateDAO.selectByRatePageRequestWithUserId(request);
+        return Page.create(count, request.getPageNum(), request.getPageSize(), syncRates);
     }
 }
