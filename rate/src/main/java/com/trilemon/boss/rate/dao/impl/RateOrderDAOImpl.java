@@ -9,6 +9,7 @@ import com.trilemon.commons.db.ShardTableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -74,5 +75,44 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
         shardTableMap.put("userId", userId);
         shardTableMap.put("oid", oid);
         return (RateOrder) getSqlMapClientTemplate().queryForObject("rate_order.selectByUserIdAndOid", shardTableMap);
+    }
+
+    @Override
+    public int countBuyerRate(Long userId, Long tid, String buyerNick, List<Byte> statusList, List<String> rateTypes, Date startDate,
+                              Date endDate,
+                              int offset,
+                              int limit) {
+        Preconditions.checkNotNull(userId);
+        RateOrder rateOrder = new RateOrder();
+        rateOrder.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(rateOrder);
+        shardTableMap.put("userId", userId);
+        shardTableMap.put("tid", tid);
+        shardTableMap.put("buyerNick", buyerNick);
+        shardTableMap.put("statusList", statusList);
+        shardTableMap.put("rateTypes", rateTypes);
+        shardTableMap.put("startDate", buyerNick);
+        shardTableMap.put("endDate", buyerNick);
+        shardTableMap.put("offset", buyerNick);
+        shardTableMap.put("limit", buyerNick);
+        return (int) getSqlMapClientTemplate().queryForObject("rate_order.countBuyerRate", shardTableMap);
+    }
+
+    @Override
+    public List<RateOrder> paginateBuyerRate(Long userId, Long tid, String buyerNick, List<Byte> statusList, List<String> rateTypes, Date startDate, Date endDate, int offset, int limit) {
+        Preconditions.checkNotNull(userId);
+        RateOrder rateOrder = new RateOrder();
+        rateOrder.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(rateOrder);
+        shardTableMap.put("tid", tid);
+        shardTableMap.put("buyerNick", buyerNick);
+        shardTableMap.put("statusList", statusList);
+        shardTableMap.put("rateTypes", rateTypes);
+        shardTableMap.put("startDate", startDate);
+        shardTableMap.put("endDate", endDate);
+        shardTableMap.put("offset", offset);
+        shardTableMap.put("limit", limit);
+        shardTableMap.put("userId", userId);
+        return (List<RateOrder>) getSqlMapClientTemplate().queryForList("rate_order.paginateBuyerRate", shardTableMap);
     }
 }

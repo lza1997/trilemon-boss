@@ -21,6 +21,10 @@ public class RateOrder extends ShardTable {
 
     private Long oid;
 
+    private Date orderEndTime;
+
+    private Byte status;
+
     private Date rateTime;
 
     private Date addTime;
@@ -89,6 +93,22 @@ public class RateOrder extends ShardTable {
 
     public void setOid(Long oid) {
         this.oid = oid;
+    }
+
+    public Date getOrderEndTime() {
+        return orderEndTime;
+    }
+
+    public void setOrderEndTime(Date orderEndTime) {
+        this.orderEndTime = orderEndTime;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Date getRateTime() {

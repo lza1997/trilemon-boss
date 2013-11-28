@@ -322,56 +322,65 @@
             <isNotNull prepend="," property="userId" >
                 user_id = #userId:BIGINT#
             </isNotNull>
-            <isNotNull prepend="," property="nick" >
-                nick = #nick:VARCHAR#
-            </isNotNull>
-            <isNotNull prepend="," property="isExpired" >
-                is_expired = #isExpired:BIT#
-            </isNotNull>
             <isNotNull prepend="," property="status" >
                 status = #status:TINYINT#
             </isNotNull>
-            <isNotNull prepend="," property="autoRate" >
-                auto_rate = #autoRate:TINYINT#
+            <isNotNull prepend="," property="autoGoodRate" >
+                auto_good_rate = #autoGoodRate:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="notify" >
-                notify = #notify:TINYINT#
+            <isNotNull prepend="," property="autoNeutralRate" >
+                auto_neutral_rate = #autoNeutralRate:BIT#
+            </isNotNull>
+            <isNotNull prepend="," property="autoBadRate" >
+                auto_bad_rate = #autoBadRate:BIT#
+            </isNotNull>
+            <isNotNull prepend="," property="enableSmsNotify" >
+                enable_sms_notify = #enableSmsNotify:BIT#
             </isNotNull>
             <isNotNull prepend="," property="smsNotifyPhone" >
                 sms_notify_phone = #smsNotifyPhone:VARCHAR#
             </isNotNull>
-            <isNotNull prepend="," property="isFilterCredit" >
-                is_filter_credit = #isFilterCredit:BIT#
+            <isNotNull prepend="," property="enableCreditFilter" >
+                enable_credit_filter = #enableCreditFilter:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="filterCreditMin" >
-                filter_credit_min = #filterCreditMin:INTEGER#
+            <isNotNull prepend="," property="creditFilterMin" >
+                credit_filter_min = #creditFilterMin:INTEGER#
             </isNotNull>
-            <isNotNull prepend="," property="filterCreditMax" >
-                filter_credit_max = #filterCreditMax:INTEGER#
+            <isNotNull prepend="," property="creditFilterMax" >
+                credit_filter_max = #creditFilterMax:INTEGER#
             </isNotNull>
-            <isNotNull prepend="," property="isFilterGoodRate" >
-                is_filter_good_rate = #isFilterGoodRate:BIT#
+            <isNotNull prepend="," property="enableGoodRateFilter" >
+                enable_good_rate_filter = #enableGoodRateFilter:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="filterGoodRate" >
-                filter_good_rate = #filterGoodRate:REAL#
+            <isNotNull prepend="," property="goodRateFilter" >
+                good_rate_filter = #goodRateFilter:REAL#
             </isNotNull>
-            <isNotNull prepend="," property="isFilterBadRate" >
-                is_filter_bad_rate = #isFilterBadRate:BIT#
+            <isNotNull prepend="," property="enableBadRateFilter" >
+                enable_bad_rate_filter = #enableBadRateFilter:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="filterBadRateCount" >
-                filter_bad_rate_count = #filterBadRateCount:REAL#
+            <isNotNull prepend="," property="badRateFilter" >
+                bad_rate_filter = #badRateFilter:REAL#
             </isNotNull>
-            <isNotNull prepend="," property="isFilterRegisterDay" >
-                is_filter_register_day = #isFilterRegisterDay:BIT#
+            <isNotNull prepend="," property="enableRegisterDayFilter" >
+                enable_register_day_filter = #enableRegisterDayFilter:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="filterRegisterDay" >
-                filter_register_day = #filterRegisterDay:INTEGER#
+            <isNotNull prepend="," property="registerDayFilter" >
+                register_day_filter = #registerDayFilter:INTEGER#
             </isNotNull>
-            <isNotNull prepend="," property="isFilterBlacklist" >
-                is_filter_blacklist = #isFilterBlacklist:BIT#
+            <isNotNull prepend="," property="enableBlacklistFilter" >
+                enable_blacklist_filter = #enableBlacklistFilter:BIT#
             </isNotNull>
-            <isNotNull prepend="," property="lastRateTime" >
-                last_rate_time = #lastRateTime:TIMESTAMP#
+            <isNotNull prepend="," property="lastRateStartTime" >
+                last_rate_start_time = #lastRateStartTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="lastRateEndTime" >
+                last_rate_end_time = #lastRateEndTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="rateStatus" >
+                rate_status = #rateStatus:TINYINT#
+            </isNotNull>
+            <isNotNull prepend="," property="rateOwner" >
+                rate_owner = #rateOwner:VARCHAR#
             </isNotNull>
             <isNotNull prepend="," property="addTime" >
                 add_time = #addTime:TIMESTAMP#

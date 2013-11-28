@@ -112,10 +112,9 @@
         where id = #id:BIGINT#
         and user_id=#userId:BIGINT#
   </select>
-  <select id="selectContentByUserIdAndStatus" resultMap="BaseResultMap"
-            parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
-        select
-        <include refid="Base_Column_List" />
+  <select id="selectContentByUserIdAndStatus" resultClass="string"
+            parameterClass="map" >
+        select content
         from rate_comment_setting
         where user_id=#userId:BIGINT#
         <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">

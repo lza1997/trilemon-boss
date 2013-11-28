@@ -12,11 +12,11 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlExc
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.infra.sync.rate.client.RateClient;
-import com.trilemon.boss.infra.sync.rate.client.RatePageRequest;
-import com.trilemon.boss.infra.sync.rate.model.SyncRate;
 import com.trilemon.boss.rate.dao.RateCommentSettingDAO;
+import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.dao.RateSettingDAO;
 import com.trilemon.boss.rate.model.RateCommentSetting;
+import com.trilemon.boss.rate.model.RateOrder;
 import com.trilemon.boss.rate.model.RateSetting;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
@@ -49,15 +49,17 @@ public class RateSettingService {
     private AppService appService;
     @Autowired
     private RateService rateService;
+    @Autowired
+    private RateOrderDAO rateOrderDAO;
 
     /**
      * 创建
      *
      * @param userId
-     * @param rateSetting
      */
-    public void createRateSetting(Long userId, RateSetting rateSetting) {
+    public void createRateSetting(Long userId) {
         if (null == rateSettingDAO.selectByUserId(userId)) {
+            RateSetting rateSetting = new RateSetting();
             rateSetting.setUserId(userId);
             rateSetting.setAutoGoodRate(true);
             rateSetting.setAutoNeutralRate(false);
@@ -259,27 +261,21 @@ public class RateSettingService {
      * @param userId
      * @param tid
      * @param buyerNick
-     * @param rateType  {@literal com.trilemon.boss.infra.sync.rate.RateSyncConstants.RATE_TYPES}
      * @param startDate
      * @param endDate
      * @param pageNum
      * @param pageSize
      * @return
      */
-    public Page<SyncRate> paginateBuyerRate(Long userId, Long tid, String buyerNick, List<String> rateType,
-                                            Date startDate, Date endDate,
-                                            int pageNum, int pageSize) {
-        RatePageRequest request = new RatePageRequest();
-        request.setUserId(userId);
-        request.setTid(tid);
-        request.setBuyerNick(buyerNick);
-        request.setRateType(rateType);
-        request.setStartDate(startDate);
-        request.setEndDate(endDate);
-        request.setPageNum(pageNum);
-        request.setPageSize(pageSize);
-
-        return rateClient.getSyncRates(request);
+    public Page<RateOrder> paginateBuyerWaitingRate(Long userId, Long tid, String buyerNick,
+                                             Date startDate, Date endDate,
+                                             int pageNum, int pageSize) {
+        List<String> rateTypes = ImmutableList.of("neutral", "bad");
+        int count = rateOrderDAO.countBuyerRate(userId, tid, buyerNick,RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes, startDate, endDate,
+                (pageNum - 1) * pageSize, pageSize);
+        List<RateOrder> rateOrders = rateOrderDAO.paginateBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED,rateTypes,
+                startDate, endDate, (pageNum - 1) * pageSize, pageSize);
+        return Page.create(count, pageNum, pageSize, rateOrders);
     }
 
     /**
@@ -290,23 +286,16 @@ public class RateSettingService {
      * @return
      */
     public Map<Long, Boolean> autoRate(Long userId, List<Long> oids) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
+        //TODO 筛选没有评价的评论
         Map<Long, Boolean> resultMap = Maps.newHashMap();
         for (Long oid : oids) {
-            boolean result = rateService.rate(userId, oid, null);
+            boolean result = autoRate(userId, oid, null);
             resultMap.put(oid, result);
         }
         return resultMap;
     }
 
-    /**
-     * 手工评论
-     *
-     * @param userId
-     * @param oid
-     * @param comment
-     * @return
-     */
-    public boolean manualRate(Long userId, Long oid, String comment) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
+    public boolean autoRate(Long userId, Long oid, String comment) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         if (StringUtils.isEmpty(comment)) {
             List<String> comments = getComments(userId);
             comment = Collections3.getRandomElem(comments);
