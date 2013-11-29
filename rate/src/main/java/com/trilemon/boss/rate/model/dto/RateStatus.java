@@ -1,9 +1,11 @@
 package com.trilemon.boss.rate.model.dto;
 
+import java.io.Serializable;
+
 /**
  * @author kevin
  */
-public class RateStatus {
+public class RateStatus implements Serializable {
     private Long userId;
     private String buyerNick;
     private int goodRateNum;

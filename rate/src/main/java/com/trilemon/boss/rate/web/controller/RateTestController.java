@@ -10,6 +10,7 @@ import com.trilemon.boss.infra.sync.rate.service.RateSyncException;
 import com.trilemon.boss.rate.model.RateCommentSetting;
 import com.trilemon.boss.rate.model.RateOrder;
 import com.trilemon.boss.rate.model.RateSetting;
+import com.trilemon.boss.rate.service.RateService;
 import com.trilemon.boss.rate.service.RateSettingService;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
@@ -31,6 +32,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/test2")
 public class RateTestController {
+    @Autowired
+    private RateService rateService;
     @Autowired
     private RateSettingService rateSettingService;
 
@@ -134,9 +137,9 @@ public class RateTestController {
 
     @ResponseBody
     @RequestMapping(value = "/paginateBuyerRate", method = RequestMethod.GET)
-    public Page<RateOrder> paginateBuyerRate(@RequestParam Long userId, @RequestParam(required=false) Long tid,
-                                             @RequestParam(required=false) String buyerNick, @RequestParam(required=false) Date startDate,
-                                             @RequestParam(required=false) Date endDate, @RequestParam int pageNum) throws
+    public Page<RateOrder> paginateBuyerRate(@RequestParam Long userId, @RequestParam(required = false) Long tid,
+                                             @RequestParam(required = false) String buyerNick, @RequestParam(required = false) Date startDate,
+                                             @RequestParam(required = false) Date endDate, @RequestParam int pageNum) throws
             TaobaoEnhancedApiException,
             TaobaoSessionExpiredException,
             TaobaoAccessControlException, RateSyncException {
@@ -158,5 +161,14 @@ public class RateTestController {
             }
         });
         return rateSettingService.autoRate(userId, tidList);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/rateJob", method = RequestMethod.GET)
+    public void rateJob(@RequestParam Long userId) throws
+            TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException,
+            TaobaoAccessControlException, RateSyncException {
+        rateService.rate(userId);
     }
 }

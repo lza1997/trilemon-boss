@@ -61,6 +61,7 @@ public class RateSettingService {
         if (null == rateSettingDAO.selectByUserId(userId)) {
             RateSetting rateSetting = new RateSetting();
             rateSetting.setUserId(userId);
+            rateSetting.setRateType(RATE_TYPE_IMMEDIATELY);
             rateSetting.setAutoGoodRate(true);
             rateSetting.setAutoNeutralRate(false);
             rateSetting.setAutoBadRate(false);
@@ -268,12 +269,12 @@ public class RateSettingService {
      * @return
      */
     public Page<RateOrder> paginateBuyerWaitingRate(Long userId, Long tid, String buyerNick,
-                                             Date startDate, Date endDate,
-                                             int pageNum, int pageSize) {
+                                                    Date startDate, Date endDate,
+                                                    int pageNum, int pageSize) {
         List<String> rateTypes = ImmutableList.of("neutral", "bad");
-        int count = rateOrderDAO.countBuyerRate(userId, tid, buyerNick,RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes, startDate, endDate,
+        int count = rateOrderDAO.countBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes, startDate, endDate,
                 (pageNum - 1) * pageSize, pageSize);
-        List<RateOrder> rateOrders = rateOrderDAO.paginateBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED,rateTypes,
+        List<RateOrder> rateOrders = rateOrderDAO.paginateBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes,
                 startDate, endDate, (pageNum - 1) * pageSize, pageSize);
         return Page.create(count, pageNum, pageSize, rateOrders);
     }

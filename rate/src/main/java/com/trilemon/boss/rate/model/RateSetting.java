@@ -2,59 +2,36 @@ package com.trilemon.boss.rate.model;
 
 import com.google.common.collect.Lists;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class RateSetting {
+public class RateSetting implements Serializable {
     private Long id;
-
     private Long userId;
-
     private Byte status;
-
+    private Byte rateType;
     private Boolean autoGoodRate;
-
     private Boolean autoNeutralRate;
-
     private Boolean autoBadRate;
-
     private Boolean enableSmsNotify;
-
     private String smsNotifyPhone;
-
     private Boolean enableCreditFilter;
-
     private Integer creditFilterMin;
-
     private Integer creditFilterMax;
-
     private Boolean enableGoodRateFilter;
-
     private Float goodRateFilter;
-
     private Boolean enableBadRateFilter;
-
     private Float badRateFilter;
-
     private Boolean enableRegisterDayFilter;
-
     private Integer registerDayFilter;
-
     private Boolean enableBlacklistFilter;
-
     private Date lastRateStartTime;
-
     private Date lastRateEndTime;
-
     private Byte rateStatus;
-
     private String rateOwner;
-
     private Date addTime;
-
     private Date updTime;
-
-    //用于黑名单
     private List<String> blacklistBuyerNicks = Lists.newArrayList();
 
     public Long getId() {
@@ -79,6 +56,14 @@ public class RateSetting {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Byte getRateType() {
+        return rateType;
+    }
+
+    public void setRateType(Byte rateType) {
+        this.rateType = rateType;
     }
 
     public Boolean getAutoGoodRate() {
@@ -251,9 +236,5 @@ public class RateSetting {
 
     public List<String> getBlacklistBuyerNicks() {
         return blacklistBuyerNicks;
-    }
-
-    public void setBlacklistBuyerNicks(List<String> blacklistBuyerNicks) {
-        this.blacklistBuyerNicks = blacklistBuyerNicks;
     }
 }

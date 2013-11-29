@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.trilemon.boss.infra.base.BaseConstants.RATE_FIELDS;
+import static com.trilemon.boss.infra.base.BaseConstants.RATE_TYPES;
 import static com.trilemon.boss.infra.sync.rate.RateSyncConstants.*;
 import static com.trilemon.commons.Collections3.COMMA_JOINER;
 

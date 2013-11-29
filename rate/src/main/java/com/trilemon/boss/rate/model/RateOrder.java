@@ -2,9 +2,10 @@ package com.trilemon.boss.rate.model;
 
 import com.trilemon.commons.db.ShardTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RateOrder extends ShardTable {
+public class RateOrder extends ShardTable implements Serializable {
     private Long id;
 
     private Long userId;

@@ -3,24 +3,28 @@ package com.trilemon.boss.rate.model;
 import com.trilemon.boss.rate.RateConstants;
 import com.trilemon.commons.db.ShardTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RateLog extends ShardTable {
+public class RateLog extends ShardTable implements Serializable {
     private Long id;
     private Long userId;
-    private Integer tradeNum;
-    private Integer orderNum;
-    private Integer insertedRateOrderNum;
-    private Integer day14RateNum;
-    private Integer day15RateNum;
-    private Integer goodRateNum;
-    private Integer neutralRateNum;
-    private Integer badRateNum;
-    private Integer filteredCreditTradeNum;
-    private Integer filteredRegisterDayTradeNum;
-    private Integer filteredGoodRateTradeNum;
-    private Integer filteredBadRateTradeNum;
-    private Integer filteredBlacklistTradeNum;
+    private Integer tradeNum = 0;
+    private Integer orderNum = 0;
+    private Integer insertedRateOrderNum = 0;
+    private Integer day14RateNum = 0;
+    private Integer day15RateNum = 0;
+    private Integer goodRateNum = 0;
+    private Integer neutralRateNum = 0;
+    private Integer badRateNum = 0;
+    private Integer filteredCreditTradeNum = 0;
+    private Integer filteredRegisterDayTradeNum = 0;
+    private Integer filteredGoodRateTradeNum = 0;
+    private Integer filteredBadRateTradeNum = 0;
+    private Integer filteredBlacklistTradeNum = 0;
+    private Byte rateStatus;
+    private Date rateStartTime;
+    private Date rateEndTime;
     private Date addTime;
     private Date updTime;
 
@@ -142,6 +146,30 @@ public class RateLog extends ShardTable {
 
     public void setFilteredBlacklistTradeNum(Integer filteredBlacklistTradeNum) {
         this.filteredBlacklistTradeNum = filteredBlacklistTradeNum;
+    }
+
+    public Byte getRateStatus() {
+        return rateStatus;
+    }
+
+    public void setRateStatus(Byte rateStatus) {
+        this.rateStatus = rateStatus;
+    }
+
+    public Date getRateStartTime() {
+        return rateStartTime;
+    }
+
+    public void setRateStartTime(Date rateStartTime) {
+        this.rateStartTime = rateStartTime;
+    }
+
+    public Date getRateEndTime() {
+        return rateEndTime;
+    }
+
+    public void setRateEndTime(Date rateEndTime) {
+        this.rateEndTime = rateEndTime;
     }
 
     public Date getAddTime() {

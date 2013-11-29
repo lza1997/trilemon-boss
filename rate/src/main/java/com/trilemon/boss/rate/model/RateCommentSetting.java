@@ -1,8 +1,9 @@
 package com.trilemon.boss.rate.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RateCommentSetting {
+public class RateCommentSetting implements Serializable {
     private Long id;
 
     private Long userId;
