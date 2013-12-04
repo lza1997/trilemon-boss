@@ -30,6 +30,7 @@
         <module>develop-tool</module>
         <module>crm</module>
         <module>rate</module>
+        <module>poster</module>
     </modules>
 
     <name>trilemon-boss</name>
