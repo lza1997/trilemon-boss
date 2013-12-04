@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.domain.SellerCat;
 import com.trilemon.boss.center.PlanDistributionUtils;
-import com.trilemon.boss.center.web.auth.shiro.ShiroTaobaoAuthenticationToken;
 import com.trilemon.boss.infra.base.BaseConstants;
 import com.trilemon.boss.infra.base.client.BaseClient;
 import com.trilemon.boss.infra.base.model.TaobaoApp;
@@ -17,6 +16,7 @@ import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.infra.base.web.auth.shiro.ShiroTaobaoAuthenticationToken;
 import com.trilemon.boss.shelf.ShelfConstants;
 import com.trilemon.boss.shelf.ShelfException;
 import com.trilemon.boss.shelf.model.Plan;
@@ -43,7 +43,7 @@ import java.util.Set;
  * @author kevin
  */
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/test2")
 public class TestController {
     @Autowired
     AppService appService;

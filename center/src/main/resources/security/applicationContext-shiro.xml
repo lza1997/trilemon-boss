@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
        default-lazy-init="true">
 
     <description>Shiro安全配置</description>
@@ -17,7 +18,8 @@
 
     <bean id="defaultWebSessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="sessionDAO" ref="enterpriseCacheSessionDAO"/>
-        <property name="globalSessionTimeout" value="1200000"/>
+        <property name="globalSessionTimeout" value="60000"/>
+        <property name="sessionIdCookie" ref="simpleCookie"/>
     </bean>
 
     <bean id="enterpriseCacheSessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
@@ -26,26 +28,41 @@
 
     <!-- 項目自定义的Realm -->
     <bean id="shiroTaobaoAuthorizingRealm"
-          class="com.trilemon.boss.center.web.auth.shiro.ShiroTaobaoAuthorizingRealm">
+          class="com.trilemon.boss.infra.base.web.auth.shiro.ShiroTaobaoAuthorizingRealm">
         <property name="baseClient" ref="baseClient"/>
         <property name="appService" ref="appService"/>
         <property name="taobaoApiService" ref="taobaoApiService"/>
     </bean>
 
-    <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/signIn"/>
+        <property name="loginUrl" value="/session/cas"/>
         <property name="successUrl" value="/"/>
+        <property name="filters">
+            <util:map>
+                <entry key="cas">
+                    <bean class="com.trilemon.commons.web.shiro.ShiroCasFilter">
+                        <property name="casPath" value="/session/cas"/>
+                    </bean>
+                </entry>
+            </util:map>
+        </property>
         <property name="filterChainDefinitions">
             <value>
                 /signIn = anon
+                /session/** = anon
                 /signOut = logout
-                /** = anon
+                /** = cas
             </value>
         </property>
     </bean>
 
+    <bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <property name="name" value="cas"/>
+        <property name="path" value="/"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="30000"/>
+    </bean>
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
