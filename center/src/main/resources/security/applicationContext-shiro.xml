@@ -61,7 +61,7 @@
         <property name="name" value="cas"/>
         <property name="path" value="/"/>
         <property name="httpOnly" value="true"/>
-        <property name="maxAge" value="30000"/>
+        <property name="maxAge" value="1800000"/>
     </bean>
     <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
