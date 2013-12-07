@@ -31,7 +31,17 @@ jetty:9995/8084
 
 jetty:9994/8085
 
-## crm
-** 会员营销**
+## trade-remind
+** 订单短信**
+
+jetty:9993/8086
+
+## item-poster
+** 宝贝海报 **
+
+jetty:9993/8086
+
+## delivery
+** 发货 **
 
 jetty:9993/8086
