@@ -37,8 +37,11 @@
     <bean id="appService" class="com.trilemon.boss.infra.base.service.AppService">
         <property name="serviceName" value="${service_name}"/>
         <property name="serviceId" value="${service_id}"/>
+        <property name="casUrl" value="${cas_url}"/>
     </bean>
 
+    <bean id="sessionService" class="com.trilemon.boss.infra.base.service.SessionService">
+    </bean>
 
     <!-- local development环境 -->
     <beans profile="development">

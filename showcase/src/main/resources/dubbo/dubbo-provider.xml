@@ -11,7 +11,7 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 -->
-    <dubbo:application name="base-consumer"/>
+    <dubbo:application name="showcase-base-consumer"/>
 
     <dubbo:reference id="baseClient" interface="com.trilemon.boss.infra.base.client.BaseClient"/>
 

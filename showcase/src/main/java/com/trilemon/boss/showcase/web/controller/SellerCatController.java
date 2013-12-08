@@ -1,5 +1,6 @@
 package com.trilemon.boss.showcase.web.controller;
 
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.showcase.service.SettingService;
 import com.trilemon.boss.infra.base.model.dto.SellerCatExtended;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
@@ -21,6 +22,8 @@ import java.util.List;
 public class SellerCatController {
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private SessionService sessionService;
 
 
     /**
@@ -33,6 +36,6 @@ public class SellerCatController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public List<SellerCatExtended> index() throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
-        return settingService.getSellerCatsExtended(56912708L);
+        return settingService.getSellerCatsExtended(sessionService.getUserId());
     }
 }

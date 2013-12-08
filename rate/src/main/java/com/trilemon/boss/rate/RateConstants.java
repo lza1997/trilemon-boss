@@ -30,25 +30,42 @@ public interface RateConstants {
     String RATE_TRADE_FIELDS = Collections3.COMMA_JOINER.join(RATE_TRADE_FIELDS_LIST);
     String RATE_TRADE_STATUS = Collections3.COMMA_JOINER.join(RATE_TRADE_STATUS_LIST);
     String TRADE_TYPE = Collections3.COMMA_JOINER.join(TRADE_TYPE_LIST);
-
     //buyer_field
     List<String> BUYER_FIELDS = ImmutableList.of("user_id", "buyer_credit", "created", "type");
-    //comment setting status
+    //comment setting status，暂时都是0
     byte RATE_COMMENT_SETTING_STATUS_VALID = 0;
     byte RATE_COMMENT_SETTING_STATUS_INVALID = 1;
+    //评价类型
+    byte RATE_TYPE_IMMEDIATELY = 0;
+    byte RATE_TYPE_AFTER_BUYER_RATE = 1;
     //rate filter type
-    byte RATE_FILTER_TYPE_CREDIT=1;
-    byte RATE_FILTER_TYPE_GOOD_RATE=2;
-    byte RATE_FILTER_TYPE_REGISTER_DAY=3;
-    byte RATE_FILTER_TYPE_BAD_RATE=4;
-    byte RATE_FILTER_TYPE_BLACKLIST=5;
+    byte RATE_FILTER_TYPE_CREDIT = 1;
+    byte RATE_FILTER_TYPE_REGISTER_DAY = 2;
+    byte RATE_FILTER_TYPE_GOOD_RATE = 3;
+    byte RATE_FILTER_TYPE_BAD_RATE = 4;
+    byte RATE_FILTER_TYPE_BLACKLIST = 5;
     //rate filter type
-    byte RATE_FILTER_STATUS_FILTERED=1;
-    byte RATE_FILTER_STATUS_RATE=2;
-    //rate_setting_status
-    byte RATE_SETTING_STATUS_SUCCESSFUL=0;
-    byte RATE_SETTING_STATUS_FAILED=0;
-    //rate setting expired flag
-    byte RATE_SETTING_NOT_EXPIRED = 0;
-    byte RATE_SETTING_EXPIRED = 1;
+    byte RATE_FILTER_STATUS_FILTERED = 1;
+    //评论job标志位
+    byte RATE_SETTING_RATE_STATUS_INIT = 0;
+    byte RATE_SETTING_RATE_STATUS_SUCCESSFUL = 1;
+    byte RATE_SETTING_RATE_STATUS_FAILED = 2;
+    byte RATE_SETTING_RATE_STATUS_DOING = 3;
+    //使用评论的用户
+    byte RATE_SETTING_STATUS_RUNNING = 0;
+    byte RATE_SETTING_STATUS_PAUSE = 1;
+    byte RATE_SETTING_STATUS_EXPIRED = 2;
+    //评论状态
+    byte RATE_ORDER_STATUS_WAITING_RATE = 0;//还没有评论
+    byte RATE_ORDER_STATUS_DONE_IMMEDIATELY  = 1;//立刻评论
+    byte RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE  = 2;//买家评论后立刻评论
+    byte RATE_ORDER_STATUS_DONE_IN_15DAY = 3;//第15天评论
+    byte RATE_ORDER_STATUS_DONE_MANUAL = 4;//手动评论
+    byte RATE_ORDER_STATUS_15DAY_AGO = 5;//超出15天限制，没有评论
+    //已经评论
+    List<Byte> RATE_ORDER_STATUS_LIST_RATED = ImmutableList.of(RATE_ORDER_STATUS_DONE_IMMEDIATELY,
+            RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE,
+            RATE_ORDER_STATUS_DONE_IN_15DAY, RATE_ORDER_STATUS_DONE_MANUAL);
+    //还没有评论
+    List<Byte> RATE_ORDER_STATUS_LIST_NOT_RATED = ImmutableList.of(RATE_ORDER_STATUS_WAITING_RATE);
 }

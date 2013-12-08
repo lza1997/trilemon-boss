@@ -1,6 +1,7 @@
 package com.trilemon.boss.inventory.web.controller;
 
 import com.google.common.collect.Lists;
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -25,6 +26,8 @@ import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 @RequestMapping("/setting")
 public class SettingController {
     @Autowired
+    private SessionService sessionService;
+    @Autowired
     private InventoryListService inventoryListService;
 
     /**
@@ -34,7 +37,7 @@ public class SettingController {
     @RequestMapping(method = RequestMethod.GET)
     public InventoryListSetting show() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        return inventoryListService.getSetting(56912708L);
+        return inventoryListService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -44,8 +47,8 @@ public class SettingController {
     @RequestMapping(method = RequestMethod.POST)
     public InventoryListSetting create() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        inventoryListService.createSetting(56912708L, Lists.<String>newArrayList());
-        return inventoryListService.getSetting(56912708L);
+        inventoryListService.createSetting(sessionService.getUserId(), Lists.<String>newArrayList());
+        return inventoryListService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -54,8 +57,9 @@ public class SettingController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
     public InventoryListSetting update(@RequestBody InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        inventoryListService.updateIncludeBanners(56912708L, COMMA_SPLITTER.splitToList(setting.getIncludeBanners()));
-        return inventoryListService.getSetting(56912708L);
+        inventoryListService.updateIncludeBanners(sessionService.getUserId(), COMMA_SPLITTER.splitToList(setting
+                .getIncludeBanners()));
+        return inventoryListService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -64,8 +68,8 @@ public class SettingController {
     @RequestMapping(value = "/pause", method = RequestMethod.POST)
     @ResponseBody
     public InventoryListSetting pauseSetting() throws InventoryException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
-        inventoryListService.pauseSetting(56912708L);
-        return inventoryListService.getSetting(56912708L);
+        inventoryListService.pauseSetting(sessionService.getUserId());
+        return inventoryListService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -74,8 +78,8 @@ public class SettingController {
     @RequestMapping(value = "/pause", method = RequestMethod.DELETE)
     @ResponseBody
     public InventoryListSetting resumeSetting() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException, TaobaoEnhancedApiException {
-        inventoryListService.resumeSetting(56912708L);
-        return inventoryListService.getSetting(56912708L);
+        inventoryListService.resumeSetting(sessionService.getUserId());
+        return inventoryListService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -84,7 +88,7 @@ public class SettingController {
     @ResponseBody
     @RequestMapping(value = "/distribution", method = RequestMethod.GET)
     public Map<String, Map<String, Boolean>> getDistribution() throws Exception {
-        return inventoryListService.getSetting(56912708L).getDistributionMap();
+        return inventoryListService.getSetting(sessionService.getUserId()).getDistributionMap();
     }
 
     /**
@@ -93,7 +97,7 @@ public class SettingController {
     @ResponseBody
     @RequestMapping(value = "/distribution", method = RequestMethod.PUT)
     public void updateDistribution(@RequestBody Map<String, Map<String, Boolean>> distribution) {
-        inventoryListService.updateDistribution(56912708L, distribution);
+        inventoryListService.updateDistribution(sessionService.getUserId(), distribution);
     }
 
 }

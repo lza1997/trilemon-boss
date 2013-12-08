@@ -2,9 +2,10 @@ package com.trilemon.boss.rate.model;
 
 import com.trilemon.commons.db.ShardTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class RateOrder extends ShardTable {
+public class RateOrder extends ShardTable implements Serializable {
     private Long id;
 
     private Long userId;
@@ -15,9 +16,15 @@ public class RateOrder extends ShardTable {
 
     private String buyerNick;
 
+    private String result;
+
     private Long tid;
 
     private Long oid;
+
+    private Date orderEndTime;
+
+    private Byte status;
 
     private Date rateTime;
 
@@ -65,6 +72,14 @@ public class RateOrder extends ShardTable {
         this.buyerNick = buyerNick == null ? null : buyerNick.trim();
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result == null ? null : result.trim();
+    }
+
     public Long getTid() {
         return tid;
     }
@@ -79,6 +94,22 @@ public class RateOrder extends ShardTable {
 
     public void setOid(Long oid) {
         this.oid = oid;
+    }
+
+    public Date getOrderEndTime() {
+        return orderEndTime;
+    }
+
+    public void setOrderEndTime(Date orderEndTime) {
+        this.orderEndTime = orderEndTime;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Date getRateTime() {

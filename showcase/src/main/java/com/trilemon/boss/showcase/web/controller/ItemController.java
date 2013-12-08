@@ -1,5 +1,6 @@
 package com.trilemon.boss.showcase.web.controller;
 
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/items")
 public class ItemController {
     @Autowired
+    private SessionService sessionService;
+    @Autowired
     private SettingService settingService;
 
 
@@ -32,7 +35,7 @@ public class ItemController {
             TaobaoEnhancedApiException, TaobaoAccessControlException {
         // tab 是固定推荐还是全部宝贝
         if ("include".equals(tab)) {
-            return settingService.getIncludeShowcaseItems(56912708L, page, 2);
+            return settingService.getIncludeShowcaseItems(sessionService.getUserId(), page, 2);
         } else {
             if ("asc".equals(order)) {
                 order = ShowcaseConstants.ASC_ORDER_BY_DELIST_TIME;
@@ -41,9 +44,9 @@ public class ItemController {
             }
             // 库存中还是销售中
             if ("inventory".equals(category)) {
-                return settingService.paginateInventoryItems(56912708L, key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
+                return settingService.paginateInventoryItems(sessionService.getUserId(), key, ShowcaseConstants.INVENTORY_BANNER_TYPES, null, page, 2, false, order);
             } else {
-                return settingService.paginateOnSaleItems(56912708L, key, null, page, 2, false, order);
+                return settingService.paginateOnSaleItems(sessionService.getUserId(), key, null, page, 2, false, order);
             }
         }
 
@@ -57,9 +60,9 @@ public class ItemController {
     public String includeItem(@RequestBody IncludeJSONParam jsonParam) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         for (Long numIid : jsonParam.numIids) {
             if (jsonParam.include) {
-                settingService.addIncludeItem(56912708L, numIid);
+                settingService.addIncludeItem(sessionService.getUserId(), numIid);
             } else {
-                settingService.deleteIncludeItem(56912708L, numIid);
+                settingService.deleteIncludeItem(sessionService.getUserId(), numIid);
             }
         }
         return "";

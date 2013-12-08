@@ -15,8 +15,7 @@ public class RateSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport implem
     public int deleteByPrimaryKey(Long id) {
         RateSetting _key = new RateSetting();
         _key.setId(id);
-        int rows = getSqlMapClientTemplate().delete("rate_setting.deleteByPrimaryKey", _key);
-        return rows;
+        return getSqlMapClientTemplate().delete("rate_setting.deleteByPrimaryKey", _key);
     }
 
     public void insert(RateSetting record) {
@@ -30,32 +29,27 @@ public class RateSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport implem
     public RateSetting selectByPrimaryKey(Long id) {
         RateSetting _key = new RateSetting();
         _key.setId(id);
-        RateSetting record = (RateSetting) getSqlMapClientTemplate().queryForObject("rate_setting.selectByPrimaryKey", _key);
-        return record;
+        return (RateSetting) getSqlMapClientTemplate().queryForObject("rate_setting.selectByPrimaryKey", _key);
     }
 
     public int updateByPrimaryKeySelective(RateSetting record) {
-        int rows = getSqlMapClientTemplate().update("rate_setting.updateByPrimaryKeySelective", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_setting.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(RateSetting record) {
-        int rows = getSqlMapClientTemplate().update("rate_setting.updateByPrimaryKey", record);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_setting.updateByPrimaryKey", record);
     }
 
     @Override
     public int updateByUserId(RateSetting rateSetting) {
-        int rows = getSqlMapClientTemplate().update("rate_setting.updateByUserId", rateSetting);
-        return rows;
+        return getSqlMapClientTemplate().update("rate_setting.updateByUserId", rateSetting);
     }
 
     @Override
     public RateSetting selectByUserId(Long userId) {
         RateSetting _key = new RateSetting();
         _key.setUserId(userId);
-        RateSetting record = (RateSetting) getSqlMapClientTemplate().queryForObject("rate_setting.selectByUserId", _key);
-        return record;
+        return (RateSetting) getSqlMapClientTemplate().queryForObject("rate_setting.selectByUserId", _key);
     }
 
     @Override

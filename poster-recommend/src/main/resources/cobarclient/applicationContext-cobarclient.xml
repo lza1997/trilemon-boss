@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+       default-lazy-init="false">
+
+    <util:set id="shards" set-class="java.util.LinkedHashSet">
+        <ref local="rateShard"/>
+        <ref local="syncShard1"/>
+        <ref local="syncShard2"/>
+    </util:set>
+
+    <bean id="rateShard" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="rateShard"/>
+        <property name="dataSource" ref="rateDataSource"/>
+    </bean>
+
+    <bean id="syncShard1" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="syncShard1"/>
+        <property name="dataSource" ref="syncDataSource1"/>
+    </bean>
+    <bean id="syncShard2" class="com.alibaba.cobarclient.Shard">
+        <property name="id" value="syncShard2"/>
+        <property name="dataSource" ref="syncDataSource2"/>
+    </bean>
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath*:/poster-recommend-ibatis/sqlmap-config.xml</value>
+                <value>classpath*:/syncibatis/sqlmap-config.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--<bean id="hashFunction" class="com.raycloud.db.router.rules.support.HashFunction"></bean>-->
+
+    <!--<util:map id="functionsMap">-->
+    <!--<entry key="hash" value-ref="hashFunction">-->
+    <!--</entry>-->
+    <!--</util:map>-->
+
+    <!-- 定义总router -->
+    <bean id="router" class="com.alibaba.cobarclient.config.SimpleRouterFactoryBean">
+        <property name="configLocations">
+            <list>
+                <value>classpath*:/cobarclient/rate-shard-rules.xml</value>
+                <value>classpath*:/cobarclient/sync-shard-rules.xml</value>
+            </list>
+        </property>
+        <property name="shards" ref="shards"/>
+        <!--<property name="functions" ref="functionsMap"></property>-->
+    </bean>
+
+    <bean id="sqlMapClientTemplate" class="com.alibaba.cobarclient.MysdalSqlMapClientTemplate">
+        <property name="dataSource" ref="rateDataSource"/>
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="shards" ref="shards"/>
+        <property name="router" ref="router"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="com.alibaba.cobarclient.transaction.BestEffortMultiDataSourceTransactionManager">
+        <property name="shards" ref="shards"/>
+    </bean>
+
+    <!-- 使用annotation定义事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+
+    <bean id="rateDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${rate_jdbc_url}"/>
+        <property name="username" value="${rate_jdbc_user}"/>
+        <property name="password" value="${rate_jdbc_password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="5"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+
+        <!--&lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;-->
+        <!--<property name="filters" value="stat"/>-->
+    </bean>
+
+    <bean id="syncDataSource1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${sync_1_jdbc_url}"/>
+        <property name="username" value="${sync_1_jdbc_user}"/>
+        <property name="password" value="${sync_1_jdbc_password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="5"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+
+        <!--&lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;-->
+        <!--<property name="filters" value="stat"/>-->
+    </bean>
+
+    <bean id="syncDataSource2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close">
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${sync_2_jdbc_url}"/>
+        <property name="username" value="${sync_2_jdbc_user}"/>
+        <property name="password" value="${sync_2_jdbc_password}"/>
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="5"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+
+        <!--&lt;!&ndash; 配置监控统计拦截的filters &ndash;&gt;-->
+        <!--<property name="filters" value="stat"/>-->
+    </bean>
+
+    <!-- production环境 -->
+    <beans profile="production">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.properties,
+          			  classpath*:/application.production.properties"/>
+    </beans>
+
+    <!-- development环境 -->
+    <beans profile="development">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.properties,
+          			  classpath*:/application.development.properties"/>
+    </beans>
+
+    <!-- test环境 -->
+    <beans profile="test">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.properties,
+          			  classpath*:/application.test.properties"/>
+    </beans>
+</beans>

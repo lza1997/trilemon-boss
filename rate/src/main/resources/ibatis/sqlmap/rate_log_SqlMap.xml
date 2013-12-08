@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="rate_log" >
+    <resultMap id="BaseResultMap" class="com.trilemon.boss.rate.model.RateLog" >
+        <result column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="trade_num" property="tradeNum" jdbcType="INTEGER" />
+        <result column="order_num" property="orderNum" jdbcType="INTEGER" />
+        <result column="inserted_rate_order_num" property="insertedRateOrderNum" jdbcType="INTEGER" />
+        <result column="day14_rate_num" property="day14RateNum" jdbcType="INTEGER" />
+        <result column="day15_rate_num" property="day15RateNum" jdbcType="INTEGER" />
+        <result column="good_rate_num" property="goodRateNum" jdbcType="INTEGER" />
+        <result column="neutral_rate_num" property="neutralRateNum" jdbcType="INTEGER" />
+        <result column="bad_rate_num" property="badRateNum" jdbcType="INTEGER" />
+        <result column="filtered_credit_trade_num" property="filteredCreditTradeNum" jdbcType="INTEGER" />
+        <result column="filtered_register_day_trade_num" property="filteredRegisterDayTradeNum" jdbcType="INTEGER" />
+        <result column="filtered_good_rate_trade_num" property="filteredGoodRateTradeNum" jdbcType="INTEGER" />
+        <result column="filtered_bad_rate_trade_num" property="filteredBadRateTradeNum" jdbcType="INTEGER" />
+        <result column="filtered_blacklist_trade_num" property="filteredBlacklistTradeNum" jdbcType="INTEGER" />
+        <result column="rate_status" property="rateStatus" jdbcType="TINYINT" />
+        <result column="rate_start_time" property="rateStartTime" jdbcType="TIMESTAMP" />
+        <result column="rate_end_time" property="rateEndTime" jdbcType="TIMESTAMP" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, user_id, trade_num, order_num, inserted_rate_order_num, day14_rate_num, day15_rate_num,
+        good_rate_num, neutral_rate_num, bad_rate_num, filtered_credit_trade_num, filtered_register_day_trade_num,
+        filtered_good_rate_trade_num, filtered_bad_rate_trade_num, filtered_blacklist_trade_num,
+        rate_status, rate_start_time, rate_end_time, add_time, upd_time
+    </sql>
+    <sql id="Base_Table_Name" >
+        rate_log_#tableId#
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+        select
+        <include refid="rate_log.Base_Column_List" />
+        from   <include refid="rate_log.Base_Table_Name" />
+        where id = #id:BIGINT#
+    </select>
+    <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+        delete from   <include refid="rate_log.Base_Table_Name" />
+        where id = #id:BIGINT#
+    </delete>
+    <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+        insert into   <include refid="rate_log.Base_Table_Name" /> (id, user_id, trade_num, order_num, inserted_rate_order_num,
+                              day14_rate_num, day15_rate_num, good_rate_num, neutral_rate_num,
+                              bad_rate_num, filtered_credit_trade_num, filtered_register_day_trade_num,
+                              filtered_good_rate_trade_num, filtered_bad_rate_trade_num, filtered_blacklist_trade_num,
+                              rate_status, rate_start_time, rate_end_time, add_time,
+                              upd_time)
+            values (#id:BIGINT#, #userId:BIGINT#, #tradeNum:INTEGER#, #orderNum:INTEGER#, #insertedRateOrderNum:INTEGER#,
+      #day14RateNum:INTEGER#, #day15RateNum:INTEGER#, #goodRateNum:INTEGER#, #neutralRateNum:INTEGER#, 
+      #badRateNum:INTEGER#, #filteredCreditTradeNum:INTEGER#, #filteredRegisterDayTradeNum:INTEGER#, 
+      #filteredGoodRateTradeNum:INTEGER#, #filteredBadRateTradeNum:INTEGER#, #filteredBlacklistTradeNum:INTEGER#, 
+      #rateStatus:TINYINT#, #rateStartTime:TIMESTAMP#, #rateEndTime:TIMESTAMP#, #addTime:TIMESTAMP#, 
+      #updTime:TIMESTAMP#)
+    </insert>
+    <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+        insert into   <include refid="rate_log.Base_Table_Name" />
+        <dynamic prepend="(" >
+            <isNotNull prepend="," property="id" >
+                id
+            </isNotNull>
+            <isNotNull prepend="," property="userId" >
+                user_id
+            </isNotNull>
+            <isNotNull prepend="," property="tradeNum" >
+                trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="orderNum" >
+                order_num
+            </isNotNull>
+            <isNotNull prepend="," property="insertedRateOrderNum" >
+                inserted_rate_order_num
+            </isNotNull>
+            <isNotNull prepend="," property="day14RateNum" >
+                day14_rate_num
+            </isNotNull>
+            <isNotNull prepend="," property="day15RateNum" >
+                day15_rate_num
+            </isNotNull>
+            <isNotNull prepend="," property="goodRateNum" >
+                good_rate_num
+            </isNotNull>
+            <isNotNull prepend="," property="neutralRateNum" >
+                neutral_rate_num
+            </isNotNull>
+            <isNotNull prepend="," property="badRateNum" >
+                bad_rate_num
+            </isNotNull>
+            <isNotNull prepend="," property="filteredCreditTradeNum" >
+                filtered_credit_trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="filteredRegisterDayTradeNum" >
+                filtered_register_day_trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="filteredGoodRateTradeNum" >
+                filtered_good_rate_trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBadRateTradeNum" >
+                filtered_bad_rate_trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBlacklistTradeNum" >
+                filtered_blacklist_trade_num
+            </isNotNull>
+            <isNotNull prepend="," property="rateStatus" >
+                rate_status
+            </isNotNull>
+            <isNotNull prepend="," property="rateStartTime" >
+                rate_start_time
+            </isNotNull>
+            <isNotNull prepend="," property="rateEndTime" >
+                rate_end_time
+            </isNotNull>
+            <isNotNull prepend="," property="addTime" >
+                add_time
+            </isNotNull>
+            <isNotNull prepend="," property="updTime" >
+                upd_time
+            </isNotNull>
+            )
+        </dynamic>
+        values
+        <dynamic prepend="(" >
+            <isNotNull prepend="," property="id" >
+                #id:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="userId" >
+                #userId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="tradeNum" >
+                #tradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="orderNum" >
+                #orderNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="insertedRateOrderNum" >
+                #insertedRateOrderNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="day14RateNum" >
+                #day14RateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="day15RateNum" >
+                #day15RateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="goodRateNum" >
+                #goodRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="neutralRateNum" >
+                #neutralRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="badRateNum" >
+                #badRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredCreditTradeNum" >
+                #filteredCreditTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredRegisterDayTradeNum" >
+                #filteredRegisterDayTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredGoodRateTradeNum" >
+                #filteredGoodRateTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBadRateTradeNum" >
+                #filteredBadRateTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBlacklistTradeNum" >
+                #filteredBlacklistTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="rateStatus" >
+                #rateStatus:TINYINT#
+            </isNotNull>
+            <isNotNull prepend="," property="rateStartTime" >
+                #rateStartTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="rateEndTime" >
+                #rateEndTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime" >
+                #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime" >
+                #updTime:TIMESTAMP#
+            </isNotNull>
+            )
+        </dynamic>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+        update   <include refid="rate_log.Base_Table_Name" />
+        <dynamic prepend="set" >
+            <isNotNull prepend="," property="userId" >
+                user_id = #userId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="tradeNum" >
+                trade_num = #tradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="orderNum" >
+                order_num = #orderNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="insertedRateOrderNum" >
+                inserted_rate_order_num = #insertedRateOrderNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="day14RateNum" >
+                day14_rate_num = #day14RateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="day15RateNum" >
+                day15_rate_num = #day15RateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="goodRateNum" >
+                good_rate_num = #goodRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="neutralRateNum" >
+                neutral_rate_num = #neutralRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="badRateNum" >
+                bad_rate_num = #badRateNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredCreditTradeNum" >
+                filtered_credit_trade_num = #filteredCreditTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredRegisterDayTradeNum" >
+                filtered_register_day_trade_num = #filteredRegisterDayTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredGoodRateTradeNum" >
+                filtered_good_rate_trade_num = #filteredGoodRateTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBadRateTradeNum" >
+                filtered_bad_rate_trade_num = #filteredBadRateTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="filteredBlacklistTradeNum" >
+                filtered_blacklist_trade_num = #filteredBlacklistTradeNum:INTEGER#
+            </isNotNull>
+            <isNotNull prepend="," property="rateStatus" >
+                rate_status = #rateStatus:TINYINT#
+            </isNotNull>
+            <isNotNull prepend="," property="rateStartTime" >
+                rate_start_time = #rateStartTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="rateEndTime" >
+                rate_end_time = #rateEndTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime" >
+                add_time = #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime" >
+                upd_time = #updTime:TIMESTAMP#
+            </isNotNull>
+        </dynamic>
+        where id = #id:BIGINT#
+    </update>
+    <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateLog" >
+    update   <include refid="rate_log.Base_Table_Name" />
+    set user_id = #userId:BIGINT#,
+      trade_num = #tradeNum:INTEGER#,
+      order_num = #orderNum:INTEGER#,
+      inserted_rate_order_num = #insertedRateOrderNum:INTEGER#,
+      day14_rate_num = #day14RateNum:INTEGER#,
+      day15_rate_num = #day15RateNum:INTEGER#,
+      good_rate_num = #goodRateNum:INTEGER#,
+      neutral_rate_num = #neutralRateNum:INTEGER#,
+      bad_rate_num = #badRateNum:INTEGER#,
+      filtered_credit_trade_num = #filteredCreditTradeNum:INTEGER#,
+      filtered_register_day_trade_num = #filteredRegisterDayTradeNum:INTEGER#,
+      filtered_good_rate_trade_num = #filteredGoodRateTradeNum:INTEGER#,
+      filtered_bad_rate_trade_num = #filteredBadRateTradeNum:INTEGER#,
+      filtered_blacklist_trade_num = #filteredBlacklistTradeNum:INTEGER#,
+      rate_status = #rateStatus:TINYINT#,
+      rate_start_time = #rateStartTime:TIMESTAMP#,
+      rate_end_time = #rateEndTime:TIMESTAMP#,
+      add_time = #addTime:TIMESTAMP#,
+      upd_time = #updTime:TIMESTAMP#
+    where id = #id:BIGINT#
+  </update>
+</sqlMap>

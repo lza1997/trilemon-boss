@@ -1,5 +1,6 @@
 package com.trilemon.boss.inventory.web.controller;
 
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -20,6 +21,8 @@ import java.util.Map;
 @RequestMapping("/item-num")
 public class ItemNumController {
     @Autowired
+    private SessionService sessionService;
+    @Autowired
     private InventoryListService inventoryListService;
 
     /**
@@ -29,6 +32,6 @@ public class ItemNumController {
     @RequestMapping(method = RequestMethod.GET)
     public Map<String, Long> show() throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException,
             TaobaoEnhancedApiException {
-        return inventoryListService.getInventoryItemNum(56912708L);
+        return inventoryListService.getInventoryItemNum(sessionService.getUserId());
     }
 }

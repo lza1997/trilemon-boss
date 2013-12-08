@@ -19,13 +19,13 @@
     where id = #id:BIGINT#
   </select>
   <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
-    delete from rate_comment_setting
-    where id = #id:BIGINT#
+    DELETE FROM rate_comment_setting
+    WHERE id = #id:BIGINT#
   </delete>
   <insert id="insert" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
-    insert into rate_comment_setting (id, user_id, content, status, add_time, 
+    INSERT INTO rate_comment_setting (id, user_id, content, status, add_time,
       upd_time)
-    values (#id:BIGINT#, #userId:BIGINT#, #content:VARCHAR#, #status:TINYINT#, #addTime:TIMESTAMP#, 
+    VALUES (#id:BIGINT#, #userId:BIGINT#, #content:VARCHAR#, #status:TINYINT#, #addTime:TIMESTAMP#,
       #updTime:TIMESTAMP#)
   </insert>
   <insert id="insertSelective" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
@@ -104,4 +104,21 @@
       upd_time = #updTime:TIMESTAMP#
     where id = #id:BIGINT#
   </update>
+  <select id="selectByPrimaryKeyAndUserId" resultMap="BaseResultMap"
+          parameterClass="com.trilemon.boss.rate.model.RateCommentSetting" >
+        select
+        <include refid="Base_Column_List" />
+        from rate_comment_setting
+        where id = #id:BIGINT#
+        and user_id=#userId:BIGINT#
+  </select>
+  <select id="selectContentByUserIdAndStatus" resultClass="string"
+            parameterClass="map" >
+        select content
+        from rate_comment_setting
+        where user_id=#userId:BIGINT#
+        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+          `status`=#statusList[]#
+        </iterate>
+  </select>
 </sqlMap>

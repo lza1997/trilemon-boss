@@ -1,5 +1,6 @@
 package com.trilemon.boss.showcase.web.controller;
 
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.showcase.ShowcaseException;
 import com.trilemon.boss.showcase.model.Setting;
 import com.trilemon.boss.showcase.service.SettingService;
@@ -23,6 +24,8 @@ import javax.validation.Valid;
 public class SettingController {
     @Autowired
     private SettingService settingService;
+    @Autowired
+    private SessionService sessionService;
 
     /**
      * 获取当前规则
@@ -35,7 +38,7 @@ public class SettingController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public Setting show() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
-        return settingService.getSetting(56912708L);
+        return settingService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -49,7 +52,7 @@ public class SettingController {
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody
     public Setting update(@RequestBody @Valid Setting setting) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        settingService.updateSetting(56912708L, setting);
+        settingService.updateSetting(sessionService.getUserId(), setting);
         return setting;
     }
 
@@ -64,8 +67,8 @@ public class SettingController {
     @RequestMapping(value = "/pause", method = RequestMethod.POST)
     @ResponseBody
     public Setting pauseSetting() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException {
-        settingService.pauseSetting(56912708L);
-        return settingService.getSetting(56912708L);
+        settingService.pauseSetting(sessionService.getUserId());
+        return settingService.getSetting(sessionService.getUserId());
     }
 
     /**
@@ -80,8 +83,8 @@ public class SettingController {
     @RequestMapping(value = "/pause", method = RequestMethod.DELETE)
     @ResponseBody
     public Setting resumeSetting() throws ShowcaseException, TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
-        settingService.resumeSetting(56912708L);
-        return settingService.getSetting(56912708L);
+        settingService.resumeSetting(sessionService.getUserId());
+        return settingService.getSetting(sessionService.getUserId());
     }
 
 }
