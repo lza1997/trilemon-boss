@@ -26,7 +26,6 @@ public class ShowcaseItemController {
     @Autowired
     private SessionService sessionService;
 
-
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public Page<Item> index(String key, @RequestParam(defaultValue = "1") Integer page) throws
