@@ -2,8 +2,11 @@ package com.trilemon.boss.poster.recommend.dao.impl;
 
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityItemDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
+import com.trilemon.commons.web.Page;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class PosterRecommendActivityItemDAOImpl extends SqlMapClientDaoSupport implements PosterRecommendActivityItemDAO {
 
     public PosterRecommendActivityItemDAOImpl() {
@@ -40,5 +43,15 @@ public class PosterRecommendActivityItemDAOImpl extends SqlMapClientDaoSupport i
     public int updateByPrimaryKey(PosterRecommendActivityItem record) {
         int rows = getSqlMapClientTemplate().update("poster_recommend_activity_item.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid) {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, int offset, int limit) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

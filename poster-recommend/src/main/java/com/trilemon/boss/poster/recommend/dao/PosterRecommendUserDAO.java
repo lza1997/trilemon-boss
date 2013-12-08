@@ -14,4 +14,6 @@ public interface PosterRecommendUserDAO {
     int updateByPrimaryKeySelective(PosterRecommendUser record);
 
     int updateByPrimaryKey(PosterRecommendUser record);
+
+    PosterRecommendUser selectByUserId(Long userId);
 }

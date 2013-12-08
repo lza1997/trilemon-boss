@@ -34,6 +34,9 @@
         <property name="baseClient" ref="baseClient"/>
     </bean>
 
+    <bean id="sessionService" class="com.trilemon.boss.infra.base.service.SessionService">
+    </bean>
+
     <bean id="appService" class="com.trilemon.boss.infra.base.service.AppService">
         <property name="serviceName" value="${service_name}"/>
         <property name="serviceId" value="${service_id}"/>

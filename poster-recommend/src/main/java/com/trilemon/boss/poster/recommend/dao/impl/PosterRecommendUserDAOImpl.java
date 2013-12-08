@@ -3,7 +3,9 @@ package com.trilemon.boss.poster.recommend.dao.impl;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class PosterRecommendUserDAOImpl extends SqlMapClientDaoSupport implements PosterRecommendUserDAO {
 
     public PosterRecommendUserDAOImpl() {
@@ -40,5 +42,10 @@ public class PosterRecommendUserDAOImpl extends SqlMapClientDaoSupport implement
     public int updateByPrimaryKey(PosterRecommendUser record) {
         int rows = getSqlMapClientTemplate().update("poster_recommend_user.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public PosterRecommendUser selectByUserId(Long userId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

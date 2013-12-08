@@ -3,42 +3,46 @@ package com.trilemon.boss.poster.recommend.dao.impl;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class PosterRecommendActivityDAOImpl extends SqlMapClientDaoSupport implements PosterRecommendActivityDAO {
 
     public PosterRecommendActivityDAOImpl() {
         super();
     }
 
-    public int deleteByPrimaryKey(Long id) {
-        PosterRecommendActivity _key = new PosterRecommendActivity();
-        _key.setId(id);
-        int rows = getSqlMapClientTemplate().delete("poster_recommend_activity.deleteByPrimaryKey", _key);
-        return rows;
+    public long insertSelective(Long userId, PosterRecommendActivity record) {
+        return (long) getSqlMapClientTemplate().insert("poster_recommend_activity.insertSelective", record);
     }
 
-    public void insert(PosterRecommendActivity record) {
-        getSqlMapClientTemplate().insert("poster_recommend_activity.insert", record);
-    }
-
-    public void insertSelective(PosterRecommendActivity record) {
-        getSqlMapClientTemplate().insert("poster_recommend_activity.insertSelective", record);
-    }
-
-    public PosterRecommendActivity selectByPrimaryKey(Long id) {
-        PosterRecommendActivity _key = new PosterRecommendActivity();
-        _key.setId(id);
-        PosterRecommendActivity record = (PosterRecommendActivity) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.selectByPrimaryKey", _key);
-        return record;
-    }
-
-    public int updateByPrimaryKeySelective(PosterRecommendActivity record) {
+    public int updateByPrimaryKeySelective(Long userId, PosterRecommendActivity record) {
         int rows = getSqlMapClientTemplate().update("poster_recommend_activity.updateByPrimaryKeySelective", record);
         return rows;
     }
 
-    public int updateByPrimaryKey(PosterRecommendActivity record) {
+    public int updateByPrimaryKey(Long userId, PosterRecommendActivity record) {
         int rows = getSqlMapClientTemplate().update("poster_recommend_activity.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public PosterRecommendActivity selectByUserIdAndActivityId(Long userId, Long activityId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public int updateByUserIdAndActivityId(PosterRecommendActivity record) {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public int deleteByUserIdAndActivityId(Long userId, Long activityId) {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public PosterRecommendActivity selectLastCreatedActivity(Long userId) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

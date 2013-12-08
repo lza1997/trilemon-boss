@@ -2,6 +2,8 @@ package com.trilemon.boss.poster.template.dao;
 
 import com.trilemon.boss.poster.template.model.PosterTemplateCategory;
 
+import java.util.List;
+
 public interface PosterTemplateCategoryDAO {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +16,6 @@ public interface PosterTemplateCategoryDAO {
     int updateByPrimaryKeySelective(PosterTemplateCategory record);
 
     int updateByPrimaryKey(PosterTemplateCategory record);
+
+    List<PosterTemplateCategory> selectAll();
 }

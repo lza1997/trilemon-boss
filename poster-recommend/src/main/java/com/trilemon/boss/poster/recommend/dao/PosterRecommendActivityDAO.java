@@ -1,17 +1,19 @@
 package com.trilemon.boss.poster.recommend.dao;
 
-import com.trilemon.boss.poster.recommend.model.*;
+import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 
 public interface PosterRecommendActivityDAO {
-    int deleteByPrimaryKey(Long id);
+    long insertSelective(Long userId, PosterRecommendActivity record);
 
-    void insert(PosterRecommendActivity record);
+    int updateByPrimaryKeySelective(Long userId, PosterRecommendActivity record);
 
-    void insertSelective(PosterRecommendActivity record);
+    int updateByPrimaryKey(Long userId, PosterRecommendActivity record);
 
-    PosterRecommendActivity selectByPrimaryKey(Long id);
+    PosterRecommendActivity selectByUserIdAndActivityId(Long userId, Long activityId);
 
-    int updateByPrimaryKeySelective(PosterRecommendActivity record);
+    int updateByUserIdAndActivityId(PosterRecommendActivity record);
 
-    int updateByPrimaryKey(PosterRecommendActivity record);
+    int deleteByUserIdAndActivityId(Long userId, Long activityId);
+
+    PosterRecommendActivity selectLastCreatedActivity(Long userId);
 }

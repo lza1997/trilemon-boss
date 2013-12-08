@@ -8,14 +8,13 @@ import java.util.List;
 public class PosterTemplateQueryRequest {
     private int slotNum;
     private List<String> tags;
-    private List<String> industries;
+    private List<String> categories;
     private List<String> topics;
     private List<String> festivals;
     private List<Byte> type;
     private Byte applyVersion;
     private Byte status;
     private String orderBy;
-
     private int pageNum;
     private int pageSize;
 
@@ -35,12 +34,12 @@ public class PosterTemplateQueryRequest {
         this.tags = tags;
     }
 
-    public List<String> getIndustries() {
-        return industries;
+    public List<String> getCategories() {
+        return categories;
     }
 
-    public void setIndustries(List<String> industries) {
-        this.industries = industries;
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
     public List<String> getTopics() {

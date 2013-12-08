@@ -1,6 +1,7 @@
 package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
+import com.trilemon.commons.web.Page;
 
 public interface PosterRecommendActivityItemDAO {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +15,8 @@ public interface PosterRecommendActivityItemDAO {
     int updateByPrimaryKeySelective(PosterRecommendActivityItem record);
 
     int updateByPrimaryKey(PosterRecommendActivityItem record);
+
+    int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid);
+
+    Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, int offset, int limit);
 }

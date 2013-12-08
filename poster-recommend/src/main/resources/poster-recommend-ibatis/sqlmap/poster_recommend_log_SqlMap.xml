@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="poster_recommend_activity_log" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
+<sqlMap namespace="poster_recommend_log" >
+  <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="activity_id" property="activityId" jdbcType="BIGINT" />
@@ -18,26 +18,26 @@
     id, user_id, activity_id, template_id, item_num, item_successful_num, item_failed_num, 
     type, status, add_time, upd_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
     select 
-    <include refid="poster_recommend_activity_log.Base_Column_List" />
-    from poster_recommend_activity_log
+    <include refid="poster_recommend_log.Base_Column_List" />
+    from poster_recommend_log
     where id = #id:BIGINT#
   </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
-    delete from poster_recommend_activity_log
+  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
+    delete from poster_recommend_log
     where id = #id:BIGINT#
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
-    insert into poster_recommend_activity_log (id, user_id, activity_id, template_id, item_num, 
+  <insert id="insert" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
+    insert into poster_recommend_log (id, user_id, activity_id, template_id, item_num, 
       item_successful_num, item_failed_num, type, status, 
       add_time, upd_time)
     values (#id:BIGINT#, #userId:BIGINT#, #activityId:BIGINT#, #templateId:BIGINT#, #itemNum:INTEGER#, 
       #itemSuccessfulNum:INTEGER#, #itemFailedNum:INTEGER#, #type:TINYINT#, #status:TINYINT#, 
       #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
-    insert into poster_recommend_activity_log
+  <insert id="insertSelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
+    insert into poster_recommend_log
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
         id
@@ -112,8 +112,8 @@
       )
     </dynamic>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
-    update poster_recommend_activity_log
+  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
+    update poster_recommend_log
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
@@ -148,8 +148,8 @@
     </dynamic>
     where id = #id:BIGINT#
   </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendActivityLog" >
-    update poster_recommend_activity_log
+  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendLog" >
+    update poster_recommend_log
     set user_id = #userId:BIGINT#,
       activity_id = #activityId:BIGINT#,
       template_id = #templateId:BIGINT#,

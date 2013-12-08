@@ -1,8 +1,9 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class PosterRecommendActivityItemDetailPage {
+public class PosterRecommendPublishItemDetailPage {
     private Long id;
 
     private Long userId;
@@ -12,6 +13,8 @@ public class PosterRecommendActivityItemDetailPage {
     private Long itemNumIid;
 
     private String itemTitle;
+
+    private BigDecimal itemPrice;
 
     private String itemPicUrl;
 
@@ -63,6 +66,14 @@ public class PosterRecommendActivityItemDetailPage {
 
     public void setItemTitle(String itemTitle) {
         this.itemTitle = itemTitle == null ? null : itemTitle.trim();
+    }
+
+    public BigDecimal getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(BigDecimal itemPrice) {
+        this.itemPrice = itemPrice;
     }
 
     public String getItemPicUrl() {

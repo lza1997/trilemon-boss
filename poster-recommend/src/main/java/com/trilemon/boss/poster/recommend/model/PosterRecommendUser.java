@@ -1,8 +1,10 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.commons.db.ShardTable;
+
 import java.util.Date;
 
-public class PosterRecommendUser {
+public class PosterRecommendUser extends ShardTable {
     private Long id;
 
     private Long userId;

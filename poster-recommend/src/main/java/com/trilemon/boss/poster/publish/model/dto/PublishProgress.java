@@ -6,7 +6,9 @@ package com.trilemon.boss.poster.publish.model.dto;
 public class PublishProgress {
     private int totalItemNum;
     private int publishedItemNum;
+    private int failedItemNum;
     private float progress;
+    private boolean finished;
 
     public int getTotalItemNum() {
         return totalItemNum;
@@ -30,5 +32,21 @@ public class PublishProgress {
 
     public void setProgress(float progress) {
         this.progress = progress;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public int getFailedItemNum() {
+        return failedItemNum;
+    }
+
+    public void setFailedItemNum(int failedItemNum) {
+        this.failedItemNum = failedItemNum;
     }
 }

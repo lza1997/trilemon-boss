@@ -4,6 +4,8 @@ import com.trilemon.boss.poster.template.dao.PosterTemplateTopicDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplateTopic;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
+import java.util.List;
+
 public class PosterTemplateTopicDAOImpl extends SqlMapClientDaoSupport implements PosterTemplateTopicDAO {
 
     public PosterTemplateTopicDAOImpl() {
@@ -33,12 +35,15 @@ public class PosterTemplateTopicDAOImpl extends SqlMapClientDaoSupport implement
     }
 
     public int updateByPrimaryKeySelective(PosterTemplateTopic record) {
-        int rows = getSqlMapClientTemplate().update("poster_template_topic.updateByPrimaryKeySelective", record);
-        return rows;
+        return getSqlMapClientTemplate().update("poster_template_topic.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(PosterTemplateTopic record) {
-        int rows = getSqlMapClientTemplate().update("poster_template_topic.updateByPrimaryKey", record);
-        return rows;
+        return getSqlMapClientTemplate().update("poster_template_topic.updateByPrimaryKey", record);
+    }
+
+    @Override
+    public List<PosterTemplateTopic> selectAll() {
+        return getSqlMapClientTemplate().queryForList("poster_template_topic.selectAll");
     }
 }

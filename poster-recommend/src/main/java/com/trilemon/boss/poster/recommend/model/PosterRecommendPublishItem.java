@@ -3,7 +3,7 @@ package com.trilemon.boss.poster.recommend.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PosterRecommendActivityItem {
+public class PosterRecommendPublishItem {
     private Long id;
 
     private Long userId;
@@ -18,11 +18,11 @@ public class PosterRecommendActivityItem {
 
     private String itemPicUrl;
 
-    private Byte templateSequenceIndex;
-
-    private String templateCopy;
+    private Byte detailPagePosition;
 
     private Byte status;
+
+    private Date publishTime;
 
     private Date addTime;
 
@@ -84,20 +84,12 @@ public class PosterRecommendActivityItem {
         this.itemPicUrl = itemPicUrl == null ? null : itemPicUrl.trim();
     }
 
-    public Byte getTemplateSequenceIndex() {
-        return templateSequenceIndex;
+    public Byte getDetailPagePosition() {
+        return detailPagePosition;
     }
 
-    public void setTemplateSequenceIndex(Byte templateSequenceIndex) {
-        this.templateSequenceIndex = templateSequenceIndex;
-    }
-
-    public String getTemplateCopy() {
-        return templateCopy;
-    }
-
-    public void setTemplateCopy(String templateCopy) {
-        this.templateCopy = templateCopy == null ? null : templateCopy.trim();
+    public void setDetailPagePosition(Byte detailPagePosition) {
+        this.detailPagePosition = detailPagePosition;
     }
 
     public Byte getStatus() {
@@ -106,6 +98,14 @@ public class PosterRecommendActivityItem {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Date getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
     }
 
     public Date getAddTime() {

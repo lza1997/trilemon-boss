@@ -7,15 +7,21 @@ public class PosterRecommendActivity {
 
     private Long userId;
 
-    private String title;
-
     private Long templateId;
+
+    private String title;
 
     private String color;
 
     private Integer size;
 
+    private Byte detailPagePosition;
+
+    private String publishHtml;
+
     private Byte status;
+
+    private Date publishTime;
 
     private Date addTime;
 
@@ -37,20 +43,20 @@ public class PosterRecommendActivity {
         this.userId = userId;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title == null ? null : title.trim();
-    }
-
     public Long getTemplateId() {
         return templateId;
     }
 
     public void setTemplateId(Long templateId) {
         this.templateId = templateId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     public String getColor() {
@@ -69,12 +75,36 @@ public class PosterRecommendActivity {
         this.size = size;
     }
 
+    public Byte getDetailPagePosition() {
+        return detailPagePosition;
+    }
+
+    public void setDetailPagePosition(Byte detailPagePosition) {
+        this.detailPagePosition = detailPagePosition;
+    }
+
+    public String getPublishHtml() {
+        return publishHtml;
+    }
+
+    public void setPublishHtml(String publishHtml) {
+        this.publishHtml = publishHtml == null ? null : publishHtml.trim();
+    }
+
     public Byte getStatus() {
         return status;
     }
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public Date getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(Date publishTime) {
+        this.publishTime = publishTime;
     }
 
     public Date getAddTime() {

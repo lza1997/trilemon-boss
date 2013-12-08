@@ -2,7 +2,7 @@ package com.trilemon.boss.poster.recommend.model;
 
 import java.util.Date;
 
-public class PosterRecommendActivityLog {
+public class PosterRecommendLog {
     private Long id;
 
     private Long userId;

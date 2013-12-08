@@ -4,6 +4,8 @@ import com.trilemon.boss.poster.template.dao.PosterTemplateCategoryDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplateCategory;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
+import java.util.List;
+
 public class PosterTemplateCategoryDAOImpl extends SqlMapClientDaoSupport implements PosterTemplateCategoryDAO {
 
     public PosterTemplateCategoryDAOImpl() {
@@ -40,5 +42,10 @@ public class PosterTemplateCategoryDAOImpl extends SqlMapClientDaoSupport implem
     public int updateByPrimaryKey(PosterTemplateCategory record) {
         int rows = getSqlMapClientTemplate().update("poster_template_category.updateByPrimaryKey", record);
         return rows;
+    }
+
+    @Override
+    public List<PosterTemplateCategory> selectAll() {
+        return getSqlMapClientTemplate().queryForList("poster_template_category.selectAll");
     }
 }
