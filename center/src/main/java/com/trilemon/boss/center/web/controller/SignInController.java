@@ -59,6 +59,7 @@ public class SignInController {
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     public String signIn(@RequestParam String redirect,
+                         @RequestParam String nick,
                          @RequestParam Long userId,
                          @RequestParam String appKey,
                          @RequestParam String accessToken,
@@ -67,6 +68,7 @@ public class SignInController {
         Subject subject = SecurityUtils.getSubject();
         if (!subject.isAuthenticated()) {
             ShiroTaobaoAuthenticationToken token = new ShiroTaobaoAuthenticationToken();
+            token.setNick(nick);
             token.setUserId(userId);
             token.setAppKey(appKey);
             token.setAccessToken(accessToken);
