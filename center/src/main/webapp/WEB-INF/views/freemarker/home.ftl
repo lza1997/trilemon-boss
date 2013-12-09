@@ -41,13 +41,13 @@
     <script src="${asset}/base/js/angular/highchart.js"></script>
 
     <script src="${asset}/js/common/index.js"></script>
-    <script src="${asset}/js/common/flash.js"></script>
-    <script src="${asset}/js/common/rest.js"></script>
-    <script src="${asset}/js/common/seller-cat-factory.js"></script>
-    <script src="${asset}/js/common/controller/nav.js"></script>
     <script src="${asset}/js/common/http-method-override.js"></script>
+    <script src="${asset}/js/common/controller/nav.js"></script>
+    <script src="${asset}/js/common/service/distribution-factory.js"></script>
+    <script src="${asset}/js/common/service/confirm.js"></script>
+    <script src="${asset}/js/common/service/flash.js"></script>
+    <script src="${asset}/js/common/service/seller-cat-factory.js"></script>
     <script src="${asset}/js/common/filter/distribution-text.js"></script>
-    <script src="${asset}/js/common/distribution-factory.js"></script>
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />

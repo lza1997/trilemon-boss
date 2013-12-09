@@ -26,7 +26,7 @@
 define(function() {
     var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ngResource', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
 
-    app.config(['$routeProvider', 'RestangularProvider', '$httpProvider', 'SeajsLazyModuleProvider', 'RESTProvider', function($routeProvider, RestangularProvider, $httpProvider, SeajsLazyModuleProvider, RESTProvider) {
+    app.config(['$routeProvider', '$httpProvider', 'SeajsLazyModuleProvider', function($routeProvider, $httpProvider, SeajsLazyModuleProvider) {
 
         SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
         var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
@@ -53,19 +53,6 @@ define(function() {
             .when('/inventory', {redirectTo: '/inventory/setting/edit'})
 
             .otherwise({redirectTo: '/shelf'});
-
-
-        RestangularProvider.setMethodOverriders(['put', 'delete']);
-
-        RESTProvider.setURL({
-            ITEM: 'shelf/items',
-            SHELF_SELLERCAT: 'shelf/sellercats',
-            PLAN_SETTING: 'shelf/plan-settings',
-            SHOWCASE_SETTING: 'showcase/settings',
-            SHOWCASE_SELLERCAT: 'showcase/sellercats',
-            SHOWCASE_ITEM: 'showcase/showcase-items',
-            SHOWCASE_SETTING_ITEM: 'showcase/setting-items'
-        });
     }]);
 
     app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
