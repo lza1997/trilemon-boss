@@ -6,6 +6,7 @@ define(function(require, exports, module) {
         controllers: {
             'inventory.editSetting': require('./controller/edit-setting'),
             'inventory.showSetting': require('./controller/show-setting'),
+            'inventory.indexItem': require('./controller/index-item'),
             'inventory.distribution': require('./controller/distribution')
         },
         factories: {

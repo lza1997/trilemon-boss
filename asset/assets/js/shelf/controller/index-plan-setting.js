@@ -20,7 +20,7 @@ define(function(require, exports, module) {
             Confirm.open('确定要删除“' + planSetting.name + '”？').then(function() {
                 planSetting.$remove(function() {
                     $scope.jumpPage($scope.planSettings.currPage).then(function(data) {
-                        if (data.length === 0) {
+                        if (data.length === 0 && $scope.planSettings.currPage > 1) {
                             $scope.jumpPage($scope.planSettings.currPage - 1);
                         }
                     });

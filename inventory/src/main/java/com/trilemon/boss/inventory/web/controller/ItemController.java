@@ -8,10 +8,7 @@ import com.trilemon.boss.inventory.service.InventoryListService;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -49,6 +46,16 @@ public class ItemController {
         });
 
         return inventoryListService.paginationInventoryListItems(56912708L, key, page, 2, statusByteList, banners);
+    }
+
+    /**
+     * 移除
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{itemIid}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long itemIid) {
+        inventoryListService.excludeItem(56912708L, itemIid);
+        inventoryListService.includeItem();
     }
 
 //    /**

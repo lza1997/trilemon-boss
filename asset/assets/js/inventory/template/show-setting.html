@@ -47,8 +47,8 @@
         </div>
     </form>
 </div>
-<div class="tab-content">
-    <form class="form-inline wrap" role="form" ng-submit="search()">
+<div ng-controller="inventory.indexItem">
+    <form class="form-inline wrap" ng-submit="search()">
         <div class="form-group">
             <select class="form-control" ng-model="banner" ng-change="changeBanner()" ng-options="value as text for (value, text) in BANNER">
                 <option value="">全部上架宝贝</option>
@@ -86,7 +86,7 @@
             <td>{{ STATUS[item.status] }}</td>
             <td>
                 <a href="" ng-click="setInclude(item, true)">立即上架</a>
-                <a href="" ng-click="setInclude(item, false)">移除</a>
+                <a href="" ng-click="remove(item)">移除</a>
             </td>
         </tr>
     </table>
