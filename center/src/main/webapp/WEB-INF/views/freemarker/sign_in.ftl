@@ -4,6 +4,9 @@
         <label>redirect：<input type="text" name="redirect" value="${redirect}"/></label>
     </div>
     <div>
+        <label>nick：<input type="text" name="nick" value="gymitat"/></label>
+    </div>
+    <div>
         <label>userId：<input type="text" name="userId" value="56912708"/></label>
     </div>
     <div>

@@ -18,7 +18,7 @@
 
     <bean id="defaultWebSessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <property name="sessionDAO" ref="enterpriseCacheSessionDAO"/>
-        <property name="globalSessionTimeout" value="60000"/>
+        <property name="globalSessionTimeout" value="1800000"/>
         <property name="sessionIdCookie" ref="simpleCookie"/>
     </bean>
 
