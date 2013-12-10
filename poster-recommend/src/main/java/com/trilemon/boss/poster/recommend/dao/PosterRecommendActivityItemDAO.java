@@ -3,6 +3,8 @@ package com.trilemon.boss.poster.recommend.dao;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.commons.web.Page;
 
+import java.util.List;
+
 public interface PosterRecommendActivityItemDAO {
     int deleteByPrimaryKey(Long id);
 
@@ -19,4 +21,10 @@ public interface PosterRecommendActivityItemDAO {
     int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid);
 
     Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, int offset, int limit);
+
+    List<PosterRecommendActivityItem> selectByUserIdAndActivityId(Long userId, Long activityId);
+
+    void deleteByUserIdAndActivityId(Long userId, Long activityId);
+
+    int countByUserIdAndActivityId(Long userId, Long activityId);
 }

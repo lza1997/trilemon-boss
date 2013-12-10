@@ -71,7 +71,7 @@ public interface InventoryListItemMapper {
     void updateByUserIdAndNumIid(InventoryListItem listItem);
 
     InventoryListItem selectByUserIdAndNumIid(@Param("userId") Long userId,
-                                              @Param("numIids") Long numIid);
+                                              @Param("itemNumIid") Long numIid);
 
     List<String> selectBannersBySettingId(Long settingId);
 

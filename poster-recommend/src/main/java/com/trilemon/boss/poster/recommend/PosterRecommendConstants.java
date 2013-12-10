@@ -11,7 +11,7 @@ public interface PosterRecommendConstants {
     //模板自定义文案的 key，原价
     String TEMPLATE_COPY_KEY_ORIGINAL_PRICE = "original_price";
     //活动状态
-    byte ACTIVITY_STATUS_WAITING_PUBLISH = 0;//等待投放
+    byte ACTIVITY_STATUS_DESIGNED = 0;//等待投放
     byte ACTIVITY_STATUS_PUBLISHING = 1;//正在投放
     byte ACTIVITY_STATUS_PUBLISHED = 2;//投放完毕
     byte ACTIVITY_STATUS_PUBLISHED_WITH_ERROR = 3;//投放完毕，但是有错
@@ -32,4 +32,6 @@ public interface PosterRecommendConstants {
     String BANNER_FOR_SHELVED = "for_shelved";
     String BANNER_SOLD_OUT = "sold_out";
     String BANNER_VIOLATION_OFF_SHELF = "violation_off_shelf";
+    //海报推荐类型
+    byte RECOMMEND_TYPE_FESTIVAL = 1;
 }

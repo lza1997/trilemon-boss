@@ -11,8 +11,6 @@ public class PosterRecommendUser extends ShardTable{
 
     private Byte status;
 
-    private Date lastUseTime;
-
     private Date addTime;
 
     private Date updTime;
@@ -39,14 +37,6 @@ public class PosterRecommendUser extends ShardTable{
 
     public void setStatus(Byte status) {
         this.status = status;
-    }
-
-    public Date getLastUseTime() {
-        return lastUseTime;
-    }
-
-    public void setLastUseTime(Date lastUseTime) {
-        this.lastUseTime = lastUseTime;
     }
 
     public Date getAddTime() {

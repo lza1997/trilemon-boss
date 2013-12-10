@@ -9,11 +9,11 @@ public class PosterTemplate {
 
     private String previewPicUrl;
 
-    private String preivewPicHtml;
+    private String previewPicHtml;
 
     private String templateFtl;
 
-    private String templateItemFtl;
+    private String templateSlotFtl;
 
     private Integer slotNum;
 
@@ -69,12 +69,12 @@ public class PosterTemplate {
         this.previewPicUrl = previewPicUrl == null ? null : previewPicUrl.trim();
     }
 
-    public String getPreivewPicHtml() {
-        return preivewPicHtml;
+    public String getPreviewPicHtml() {
+        return previewPicHtml;
     }
 
-    public void setPreivewPicHtml(String preivewPicHtml) {
-        this.preivewPicHtml = preivewPicHtml == null ? null : preivewPicHtml.trim();
+    public void setPreviewPicHtml(String previewPicHtml) {
+        this.previewPicHtml = previewPicHtml == null ? null : previewPicHtml.trim();
     }
 
     public String getTemplateFtl() {
@@ -85,12 +85,12 @@ public class PosterTemplate {
         this.templateFtl = templateFtl == null ? null : templateFtl.trim();
     }
 
-    public String getTemplateItemFtl() {
-        return templateItemFtl;
+    public String getTemplateSlotFtl() {
+        return templateSlotFtl;
     }
 
-    public void setTemplateItemFtl(String templateItemFtl) {
-        this.templateItemFtl = templateItemFtl == null ? null : templateItemFtl.trim();
+    public void setTemplateSlotFtl(String templateSlotFtl) {
+        this.templateSlotFtl = templateSlotFtl == null ? null : templateSlotFtl.trim();
     }
 
     public Integer getSlotNum() {

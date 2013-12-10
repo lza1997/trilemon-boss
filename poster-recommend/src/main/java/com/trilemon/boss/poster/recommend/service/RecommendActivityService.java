@@ -1,6 +1,7 @@
 package com.trilemon.boss.poster.recommend.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
@@ -18,12 +19,21 @@ import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import org.apache.commons.io.output.StringBuilderWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
+import java.util.Map;
 
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 
@@ -47,45 +57,93 @@ public class RecommendActivityService {
     private PosterTemplateClient posterTemplateClient;
 
     /**
-     * 创建活动
+     * 获取活动信息
+     *
+     * @param userId
+     * @param activityId
+     * @return
+     */
+    public PosterRecommendActivity getActivity(Long userId, Long activityId) {
+        PosterRecommendActivity activity= posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
+        int itemNum=posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId,activityId);
+        activity.setItemNum(itemNum);
+        return activity;
+    }
+
+    /**
+     * 创建活动（未投放）
      *
      * @param userId
      * @param activity
      */
+    @Transactional
     public void createActivity(Long userId, PosterRecommendActivity activity) {
         createUser(userId);
 
         activity.setUserId(userId);
         activity.setAddTime(appService.getLocalSystemTime().toDate());
         activity.setStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
+
+        //生成最终模板
+        PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
+        String templateFtl = posterTemplate.getTemplateFtl();
+        List<PosterRecommendActivityItem> activityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId
+                (userId, activity.getId());
+
+        String publishHtml = generateActivityPublishHtml(templateFtl, activityItems);
+        activity.setPublishHtml(publishHtml);
+
         Long id = posterRecommendActivityDAO.insertSelective(userId, activity);
-        logger.info("add activityId[{}] userId[{}].", id, userId);
+        logger.info("add activity, activityId[{}] userId[{}].", id, userId);
     }
 
+    /**
+     * 生成活动代码
+     *
+     * @param templateFtl
+     * @param activityItems
+     * @return
+     */
+    private String generateActivityPublishHtml(String templateFtl, List<PosterRecommendActivityItem> activityItems) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    /**
+     * 创建用户
+     *
+     * @param userId
+     */
     public void createUser(Long userId) {
         PosterRecommendUser posterRecommendUser = posterRecommendUserDAO.selectByUserId(userId);
         if (null != posterRecommendUser) {
             posterRecommendUser.setAddTime(appService.getLocalSystemTime().toDate());
-            posterRecommendUser.setLastUseTime(appService.getLocalSystemTime().toDate());
             posterRecommendUser.setStatus(USER_STATUS_NORMAL);
             posterRecommendUser.setUserId(userId);
             posterRecommendUserDAO.insertSelective(posterRecommendUser);
-            logger.info("add userId[{}].", userId);
+            logger.info("add user, userId[{}].", userId);
         } else {
-            logger.info("add userId[{}] exist, skip.", userId);
+            logger.info("add user, userId[{}] exist, skip.", userId);
         }
     }
 
-    public int updateActivityDetailPagePosition(Long userId, Long activityId, Byte detailPagePosition) {
+    /**
+     * 更新模板位置
+     *
+     * @param userId
+     * @param activityId
+     * @param detailPagePosition
+     * @return 是否更新成功
+     */
+    public boolean updateActivityDetailPagePosition(Long userId, Long activityId, Byte detailPagePosition) {
         PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
         if (null != posterRecommendActivity) {
             PosterRecommendActivity newPosterRecommendActivity = new PosterRecommendActivity();
             newPosterRecommendActivity.setId(activityId);
             newPosterRecommendActivity.setUserId(userId);
             newPosterRecommendActivity.setDetailPagePosition(detailPagePosition);
-            return posterRecommendActivityDAO.updateByUserIdAndActivityId(newPosterRecommendActivity);
+            return posterRecommendActivityDAO.updateByUserIdAndActivityId(newPosterRecommendActivity) == 1;
         } else {
-            return 0;
+            return false;
         }
     }
 
@@ -94,9 +152,12 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
+     * @return
      */
-    public int deleteActivity(Long userId, Long activityId) {
-        return posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
+    @Transactional
+    public void deleteActivity(Long userId, Long activityId) {
+        posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
+        posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
     }
 
     /**
@@ -104,7 +165,7 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
-     * @return
+     * @return 没有则返回空字符串
      */
     public String getActivityPublishHtml(Long userId, Long activityId) {
         PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
@@ -112,18 +173,35 @@ public class RecommendActivityService {
     }
 
     /**
-     * 添加宝贝到活动
+     * 添加宝贝到活动模板
      *
      * @param userId
      * @param activityId
      * @param posterRecommendActivityItem
      */
     public String addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
-            posterRecommendActivityItem) {
+            posterRecommendActivityItem) throws IOException {
         PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        //生成 投放的 html 代码
+        //生成投放的 html 代码
         PosterTemplate template = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
-        String itemTemplateFtl = template.getTemplateItemFtl();
+
+        StringTemplateLoader stringLoader = new StringTemplateLoader();
+        String firstTemplate = "firstTemplate";
+        stringLoader.putTemplate(firstTemplate, template.getTemplateSlotFtl());
+        Configuration cfg = new Configuration();
+        cfg.setTemplateLoader(stringLoader);
+        Template ftlTemplate = cfg.getTemplate(firstTemplate);
+        Writer out = new StringBuilderWriter();
+        Map<String, Object> maps = Maps.newHashMap();
+        try {
+            ftlTemplate.process(maps, out);
+            String result = out.toString();
+        } catch (TemplateException e) {
+            logger.error("", e);
+        } finally {
+            out.close();
+        }
+
         //String itemPreviewHtml=PosterRecommendUtils.posterRecommendActivityItem2Item(posterRecommendActivityItem);
         posterRecommendActivityItem.setUserId(userId);
         posterRecommendActivityItem.setActivityId(activityId);
@@ -134,7 +212,7 @@ public class RecommendActivityService {
     }
 
     /**
-     * 移除宝贝到活动
+     * 从活动模板中移除宝贝
      *
      * @param userId
      * @param activityId
@@ -145,7 +223,7 @@ public class RecommendActivityService {
     }
 
     /**
-     * 已加入活动宝贝
+     * 查询已加入活动宝贝
      *
      * @param userId
      * @param activityId
@@ -153,8 +231,7 @@ public class RecommendActivityService {
      * @param pageSize
      * @return
      */
-    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId, Long activityId, int pageNum,
-                                                                        int pageSize) {
+    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId, Long activityId, int pageNum, int pageSize) {
         return posterRecommendActivityItemDAO.paginateByUserIdAndActivityId(userId, activityId, (pageNum - 1) * pageSize, pageSize);
     }
 

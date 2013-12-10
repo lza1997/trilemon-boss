@@ -4,28 +4,19 @@ import java.util.Date;
 
 public class PosterRecommendActivity {
     private Long id;
-
     private Long userId;
-
     private Long templateId;
-
     private String title;
-
     private String color;
-
     private Integer size;
-
     private Byte detailPagePosition;
-
     private String publishHtml;
-
     private Byte status;
-
     private Date publishTime;
-
     private Date addTime;
-
     private Date updTime;
+    //数量
+    private int itemNum;
 
     public Long getId() {
         return id;
@@ -121,5 +112,13 @@ public class PosterRecommendActivity {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public int getItemNum() {
+        return itemNum;
+    }
+
+    public void setItemNum(int itemNum) {
+        this.itemNum = itemNum;
     }
 }

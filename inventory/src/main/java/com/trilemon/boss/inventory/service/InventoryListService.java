@@ -184,6 +184,10 @@ public class InventoryListService {
         }
     }
 
+    public InventoryListItem getInventoryListItem(long userId,long itemNumIid){
+        return inventoryListItemMapper.selectByUserIdAndNumIid(userId,itemNumIid);
+
+    }
     /**
      * 立刻上架
      *

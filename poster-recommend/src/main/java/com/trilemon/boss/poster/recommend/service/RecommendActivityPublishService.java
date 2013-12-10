@@ -95,8 +95,7 @@ public class RecommendActivityPublishService {
         posterRecommendActivityDAO.updateByUserIdAndActivityId(newActivity);
 
         //投放单个宝贝
-        List<PosterRecommendPublishItem> publishItems = posterRecommendPublishItemDAO.selectByUserIdAndActivityId
-                (userId, activityId);
+        List<PosterRecommendPublishItem> publishItems = posterRecommendPublishItemDAO.selectByUserIdAndActivityId(userId, activityId);
         List<Exception> exceptions = Lists.newArrayList();
         for (PosterRecommendPublishItem publishItem : publishItems) {
             try {
@@ -121,10 +120,9 @@ public class RecommendActivityPublishService {
     }
 
     @Transactional
-    public void publish2Item(Long userId, Long activityId, Long publishItemNumIid, String publishHtml) throws
-            TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
-        PosterRecommendPublishItem publishItem = posterRecommendPublishItemDAO.selectByUserIdAndActivityIdAndItemNumIid
-                (userId, activityId, publishItemNumIid);
+    public void publish2Item(Long userId, Long activityId, Long publishItemNumIid, String publishHtml)
+            throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        PosterRecommendPublishItem publishItem = posterRecommendPublishItemDAO.selectByUserIdAndActivityIdAndItemNumIid(userId, activityId, publishItemNumIid);
         if (null == publishItem) {
             return;
         }

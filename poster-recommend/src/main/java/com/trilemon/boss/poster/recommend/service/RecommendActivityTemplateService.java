@@ -1,5 +1,6 @@
 package com.trilemon.boss.poster.recommend.service;
 
+import com.trilemon.boss.poster.recommend.model.dto.PosterRecommendTemplate;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.client.request.PosterTemplateQueryRequest;
 import com.trilemon.boss.poster.template.client.response.PosterTemplateQueryResponse;
@@ -19,12 +20,17 @@ import java.util.List;
  * @author kevin
  */
 public class RecommendActivityTemplateService {
+    @Autowired
+    private PosterTemplateCategoryDAO posterTemplateFeDAO;
+    @Autowired
     private PosterTemplateCategoryDAO posterTemplateCategoryDAO;
+    @Autowired
     private PosterTemplateTopicDAO posterTemplateTopicDAO;
-    private List<PosterTemplateCategory> posterTemplateCategories;
-    private List<PosterTemplateTopic> posterTemplateTopics;
     @Autowired
     private PosterTemplateClient posterTemplateClient;
+
+    private List<PosterTemplateCategory> posterTemplateCategories;
+    private List<PosterTemplateTopic> posterTemplateTopics;
 
     /**
      * 获取推荐模板
@@ -32,7 +38,8 @@ public class RecommendActivityTemplateService {
      * @param userId
      * @return
      */
-    public PosterTemplate getRecommendPosterTemplate(Long userId) {
+    public List<PosterRecommendTemplate> getRecommendPosterTemplate(Long userId) {
+        //查询一周内的节日模板
         return null;
     }
 
@@ -86,7 +93,7 @@ public class RecommendActivityTemplateService {
     }
 
     @Scheduled(fixedRate = 15 * 60 * 1000)
-    private void refreshTemplateTopics() {
+    public void refreshTemplateTopics() {
         posterTemplateTopics = posterTemplateTopicDAO.selectAll();
     }
 
