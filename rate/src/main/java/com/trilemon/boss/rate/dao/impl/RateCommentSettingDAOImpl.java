@@ -1,6 +1,7 @@
 package com.trilemon.boss.rate.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.trilemon.boss.rate.dao.RateCommentSettingDAO;
 import com.trilemon.boss.rate.model.RateCommentSetting;
@@ -60,5 +61,14 @@ public class RateCommentSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport
         _key.setUserId(userId);
         _key.setId(rateCommentSettingId);
         return (RateCommentSetting) getSqlMapClientTemplate().queryForObject("rate_comment_setting.selectByPrimaryKeyAndUserId", _key);
+    }
+
+    @Override
+    public List<RateCommentSetting> selectByUserIdAndStatus(Long userId, ImmutableList<Byte> statusList) {
+        Map<String, ?> parameterObject = ImmutableMap.of(
+                "userId", userId,
+                "statusList", statusList
+        );
+        return getSqlMapClientTemplate().queryForList("rate_comment_setting.selectByUserIdAndStatus", parameterObject);
     }
 }
