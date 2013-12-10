@@ -3,6 +3,9 @@ package com.trilemon.boss.inventory.web.controller;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.trilemon.boss.infra.base.service.SessionService;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
+import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.inventory.InventoryConstants;
 import com.trilemon.boss.inventory.model.InventoryListItem;
 import com.trilemon.boss.inventory.service.InventoryListService;
@@ -25,10 +28,9 @@ import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 @RequestMapping("/items")
 public class ItemController {
     @Autowired
-    private InventoryListService inventoryListService;
-    @Autowired
     private SessionService sessionService;
-
+    @Autowired
+    private InventoryListService inventoryListService;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
@@ -48,8 +50,7 @@ public class ItemController {
             }
         });
 
-        return inventoryListService.paginationInventoryListItems(sessionService.getUserId(), key, page, 2, statusByteList,
-                banners);
+        return inventoryListService.paginationInventoryListItems(sessionService.getUserId(), key, page, 2, statusByteList, banners);
     }
 
     /**
@@ -58,31 +59,16 @@ public class ItemController {
     @ResponseBody
     @RequestMapping(value = "/{itemIid}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long itemIid) {
-        inventoryListService.excludeItem(56912708L, itemIid);
-        //inventoryListService.includeItem();
+        inventoryListService.excludeItem(sessionService.getUserId(), itemIid);
     }
 
-//    /**
-//     * 设置固定推荐或取消
-//     */
-//    @RequestMapping(value = "/include", method = RequestMethod.PUT)
-//    @ResponseBody
-//    public String includeItem(@RequestBody IncludeJSONParam jsonParam) throws ShowcaseException, TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-//        for (Long numIid : jsonParam.numIids) {
-//            if (jsonParam.include) {
-//                settingService.addIncludeItem(56912708L, numIid);
-//            } else {
-//                settingService.deleteIncludeItem(56912708L, numIid);
-//            }
-//        }
-//        return "";
-//    }
-
     /**
-     * 辅助，用于接收 JSON Request
+     * 立刻上架
      */
-    public static class IncludeJSONParam {
-        public Long[] numIids;
-        public boolean include;
+    @ResponseBody
+    @RequestMapping(value = "/{itemIid}/list", method = RequestMethod.POST)
+    public InventoryListItem list(@PathVariable Long itemIid) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+        inventoryListService.list(sessionService.getUserId(), itemIid);
+        return inventoryListService.getInventoryListItem(sessionService.getUserId(), itemIid);
     }
 }

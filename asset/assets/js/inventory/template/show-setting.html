@@ -4,7 +4,7 @@
         <button class="btn btn-primary" ng-click="setting.$save()">立刻创建</button>
     </div>
 </div>
-<div class="well well-sm clearfix" ng-show="setting.$resolved">
+<div class="well well-sm clearfix" ng-show="setting.$resolved && !setting.empty">
     <form class="form-horizontal">
         <div class="form-group" ng-if="setting.paused">
             <div class="col-md-offset-2 col-md-4">
@@ -47,7 +47,7 @@
         </div>
     </form>
 </div>
-<div ng-controller="inventory.indexItem">
+<div ng-controller="inventory.indexItem" ng-show="setting.$resolved && !setting.empty">
     <form class="form-inline wrap" ng-submit="search()">
         <div class="form-group">
             <select class="form-control" ng-model="banner" ng-change="changeBanner()" ng-options="value as text for (value, text) in BANNER">
@@ -82,11 +82,13 @@
         <tr ng-repeat="item in items" ng-class="{success:item.include}">
             <td><img ng-src="{{item.itemPicUrl}}_sum.jpg" ng-if="item.itemPicUrl"/></td>
             <td>{{ item.itemTitle }}</td>
-            <td class="text-right">{{ item.price }}</td>
+            <td class="text-right">{{ item.itemNum }}</td>
             <td>{{ STATUS[item.status] }}</td>
             <td>
-                <a href="" ng-click="setInclude(item, true)">立即上架</a>
-                <a href="" ng-click="remove(item)">移除</a>
+                <div ng-if="item.status === 0">
+                    <a href="" ng-click="list(item)">立即上架</a>
+                    <a href="" ng-click="remove(item)">移除</a>
+                </div>
             </td>
         </tr>
     </table>
