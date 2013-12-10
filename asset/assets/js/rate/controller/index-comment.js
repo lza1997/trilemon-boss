@@ -53,7 +53,7 @@ define(function(require, exports, module) {
     }];
 
     IndexController.title = '评价内容 - 自动评价';
-    IndexController.template = 'rate/indexComment';
+    IndexController.template = 'rate/setting';
     IndexController.navClass = 'rateSetting';
 
     module.exports = IndexController;

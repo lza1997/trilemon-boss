@@ -1,12 +1,4 @@
-<div class="nav nav-tabs" style="margin-bottom: 20px">
-    <li ng-class="{active: tab == 'comment'}">
-        <a href="/rate/comments">评价内容</a>
-    </li>
-    <li ng-class="{active: tab == 'mai'}">
-        <a href="/rate/xx">买家过滤</a>
-    </li>
-</div>
-<div class="tab-content">
+<div class="tab-content" ng-if="tab === 'comment'">
     <div class="row setting-item" ng-repeat-start="setting in settings">
         <div class="col-md-4" ng-if="!setting.isEdit">
             {{ setting.content }}

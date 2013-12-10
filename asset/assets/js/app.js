@@ -54,6 +54,7 @@ define(function() {
             .when('/inventory', {redirectTo: '/inventory/setting/edit'})
 
             .when('/rate/comments', rate.routeFor('rate.indexComment'))
+            .when('/rate/filter', rate.routeFor('rate.filter'))
             .when('/rate', {redirectTo: '/rate/comments'})
 
             .otherwise({redirectTo: '/shelf'});
