@@ -1,0 +1,44 @@
+<div class="nav nav-tabs" style="margin-bottom: 20px">
+    <li ng-class="{active: tab == 'comment'}">
+        <a href="/rate/comments">评价内容</a>
+    </li>
+    <li ng-class="{active: tab == 'mai'}">
+        <a href="/rate/xx">买家过滤</a>
+    </li>
+</div>
+<div class="tab-content">
+    <div class="row setting-item" ng-repeat-start="setting in settings">
+        <div class="col-md-4" ng-if="!setting.isEdit">
+            {{ setting.content }}
+        </div>
+        <div class="col-md-5" ng-if="!setting.isEdit">
+            <div class="btn-group">
+                <button class="btn btn-default" ng-click="edit(setting)">编辑</button>
+                <button class="btn btn-default" ng-click="remove(setting)">删除</button>
+            </div>
+        </div>
+
+    </div>
+    <form novalidate class="row setting-item" ng-repeat-end ng-if="setting.isEdit">
+        <div class="col-md-4" >
+            <textarea class="form-control" required rows="3" ng-model="setting.content"></textarea>
+            <label class="error"><i class="icon-exclamation-sign"></i> 评价内容不能为空！</label>
+        </div>
+        <div class="col-md-5">
+            <button type="submit" class="btn btn-primary" ng-click="update(setting)">保存</button>
+            <a href="" ng-click="cancelEdit(setting)">取消</a>
+        </div>
+    </form>
+    <div class="row">
+        <form novalidate name="addForm">
+            <div class="col-md-4">
+                <textarea class="form-control" rows="3" name="content" required ng-model="newSetting.content"
+                          placeholder="自动评价的内容..."></textarea>
+                <label class="error"><i class="icon-exclamation-sign"></i> 评价内容不能为空！</label>
+            </div>
+            <div class="col-md-5">
+                <button type="submit" class="btn btn-primary btn-lg" ng-click="create()">添加</button>
+            </div>
+        </form>
+    </div>
+</div>

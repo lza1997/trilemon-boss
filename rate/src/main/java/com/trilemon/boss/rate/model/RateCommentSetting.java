@@ -1,8 +1,11 @@
 package com.trilemon.boss.rate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RateCommentSetting implements Serializable {
     private Long id;
 

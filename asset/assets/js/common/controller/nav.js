@@ -27,6 +27,15 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
                 {name: '修改计划', url: '/inventory/setting/edit', navClass: 'inventoryEdit'},
                 {name: '计划详情', url: '/inventory/setting', navClass: 'inventoryShow'}
             ]
+        },
+        {
+            name: '自动评价',
+            url: '/rate',
+            children: [
+                {name: '评价设置', url: '/rate/comments', navClass: 'rateSetting'},
+                {name: '中差评', url: '/rate/sb', navClass: 'rate'},
+                {name: '统计', url: '/rate/sx', navClass: 'rate'}
+            ]
         }
     ];
 
