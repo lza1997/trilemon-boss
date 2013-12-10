@@ -2,6 +2,7 @@ package com.trilemon.boss.inventory.web.controller;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.inventory.InventoryConstants;
 import com.trilemon.boss.inventory.model.InventoryListItem;
 import com.trilemon.boss.inventory.service.InventoryListService;
@@ -25,6 +26,8 @@ import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 public class ItemController {
     @Autowired
     private InventoryListService inventoryListService;
+    @Autowired
+    private SessionService sessionService;
 
 
     @ResponseBody
@@ -45,7 +48,8 @@ public class ItemController {
             }
         });
 
-        return inventoryListService.paginationInventoryListItems(56912708L, key, page, 2, statusByteList, banners);
+        return inventoryListService.paginationInventoryListItems(sessionService.getUserId(), key, page, 2, statusByteList,
+                banners);
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.List;
  * @author kevin
  */
 public interface InventoryConstants {
-    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "delist_time", "title", "pic_url", "seller_cids");
+    List<String> ITEM_FIELDS = ImmutableList.of("num_iid", "delist_time", "title", "pic_url", "seller_cids","num");
     //banner type
     String BANNER_REGULAR_SHELVED = "regular_shelved";
     String BANNER_NEVER_ON_SHELF = "never_on_shelf";
