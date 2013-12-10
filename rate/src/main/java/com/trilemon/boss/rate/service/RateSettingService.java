@@ -115,13 +115,13 @@ public class RateSettingService {
      * @param userId
      * @param comment
      */
-    public void addRateCommentSetting(Long userId, String comment) {
+    public long addRateCommentSetting(Long userId, String comment) {
         RateCommentSetting rateCommentSetting = new RateCommentSetting();
         rateCommentSetting.setUserId(userId);
         rateCommentSetting.setAddTime(appService.getLocalSystemTime().toDate());
         rateCommentSetting.setContent(comment);
         rateCommentSetting.setStatus(RATE_COMMENT_SETTING_STATUS_VALID);
-        rateCommentSettingDAO.insertSelective(rateCommentSetting);
+       return rateCommentSettingDAO.insertSelective(rateCommentSetting);
     }
 
     /**

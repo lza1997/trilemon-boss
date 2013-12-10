@@ -63,12 +63,11 @@ public class RateTestController {
 
     @ResponseBody
     @RequestMapping(value = "/addRateCommentSetting", method = RequestMethod.GET)
-    public String addRateCommentSetting(@RequestParam Long userId, @RequestParam String comment) throws
+    public long addRateCommentSetting(@RequestParam Long userId, @RequestParam String comment) throws
             TaobaoEnhancedApiException,
             TaobaoSessionExpiredException,
             TaobaoAccessControlException, RateSyncException {
-        rateSettingService.addRateCommentSetting(userId, comment);
-        return "success";
+        return rateSettingService.addRateCommentSetting(userId, comment);
     }
 
     @ResponseBody

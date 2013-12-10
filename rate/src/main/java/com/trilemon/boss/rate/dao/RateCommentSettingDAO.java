@@ -10,7 +10,7 @@ public interface RateCommentSettingDAO {
 
     void insert(RateCommentSetting record);
 
-    void insertSelective(RateCommentSetting record);
+    long insertSelective(RateCommentSetting record);
 
     RateCommentSetting selectByPrimaryKey(Long id);
 

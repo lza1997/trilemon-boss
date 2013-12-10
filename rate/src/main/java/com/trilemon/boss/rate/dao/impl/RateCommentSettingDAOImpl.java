@@ -25,8 +25,8 @@ public class RateCommentSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport
     }
 
     @Override
-    public void insertSelective(RateCommentSetting record) {
-        getSqlMapClientTemplate().insert("rate_comment_setting.insertSelective", record);
+    public long insertSelective(RateCommentSetting record) {
+        return (Long) getSqlMapClientTemplate().insert("rate_comment_setting.insertSelective", record);
     }
 
     @Override

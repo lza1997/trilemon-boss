@@ -50,6 +50,8 @@
         <property name="casUrl" value="${cas_url}"/>
     </bean>
 
+    <bean id="sessionService" class="com.trilemon.boss.infra.base.service.SessionService">
+    </bean>
 
     <!-- local development环境 -->
     <beans profile="development">
