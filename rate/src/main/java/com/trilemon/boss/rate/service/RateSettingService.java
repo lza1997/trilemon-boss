@@ -125,6 +125,14 @@ public class RateSettingService {
     }
 
     /**
+     * 添加评论设置
+     *
+     */
+    public void deleteRateCommentSetting(Long userId, Long rateCommentSettingId) {
+         rateCommentSettingDAO.deleteByUserIdAndPrimaryKey(userId,rateCommentSettingId);
+    }
+
+    /**
      * 获取评论设置
      *
      * @param userId

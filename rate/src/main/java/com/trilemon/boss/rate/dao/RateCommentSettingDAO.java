@@ -23,4 +23,6 @@ public interface RateCommentSettingDAO {
     RateCommentSetting selectByPrimaryKeyAndUserId(Long rateCommentSettingId, Long userId);
 
     List<RateCommentSetting> selectByUserIdAndStatus(Long userId, ImmutableList<Byte> status);
+
+    int deleteByUserIdAndPrimaryKey(Long userId, Long rateCommentSettingId);
 }

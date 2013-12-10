@@ -71,4 +71,12 @@ public class RateCommentSettingDAOImpl extends MysdalCobarSqlMapClientDaoSupport
         );
         return getSqlMapClientTemplate().queryForList("rate_comment_setting.selectByUserIdAndStatus", parameterObject);
     }
+
+    @Override
+    public int deleteByUserIdAndPrimaryKey(Long userId, Long rateCommentSettingId) {
+        RateCommentSetting _key = new RateCommentSetting();
+        _key.setUserId(userId);
+        _key.setId(rateCommentSettingId);
+        return getSqlMapClientTemplate().delete("rate_comment_setting.deleteByUserIdAndPrimaryKey", _key);
+    }
 }

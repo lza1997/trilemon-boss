@@ -135,4 +135,8 @@
             `status`=#statusList[]#
         </iterate>
     </select>
+    <delete id="deleteByUserIdAndPrimaryKey" parameterClass="com.trilemon.boss.rate.model.RateCommentSetting">
+        DELETE FROM rate_comment_setting
+        WHERE id = #id:BIGINT# and user_id=#userId:BIGINT#
+    </delete>
 </sqlMap>
