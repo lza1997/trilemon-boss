@@ -121,4 +121,14 @@
           `status`=#statusList[]#
         </iterate>
   </select>
+    <select id="selectByUserIdAndStatus"  resultMap="BaseResultMap"
+            parameterClass="map" >
+        select
+        <include refid="Base_Column_List" />
+        from rate_comment_setting
+        where user_id=#userId:BIGINT#
+        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+            `status`=#statusList[]#
+        </iterate>
+    </select>
 </sqlMap>

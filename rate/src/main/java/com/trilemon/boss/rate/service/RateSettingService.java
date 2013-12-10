@@ -180,6 +180,21 @@ public class RateSettingService {
     }
 
     /**
+     * 获取评论的内容
+     */
+
+    public List<RateCommentSetting> getRateCommentSettings(Long userId) {
+        List<RateCommentSetting> rateCommentSettings = rateCommentSettingDAO.selectByUserIdAndStatus(userId,
+                ImmutableList.of(RATE_COMMENT_SETTING_STATUS_VALID));
+
+        if (CollectionUtils.isEmpty(rateCommentSettings)) {
+            return Lists.newArrayList();
+        } else {
+            return rateCommentSettings;
+        }
+    }
+
+    /**
      * 查询黑名单买家
      *
      * @param userId
