@@ -72,4 +72,8 @@ public interface InventoryListItemMapper {
 
     InventoryListItem selectByUserIdAndNumIid(@Param("userId") Long userId,
                                               @Param("numIids") Long numIid);
+
+    List<String> selectBannersBySettingId(Long settingId);
+
+    int deleteBySettingIdAndBanners(@Param("settingId")Long settingId,@Param("banners")List<String> banners);
 }

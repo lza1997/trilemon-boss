@@ -4,37 +4,23 @@ import com.trilemon.boss.center.model.PlanDistribution;
 
 import java.util.Date;
 
-public class InventoryListItem  implements PlanDistribution{
+public class InventoryListItem implements PlanDistribution {
     private Long id;
-
     private Long inventoryListSettingId;
-
     private Long userId;
-
     private Long itemNumIid;
-
     private String itemTitle;
-
     private String itemTitlePinyin;
-
     private String itemPicUrl;
-
+    private int itemNum;
     private Date planAdjustDay;
-
     private Date planAdjustStartTime;
-
     private Date planAdjustEndTime;
-
     private String banner;
-
     private Byte status;
-
     private String failedCause;
-
     private Date adjustTime;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {
@@ -139,6 +125,14 @@ public class InventoryListItem  implements PlanDistribution{
 
     public void setFailedCause(String failedCause) {
         this.failedCause = failedCause == null ? null : failedCause.trim();
+    }
+
+    public int getItemNum() {
+        return itemNum;
+    }
+
+    public void setItemNum(int itemNum) {
+        this.itemNum = itemNum;
     }
 
     public Date getAdjustTime() {

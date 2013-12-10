@@ -56,7 +56,7 @@ public class SettingController {
      */
     @ResponseBody
     @RequestMapping(method = RequestMethod.PUT)
-    public InventoryListSetting update(@RequestBody InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException {
+    public InventoryListSetting update(@RequestBody InventoryListSetting setting) throws TaobaoSessionExpiredException, TaobaoEnhancedApiException, TaobaoAccessControlException, InventoryException {
         inventoryListService.updateIncludeBanners(sessionService.getUserId(), COMMA_SPLITTER.splitToList(setting
                 .getIncludeBanners()));
         return inventoryListService.getSetting(sessionService.getUserId());
@@ -96,7 +96,7 @@ public class SettingController {
      */
     @ResponseBody
     @RequestMapping(value = "/distribution", method = RequestMethod.PUT)
-    public void updateDistribution(@RequestBody Map<String, Map<String, Boolean>> distribution) {
+    public void updateDistribution(@RequestBody Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException, TaobaoEnhancedApiException {
         inventoryListService.updateDistribution(sessionService.getUserId(), distribution);
     }
 

@@ -133,4 +133,14 @@ public class InventoryUtils {
         }
         return firstAdjustDay;
     }
+
+    public static List<Long> getNumIids(List<InventoryListItem> items) {
+        return Lists.transform(items, new Function<InventoryListItem, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable InventoryListItem input) {
+                return input.getItemNumIid();
+            }
+        });
+    }
 }

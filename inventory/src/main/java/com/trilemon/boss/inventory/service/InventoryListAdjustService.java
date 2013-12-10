@@ -95,6 +95,12 @@ public class InventoryListAdjustService {
                 }
             }
         }
+        //删除不需要的banner 类型
+        List<String> currentBanners = inventoryListItemMapper.selectBannersBySettingId(setting.getId());
+        List<String> deleteBanners=Lists.newArrayList(currentBanners);
+        deleteBanners.removeAll(banners);
+
+        inventoryListItemMapper.deleteBySettingIdAndBanners(setting.getId(),deleteBanners);
 
         if (CollectionUtils.isEmpty(inventoryItems)) {
             logger.info("inventory item is empty, userId[{}]", userId);

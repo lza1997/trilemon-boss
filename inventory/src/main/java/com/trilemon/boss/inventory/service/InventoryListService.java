@@ -71,7 +71,7 @@ public class InventoryListService {
             setting.setIncludeBanners(COMMA_JOINER.join(banners));
             setting.setAddTime(appService.getLocalSystemTime().toDate());
             inventoryListSettingMapper.insertSelective(setting);
-            adjustService.createPlan(userId,setting);
+            adjustService.createPlan(userId, setting);
         }
     }
 
@@ -112,8 +112,8 @@ public class InventoryListService {
      * @return
      */
     public InventoryListSetting getSetting(Long userId) {
-        InventoryListSetting setting =  inventoryListSettingMapper.selectByUserId(userId);
-        if(setting==null){
+        InventoryListSetting setting = inventoryListSettingMapper.selectByUserId(userId);
+        if (setting == null) {
             setting = new InventoryListSetting();
             setting.setStatus(InventoryConstants.SETTING_STATUS_EMPTY);
         }
@@ -126,11 +126,12 @@ public class InventoryListService {
      * @param userId
      * @param distribution
      */
-    public void updateDistribution(Long userId, Map<String, Map<String, Boolean>> distribution) {
+    public void updateDistribution(Long userId, Map<String, Map<String, Boolean>> distribution) throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException, TaobaoEnhancedApiException {
         InventoryListSetting inventoryListSetting = new InventoryListSetting();
         inventoryListSetting.setUserId(userId);
         inventoryListSetting.setDistribution(JsonMapper.nonEmptyMapper().toJson(distribution));
         inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
+        adjustService.update(userId);
     }
 
     /**
@@ -139,11 +140,12 @@ public class InventoryListService {
      * @param userId
      * @param banners
      */
-    public void updateIncludeBanners(Long userId, List<String> banners) {
+    public void updateIncludeBanners(Long userId, List<String> banners) throws TaobaoSessionExpiredException, TaobaoAccessControlException, InventoryException, TaobaoEnhancedApiException {
         InventoryListSetting inventoryListSetting = new InventoryListSetting();
         inventoryListSetting.setUserId(userId);
         inventoryListSetting.setIncludeBanners(COMMA_JOINER.join(banners));
         inventoryListSettingMapper.updateByUserIdSelective(inventoryListSetting);
+        adjustService.update(userId);
     }
 
     /**
@@ -157,7 +159,7 @@ public class InventoryListService {
      * @param banners
      * @return
      */
-    public Page<InventoryListItem> paginationInventoryListItems(long userId,
+    public Page<InventoryListItem> paginationInventoryListItems(final long userId,
                                                                 String query,
                                                                 int pageNum,
                                                                 int pageSize,

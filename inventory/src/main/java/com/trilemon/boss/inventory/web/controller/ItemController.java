@@ -55,7 +55,7 @@ public class ItemController {
     @RequestMapping(value = "/{itemIid}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long itemIid) {
         inventoryListService.excludeItem(56912708L, itemIid);
-        inventoryListService.includeItem();
+        //inventoryListService.includeItem();
     }
 
 //    /**

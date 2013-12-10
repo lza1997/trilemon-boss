@@ -4,7 +4,7 @@ import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
 
-public class PosterRecommendUser extends ShardTable {
+public class PosterRecommendUser extends ShardTable{
     private Long id;
 
     private Long userId;

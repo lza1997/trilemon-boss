@@ -53,4 +53,22 @@ public class PosterRecommendUtils {
             }
         });
     }
+
+    public static Item posterRecommendActivityItem2Item(PosterRecommendActivityItem posterRecommendActivityItem) {
+        Item item = new Item();
+        item.setNumIid(posterRecommendActivityItem.getItemNumIid());
+        item.setTitle(posterRecommendActivityItem.getItemTitle());
+        item.setPrice(posterRecommendActivityItem.getItemPrice().toString());
+        item.setPicUrl(posterRecommendActivityItem.getItemPicUrl());
+        return item;
+    }
+
+    public static Item posterRecommendPublishItem2Item(PosterRecommendPublishItem posterRecommendPublishItem) {
+        Item item = new Item();
+        item.setNumIid(posterRecommendPublishItem.getItemNumIid());
+        item.setTitle(posterRecommendPublishItem.getItemTitle());
+        item.setPrice(posterRecommendPublishItem.getItemPrice().toString());
+        item.setPicUrl(posterRecommendPublishItem.getItemPicUrl());
+        return item;
+    }
 }

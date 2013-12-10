@@ -10,6 +10,8 @@ public class PosterRecommendActivityItem {
 
     private Long activityId;
 
+    private Long templateId;
+
     private Long itemNumIid;
 
     private String itemTitle;
@@ -19,8 +21,6 @@ public class PosterRecommendActivityItem {
     private String itemPicUrl;
 
     private Byte templateSequenceIndex;
-
-    private String templateCopy;
 
     private Byte status;
 
@@ -50,6 +50,14 @@ public class PosterRecommendActivityItem {
 
     public void setActivityId(Long activityId) {
         this.activityId = activityId;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public Long getItemNumIid() {
@@ -90,14 +98,6 @@ public class PosterRecommendActivityItem {
 
     public void setTemplateSequenceIndex(Byte templateSequenceIndex) {
         this.templateSequenceIndex = templateSequenceIndex;
-    }
-
-    public String getTemplateCopy() {
-        return templateCopy;
-    }
-
-    public void setTemplateCopy(String templateCopy) {
-        this.templateCopy = templateCopy == null ? null : templateCopy.trim();
     }
 
     public Byte getStatus() {

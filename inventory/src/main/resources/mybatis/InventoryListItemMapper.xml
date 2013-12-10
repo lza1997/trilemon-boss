@@ -1,392 +1,403 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.trilemon.boss.inventory.dao.InventoryListItemMapper">
-    <resultMap id="BaseResultMap" type="com.trilemon.boss.inventory.model.InventoryListItem">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="inventory_list_setting_id" property="inventoryListSettingId" jdbcType="BIGINT"/>
-        <result column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="item_num_iid" property="itemNumIid" jdbcType="BIGINT"/>
-        <result column="item_title" property="itemTitle" jdbcType="VARCHAR"/>
-        <result column="item_title_pinyin" property="itemTitlePinyin" jdbcType="VARCHAR"/>
-        <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR"/>
-        <result column="plan_adjust_day" property="planAdjustDay" jdbcType="TIMESTAMP"/>
-        <result column="plan_adjust_start_time" property="planAdjustStartTime" jdbcType="TIME"/>
-        <result column="plan_adjust_end_time" property="planAdjustEndTime" jdbcType="TIME"/>
-        <result column="banner" property="banner" jdbcType="VARCHAR"/>
-        <result column="status" property="status" jdbcType="TINYINT"/>
-        <result column="failed_cause" property="failedCause" jdbcType="VARCHAR"/>
-        <result column="adjust_time" property="adjustTime" jdbcType="TIMESTAMP"/>
-        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
-        <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
-    </resultMap>
-    <sql id="Example_Where_Clause">
-        <where>
-            <foreach collection="oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+<mapper namespace="com.trilemon.boss.inventory.dao.InventoryListItemMapper" >
+  <resultMap id="BaseResultMap" type="com.trilemon.boss.inventory.model.InventoryListItem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="inventory_list_setting_id" property="inventoryListSettingId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="item_num_iid" property="itemNumIid" jdbcType="BIGINT" />
+    <result column="item_title" property="itemTitle" jdbcType="VARCHAR" />
+    <result column="item_title_pinyin" property="itemTitlePinyin" jdbcType="VARCHAR" />
+    <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR" />
+    <result column="item_num" property="itemNum" jdbcType="INTEGER" />
+    <result column="plan_adjust_day" property="planAdjustDay" jdbcType="TIMESTAMP" />
+    <result column="plan_adjust_start_time" property="planAdjustStartTime" jdbcType="TIME" />
+    <result column="plan_adjust_end_time" property="planAdjustEndTime" jdbcType="TIME" />
+    <result column="banner" property="banner" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="failed_cause" property="failedCause" jdbcType="VARCHAR" />
+    <result column="adjust_time" property="adjustTime" jdbcType="TIMESTAMP" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Update_By_Example_Where_Clause">
-        <where>
-            <foreach collection="example.oredCriteria" item="criteria" separator="or">
-                <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
-                        <foreach collection="criteria.criteria" item="criterion">
-                            <choose>
-                                <when test="criterion.noValue">
-                                    and ${criterion.condition}
-                                </when>
-                                <when test="criterion.singleValue">
-                                    and ${criterion.condition} #{criterion.value}
-                                </when>
-                                <when test="criterion.betweenValue">
-                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                </when>
-                                <when test="criterion.listValue">
-                                    and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
-                                             separator=",">
-                                        #{listItem}
-                                    </foreach>
-                                </when>
-                            </choose>
-                        </foreach>
-                    </trim>
-                </if>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
             </foreach>
-        </where>
-    </sql>
-    <sql id="Base_Column_List">
-        id, inventory_list_setting_id, user_id, item_num_iid, item_title, item_title_pinyin,
-        item_pic_url, plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time, banner,
-        status, failed_cause, adjust_time, add_time, upd_time
-    </sql>
-    <select id="selectByExample" resultMap="BaseResultMap"
-            parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample">
-        select
-        <if test="distinct">
-            distinct
+          </trim>
         </if>
-        <include refid="Base_Column_List"/>
-        from inventory_list_item
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
-    </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        select
-        <include refid="Base_Column_List"/>
-        from inventory_list_item
-        where id = #{id,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        DELETE FROM inventory_list_item
-        WHERE id = #{id,jdbcType=BIGINT}
-    </delete>
-    <delete id="deleteByExample" parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample">
-        delete from inventory_list_item
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </delete>
-    <insert id="insert" parameterType="com.trilemon.boss.inventory.model.InventoryListItem">
-        INSERT INTO inventory_list_item (id, inventory_list_setting_id, user_id,
-                                         item_num_iid, item_title, item_title_pinyin,
-                                         item_pic_url, plan_adjust_day, plan_adjust_start_time,
-                                         plan_adjust_end_time, banner, status,
-                                         failed_cause, adjust_time, add_time,
-                                         upd_time)
-            VALUES (#{id,jdbcType=BIGINT}, #{inventoryListSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
-                    #{itemNumIid,jdbcType=BIGINT}, #{itemTitle,jdbcType=VARCHAR}, #{itemTitlePinyin,jdbcType=VARCHAR},
-                    #{itemPicUrl,jdbcType=VARCHAR}, #{planAdjustDay,jdbcType=TIMESTAMP}, #{planAdjustStartTime,jdbcType=TIME},
-                    #{planAdjustEndTime,jdbcType=TIME}, #{banner,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
-                    #{failedCause,jdbcType=VARCHAR}, #{adjustTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP},
-                    #{updTime,jdbcType=TIMESTAMP})
-    </insert>
-    <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListItem">
-        insert into inventory_list_item
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="inventoryListSettingId != null">
-                inventory_list_setting_id,
-            </if>
-            <if test="userId != null">
-                user_id,
-            </if>
-            <if test="itemNumIid != null">
-                item_num_iid,
-            </if>
-            <if test="itemTitle != null">
-                item_title,
-            </if>
-            <if test="itemTitlePinyin != null">
-                item_title_pinyin,
-            </if>
-            <if test="itemPicUrl != null">
-                item_pic_url,
-            </if>
-            <if test="planAdjustDay != null">
-                plan_adjust_day,
-            </if>
-            <if test="planAdjustStartTime != null">
-                plan_adjust_start_time,
-            </if>
-            <if test="planAdjustEndTime != null">
-                plan_adjust_end_time,
-            </if>
-            <if test="banner != null">
-                banner,
-            </if>
-            <if test="status != null">
-                status,
-            </if>
-            <if test="failedCause != null">
-                failed_cause,
-            </if>
-            <if test="adjustTime != null">
-                adjust_time,
-            </if>
-            <if test="addTime != null">
-                add_time,
-            </if>
-            <if test="updTime != null">
-                upd_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
-            <if test="inventoryListSettingId != null">
-                #{inventoryListSettingId,jdbcType=BIGINT},
-            </if>
-            <if test="userId != null">
-                #{userId,jdbcType=BIGINT},
-            </if>
-            <if test="itemNumIid != null">
-                #{itemNumIid,jdbcType=BIGINT},
-            </if>
-            <if test="itemTitle != null">
-                #{itemTitle,jdbcType=VARCHAR},
-            </if>
-            <if test="itemTitlePinyin != null">
-                #{itemTitlePinyin,jdbcType=VARCHAR},
-            </if>
-            <if test="itemPicUrl != null">
-                #{itemPicUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="planAdjustDay != null">
-                #{planAdjustDay,jdbcType=TIMESTAMP},
-            </if>
-            <if test="planAdjustStartTime != null">
-                #{planAdjustStartTime,jdbcType=TIME},
-            </if>
-            <if test="planAdjustEndTime != null">
-                #{planAdjustEndTime,jdbcType=TIME},
-            </if>
-            <if test="banner != null">
-                #{banner,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null">
-                #{status,jdbcType=TINYINT},
-            </if>
-            <if test="failedCause != null">
-                #{failedCause,jdbcType=VARCHAR},
-            </if>
-            <if test="adjustTime != null">
-                #{adjustTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="addTime != null">
-                #{addTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updTime != null">
-                #{updTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <select id="countByExample" parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample"
-            resultType="java.lang.Integer">
-        select count(*) from inventory_list_item
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-    </select>
-    <update id="updateByExampleSelective" parameterType="map">
-        update inventory_list_item
-        <set>
-            <if test="record.id != null">
-                id = #{record.id,jdbcType=BIGINT},
-            </if>
-            <if test="record.inventoryListSettingId != null">
-                inventory_list_setting_id = #{record.inventoryListSettingId,jdbcType=BIGINT},
-            </if>
-            <if test="record.userId != null">
-                user_id = #{record.userId,jdbcType=BIGINT},
-            </if>
-            <if test="record.itemNumIid != null">
-                item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
-            </if>
-            <if test="record.itemTitle != null">
-                item_title = #{record.itemTitle,jdbcType=VARCHAR},
-            </if>
-            <if test="record.itemTitlePinyin != null">
-                item_title_pinyin = #{record.itemTitlePinyin,jdbcType=VARCHAR},
-            </if>
-            <if test="record.itemPicUrl != null">
-                item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="record.planAdjustDay != null">
-                plan_adjust_day = #{record.planAdjustDay,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.planAdjustStartTime != null">
-                plan_adjust_start_time = #{record.planAdjustStartTime,jdbcType=TIME},
-            </if>
-            <if test="record.planAdjustEndTime != null">
-                plan_adjust_end_time = #{record.planAdjustEndTime,jdbcType=TIME},
-            </if>
-            <if test="record.banner != null">
-                banner = #{record.banner,jdbcType=VARCHAR},
-            </if>
-            <if test="record.status != null">
-                status = #{record.status,jdbcType=TINYINT},
-            </if>
-            <if test="record.failedCause != null">
-                failed_cause = #{record.failedCause,jdbcType=VARCHAR},
-            </if>
-            <if test="record.adjustTime != null">
-                adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.addTime != null">
-                add_time = #{record.addTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="record.updTime != null">
-                upd_time = #{record.updTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByExample" parameterType="map">
-        update inventory_list_item
-        set id = #{record.id,jdbcType=BIGINT},
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, inventory_list_setting_id, user_id, item_num_iid, item_title, item_title_pinyin, 
+    item_pic_url, item_num, plan_adjust_day, plan_adjust_start_time, plan_adjust_end_time, 
+    banner, status, failed_cause, adjust_time, add_time, upd_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from inventory_list_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from inventory_list_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from inventory_list_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample" >
+    delete from inventory_list_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trilemon.boss.inventory.model.InventoryListItem" >
+    insert into inventory_list_item (id, inventory_list_setting_id, user_id, 
+      item_num_iid, item_title, item_title_pinyin, 
+      item_pic_url, item_num, plan_adjust_day, 
+      plan_adjust_start_time, plan_adjust_end_time, banner, 
+      status, failed_cause, adjust_time, 
+      add_time, upd_time)
+    values (#{id,jdbcType=BIGINT}, #{inventoryListSettingId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{itemNumIid,jdbcType=BIGINT}, #{itemTitle,jdbcType=VARCHAR}, #{itemTitlePinyin,jdbcType=VARCHAR}, 
+      #{itemPicUrl,jdbcType=VARCHAR}, #{itemNum,jdbcType=INTEGER}, #{planAdjustDay,jdbcType=TIMESTAMP}, 
+      #{planAdjustStartTime,jdbcType=TIME}, #{planAdjustEndTime,jdbcType=TIME}, #{banner,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{failedCause,jdbcType=VARCHAR}, #{adjustTime,jdbcType=TIMESTAMP}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trilemon.boss.inventory.model.InventoryListItem" >
+    insert into inventory_list_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="inventoryListSettingId != null" >
+        inventory_list_setting_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="itemNumIid != null" >
+        item_num_iid,
+      </if>
+      <if test="itemTitle != null" >
+        item_title,
+      </if>
+      <if test="itemTitlePinyin != null" >
+        item_title_pinyin,
+      </if>
+      <if test="itemPicUrl != null" >
+        item_pic_url,
+      </if>
+      <if test="itemNum != null" >
+        item_num,
+      </if>
+      <if test="planAdjustDay != null" >
+        plan_adjust_day,
+      </if>
+      <if test="planAdjustStartTime != null" >
+        plan_adjust_start_time,
+      </if>
+      <if test="planAdjustEndTime != null" >
+        plan_adjust_end_time,
+      </if>
+      <if test="banner != null" >
+        banner,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="failedCause != null" >
+        failed_cause,
+      </if>
+      <if test="adjustTime != null" >
+        adjust_time,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="updTime != null" >
+        upd_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="inventoryListSettingId != null" >
+        #{inventoryListSettingId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="itemNumIid != null" >
+        #{itemNumIid,jdbcType=BIGINT},
+      </if>
+      <if test="itemTitle != null" >
+        #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="itemTitlePinyin != null" >
+        #{itemTitlePinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPicUrl != null" >
+        #{itemPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNum != null" >
+        #{itemNum,jdbcType=INTEGER},
+      </if>
+      <if test="planAdjustDay != null" >
+        #{planAdjustDay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planAdjustStartTime != null" >
+        #{planAdjustStartTime,jdbcType=TIME},
+      </if>
+      <if test="planAdjustEndTime != null" >
+        #{planAdjustEndTime,jdbcType=TIME},
+      </if>
+      <if test="banner != null" >
+        #{banner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="failedCause != null" >
+        #{failedCause,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTime != null" >
+        #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trilemon.boss.inventory.model.InventoryListItemExample" resultType="java.lang.Integer" >
+    select count(*) from inventory_list_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update inventory_list_item
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.inventoryListSettingId != null" >
         inventory_list_setting_id = #{record.inventoryListSettingId,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.itemNumIid != null" >
         item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
+      </if>
+      <if test="record.itemTitle != null" >
         item_title = #{record.itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemTitlePinyin != null" >
         item_title_pinyin = #{record.itemTitlePinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemPicUrl != null" >
         item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemNum != null" >
+        item_num = #{record.itemNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.planAdjustDay != null" >
         plan_adjust_day = #{record.planAdjustDay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.planAdjustStartTime != null" >
         plan_adjust_start_time = #{record.planAdjustStartTime,jdbcType=TIME},
+      </if>
+      <if test="record.planAdjustEndTime != null" >
         plan_adjust_end_time = #{record.planAdjustEndTime,jdbcType=TIME},
+      </if>
+      <if test="record.banner != null" >
         banner = #{record.banner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
         status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.failedCause != null" >
         failed_cause = #{record.failedCause,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adjustTime != null" >
         adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.addTime != null" >
         add_time = #{record.addTime,jdbcType=TIMESTAMP},
-        upd_time = #{record.updTime,jdbcType=TIMESTAMP}
-        <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause"/>
-        </if>
-    </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss.inventory.model.InventoryListItem">
-        update inventory_list_item
-        <set>
-            <if test="inventoryListSettingId != null">
-                inventory_list_setting_id = #{inventoryListSettingId,jdbcType=BIGINT},
-            </if>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
-            <if test="itemNumIid != null">
-                item_num_iid = #{itemNumIid,jdbcType=BIGINT},
-            </if>
-            <if test="itemTitle != null">
-                item_title = #{itemTitle,jdbcType=VARCHAR},
-            </if>
-            <if test="itemTitlePinyin != null">
-                item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
-            </if>
-            <if test="itemPicUrl != null">
-                item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="planAdjustDay != null">
-                plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
-            </if>
-            <if test="planAdjustStartTime != null">
-                plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
-            </if>
-            <if test="planAdjustEndTime != null">
-                plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
-            </if>
-            <if test="banner != null">
-                banner = #{banner,jdbcType=VARCHAR},
-            </if>
-            <if test="status != null">
-                status = #{status,jdbcType=TINYINT},
-            </if>
-            <if test="failedCause != null">
-                failed_cause = #{failedCause,jdbcType=VARCHAR},
-            </if>
-            <if test="adjustTime != null">
-                adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="addTime != null">
-                add_time = #{addTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updTime != null">
-                upd_time = #{updTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.inventory.model.InventoryListItem">
-        UPDATE inventory_list_item
-        SET inventory_list_setting_id = #{inventoryListSettingId,jdbcType=BIGINT},
-            user_id = #{userId,jdbcType=BIGINT},
-            item_num_iid = #{itemNumIid,jdbcType=BIGINT},
-            item_title = #{itemTitle,jdbcType=VARCHAR},
-            item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
-            item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
-            plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
-            plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
-            plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
-            banner = #{banner,jdbcType=VARCHAR},
-            status = #{status,jdbcType=TINYINT},
-            failed_cause = #{failedCause,jdbcType=VARCHAR},
-            adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
-            add_time = #{addTime,jdbcType=TIMESTAMP},
-            upd_time = #{updTime,jdbcType=TIMESTAMP}
-        WHERE id = #{id,jdbcType=BIGINT}
-    </update>
+      </if>
+      <if test="record.updTime != null" >
+        upd_time = #{record.updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update inventory_list_item
+    set id = #{record.id,jdbcType=BIGINT},
+      inventory_list_setting_id = #{record.inventoryListSettingId,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      item_num_iid = #{record.itemNumIid,jdbcType=BIGINT},
+      item_title = #{record.itemTitle,jdbcType=VARCHAR},
+      item_title_pinyin = #{record.itemTitlePinyin,jdbcType=VARCHAR},
+      item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+      item_num = #{record.itemNum,jdbcType=INTEGER},
+      plan_adjust_day = #{record.planAdjustDay,jdbcType=TIMESTAMP},
+      plan_adjust_start_time = #{record.planAdjustStartTime,jdbcType=TIME},
+      plan_adjust_end_time = #{record.planAdjustEndTime,jdbcType=TIME},
+      banner = #{record.banner,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT},
+      failed_cause = #{record.failedCause,jdbcType=VARCHAR},
+      adjust_time = #{record.adjustTime,jdbcType=TIMESTAMP},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      upd_time = #{record.updTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trilemon.boss.inventory.model.InventoryListItem" >
+    update inventory_list_item
+    <set >
+      <if test="inventoryListSettingId != null" >
+        inventory_list_setting_id = #{inventoryListSettingId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="itemNumIid != null" >
+        item_num_iid = #{itemNumIid,jdbcType=BIGINT},
+      </if>
+      <if test="itemTitle != null" >
+        item_title = #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="itemTitlePinyin != null" >
+        item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
+      </if>
+      <if test="itemPicUrl != null" >
+        item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNum != null" >
+        item_num = #{itemNum,jdbcType=INTEGER},
+      </if>
+      <if test="planAdjustDay != null" >
+        plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planAdjustStartTime != null" >
+        plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
+      </if>
+      <if test="planAdjustEndTime != null" >
+        plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
+      </if>
+      <if test="banner != null" >
+        banner = #{banner,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="failedCause != null" >
+        failed_cause = #{failedCause,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTime != null" >
+        adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updTime != null" >
+        upd_time = #{updTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trilemon.boss.inventory.model.InventoryListItem" >
+    update inventory_list_item
+    set inventory_list_setting_id = #{inventoryListSettingId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      item_num_iid = #{itemNumIid,jdbcType=BIGINT},
+      item_title = #{itemTitle,jdbcType=VARCHAR},
+      item_title_pinyin = #{itemTitlePinyin,jdbcType=VARCHAR},
+      item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
+      item_num = #{itemNum,jdbcType=INTEGER},
+      plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
+      plan_adjust_start_time = #{planAdjustStartTime,jdbcType=TIME},
+      plan_adjust_end_time = #{planAdjustEndTime,jdbcType=TIME},
+      banner = #{banner,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      failed_cause = #{failedCause,jdbcType=VARCHAR},
+      adjust_time = #{adjustTime,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      upd_time = #{updTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
     <select id="countByUserIdAndSettingIdAndStatusAndBanners" parameterType="map" resultType="java.lang.Integer">
         select count(*)
         from inventory_list_item
@@ -535,6 +546,9 @@
             <if test="itemPicUrl != null">
                 item_pic_url = #{itemPicUrl,jdbcType=VARCHAR},
             </if>
+            <if test="itemNum != null">
+                item_num = #{itemNum,jdbcType=VARCHAR},
+            </if>
             <if test="planAdjustDay != null">
                 plan_adjust_day = #{planAdjustDay,jdbcType=TIMESTAMP},
             </if>
@@ -567,4 +581,20 @@
         and item_num_iid = #{itemNumIid,jdbcType=BIGINT}
     </update>
 
+    <select id="selectBannersBySettingId" resultType="string" parameterType="java.lang.Long">
+        SELECT banner
+        FROM inventory_list_item
+        WHERE inventory_list_setting_id = #{inventory_list_setting_id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteBySettingIdAndBanners" parameterType="map" >
+        delete from inventory_list_item
+        where inventory_list_setting_id = #{settingId,jdbcType=BIGINT}
+        <if test="banners !=null and banners.size() > 0">
+            banner IN
+            <foreach collection="banners" item="banner" open="(" close=")" separator=",">
+                #{banner}
+            </foreach>
+        </if>
+    </delete>
 </mapper>

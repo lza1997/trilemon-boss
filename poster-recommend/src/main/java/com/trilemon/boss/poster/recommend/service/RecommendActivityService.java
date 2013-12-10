@@ -118,13 +118,19 @@ public class RecommendActivityService {
      * @param activityId
      * @param posterRecommendActivityItem
      */
-    public void addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
+    public String addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
             posterRecommendActivityItem) {
+        PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
+        //生成 投放的 html 代码
+        PosterTemplate template = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
+        String itemTemplateFtl = template.getTemplateItemFtl();
+        //String itemPreviewHtml=PosterRecommendUtils.posterRecommendActivityItem2Item(posterRecommendActivityItem);
         posterRecommendActivityItem.setUserId(userId);
         posterRecommendActivityItem.setActivityId(activityId);
         posterRecommendActivityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
         posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
         posterRecommendActivityItemDAO.insertSelective(posterRecommendActivityItem);
+        return "";
     }
 
     /**

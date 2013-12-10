@@ -5,7 +5,15 @@ import java.util.Date;
 public class PosterTemplate {
     private Long id;
 
-    private String picUrl;
+    private Byte previewType;
+
+    private String previewPicUrl;
+
+    private String preivewPicHtml;
+
+    private String templateFtl;
+
+    private String templateItemFtl;
 
     private Integer slotNum;
 
@@ -13,15 +21,13 @@ public class PosterTemplate {
 
     private String colors;
 
-    private String tags;
+    private String copyKeys;
 
     private String categories;
 
     private String topics;
 
     private String festivals;
-
-    private String copy;
 
     private Byte type;
 
@@ -47,12 +53,44 @@ public class PosterTemplate {
         this.id = id;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public Byte getPreviewType() {
+        return previewType;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl == null ? null : picUrl.trim();
+    public void setPreviewType(Byte previewType) {
+        this.previewType = previewType;
+    }
+
+    public String getPreviewPicUrl() {
+        return previewPicUrl;
+    }
+
+    public void setPreviewPicUrl(String previewPicUrl) {
+        this.previewPicUrl = previewPicUrl == null ? null : previewPicUrl.trim();
+    }
+
+    public String getPreivewPicHtml() {
+        return preivewPicHtml;
+    }
+
+    public void setPreivewPicHtml(String preivewPicHtml) {
+        this.preivewPicHtml = preivewPicHtml == null ? null : preivewPicHtml.trim();
+    }
+
+    public String getTemplateFtl() {
+        return templateFtl;
+    }
+
+    public void setTemplateFtl(String templateFtl) {
+        this.templateFtl = templateFtl == null ? null : templateFtl.trim();
+    }
+
+    public String getTemplateItemFtl() {
+        return templateItemFtl;
+    }
+
+    public void setTemplateItemFtl(String templateItemFtl) {
+        this.templateItemFtl = templateItemFtl == null ? null : templateItemFtl.trim();
     }
 
     public Integer getSlotNum() {
@@ -79,12 +117,12 @@ public class PosterTemplate {
         this.colors = colors == null ? null : colors.trim();
     }
 
-    public String getTags() {
-        return tags;
+    public String getCopyKeys() {
+        return copyKeys;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags == null ? null : tags.trim();
+    public void setCopyKeys(String copyKeys) {
+        this.copyKeys = copyKeys == null ? null : copyKeys.trim();
     }
 
     public String getCategories() {
@@ -109,14 +147,6 @@ public class PosterTemplate {
 
     public void setFestivals(String festivals) {
         this.festivals = festivals == null ? null : festivals.trim();
-    }
-
-    public String getCopy() {
-        return copy;
-    }
-
-    public void setCopy(String copy) {
-        this.copy = copy == null ? null : copy.trim();
     }
 
     public Byte getType() {
