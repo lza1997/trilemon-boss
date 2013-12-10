@@ -6,9 +6,9 @@ define(function(require, exports, module) {
 
     module.exports = ['$resource', '$http', function($resource, $http) {
         var URL = '/inventory/items/:id';
-        var EXCLUDE_URL = URL + '/exclude';
+        var LIST_URL = URL + '/list';  // 立刻上架的 URL
 
-        var InventoryItem = $resource(URL, {id: '@id'}, {
+        var InventoryItem = $resource(URL, {id: '@itemNumIid'}, {
             query: {
                 method: 'GET',
                 isArray: true,
@@ -17,13 +17,9 @@ define(function(require, exports, module) {
                     response: paginateResource.responseInterceptor
                 }
             },
-            exclude: {
+            list: {
                 method: 'POST',
-                url: EXCLUDE_URL
-            },
-            include: {
-                method: 'DELETE',
-                url: EXCLUDE_URL
+                url: LIST_URL
             }
         });
 

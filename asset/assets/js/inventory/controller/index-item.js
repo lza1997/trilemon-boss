@@ -30,6 +30,9 @@ define(function(require, exports, module) {
         };
 
         // 立即上架
+        $scope.list = function(item) {
+            item.$list();
+        };
 
         // 移除
         $scope.remove = function(item) {
