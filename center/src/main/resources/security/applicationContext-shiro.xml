@@ -50,6 +50,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /signIn = anon
+                /callback = anon
                 /session/** = anon
                 /signOut = logout
                 /** = cas

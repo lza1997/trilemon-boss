@@ -1,5 +1,6 @@
 package com.trilemon.boss.center.web.controller;
 
+import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.TaobaoApiService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
@@ -27,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class SignInController {
     @Autowired
     private TaobaoApiService taobaoApiService;
+    @Autowired
+    private AppService appService;
 
     /**
      * cas登录，手工登录
@@ -92,10 +95,11 @@ public class SignInController {
             Subject currentSubject = SecurityUtils.getSubject();
             if (!currentSubject.isAuthenticated()) {
                 ShiroTaobaoAuthenticationToken token = new ShiroTaobaoAuthenticationToken();
+                token.setClientId(taobaoApiService.getAppKey());
                 token.setCode(code);
                 token.setState(state);
                 token.setAppKey(taobaoApiService.getAppKey());
-                token.setRedirectUri("http://dddd.com");
+                token.setRedirectUri(appService.getTaobaoCallbackUrl());
                 try {
                     currentSubject.login(token);
                 } catch (UnknownAccountException uae) {
@@ -106,7 +110,7 @@ public class SignInController {
                     throw new AuthenticationException("LockedAccountException occurred.", lae);
                 }
             }
-            return "redirect:/home";//返回首页
+            return "redirect:/";//返回首页
         } else {
             return "redirect:/400";//返回首页
         }

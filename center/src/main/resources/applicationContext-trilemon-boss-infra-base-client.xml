@@ -38,6 +38,7 @@
         <property name="serviceName" value="${service_name}"/>
         <property name="serviceId" value="${service_id}"/>
         <property name="casUrl" value="${cas_url}"/>
+        <property name="taobaoCallbackUrl" value="${taobao_callback_url}"/>
     </bean>
 
 
