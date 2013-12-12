@@ -4,7 +4,7 @@
 define(function(require, exports, module) {
     var ShowController = ['$scope', 'InventorySetting', function($scope, InventorySetting) {
         $scope.BANNER = {
-            'regular_shelved': '我下架的',
+            'off_shelf': '我下架的',
             'never_on_shelf': '从未上架的'
         };
         $scope.STATUS = {

@@ -184,10 +184,11 @@ public class InventoryListService {
         }
     }
 
-    public InventoryListItem getInventoryListItem(long userId,long itemNumIid){
-        return inventoryListItemMapper.selectByUserIdAndNumIid(userId,itemNumIid);
+    public InventoryListItem getInventoryListItem(long userId, long itemNumIid) {
+        return inventoryListItemMapper.selectByUserIdAndNumIid(userId, itemNumIid);
 
     }
+
     /**
      * 立刻上架
      *
@@ -252,6 +253,6 @@ public class InventoryListService {
 
     public Map<String, Long> getInventoryItemNum(Long userId) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         return taobaoApiShopService.getInventoryItemNum(userId, ImmutableList.of(InventoryConstants
-                .BANNER_REGULAR_SHELVED, InventoryConstants.BANNER_NEVER_ON_SHELF));
+                .BANNER_OFF_SHELF, InventoryConstants.BANNER_NEVER_ON_SHELF));
     }
 }

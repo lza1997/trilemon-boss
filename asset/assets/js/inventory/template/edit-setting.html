@@ -9,7 +9,7 @@
         <label class="col-md-1 control-label">仓库宝贝</label>
 
         <div class="col-md-6">
-            <p class="form-control-static">共 {{ itemNum.regular_shelved + itemNum.never_on_shelf }} 个宝贝</p>
+            <p class="form-control-static">共 {{ itemNum.off_shelf + itemNum.never_on_shelf }} 个宝贝</p>
         </div>
     </div>
     <div class="form-group">
@@ -17,8 +17,8 @@
         <div class="col-md-6">
             <div class="checkbox">
                 <label>
-                    <input ng-disabled="setting.paused" type="checkbox" ng-model="includeBanners.regular_shelved" />
-                    我下架的（{{itemNum.regular_shelved}}）
+                    <input ng-disabled="setting.paused" type="checkbox" ng-model="includeBanners.off_shelf" />
+                    我下架的（{{itemNum.off_shelf}}）
                 </label>
             </div>
             <div class="checkbox">
