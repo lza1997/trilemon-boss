@@ -1,8 +1,9 @@
 package com.trilemon.boss.infra.sync.rate.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SyncStatus {
+public class SyncStatus implements Serializable {
     private Integer id;
 
     private Long userId;

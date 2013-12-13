@@ -122,4 +122,8 @@ public class RateCalcService {
                 endDateTime.toString(DateUtils.yyyy_MM_dd_HH_mm_ss),
                 stopwatch.elapsed(TimeUnit.SECONDS));
     }
+
+    public CalcSellerDayRate getCalcSellerDayRate(Long userId, Date rateTime) {
+        return calcSellerDayRateDAO.selectByUserIdAndRateTime(userId,rateTime);
+    }
 }

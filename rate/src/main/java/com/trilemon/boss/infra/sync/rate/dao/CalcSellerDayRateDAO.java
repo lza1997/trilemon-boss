@@ -2,6 +2,8 @@ package com.trilemon.boss.infra.sync.rate.dao;
 
 import com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate;
 
+import java.util.Date;
+
 public interface CalcSellerDayRateDAO {
     int deleteByPrimaryKey(Long userId,Long id);
 
@@ -17,4 +19,5 @@ public interface CalcSellerDayRateDAO {
 
     void replaceSelective(CalcSellerDayRate calcSellerDayRate);
 
+    CalcSellerDayRate selectByUserIdAndRateTime(Long userId, Date rateTime);
 }

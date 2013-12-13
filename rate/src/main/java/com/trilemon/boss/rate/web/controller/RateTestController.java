@@ -6,6 +6,8 @@ import com.trilemon.boss.infra.base.model.BuyerBlacklist;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.infra.sync.rate.client.RateClient;
+import com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate;
 import com.trilemon.boss.infra.sync.rate.service.RateSyncException;
 import com.trilemon.boss.rate.model.RateCommentSetting;
 import com.trilemon.boss.rate.model.RateOrder;
@@ -15,6 +17,7 @@ import com.trilemon.boss.rate.service.RateSettingService;
 import com.trilemon.commons.Collections3;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +37,8 @@ import java.util.Map;
 public class RateTestController {
     @Autowired
     private RateService rateService;
+    @Autowired
+    private RateClient rateClient;
     @Autowired
     private RateSettingService rateSettingService;
 
@@ -169,5 +174,13 @@ public class RateTestController {
             TaobaoSessionExpiredException,
             TaobaoAccessControlException, RateSyncException {
         rateService.rate(userId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getCalcSellerDayRate", method = RequestMethod.GET)
+    public CalcSellerDayRate getCalcSellerDayRate(@RequestParam Long userId,
+                                                  @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date rateTime)
+            throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException, RateSyncException {
+        return rateClient.getCalcSellerDayRate(userId, rateTime);
     }
 }

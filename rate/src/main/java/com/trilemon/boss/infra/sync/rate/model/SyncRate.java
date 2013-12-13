@@ -2,9 +2,10 @@ package com.trilemon.boss.infra.sync.rate.model;
 
 import com.trilemon.commons.db.ShardTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SyncRate extends ShardTable {
+public class SyncRate extends ShardTable implements Serializable {
     private Long id;
 
     private Long userId;

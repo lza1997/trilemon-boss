@@ -188,4 +188,11 @@
             )
         </dynamic>
     </insert>
+    <select id="selectByUserIdAndRateTime" resultMap="BaseResultMap"
+            parameterClass="com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate" >
+        select
+        <include refid="calc_seller_day_rate.Base_Column_List" />
+        from <include refid="calc_seller_day_rate.Base_Table_Name"/>
+        where user_id = #userId:BIGINT# AND rate_time = #rateTime:DATE#
+    </select>
 </sqlMap>

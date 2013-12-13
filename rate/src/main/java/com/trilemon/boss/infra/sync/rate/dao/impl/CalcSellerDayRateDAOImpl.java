@@ -8,6 +8,8 @@ import com.trilemon.boss.infra.sync.rate.model.CalcSellerDayRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public class CalcSellerDayRateDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements CalcSellerDayRateDAO {
 
@@ -64,5 +66,15 @@ public class CalcSellerDayRateDAOImpl extends MysdalCobarSqlMapClientDaoSupport 
         Preconditions.checkNotNull(calcSellerDayRate.getUserId());
         router.routeAndSetTableId(calcSellerDayRate);
         getSqlMapClientTemplate().insert("calc_seller_day_rate.replaceSelective", calcSellerDayRate);
+    }
+
+    @Override
+    public CalcSellerDayRate selectByUserIdAndRateTime(Long userId, Date rateTime) {
+        CalcSellerDayRate _key = new CalcSellerDayRate();
+        _key.setUserId(userId);
+        _key.setRateTime(rateTime);
+        router.routeAndSetTableId(_key);
+        CalcSellerDayRate record = (CalcSellerDayRate) getSqlMapClientTemplate().queryForObject("calc_seller_day_rate.selectByUserIdAndRateTime", _key);
+        return record;
     }
 }
