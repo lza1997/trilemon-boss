@@ -1,6 +1,7 @@
 package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
+import com.trilemon.boss.poster.recommend.model.dto.BossItemSearchRequest;
 import com.trilemon.commons.web.Page;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface PosterRecommendActivityItemDAO {
 
     int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid);
 
-    Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, int offset, int limit);
+    Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, BossItemSearchRequest bossItemSearchRequest);
 
     List<PosterRecommendActivityItem> selectByUserIdAndActivityId(Long userId, Long activityId);
 

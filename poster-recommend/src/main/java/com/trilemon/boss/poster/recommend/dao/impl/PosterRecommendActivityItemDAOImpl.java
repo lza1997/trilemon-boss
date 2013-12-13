@@ -2,6 +2,7 @@ package com.trilemon.boss.poster.recommend.dao.impl;
 
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityItemDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
+import com.trilemon.boss.poster.recommend.model.dto.BossItemSearchRequest;
 import com.trilemon.commons.web.Page;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -53,7 +54,8 @@ public class PosterRecommendActivityItemDAOImpl extends SqlMapClientDaoSupport i
     }
 
     @Override
-    public Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, int offset, int limit) {
+    public Page<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId,
+                                                                           BossItemSearchRequest bossItemSearchRequest) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 

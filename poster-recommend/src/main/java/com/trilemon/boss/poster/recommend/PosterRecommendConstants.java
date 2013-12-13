@@ -11,10 +11,14 @@ public interface PosterRecommendConstants {
     //模板自定义文案的 key，原价
     String TEMPLATE_COPY_KEY_ORIGINAL_PRICE = "original_price";
     //活动状态
-    byte ACTIVITY_STATUS_DESIGNED = 0;//等待投放
-    byte ACTIVITY_STATUS_PUBLISHING = 1;//正在投放
-    byte ACTIVITY_STATUS_PUBLISHED = 2;//投放完毕
-    byte ACTIVITY_STATUS_PUBLISHED_WITH_ERROR = 3;//投放完毕，但是有错
+    byte ACTIVITY_STATUS_DESIGNED = 0;//设计完毕
+    byte ACTIVITY_STATUS_PUBLISH_SETTING_DONE = 1;//设计完毕
+    byte ACTIVITY_STATUS_PUBLISHING = 2;//正在投放
+    byte ACTIVITY_STATUS_PUBLISHED = 3;//投放完毕
+    byte ACTIVITY_STATUS_PUBLISHED_WITH_ERROR = 4;//投放完毕，但是有错
+    //投放类型
+    byte ACTIVITY_PUBLISH_TYPE_ALWAYS = 0;
+    byte ACTIVITY_PUBLISH_TYPE_ASSIGN_TIME = 1;
     //海报宝贝状态，正常
     byte ACTIVITY_ITEM_STATUS_NORMAL = 0;
     //参与投放宝贝状态

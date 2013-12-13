@@ -91,7 +91,6 @@ public class RecommendActivityPublishService {
         newActivity.setUserId(userId);
         newActivity.setId(activityId);
         newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHING);
-        newActivity.setPublishTime(appService.getLocalSystemTime().toDate());
         posterRecommendActivityDAO.updateByUserIdAndActivityId(newActivity);
 
         //投放单个宝贝

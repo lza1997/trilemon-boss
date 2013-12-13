@@ -16,6 +16,7 @@ import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
+import com.trilemon.boss.poster.recommend.model.dto.BossItemSearchRequest;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
@@ -64,37 +65,53 @@ public class RecommendActivityService {
      * @return
      */
     public PosterRecommendActivity getActivity(Long userId, Long activityId) {
-        PosterRecommendActivity activity= posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        int itemNum=posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId,activityId);
+        PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
+        int itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
+
         activity.setItemNum(itemNum);
         return activity;
     }
 
     /**
-     * 创建活动（未投放）
+     * 创建活动（设计完毕，还没有投放）
      *
      * @param userId
      * @param activity
      */
     @Transactional
-    public void createActivity(Long userId, PosterRecommendActivity activity) {
+    public void createActivityDesignPart(Long userId, PosterRecommendActivity activity) {
         createUser(userId);
 
         activity.setUserId(userId);
         activity.setAddTime(appService.getLocalSystemTime().toDate());
-        activity.setStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
+        activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_DESIGNED);
+
+        Long id = posterRecommendActivityDAO.insertSelective(userId, activity);
+        logger.info("add activity, activityId[{}] userId[{}].", id, userId);
+    }
+
+    /**
+     * 更新活动（投放设置完毕，还没有投放）
+     *
+     * @param userId
+     * @param activity
+     */
+    @Transactional
+    public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity) {
+
+        activity.setUserId(userId);
+        activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
 
         //生成最终模板
         PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
         String templateFtl = posterTemplate.getTemplateFtl();
         List<PosterRecommendActivityItem> activityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId
                 (userId, activity.getId());
-
         String publishHtml = generateActivityPublishHtml(templateFtl, activityItems);
         activity.setPublishHtml(publishHtml);
 
-        Long id = posterRecommendActivityDAO.insertSelective(userId, activity);
-        logger.info("add activity, activityId[{}] userId[{}].", id, userId);
+        posterRecommendActivityDAO.updateByUserIdAndActivityId(activity);
+        logger.info("update activity, activityId[{}] userId[{}].", activity.getId(), userId);
     }
 
     /**
@@ -226,47 +243,54 @@ public class RecommendActivityService {
      * 查询已加入活动宝贝
      *
      * @param userId
-     * @param activityId
-     * @param pageNum
-     * @param pageSize
+     * @param bossItemSearchRequest
      * @return
      */
-    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId, Long activityId, int pageNum, int pageSize) {
-        return posterRecommendActivityItemDAO.paginateByUserIdAndActivityId(userId, activityId, (pageNum - 1) * pageSize, pageSize);
+    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId, final Long activityId,
+                                                                        BossItemSearchRequest bossItemSearchRequest) {
+        return posterRecommendActivityItemDAO.paginateByUserIdAndActivityId(userId, activityId, bossItemSearchRequest);
     }
 
     /**
-     * 在售宝贝，以供加入活动
+     * 查询未加入活动宝贝
      *
      * @param userId
-     * @param onSale
-     * @param query
-     * @param sellerCids
-     * @param pageNum
-     * @param pageSize
+     * @param activityId
+     * @param bossItemSearchRequest
      * @return
+     * @throws TaobaoAccessControlException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
      */
-    public Page<PosterRecommendActivityItem> paginateCanBeAddActivityItems(final Long userId,
-                                                                           final Long activityId,
-                                                                           boolean onSale,
-                                                                           String query,
-                                                                           List<Long> sellerCids,
-                                                                           int pageNum,
-                                                                           int pageSize) throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
-        Page<Item> itemPage;
-        List<PosterRecommendActivityItem> activityItems;
-        if (onSale) {
-            itemPage = taobaoApiShopService.paginateOnSaleItems(userId, query,
-                    ITEM_FIELDS, sellerCids, pageNum, pageSize, true, true, "modified:desc");
-            activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems
-                    (userId, activityId, itemPage.getItems());
-            return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(), activityItems);
-        } else {
-            itemPage = taobaoApiShopService.paginateInventoryItems(userId, query,
-                    ITEM_FIELDS, Lists.newArrayList(BANNER_OFF_SHELF), sellerCids, pageNum, pageSize, true, "modified:desc");
-            activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems
-                    (userId, activityId, itemPage.getItems());
-            return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(), activityItems);
+    public Page<PosterRecommendActivityItem> paginateActivityNotAddedItems(final Long userId, final Long activityId,
+                                                                           BossItemSearchRequest bossItemSearchRequest)
+            throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        //获取已经加入活动的宝贝
+        List<PosterRecommendActivityItem> addedRecommendActivityItems = posterRecommendActivityItemDAO
+                .selectByUserIdAndActivityId(userId, activityId);
+        //排除淘宝数据，计算分页
+        while (true) {
+            //获取淘宝数据
+            Page<Item> itemPage;
+            List<PosterRecommendActivityItem> activityItems;
+            if (bossItemSearchRequest.isOnSale()) {
+                itemPage = taobaoApiShopService.paginateOnSaleItems(userId, bossItemSearchRequest.getQuery(),
+                        ITEM_FIELDS, bossItemSearchRequest.getSellerCids(), bossItemSearchRequest.getPageNum(),
+                        bossItemSearchRequest.getPageSize(), true, true, "modified:desc");
+                activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems(userId, activityId, itemPage.getItems());
+                // return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(),
+                // activityItems);
+            } else {
+                itemPage = taobaoApiShopService.paginateInventoryItems(userId, bossItemSearchRequest.getQuery(),
+                        ITEM_FIELDS, Lists.newArrayList(BANNER_OFF_SHELF), bossItemSearchRequest.getSellerCids(),
+                        bossItemSearchRequest.getPageNum(), bossItemSearchRequest.getPageSize(), true, "modified:desc");
+                activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems(userId, activityId, itemPage.getItems());
+                // return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(),
+                // activityItems);
+            }
+
+            List<Item> items = itemPage.getItems();
+            //activityItems = Page.create(itemPage.getTotalSize() - addedRecommendActivityItems.size());
         }
     }
 

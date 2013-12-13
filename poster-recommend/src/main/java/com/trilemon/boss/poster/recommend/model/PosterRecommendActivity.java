@@ -4,18 +4,34 @@ import java.util.Date;
 
 public class PosterRecommendActivity {
     private Long id;
+
     private Long userId;
+
     private Long templateId;
+
     private String title;
+
     private String color;
+
     private Integer size;
-    private Byte detailPagePosition;
-    private String publishHtml;
+
     private Byte status;
+
+    private Byte detailPagePosition;
+
+    private String publishHtml;
+
+    private Byte publishType;
+
     private Date publishTime;
+
+    private Date publishStartTime;
+
+    private Date publishEndTime;
+
     private Date addTime;
+
     private Date updTime;
-    //数量
     private int itemNum;
 
     public Long getId() {
@@ -66,6 +82,14 @@ public class PosterRecommendActivity {
         this.size = size;
     }
 
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
     public Byte getDetailPagePosition() {
         return detailPagePosition;
     }
@@ -82,12 +106,12 @@ public class PosterRecommendActivity {
         this.publishHtml = publishHtml == null ? null : publishHtml.trim();
     }
 
-    public Byte getStatus() {
-        return status;
+    public Byte getPublishType() {
+        return publishType;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setPublishType(Byte publishType) {
+        this.publishType = publishType;
     }
 
     public Date getPublishTime() {
@@ -96,6 +120,22 @@ public class PosterRecommendActivity {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+    }
+
+    public Date getPublishStartTime() {
+        return publishStartTime;
+    }
+
+    public void setPublishStartTime(Date publishStartTime) {
+        this.publishStartTime = publishStartTime;
+    }
+
+    public Date getPublishEndTime() {
+        return publishEndTime;
+    }
+
+    public void setPublishEndTime(Date publishEndTime) {
+        this.publishEndTime = publishEndTime;
     }
 
     public Date getAddTime() {
@@ -114,11 +154,11 @@ public class PosterRecommendActivity {
         this.updTime = updTime;
     }
 
-    public int getItemNum() {
-        return itemNum;
-    }
-
     public void setItemNum(int itemNum) {
         this.itemNum = itemNum;
+    }
+
+    public int getItemNum() {
+        return itemNum;
     }
 }
