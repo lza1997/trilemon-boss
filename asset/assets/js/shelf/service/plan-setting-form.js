@@ -2,7 +2,7 @@
  * 新建或修改计划，用于 Controller 的复用
  */
 define(function(require, exports, module) {
-    module.exports = ['REST', 'Flash', '$location', 'SellerCatFactory', function(REST, Flash, $location, SellerCatFactory) {
+    module.exports = ['Flash', '$location', 'SellerCatFactory', function(Flash, $location, SellerCatFactory) {
         var SellerCat = SellerCatFactory.create('/shelf/sellercats');
 
         return {

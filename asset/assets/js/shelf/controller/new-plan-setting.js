@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var NewController = ['$scope', 'REST', 'PlanSetting', 'Flash', 'PlanSettingForm', function($scope, REST, PlanSetting, Flash, PlanSettingForm) {
+    var NewController = ['$scope', 'PlanSetting', 'Flash', 'PlanSettingForm', function($scope, PlanSetting, Flash, PlanSettingForm) {
 
         var planSetting = new PlanSetting({autoAddNewItems: true});
         PlanSettingForm.initScope($scope, planSetting);
