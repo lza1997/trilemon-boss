@@ -4,7 +4,7 @@
 define(function(require, exports, module) {
     var moment = require('moment');
 
-    var IndexController = ['$scope', 'BuyerRate', '$routeParams', '$location', function($scope, BuyerRate, $routeParams, $location) {
+    var IndexController = ['$scope', 'BuyerRate', '$routeParams', '$location', '$modal', function($scope, BuyerRate, $routeParams, $location, $modal) {
         // 初始化
         $scope.init = function() {
             $routeParams.startDate = $routeParams.startDate || moment().add('days', -15).format('YYYY-MM-DD');
@@ -31,10 +31,36 @@ define(function(require, exports, module) {
         };
 
         // 自动评价
-        $scope.auto = function(rate){
-            BuyerRate.auto({oids: [rate.oid]});
+        $scope.auto = function(rate) {
+            BuyerRate.auto({oids: [rate.oid]}, function() {
+                // 刷新页面
+                getRates();
+            });
         };
 
+        // 批量自动评价
+        $scope.batchAuto = function() {
+            var checkedRates = _.filter($scope.rates, function(rate) {
+                return rate.checked;
+            });
+            BuyerRate.auto({oids: _.pluck(checkedRates, 'oid')}, function() {
+                getRates();
+            });
+        };
+
+        $scope.openManual = function(rate) {
+            var modal = $modal.open({
+                templateUrl: 'rate/manualModal',
+                controller: RateController,
+                resolve: {
+                    rate: function() {
+                        return rate;
+                    }
+                }
+            });
+        };
+
+        // 搜索
         $scope.search = function() {
             if ($scope.searchForm.$valid) {
                 getRates({key: $scope.searchKey, page: 1});
@@ -61,6 +87,22 @@ define(function(require, exports, module) {
             $scope.rates = BuyerRate.query(options);
             $scope.allChecked = false;
         }
+    }];
+
+    // 弹出层用于填写手工评价
+    var RateController = ['$scope', '$modalInstance', 'rate', function($scope, $modalInstance, rate) {
+        $scope.modal = $modalInstance;
+        $scope.rate = rate;
+        $scope.form = {};
+
+        $scope.submitManual = function() {
+            if ($scope.form.rate.$valid) {
+                rate.manualComment = $scope.form.comment;
+                rate.$manual(function() {
+                    $modalInstance.close();
+                });
+            }
+        };
     }];
 
     IndexController.title = '中差评 - 自动评价';

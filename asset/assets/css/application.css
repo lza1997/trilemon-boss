@@ -20,6 +20,9 @@ textarea { resize: none; }
 
 .setting-item { margin-bottom: 20px; }
 
+.dropdown-rate { display: block; padding: 10px 10px 0 10; }
+.dropdown-rate li { margin-bottom: 10px; }
+
 input.ng-invalid.ng-dirty { border-color: #b94a48; -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075); }
 
 input.ng-invalid.ng-dirty:focus { border-color: #953b39; -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392; box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392; }

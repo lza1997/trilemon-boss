@@ -40,13 +40,30 @@ public class BuyerRateController {
             tid = null;
         }
 
-        return rateSettingService.paginateBuyerWaitingRate(sessionService.getUserId(), tid, null, startDate, endDate, page, 1);
+        return rateSettingService.paginateBuyerWaitingRate(sessionService.getUserId(), tid, null, startDate, endDate, page, 2);
     }
 
+    /**
+     * 自动评价，含批量
+     *
+     * @param param
+     * @throws TaobaoAccessControlException
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     */
     @ResponseBody
     @RequestMapping(value = "/auto", method = RequestMethod.POST)
     public void auto(@RequestBody AutoJSONParam param) throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         rateSettingService.autoRate(sessionService.getUserId(), Arrays.asList(param.oids));
+    }
+
+    /**
+     * 手工评价
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{oid}/manual", method = RequestMethod.POST)
+    public void manual(@PathVariable Long oid, @RequestBody RateOrder rate) throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        rateSettingService.autoRate(sessionService.getUserId(), oid, rate.getManualComment());
     }
 
     /**

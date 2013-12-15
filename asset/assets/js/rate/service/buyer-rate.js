@@ -8,6 +8,7 @@ define(function(require, exports, module) {
         var BASE_URL = '/rate/buyer-rates';
         var URL = BASE_URL + '/:id';
         var AUTO_URL = BASE_URL + '/auto';
+        var MANUAL_URL = URL + '/manual';
 
         var BuyerRate = $resource(URL, {id: '@id'}, {
             query: {
@@ -22,6 +23,11 @@ define(function(require, exports, module) {
             auto: {
                 method: 'POST',
                 url: AUTO_URL
+            },
+
+            manual: {
+                method: 'POST',
+                url: MANUAL_URL
             }
         });
 

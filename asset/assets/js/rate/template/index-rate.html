@@ -11,7 +11,7 @@
     <button type="submit" class="btn btn-primary">搜 索</button>
 </form>
 <div>
-    <button class="btn btn-primary" ng-disabled="items.length == 0" ng-click="setIncludeAll(true)">自动评价</button>
+    <button class="btn btn-primary" ng-disabled="items.length == 0" ng-click="batchAuto()">自动评价</button>
 </div>
 <table class="table table-hover">
     <col width="5%"/>
@@ -40,8 +40,10 @@
         <td><strong>{{ rate.result }}</strong> {{ rate.comment }}</td>
         <td>{{ rate.orderEndTime | date:'yyyy-MM-dd HH:ss' }}</td>
         <td>
-            <button class="btn btn-primary" ng-click="auto(rate)">自动评价</button>
-            <button class="btn btn-default" ng-click="manual(rate)">手动评价</button>
+            <div class="dropdown">
+                <button class="btn btn-primary" ng-click="auto(rate)">自动评价</button>
+                <button class="btn btn-default" ng-click="openManual(rate)">手动评价</button>
+            </div>
         </td>
     </tr>
 </table>

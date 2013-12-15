@@ -16,7 +16,8 @@ define(function(require, exports, module) {
             'rate/setting': require('./template/setting.html'),
             'rate/indexComment': require('./template/index-comment.html'),
             'rate/filterTrade': require('./template/filter-trade.html'),
-            'rate/indexRate': require('./template/index-rate.html')
+            'rate/indexRate': require('./template/index-rate.html'),
+            'rate/manualModal': require('./template/manual-modal.html')
         }
     };
 

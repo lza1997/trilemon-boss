@@ -1,0 +1,20 @@
+<div class="modal-dialog" style="width: 500px;">
+    <div class="modal-content">
+        <div class="modal-body">
+            <form name="form.rate">
+                <div>
+                    <strong>{{ rate.buyerNick }}</strong>
+                    <blockquote>
+                        {{ rate.comment }}
+                    </blockquote>
+                </div>
+                <textarea class="form-control" rows="3" placeholder="评价内容..." ng-model="form.comment" required></textarea>
+                {{comment}}
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="submitManual()">提交</button>
+            <button class="btn btn-default" ng-click="modal.close()">关闭</button>
+        </div>
+    </div>
+</div>

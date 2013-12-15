@@ -32,6 +32,16 @@ public class RateOrder extends ShardTable implements Serializable {
 
     private Date updTime;
 
+    private String manualComment; // 手工评价的临时接受字段
+
+    public String getManualComment() {
+        return manualComment;
+    }
+
+    public void setManualComment(String manualComment) {
+        this.manualComment = manualComment;
+    }
+
     public Long getId() {
         return id;
     }
@@ -135,4 +145,6 @@ public class RateOrder extends ShardTable implements Serializable {
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
+
+
 }

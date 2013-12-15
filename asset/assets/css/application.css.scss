@@ -71,6 +71,16 @@ textarea {
   margin-bottom: 20px;
 }
 
+// 手工评价的下拉框
+.dropdown-rate {
+  display: block;
+  padding: 10px 10px 0 10px;
+
+  li {
+    margin-bottom: 10px;
+  }
+}
+
 input.ng-invalid.ng-dirty {
   border-color: #b94a48;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
