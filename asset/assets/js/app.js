@@ -24,7 +24,7 @@
 //               佛祖保佑         永无BUG
 //
 define(function() {
-    var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ngResource', 'restangular', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
+    var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ngResource', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
 
     app.config(['$routeProvider', '$httpProvider', 'SeajsLazyModuleProvider', function($routeProvider, $httpProvider, SeajsLazyModuleProvider) {
 
@@ -55,10 +55,33 @@ define(function() {
 
             .when('/rate/comments', rate.routeFor('rate.indexComment'))
             .when('/rate/filter', rate.routeFor('rate.filter'))
+            .when('/rate/buyer-rates', rate.routeFor('rate.indexBuyerRate', {reloadOnSearch: false}))
             .when('/rate', {redirectTo: '/rate/comments'})
 
             .otherwise({redirectTo: '/shelf'});
     }]);
+
+    app.constant({
+        'datepickerConfig': {
+            dayFormat: 'dd',
+            monthFormat: 'MMMM',
+            yearFormat: 'yyyy',
+            dayHeaderFormat: 'EEE',
+            dayTitleFormat: 'yyyy年 MMMM',
+            monthTitleFormat: 'yyyy',
+            showWeeks: false,
+            startingDay: 0,
+            yearRange: 20,
+            minDate: null,
+            maxDate: null
+        },
+        'datepickerPopupConfig': {
+            dateFormat: 'yyyy-MM-dd',
+            closeOnDateSelection: true,
+            appendToBody: false,
+            showButtonBar: false
+        }
+    });
 
     app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
         SeajsLazyModule.init($templateCache);

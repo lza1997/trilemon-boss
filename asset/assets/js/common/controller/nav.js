@@ -33,7 +33,7 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
             url: '/rate',
             children: [
                 {name: '评价设置', url: '/rate/comments', navClass: 'rateSetting'},
-                {name: '中差评', url: '/rate/sb', navClass: 'rate'},
+                {name: '中差评', url: '/rate/buyer-rates', navClass: 'rateBuyerRate'},
                 {name: '统计', url: '/rate/sx', navClass: 'rate'}
             ]
         }

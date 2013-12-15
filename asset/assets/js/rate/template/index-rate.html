@@ -1,0 +1,50 @@
+<form class="form-inline wrap" name="searchForm" ng-submit="search()">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="订单编号" maxlength="20" ng-model="searchKey"/>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" datepicker-popup ng-model="startDate" required/>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" datepicker-popup ng-model="endDate" required />
+    </div>
+    <button type="submit" class="btn btn-primary">搜 索</button>
+</form>
+<div>
+    <button class="btn btn-primary" ng-disabled="items.length == 0" ng-click="setIncludeAll(true)">自动评价</button>
+</div>
+<table class="table table-hover">
+    <col width="5%"/>
+    <col width="15%"/>
+    <col width="15%"/>
+    <col width="10%"/>
+    <col/>
+    <col width="15%"/>
+    <col width="200px"/>
+    <thead>
+    <tr>
+        <th><input type="checkbox" ng-model="allChecked" ng-change="toggleCheckedAll()"/></th>
+        <th>订单编号</th>
+        <th>宝贝名称</th>
+        <th>买家</th>
+        <th>评价内容</th>
+        <th>订单时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="rate in rates">
+        <td><input type="checkbox" ng-model="rate.checked" ng-change="toggleChecked()"/></td>
+        <td>{{ rate.tid }}</td>
+        <td>{{ rate.title }}</td>
+        <td>{{ rate.buyerNick }}</td>
+        <td><strong>{{ rate.result }}</strong> {{ rate.comment }}</td>
+        <td>{{ rate.orderEndTime | date:'yyyy-MM-dd HH:ss' }}</td>
+        <td>
+            <button class="btn btn-primary" ng-click="auto(rate)">自动评价</button>
+            <button class="btn btn-default" ng-click="manual(rate)">手动评价</button>
+        </td>
+    </tr>
+</table>
+<div class="pagination-wrap clearfix">
+    <pagination class="pull-right" items="rates" pager-click="jumpPage(page)"></pagination>
+</div>

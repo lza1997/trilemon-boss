@@ -5,15 +5,18 @@ define(function(require, exports, module) {
     var rate = {
         controllers: {
             'rate.indexComment': require('./controller/index-comment'),
-            'rate.filter': require('./controller/filter')
+            'rate.filter': require('./controller/filter'),
+            'rate.indexBuyerRate': require('./controller/index-rate')
         },
         factories: {
-            'RateCommentSetting': require('./service/comment-setting')
+            'RateCommentSetting': require('./service/comment-setting'),
+            'BuyerRate': require('./service/buyer-rate')
         },
         templates: {
             'rate/setting': require('./template/setting.html'),
             'rate/indexComment': require('./template/index-comment.html'),
-            'rate/filterTrade': require('./template/filter-trade.html')
+            'rate/filterTrade': require('./template/filter-trade.html'),
+            'rate/indexRate': require('./template/index-rate.html')
         }
     };
 
