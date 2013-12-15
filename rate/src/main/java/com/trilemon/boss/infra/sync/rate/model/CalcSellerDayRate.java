@@ -1,12 +1,16 @@
 package com.trilemon.boss.infra.sync.rate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.trilemon.commons.db.ShardTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CalcSellerDayRate extends ShardTable {
+public class CalcSellerDayRate extends ShardTable implements Serializable{
+    @JsonIgnore
     private Long id;
 
+    @JsonIgnore
     private Long userId;
 
     private Integer goodRateNum;
@@ -17,8 +21,10 @@ public class CalcSellerDayRate extends ShardTable {
 
     private Date rateTime;
 
+    @JsonIgnore
     private Date addTime;
 
+    @JsonIgnore
     private Date updTime;
 
     public Long getId() {

@@ -52,6 +52,7 @@
             <value>
                 /session/** = anon
                 /signOut = logout
+                /test/** = anon
                 /test2/** = anon
                 /** = cas
             </value>
