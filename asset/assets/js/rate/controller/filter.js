@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     }];
 
     FilterController.title = '评价内容 - 自动评价';
-    FilterController.template = 'rate/setting';
+    FilterController.template = 'rate/filterTrade';
     FilterController.navClass = 'rateSetting';
 
     module.exports = FilterController;

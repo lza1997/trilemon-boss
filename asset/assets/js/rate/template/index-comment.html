@@ -1,4 +1,5 @@
-<div class="tab-content" ng-if="tab === 'comment'">
+<div ng-include="'rate/setting'"></div>
+<div class="tab-content">
     <div class="row setting-item" ng-repeat-start="setting in settings">
         <div class="col-md-4" ng-if="!setting.isEdit">
             {{ setting.content }}

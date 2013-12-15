@@ -18,6 +18,7 @@ define(function(require, exports, module) {
             $scope.newSetting.$create(function(data) {
                 $scope.settings.push(data);
                 $scope.newSetting = new RateCommentSetting({content: ''});
+                $scope.addForm.content.$setPristine();
             });
         };
 
@@ -53,7 +54,7 @@ define(function(require, exports, module) {
     }];
 
     IndexController.title = '评价内容 - 自动评价';
-    IndexController.template = 'rate/setting';
+    IndexController.template = 'rate/indexComment';
     IndexController.navClass = 'rateSetting';
 
     module.exports = IndexController;
