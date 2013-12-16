@@ -48,6 +48,7 @@ define(function(require, exports, module) {
             });
         };
 
+        // 打开手动评价的 modal
         $scope.openManual = function(rate) {
             var modal = $modal.open({
                 templateUrl: 'rate/manualModal',

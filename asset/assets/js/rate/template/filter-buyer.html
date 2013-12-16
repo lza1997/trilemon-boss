@@ -1,0 +1,109 @@
+<div ng-include="'rate/setting'"></div>
+<div class="tab-content">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-2 control-label">买家信誉过滤</label>
+
+            <div class="col-md-6">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        不过滤
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        不评价信誉积分小于 <input type="text" class="form-control input-sm form-control-inline" /> 分的买家
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">买家好评率过滤</label>
+
+            <div class="col-md-6">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        不过滤
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        不评价好评率低于 <input type="text" class="form-control input-sm form-control-inline" /> %的买家
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">买家注册时间</label>
+
+            <div class="col-md-6">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        不过滤
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        不评价注册时间少于 <input type="text" class="form-control input-sm form-control-inline" /> 天的买家
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">中差评过滤</label>
+
+            <div class="col-md-6">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        不过滤
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        不评价中差评本店超过 <input type="text" class="form-control input-sm form-control-inline" /> 次的买家
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-2 control-label">黑名单</label>
+
+            <div class="col-md-6">
+                <p class="form-control-static">
+                    <span ng-show="blacklist.length == 0">还没有黑名单</span>
+                    <span ng-repeat="list in blacklist" class="label blacklist">
+                        {{ list.buyerNick }}<a href="" ng-click="removeBlacklist(list)">&times;</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <form class="form-inline" name="addForm" ng-submit="addBlacklist()" novalidate>
+                    <div class="input-group" style="width:250px;">
+                        <input type="text" class="form-control" required ng-model="newBlacklist.buyerNick" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">添加</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

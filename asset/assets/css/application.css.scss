@@ -71,14 +71,28 @@ textarea {
   margin-bottom: 20px;
 }
 
-// 手工评价的下拉框
-.dropdown-rate {
-  display: block;
-  padding: 10px 10px 0 10px;
+// 买家黑名单
+.blacklist {
+  background: lighten(black, 20%);
+  color: white;
+  font-size: 100%;
+  padding: 5px 10px;
 
-  li {
-    margin-bottom: 10px;
+  a {
+    color: lighten(gray, 20%);
+    margin-left: 10px;
+    text-decoration: none;
+
+    &:hover {
+      color: white;
+    }
   }
+}
+
+// inline 的输入框
+input.form-control-inline {
+  display: inline-block;
+  width: 50px;
 }
 
 input.ng-invalid.ng-dirty {

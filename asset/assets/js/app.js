@@ -54,7 +54,7 @@ define(function() {
             .when('/inventory', {redirectTo: '/inventory/setting/edit'})
 
             .when('/rate/comments', rate.routeFor('rate.indexComment'))
-            .when('/rate/filter', rate.routeFor('rate.filter'))
+            .when('/rate/filter-buyer', rate.routeFor('rate.filterBuyer'))
             .when('/rate/buyer-rates', rate.routeFor('rate.indexBuyerRate', {reloadOnSearch: false}))
             .when('/rate', {redirectTo: '/rate/comments'})
 
