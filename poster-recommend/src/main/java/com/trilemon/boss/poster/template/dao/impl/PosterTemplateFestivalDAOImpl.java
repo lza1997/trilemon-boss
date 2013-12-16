@@ -1,10 +1,12 @@
 package com.trilemon.boss.poster.template.dao.impl;
 
-import com.alibaba.cobarclient.BaseSqlMapClientDaoSupport;
+import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.trilemon.boss.poster.template.dao.PosterTemplateFestivalDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplateFestival;
+import org.springframework.stereotype.Repository;
 
-public class PosterTemplateFestivalDAOImpl extends BaseSqlMapClientDaoSupport implements PosterTemplateFestivalDAO {
+@Repository
+public class PosterTemplateFestivalDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterTemplateFestivalDAO {
 
     public int deleteByPrimaryKey(Integer id) {
         PosterTemplateFestival _key = new PosterTemplateFestival();

@@ -7,11 +7,13 @@ import com.trilemon.commons.db.ShardTableMap;
 import com.trilemon.commons.db.ShardTableRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Repository
 public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendActivityItemDAO {
     @Autowired
     @Qualifier("posterRecommendActivityItemRouter")

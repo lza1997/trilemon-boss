@@ -25,5 +25,5 @@
     <import resource="schedule/applicationContext-spring-scheduler.xml"/>
     <import resource="security/applicationContext-shiro.xml"/>
     <import resource="dubbo/dubbo-provider.xml"/>
-    <import resource="cobarclient/applicationContext-cobarclient.xml"/>
+    <import resource="datasource/applicationContext-cobarclient.xml"/>
 </beans>

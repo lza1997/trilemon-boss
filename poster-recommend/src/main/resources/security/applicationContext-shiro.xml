@@ -51,6 +51,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /session/** = anon
+                /test/** = anon
                 /signOut = logout
                 /** = cas
             </value>

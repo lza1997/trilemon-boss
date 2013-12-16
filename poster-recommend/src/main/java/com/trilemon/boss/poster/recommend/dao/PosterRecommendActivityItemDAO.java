@@ -1,11 +1,9 @@
 package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface PosterRecommendActivityItemDAO {
 
     long insertSelective(PosterRecommendActivityItem record);

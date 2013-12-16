@@ -10,14 +10,13 @@
         <result column="item_price" property="itemPrice" jdbcType="DECIMAL"/>
         <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR"/>
         <result column="template_sequence_index" property="templateSequenceIndex" jdbcType="TINYINT"/>
-        <result column="template_copy" property="templateCopy" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, user_id, activity_id, item_num_iid, item_title, item_price, item_pic_url, template_sequence_index, 
-    template_copy, status, add_time, upd_time
+    status, add_time, upd_time
   </sql>
     <sql id="Base_Table_Name">
         poster_recommend_activity_item_#tableId#
@@ -49,9 +48,6 @@
             </isNotNull>
             <isNotNull prepend="," property="templateSequenceIndex">
                 template_sequence_index
-            </isNotNull>
-            <isNotNull prepend="," property="templateCopy">
-                template_copy
             </isNotNull>
             <isNotNull prepend="," property="status">
                 status
@@ -89,9 +85,6 @@
             </isNotNull>
             <isNotNull prepend="," property="templateSequenceIndex">
                 #templateSequenceIndex:TINYINT#
-            </isNotNull>
-            <isNotNull prepend="," property="templateCopy">
-                #templateCopy:VARCHAR#
             </isNotNull>
             <isNotNull prepend="," property="status">
                 #status:TINYINT#
@@ -137,7 +130,7 @@
         SELECT
         t1.id as id, t1.user_id as user_id, t1.activity_id as `activity_id`, t1.item_num_iid as item_num_iid,
         t1.item_title as item_title, t1.item_price as item_price,t1.item_pic_url as item_pic_url,
-        t1.template_sequence_index as template_sequence_index,t1.template_copy as template_copy,t1.status as status,
+        t1.template_sequence_index as template_sequence_index,t1.status as status,
         t1.add_time as add_time, t1.upd_time as upd_time
         FROM
         <include refid="poster_recommend_activity_item.Base_Table_Name"/>
@@ -156,7 +149,7 @@
         select
         <include refid="poster_recommend_activity_item.Base_Column_List"/>
         from
-        <include refid="poster_recommend_activity.Base_Table_Name"/>
+        <include refid="poster_recommend_activity_item.Base_Table_Name"/>
         where user_id = #userId:BIGINT# and activity_id = #activityId:BIGINT#
     </select>
 </sqlMap>

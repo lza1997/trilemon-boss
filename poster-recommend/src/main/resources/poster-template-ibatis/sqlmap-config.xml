@@ -6,8 +6,8 @@
     <settings cacheModelsEnabled="true" enhancementEnabled="true"
               lazyLoadingEnabled="true" errorTracingEnabled="true"
               useStatementNamespaces="true"/>
-    <sqlMap resource="template-ibatis/sqlmap/poster_template_category_SqlMap.xml"/>
-    <sqlMap resource="template-ibatis/sqlmap/poster_template_festival_SqlMap.xml"/>
-    <sqlMap resource="template-ibatis/sqlmap/poster_template_topic_SqlMap.xml"/>
-    <sqlMap resource="template-ibatis/sqlmap/poster_template_SqlMap.xml"/>
+    <sqlMap resource="poster-template-ibatis/sqlmap/poster_template_category_SqlMap.xml"/>
+    <sqlMap resource="poster-template-ibatis/sqlmap/poster_template_festival_SqlMap.xml"/>
+    <sqlMap resource="poster-template-ibatis/sqlmap/poster_template_topic_SqlMap.xml"/>
+    <sqlMap resource="poster-template-ibatis/sqlmap/poster_template_SqlMap.xml"/>
 </sqlMapConfig>

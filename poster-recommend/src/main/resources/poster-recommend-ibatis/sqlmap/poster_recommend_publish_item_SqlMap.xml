@@ -203,7 +203,7 @@
         and activity_id = #activityId:BIGINT#
     </select>
 
-    <select id="groupStatus" resultMap="map" parameterClass="map">
+    <select id="groupStatus" resultClass="map" parameterClass="map">
         SELECT status as `status`,count(1) as `count`
         FROM <include refid="poster_recommend_publish_item.Base_Table_Name"/>
         WHERE

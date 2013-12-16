@@ -5,6 +5,7 @@ import com.trilemon.boss.poster.template.client.response.PosterTemplateQueryResp
 import com.trilemon.boss.poster.template.dao.PosterTemplateDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Service
 public class TemplateService {
+    @Autowired
     private PosterTemplateDAO posterTemplateDAO;
 
     /**

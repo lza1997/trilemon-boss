@@ -15,12 +15,14 @@ import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author kevin
  */
+@Service
 public class RecommendTemplateService {
     @Autowired
     private PosterRecommendRecommendTemplateDAO posterRecommendRecommendTemplateDAO;

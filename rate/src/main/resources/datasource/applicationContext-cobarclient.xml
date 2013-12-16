@@ -33,7 +33,7 @@
     <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
         <property name="configLocations">
             <list>
-                <value>classpath*:/poster-recommend-ibatis/sqlmap-config.xml</value>
+                <value>classpath*:/ibatis/sqlmap-config.xml</value>
                 <value>classpath*:/syncibatis/sqlmap-config.xml</value>
             </list>
         </property>
@@ -50,8 +50,8 @@
     <bean id="router" class="com.alibaba.cobarclient.config.SimpleRouterFactoryBean">
         <property name="configLocations">
             <list>
-                <value>classpath*:/cobarclient/poster-item-recommend-shard-rules.xml</value>
-                <value>classpath*:/cobarclient/sync-shard-rules.xml</value>
+                <value>classpath*:/datasource/rate-shard-rules.xml</value>
+                <value>classpath*:/datasource/sync-shard-rules.xml</value>
             </list>
         </property>
         <property name="shards" ref="shards"/>

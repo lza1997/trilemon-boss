@@ -6,9 +6,11 @@ import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
 import com.trilemon.commons.db.ShardTableRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+@Repository
 public class PosterRecommendUserDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendUserDAO {
     @Autowired
     @Qualifier("posterRecommendUserRouter")

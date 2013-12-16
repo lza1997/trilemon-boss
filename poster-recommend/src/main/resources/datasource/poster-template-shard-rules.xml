@@ -1,0 +1,19 @@
+<!DOCTYPE "rules.dtd">
+<rules>
+    <rule>
+        <namespace>poster_template_category</namespace>
+        <shards>posterTemplateShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_template_festival</namespace>
+        <shards>posterTemplateShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_template</namespace>
+        <shards>posterTemplateShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_template_topic</namespace>
+        <shards>posterTemplateShard</shards>
+    </rule>
+</rules>

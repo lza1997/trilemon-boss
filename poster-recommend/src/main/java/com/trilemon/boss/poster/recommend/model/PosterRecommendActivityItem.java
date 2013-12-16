@@ -22,7 +22,7 @@ public class PosterRecommendActivityItem extends ShardTable {
 
     private String itemPicUrl;
 
-    private Byte templateSequenceIndex;
+    private Byte templateSequenceIndex;//暂未使用
 
     private Byte status;
 

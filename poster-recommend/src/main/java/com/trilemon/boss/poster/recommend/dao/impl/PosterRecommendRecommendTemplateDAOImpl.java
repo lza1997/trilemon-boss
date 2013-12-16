@@ -4,11 +4,13 @@ import com.alibaba.cobarclient.BaseSqlMapClientDaoSupport;
 import com.google.common.collect.Maps;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendRecommendTemplateDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendRecommendTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class PosterRecommendRecommendTemplateDAOImpl extends BaseSqlMapClientDaoSupport implements PosterRecommendRecommendTemplateDAO {
 
     @Override

@@ -132,7 +132,7 @@
       upd_time = #updTime:TIMESTAMP#
     where id = #id:BIGINT#
   </update>
-    <select id="selectByRecommendType" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendRecommendTemplate" >
+    <select id="selectByRecommendType" resultMap="BaseResultMap" parameterClass="map" >
         select
         <include refid="poster_recommend_recommend_template.Base_Column_List" />
         from poster_recommend_recommend_template

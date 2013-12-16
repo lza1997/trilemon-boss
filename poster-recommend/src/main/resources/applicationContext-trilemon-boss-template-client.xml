@@ -25,7 +25,7 @@
 
     <bean id="posterTemplateClient"
           class="com.trilemon.boss.poster.template.client.impl.PosterTemplateClientImpl">
-        <property name="templateService" value="templateService"/>
+        <property name="templateService" ref="templateService"/>
     </bean>
 
 

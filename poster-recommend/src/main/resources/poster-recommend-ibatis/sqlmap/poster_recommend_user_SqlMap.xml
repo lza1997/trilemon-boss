@@ -5,12 +5,11 @@
     <result column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="status" property="status" jdbcType="TINYINT" />
-    <result column="last_use_time" property="lastUseTime" jdbcType="TIMESTAMP" />
     <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, status, last_use_time, add_time, upd_time
+    id, user_id, status, add_time, upd_time
   </sql>
     <sql id="Base_Table_Name">
         poster_recommend_user_#tableId#
@@ -37,9 +36,6 @@
       <isNotNull prepend="," property="status" >
         status
       </isNotNull>
-      <isNotNull prepend="," property="lastUseTime" >
-        last_use_time
-      </isNotNull>
       <isNotNull prepend="," property="addTime" >
         add_time
       </isNotNull>
@@ -59,9 +55,6 @@
       <isNotNull prepend="," property="status" >
         #status:TINYINT#
       </isNotNull>
-      <isNotNull prepend="," property="lastUseTime" >
-        #lastUseTime:TIMESTAMP#
-      </isNotNull>
       <isNotNull prepend="," property="addTime" >
         #addTime:TIMESTAMP#
       </isNotNull>
@@ -79,9 +72,6 @@
       </isNotNull>
       <isNotNull prepend="," property="status" >
         status = #status:TINYINT#
-      </isNotNull>
-      <isNotNull prepend="," property="lastUseTime" >
-        last_use_time = #lastUseTime:TIMESTAMP#
       </isNotNull>
       <isNotNull prepend="," property="addTime" >
         add_time = #addTime:TIMESTAMP#

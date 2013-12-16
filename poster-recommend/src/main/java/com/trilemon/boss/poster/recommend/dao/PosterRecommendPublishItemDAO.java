@@ -2,11 +2,9 @@ package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface PosterRecommendPublishItemDAO {
     long insertSelective(PosterRecommendPublishItem record);
 

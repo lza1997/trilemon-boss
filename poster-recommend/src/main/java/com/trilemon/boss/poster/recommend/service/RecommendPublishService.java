@@ -26,6 +26,7 @@ import com.trilemon.commons.web.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
@@ -38,6 +39,7 @@ import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 /**
  * @author kevin
  */
+@Service
 public class RecommendPublishService {
     private final static Logger logger = LoggerFactory.getLogger(RecommendPublishService.class);
     @Autowired

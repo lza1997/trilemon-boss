@@ -92,10 +92,10 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
         shardTableMap.put("buyerNick", buyerNick);
         shardTableMap.put("statusList", statusList);
         shardTableMap.put("rateTypes", rateTypes);
-        shardTableMap.put("startDate", buyerNick);
-        shardTableMap.put("endDate", buyerNick);
-        shardTableMap.put("offset", buyerNick);
-        shardTableMap.put("limit", buyerNick);
+        shardTableMap.put("startDate", startDate);
+        shardTableMap.put("endDate", endDate);
+        shardTableMap.put("offset", offset);
+        shardTableMap.put("limit", limit);
         return (int) getSqlMapClientTemplate().queryForObject("rate_order.countBuyerRate", shardTableMap);
     }
 

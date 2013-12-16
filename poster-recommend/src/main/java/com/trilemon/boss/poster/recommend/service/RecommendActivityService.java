@@ -31,10 +31,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 
 /**
@@ -98,6 +98,7 @@ public class RecommendActivityService {
      */
     @Transactional
     public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity) {
+        checkNotNull(activity.getId(), "activity id is null");
 
         activity.setUserId(userId);
         activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
@@ -214,8 +215,14 @@ public class RecommendActivityService {
      * @param posterRecommendActivityItem
      */
     public PosterRecommendActivityItem addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
-            posterRecommendActivityItem) throws IOException {
+            posterRecommendActivityItem) {
+        PosterRecommendActivity posterRecommendActivity = getActivity(userId, activityId);
+        if (null == posterRecommendActivity) {
+            return null;
+        }
+        //@葛亮 这里PosterRecommendActivityItem，你前台需要填充和商品相关的属性
         posterRecommendActivityItem.setUserId(userId);
+        posterRecommendActivityItem.setTemplateId(posterRecommendActivity.getTemplateId());
         posterRecommendActivityItem.setActivityId(activityId);
         posterRecommendActivityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
         posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
@@ -258,6 +265,7 @@ public class RecommendActivityService {
 
     /**
      * 查询可供选择加入活动的宝贝
+     *
      * @param userId
      * @param activityId
      * @param onSale

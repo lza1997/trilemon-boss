@@ -8,6 +8,7 @@ import com.trilemon.commons.db.ShardTableMap;
 import com.trilemon.commons.db.ShardTableRouter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 
+@Repository
 public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendPublishItemDAO {
     @Autowired
     @Qualifier("posterRecommendPublishItemRouter")

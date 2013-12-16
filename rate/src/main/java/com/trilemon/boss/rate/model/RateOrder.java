@@ -149,4 +149,12 @@ public class RateOrder extends ShardTable implements Serializable {
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
     }
+
+    public String getItemTitle() {
+        return itemTitle;
+    }
+
+    public void setItemTitle(String itemTitle) {
+        this.itemTitle = itemTitle;
+    }
 }
