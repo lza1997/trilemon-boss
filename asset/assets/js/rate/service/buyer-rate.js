@@ -31,6 +31,8 @@ define(function(require, exports, module) {
             }
         });
 
+        BuyerRate.refreshCurrPage = paginateResource.refreshCurrPage;
+
         return BuyerRate;
     }];
 });

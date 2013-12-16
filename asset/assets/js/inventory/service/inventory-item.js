@@ -23,6 +23,8 @@ define(function(require, exports, module) {
             }
         });
 
+        InventoryItem.removeFromList = paginateResource.removeFromList;
+
         return InventoryItem;
     }];
 });

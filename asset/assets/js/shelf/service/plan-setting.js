@@ -42,6 +42,8 @@ define(function(require, exports, module) {
             }
         });
 
+        PlanSetting.removeFromList = paginateResource.removeFromList;
+
         return PlanSetting;
     }];
 });

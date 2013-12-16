@@ -63,7 +63,7 @@ public class BuyerRateController {
     @ResponseBody
     @RequestMapping(value = "/{oid}/manual", method = RequestMethod.POST)
     public void manual(@PathVariable Long oid, @RequestBody RateOrder rate) throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
-        rateSettingService.autoRate(sessionService.getUserId(), oid, rate.getManualComment());
+        rateSettingService.autoRate(sessionService.getUserId(), oid, rate.getComment());
     }
 
     /**

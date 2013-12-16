@@ -3,12 +3,13 @@
  */
 define(function(require, exports, module) {
     var moment = require('moment');
+    var FORMAT = 'YYYY-MM-DD';
 
     var IndexController = ['$scope', 'BuyerRate', '$routeParams', '$location', '$modal', function($scope, BuyerRate, $routeParams, $location, $modal) {
         // 初始化
         $scope.init = function() {
-            $routeParams.startDate = $routeParams.startDate || moment().add('days', -15).format('YYYY-MM-DD');
-            $routeParams.endDate = $routeParams.endDate || moment().format('YYYY-MM-DD');
+            $routeParams.startDate = $routeParams.startDate || moment().add('days', -15).format(FORMAT);
+            $routeParams.endDate = $routeParams.endDate || moment().format(FORMAT);
 
             $scope.searchKey = $routeParams.key;
             $scope.startDate = $routeParams.startDate;
@@ -33,8 +34,7 @@ define(function(require, exports, module) {
         // 自动评价
         $scope.auto = function(rate) {
             BuyerRate.auto({oids: [rate.oid]}, function() {
-                // 刷新页面
-                getRates();
+                BuyerRate.refreshCurrPage($scope.rates.currPage, getRates);
             });
         };
 
@@ -44,10 +44,11 @@ define(function(require, exports, module) {
                 return rate.checked;
             });
             BuyerRate.auto({oids: _.pluck(checkedRates, 'oid')}, function() {
-                getRates();
+                BuyerRate.refreshCurrPage($scope.rates.currPage, getRates);
             });
         };
 
+        // 打开手动评价的 modal
         $scope.openManual = function(rate) {
             var modal = $modal.open({
                 templateUrl: 'rate/manualModal',
@@ -58,12 +59,21 @@ define(function(require, exports, module) {
                     }
                 }
             });
+            modal.result.then(function() {
+                BuyerRate.refreshCurrPage($scope.rates.currPage, getRates);
+            });
         };
+
 
         // 搜索
         $scope.search = function() {
             if ($scope.searchForm.$valid) {
-                getRates({key: $scope.searchKey, page: 1});
+                getRates({
+                    key: $scope.searchKey,
+                    startDate: moment($scope.startDate).format(FORMAT),
+                    endDate: moment($scope.endDate).format(FORMAT),
+                    page: 1
+                });
             }
         };
 
@@ -86,6 +96,7 @@ define(function(require, exports, module) {
 
             $scope.rates = BuyerRate.query(options);
             $scope.allChecked = false;
+            return $scope.rates.$promise;
         }
     }];
 
@@ -97,7 +108,7 @@ define(function(require, exports, module) {
 
         $scope.submitManual = function() {
             if ($scope.form.rate.$valid) {
-                rate.manualComment = $scope.form.comment;
+                rate.comment = $scope.form.comment;
                 rate.$manual(function() {
                     $modalInstance.close();
                 });
