@@ -23,12 +23,12 @@ import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.boss.poster.template.PosterTemplateConstants;
 import com.trilemon.boss.poster.template.PublishUtils;
 import com.trilemon.commons.web.Page;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -210,7 +210,7 @@ public class RecommendPublishService {
         List<PosterRecommendPublishItem> publishItems = posterRecommendPublishItemDAO.paginateByUserIdAndActivityId
                 (userId, activityId, "add_time desc", (pageNum - 1) * pageSize, pageSize);
         int count = posterRecommendPublishItemDAO.countByUserIdAndActivityId(userId, activityId);
-        if (CollectionUtils.isEmpty(publishItems)) {
+        if (CollectionUtils.isNotEmpty(publishItems)) {
             return Page.create(count, pageNum, pageSize, publishItems);
         } else {
             return Page.empty();

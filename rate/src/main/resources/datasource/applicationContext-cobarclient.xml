@@ -68,6 +68,7 @@
     <bean id="transactionManager"
           class="com.alibaba.cobarclient.transaction.BestEffortMultiDataSourceTransactionManager">
         <property name="shards" ref="shards"/>
+        <property name="transactionSynchronization" value="2" />
     </bean>
 
     <!-- 使用annotation定义事务 -->

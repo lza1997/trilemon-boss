@@ -63,6 +63,9 @@
       </isNotNull>
       )
     </dynamic>
+      <selectKey resultClass="long" keyProperty="id">
+          SELECT LAST_INSERT_ID() as id
+      </selectKey>
   </insert>
   <update id="updateByUserIdSelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendUser" >
     update <include refid="poster_recommend_user.Base_Table_Name"/>

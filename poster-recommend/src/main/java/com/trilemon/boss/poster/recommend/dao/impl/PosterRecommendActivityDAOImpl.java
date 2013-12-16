@@ -59,13 +59,15 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
     }
 
     @Override
-    public List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList, int offset, int limit) {
+    public List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList,
+                                                                   String orderBy, int offset, int limit) {
         checkNotNull(userId);
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(activity);
         shardTableMap.put("userId", userId);
         shardTableMap.put("statusList", statusList);
+        shardTableMap.put("orderBy",orderBy);
         shardTableMap.put("offset", offset);
         shardTableMap.put("limit", limit);
         return (List<PosterRecommendActivity>) getSqlMapClientTemplate().queryForList("poster_recommend_activity.paginateActivityAndStatus", shardTableMap);

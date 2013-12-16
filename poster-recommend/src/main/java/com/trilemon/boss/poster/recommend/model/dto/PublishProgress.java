@@ -41,7 +41,12 @@ public class PublishProgress {
     }
 
     public float getProgress() {
-        return (getPublishedItemNum() * 100.0f) /
-                (waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum);
+        int total = waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum;
+        if (total == 0) {
+            return 0;
+        } else {
+            return (getPublishedItemNum() * 100.0f) /
+                    (waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum);
+        }
     }
 }

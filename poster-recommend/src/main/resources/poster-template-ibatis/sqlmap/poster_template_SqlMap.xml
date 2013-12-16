@@ -276,61 +276,83 @@
     where id = #id:BIGINT#
   </update>
     <select id="countByQueryRequest" resultClass="int"
-            parameterClass="com.trilemon.boss.poster.template.model.PosterTemplate">
+            parameterClass="com.trilemon.boss.poster.template.client.request.PosterTemplateQueryRequest">
         select count(1)
         from poster_template
-        where
-        <isNotNull prepend="AND" property="slotNum">
-            slot_num = #slotNum:INTEGER#
-        </isNotNull>
-        <iterate prepend="AND" property="categoryIds" open="(" close=")" conjunction="OR">
-            categories = #categoryIds[]#
-        </iterate>
-        <iterate prepend="AND" property="topicIds" open="(" close=")" conjunction="OR">
-            topics = #topicIds[]:VARCHAR#
-        </iterate>
-        <iterate prepend="AND" property="festivalIds" open="(" close=")" conjunction="OR">
-            festivals = #festivalIds[]:VARCHAR#
-        </iterate>
-        <iterate prepend="AND" property="typeList" open="(" close=")" conjunction="OR">
-            `type` = #typeList[]:VARCHAR#
-        </iterate>
-        <isNotNull prepend="AND" property="applyVersion">
-            apply_version = #applyVersion:VARCHAR#
-        </isNotNull>
-        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]:VARCHAR#
-        </iterate>
+        <dynamic prepend="where">
+            <isNotNull prepend="AND" property="slotNum">
+                slot_num = #slotNum:INTEGER#
+            </isNotNull>
+            <isNotEmpty property="categoryIds">
+                <iterate prepend="AND" property="categoryIds" open="(" close=")" conjunction="OR">
+                    categories = #categoryIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="topicIds">
+                <iterate prepend="AND" property="topicIds" open="(" close=")" conjunction="OR">
+                    topics = #topicIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="festivalIds">
+                <iterate prepend="AND" property="festivalIds" open="(" close=")" conjunction="OR">
+                    festivals = #festivalIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="typeList">
+                <iterate prepend="AND" property="typeList" open="(" close=")" conjunction="OR">
+                    `type` = #typeList[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotNull prepend="AND" property="applyVersion">
+                apply_version = #applyVersion:VARCHAR#
+            </isNotNull>
+            <isNotEmpty property="statusList">
+                <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                    status = #statusList[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+        </dynamic>
     </select>
     <select id="paginateByQueryRequest" resultMap="ResultMapWithBLOBs"
-            parameterClass="com.trilemon.boss.poster.template.model.PosterTemplate">
+            parameterClass="com.trilemon.boss.poster.template.client.request.PosterTemplateQueryRequest">
         select
         <include refid="poster_template.Base_Column_List"/>
         ,
         <include refid="poster_template.Blob_Column_List"/>
         from poster_template
-        where
-        <isNotNull prepend="AND" property="slotNum">
-            slot_num = #slotNum:INTEGER#
-        </isNotNull>
-        <iterate prepend="AND" property="categoryIds" open="(" close=")" conjunction="OR">
-            categories = #categoryIds[]#
-        </iterate>
-        <iterate prepend="AND" property="topicIds" open="(" close=")" conjunction="OR">
-            topics = #topicIds[]:VARCHAR#
-        </iterate>
-        <iterate prepend="AND" property="festivalIds" open="(" close=")" conjunction="OR">
-            festivals = #festivalIds[]:VARCHAR#
-        </iterate>
-        <iterate prepend="AND" property="typeList" open="(" close=")" conjunction="OR">
-            `type` = #typeList[]:VARCHAR#
-        </iterate>
-        <isNotNull prepend="AND" property="applyVersion">
-            apply_version = #applyVersion:VARCHAR#
-        </isNotNull>
-        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]:VARCHAR#
-        </iterate>
+        <dynamic prepend="where">
+            <isNotNull prepend="AND" property="slotNum">
+                slot_num = #slotNum:INTEGER#
+            </isNotNull>
+            <isNotEmpty property="categoryIds">
+                <iterate prepend="AND" property="categoryIds" open="(" close=")" conjunction="OR">
+                    categories = #categoryIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="topicIds">
+                <iterate prepend="AND" property="topicIds" open="(" close=")" conjunction="OR">
+                    topics = #topicIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="festivalIds">
+                <iterate prepend="AND" property="festivalIds" open="(" close=")" conjunction="OR">
+                    festivals = #festivalIds[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotEmpty property="typeList">
+                <iterate prepend="AND" property="typeList" open="(" close=")" conjunction="OR">
+                    `type` = #typeList[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+            <isNotNull prepend="AND" property="applyVersion">
+                apply_version = #applyVersion:VARCHAR#
+            </isNotNull>
+            <isNotEmpty property="statusList">
+                <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                    status = #statusList[]:VARCHAR#
+                </iterate>
+            </isNotEmpty>
+        </dynamic>
         <isNotNull prepend="order by" property="orderBy">
             $orderBy$
         </isNotNull>

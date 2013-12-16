@@ -89,6 +89,9 @@
       </isNotNull>
       )
     </dynamic>
+      <selectKey resultClass="long" keyProperty="id">
+          SELECT LAST_INSERT_ID() as id
+      </selectKey>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendRecommendTemplate" >
     update poster_recommend_recommend_template

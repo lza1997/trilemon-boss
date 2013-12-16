@@ -351,7 +351,7 @@ public class RecommendActivityService {
      */
     public Page<PosterRecommendActivity> paginateActivity(Long userId, int pageNum, int pageSize) {
         List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityAndStatus(userId,
-                ALL_ACTIVITY_STATUS,
+                ALL_ACTIVITY_STATUS,"add_time desc",
                 (pageNum - 1) * pageSize, pageSize);
         int totalCount = posterRecommendActivityDAO.countActivityByUserIdAndStatus(userId, ALL_ACTIVITY_STATUS);
 

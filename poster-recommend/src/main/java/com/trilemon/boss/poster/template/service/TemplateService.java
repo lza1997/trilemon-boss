@@ -33,6 +33,6 @@ public class TemplateService {
     }
 
     public PosterTemplate getTemplate(Long templateId) {
-        return null;
+        return posterTemplateDAO.selectByPrimaryKey(templateId);
     }
 }

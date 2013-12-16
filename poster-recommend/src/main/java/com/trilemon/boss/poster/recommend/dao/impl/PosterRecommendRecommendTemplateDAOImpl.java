@@ -34,6 +34,7 @@ public class PosterRecommendRecommendTemplateDAOImpl extends BaseSqlMapClientDao
     public List<PosterRecommendRecommendTemplate> selectByRecommendType(Byte recommendType, Date now) {
         Map<String, Object> parameterMap = Maps.newHashMap();
         parameterMap.put("recommendType", recommendType);
-        return (List<PosterRecommendRecommendTemplate>) getSqlMapClientTemplate().queryForObject("poster_recommend_recommend_template.selectByRecommendType", parameterMap);
+        parameterMap.put("now",now);
+        return (List<PosterRecommendRecommendTemplate>) getSqlMapClientTemplate().queryForList("poster_recommend_recommend_template.selectByRecommendType", parameterMap);
     }
 }

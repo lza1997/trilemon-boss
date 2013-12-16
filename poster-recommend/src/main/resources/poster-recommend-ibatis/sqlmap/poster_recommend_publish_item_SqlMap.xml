@@ -26,7 +26,7 @@
             parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem">
         select
         <include refid="poster_recommend_publish_item.Base_Column_List"/>
-        from poster_recommend_publish_item
+        from <include refid="poster_recommend_publish_item.Base_Table_Name"/>
         where user_id = #userId:BIGINT#
         and activity_id= #activityId:BIGINT#
     </select>
@@ -35,7 +35,7 @@
             parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem">
         select
         <include refid="poster_recommend_publish_item.Base_Column_List"/>
-        from poster_recommend_publish_item
+        from <include refid="poster_recommend_publish_item.Base_Table_Name"/>
         where user_id = #userId:BIGINT#
         and activity_id= #activityId:BIGINT#
         and item_num_iid=#itemNumIid:BIGINT#
@@ -132,6 +132,9 @@
             </isNotNull>
             )
         </dynamic>
+        <selectKey resultClass="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
     </insert>
     <update id="updateByUserIdAndActivityIdAndItemNumIidSelective"
             parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem">
@@ -189,7 +192,9 @@
         <include refid="poster_recommend_publish_item.Base_Table_Name"/>
         WHERE
         user_id = #userId:BIGINT# and activity_id = #activityId:BIGINT#
-        ORDER BY $orderBy$
+        <isNotNull prepend="ORDER BY" property="orderBy">
+            $orderBy$
+        </isNotNull>
         LIMIT $offset$, $limit$
         ) t2
         where t1.id=t2.id
@@ -203,7 +208,7 @@
         and activity_id = #activityId:BIGINT#
     </select>
 
-    <select id="groupStatus" resultClass="map" parameterClass="map">
+    <select id="groupStatus" resultClass="java.util.HashMap" parameterClass="map">
         SELECT status as `status`,count(1) as `count`
         FROM <include refid="poster_recommend_publish_item.Base_Table_Name"/>
         WHERE

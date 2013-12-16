@@ -16,7 +16,8 @@ public interface PosterRecommendActivityDAO {
 
     PosterRecommendActivity selectLastCreatedActivity(Long userId);
 
-    List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList, int offset, int limit);
+    List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList,
+                                                            String orderBy, int offset, int limit);
 
     int countActivityByUserIdAndStatus(Long userId, List<Byte> statusList);
 }

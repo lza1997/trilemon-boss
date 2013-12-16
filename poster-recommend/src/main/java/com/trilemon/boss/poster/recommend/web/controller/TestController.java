@@ -65,11 +65,11 @@ public class TestController {
 
     @ResponseBody
     @RequestMapping(value = "/updateActivityPublishPart", method = RequestMethod.GET)
-    public String updateActivityPublishPart(@RequestParam Long userId, @RequestParam Long activityId, byte detailPagePosition) {
+    public String updateActivityPublishPart(@RequestParam Long userId, @RequestParam Long activityId) {
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setId(activityId);
         activity.setDetailPagePosition((byte) 1);
-        activity.setPublishEndTime(DateUtils.endOfNDaysBefore(10).toDate());
+        activity.setPublishStartTime(DateUtils.endOfNDaysBefore(10).toDate());
         activity.setPublishEndTime(DateUtils.endOfNDaysBefore(1).toDate());
         activity.setPublishHtml("<a>test</a>");
         activityService.updateActivityPublishPart(userId, activity);
@@ -165,8 +165,10 @@ public class TestController {
         return publishService.removePublishItem(userId, activityId, itemNumIid);
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/publishActivity", method = RequestMethod.GET)
+    //TODO test
     public void publishActivity(@RequestParam Long userId, @RequestParam Long activityId) {
         publishService.publishActivity(userId, activityId);
     }

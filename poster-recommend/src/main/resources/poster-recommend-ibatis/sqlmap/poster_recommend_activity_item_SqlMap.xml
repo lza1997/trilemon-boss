@@ -97,6 +97,9 @@
             </isNotNull>
             )
         </dynamic>
+        <selectKey resultClass="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
     </insert>
 
     <select id="countByUserIdAndActivityId" resultClass="int" parameterClass="map">
@@ -139,7 +142,9 @@
         <include refid="poster_recommend_activity_item.Base_Table_Name"/>
         WHERE
         user_id = #userId:BIGINT# and activity_id = #activityId:BIGINT#
-        ORDER BY $orderBy$
+        <isNotNull prepend="ORDER BY" property="orderBy">
+            $orderBy$
+        </isNotNull>
         LIMIT $offset$, $limit$
         ) t2
         where t1.id=t2.id
