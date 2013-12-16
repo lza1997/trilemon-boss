@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -158,8 +159,8 @@ public class RateService {
                 logger.error("fail to rate userId[" + rateSetting.getUserId() + "] rateSettingId[" + rateSetting
                         .getId() + "] startDate[" + DateUtils.format(startDate, DateUtils.yyyy_MM_dd_HH_mm_ss) + "] " +
                         "endDate[" + DateUtils.format(endDate, DateUtils.yyyy_MM_dd_HH_mm_ss) + "], " +
-                        "get ["+tradeCount+"] trades," +
-                        "spend time ["+stopwatch.elapsed(TimeUnit.SECONDS)+" sec]", e);
+                        "get [" + tradeCount + "] trades," +
+                        "spend time [" + stopwatch.elapsed(TimeUnit.SECONDS) + " sec]", e);
                 break;
             }
         }
@@ -255,39 +256,43 @@ public class RateService {
                         //卖家已经评价
                         continue;
                     }
+                    List<TradeRate> tradeRates = taobaoApiShopService.getBuyerRates(rateSetting.getUserId(),
+                            order.getOid(), ImmutableList.of("result", "content", "created", "item_title", "item_price"));
+                    TradeRate tradeRate = tradeRates.get(0);
+                    //因为只查询一个 oid，所以这里应该只有一条记录
+                    if (CollectionUtils.isEmpty(tradeRates)) {
+                        continue;
+                    }
+
                     //买家已评马上就评
                     RateOrder rateOrder = null;
                     if (RateConstants.RATE_TYPE_IMMEDIATELY == rateSetting.getRateType()) {
                         rateOrder = rate(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                 trade.getBuyerNick(), Collections3.getRandomElem(commentContents),
-                                RATE_ORDER_STATUS_DONE_IMMEDIATELY);
+                                RATE_ORDER_STATUS_DONE_IMMEDIATELY, tradeRate);
                         rateLog.incrDay15RateNum();
 
                     } else if (RateConstants.RATE_TYPE_AFTER_BUYER_RATE == rateSetting.getRateType() && order.getBuyerRate()) {
                         //检查买家评论种类；根据设置评价中差评论
-                        List<TradeRate> tradeRates = taobaoApiShopService.getBuyerRates(rateSetting.getUserId(),
-                                order.getOid(), ImmutableList.of("result"));
-                        //因为只查询一个 oid，所以这里应该只有一条记录
-                        String rateType = tradeRates.get(0).getResult();
-                        if (rateSetting.getAutoGoodRate() && rateType.equals("good")) {
+                        if (rateSetting.getAutoGoodRate() && tradeRate.getResult().equals("good")) {
                             rateOrder = rate(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), Collections3.getRandomElem(commentContents),
-                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE);
+                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE, tradeRate);
                             rateLog.incrDay15RateNum();
-                        } else if (rateSetting.getAutoNeutralRate() && rateType.equals("neutral")) {
+                        } else if (rateSetting.getAutoNeutralRate() && tradeRate.getResult().equals("neutral")) {
                             rateOrder = rate(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), Collections3.getRandomElem(commentContents),
-                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE);
+                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE, tradeRate);
                             rateLog.incrDay15RateNum();
-                        } else if (rateSetting.getAutoBadRate() && rateType.equals("bad")) {
+                        } else if (rateSetting.getAutoBadRate() && tradeRate.getResult().equals("bad")) {
                             rateOrder = rate(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), Collections3.getRandomElem(commentContents),
-                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE);
+                                    RATE_ORDER_STATUS_DONE_AFTER_BUYER_RATE, tradeRate);
                             rateLog.incrDay15RateNum();
                         } else {
                             rateOrder = buildRateOrder(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), order.getNumIid(), RATE_ORDER_STATUS_WAITING_RATE,
-                                    Collections3.getRandomElem(commentContents));
+                                    Collections3.getRandomElem(commentContents), tradeRate);
                         }
                     } else {
                         //超过15天的不评，剩下的第14天评
@@ -297,7 +302,7 @@ public class RateService {
                         if (days > 15) {
                             rateOrder = buildRateOrder(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), order.getNumIid(), RATE_ORDER_STATUS_15DAY_AGO,
-                                    Collections3.getRandomElem(commentContents));
+                                    Collections3.getRandomElem(commentContents), tradeRate);
                             logger.info("order is 15 day ago, tid[{}] oid[{}] buyerNick[{}] userId[{}]",
                                     trade.getTid(),
                                     order.getOid(),
@@ -306,7 +311,7 @@ public class RateService {
                         } else if (days <= 15 && days >= 14) {
                             rateOrder = rate(rateSetting.getUserId(), trade.getTid(), order.getOid(),
                                     trade.getBuyerNick(), Collections3.getRandomElem(commentContents),
-                                    RATE_ORDER_STATUS_DONE_IN_15DAY);
+                                    RATE_ORDER_STATUS_DONE_IN_15DAY, tradeRate);
                             rateOrders.add(rateOrder);
                             rateLog.incrDay14RateNum();
                         }
@@ -346,7 +351,7 @@ public class RateService {
     }
 
     private RateOrder rate(Long userId, Long tid, Long oid, String buyerNick,
-                           String comment, byte status) throws TaobaoAccessControlException,
+                           String comment, byte status, TradeRate buyerTradeRate) throws TaobaoAccessControlException,
             TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         Preconditions.checkArgument(comment.length() <= 500, "comment length should be <= 500.");
         TraderateAddRequest request = new TraderateAddRequest();
@@ -358,19 +363,23 @@ public class RateService {
         request.setContent(comment);
         TradeRate tradeRate = taobaoApiTradeService.addRate(userId, request);
 
-        return buildRateOrder(userId, tid, oid, buyerNick, tradeRate.getNumIid(), status, comment);
+        return buildRateOrder(userId, tid, oid, buyerNick, tradeRate.getNumIid(), status, comment, buyerTradeRate);
     }
 
     private RateOrder buildRateOrder(Long userId, Long tid, Long oid, String buyerNick, Long numIid, byte status,
-                                     String comment) {
+                                     String comment, TradeRate buyerTradeRate) {
         RateOrder rateOrder = new RateOrder();
         rateOrder.setUserId(userId);
-        rateOrder.setComment(comment);
+        rateOrder.setComment(comment);//卖家回评
         rateOrder.setItemNumIid(numIid);
         rateOrder.setBuyerNick(buyerNick);
         rateOrder.setStatus(status);
         rateOrder.setTid(tid);
         rateOrder.setOid(oid);
+        rateOrder.setContent(buyerTradeRate.getContent());//买家评论
+        rateOrder.setCreated(buyerTradeRate.getCreated());
+        rateOrder.setItemTitle(buyerTradeRate.getItemTitle());
+        rateOrder.setItemPrice(new BigDecimal(buyerTradeRate.getItemPrice()));
         rateOrder.setRateTime(DateTime.now().toDate());
         return rateOrder;
     }

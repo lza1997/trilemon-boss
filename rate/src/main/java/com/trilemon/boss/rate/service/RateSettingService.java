@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.BaseConstants;
 import com.trilemon.boss.infra.base.client.BaseClient;
 import com.trilemon.boss.infra.base.model.BuyerBlacklist;
@@ -125,15 +124,14 @@ public class RateSettingService {
         rateCommentSetting.setAddTime(appService.getLocalSystemTime().toDate());
         rateCommentSetting.setContent(comment);
         rateCommentSetting.setStatus(RATE_COMMENT_SETTING_STATUS_VALID);
-       return rateCommentSettingDAO.insertSelective(rateCommentSetting);
+        return rateCommentSettingDAO.insertSelective(rateCommentSetting);
     }
 
     /**
      * 添加评论设置
-     *
      */
     public void deleteRateCommentSetting(Long userId, Long rateCommentSettingId) {
-         rateCommentSettingDAO.deleteByUserIdAndPrimaryKey(userId,rateCommentSettingId);
+        rateCommentSettingDAO.deleteByUserIdAndPrimaryKey(userId, rateCommentSettingId);
     }
 
     /**
@@ -284,8 +282,7 @@ public class RateSettingService {
     }
 
     /**
-     * 查询中差评论,按照评论时间降序排序
-     * TODO 异常处理
+     * 查询中差评论,按照评论时间降序排序 TODO 异常处理
      *
      * @param userId
      * @param tid
@@ -304,25 +301,11 @@ public class RateSettingService {
                 (pageNum - 1) * pageSize, pageSize);
         List<RateOrder> rateOrders = rateOrderDAO.paginateBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes,
                 startDate, endDate, (pageNum - 1) * pageSize, pageSize);
-        if(CollectionUtils.isNotEmpty(rateOrders)){
-            //填充 title
-            for(RateOrder rateOrder:rateOrders){
-                try {
-                    Item item =taobaoApiShopService.getItem(userId,rateOrder.getItemNumIid(),
-                            Lists.newArrayList("title","num_iid"));
-                    rateOrder.setItemTitle(item.getTitle());
-                } catch (TaobaoEnhancedApiException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (TaobaoSessionExpiredException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (TaobaoAccessControlException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
-        }else{
-            rateOrders=Lists.newArrayList();
+        if (CollectionUtils.isEmpty(rateOrders)) {
+            return Page.empty();
+        } else {
+            return Page.create(count, pageNum, pageSize, rateOrders);
         }
-        return Page.create(count, pageNum, pageSize, rateOrders);
     }
 
     /**
@@ -344,6 +327,7 @@ public class RateSettingService {
 
     /**
      * 对某宝贝进行评论
+     *
      * @param userId
      * @param oid
      * @param comment

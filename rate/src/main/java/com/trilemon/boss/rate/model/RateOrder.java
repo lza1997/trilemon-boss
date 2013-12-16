@@ -3,37 +3,27 @@ package com.trilemon.boss.rate.model;
 import com.trilemon.commons.db.ShardTable;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class RateOrder extends ShardTable implements Serializable {
     private Long id;
-
     private Long userId;
-
     private String comment;
-
     private Long itemNumIid;
-
     private String buyerNick;
-
     private String result;
-
-    private Long tid;
-
-    private Long oid;
-
-    private Date orderEndTime;
-
-    private Byte status;
-
-    private Date rateTime;
-
-    private Date addTime;
-
-    private Date updTime;
-    //不是从数据库取出
+    private String content;
+    private Date created;
     private String itemTitle;
-    
+    private BigDecimal itemPrice;
+    private Long tid;
+    private Long oid;
+    private Date orderEndTime;
+    private Byte status;
+    private Date rateTime;
+    private Date addTime;
+    private Date updTime;
     private String manualComment; // 手工评价的临时接受字段
 
     public String getManualComment() {
@@ -43,8 +33,6 @@ public class RateOrder extends ShardTable implements Serializable {
     public void setManualComment(String manualComment) {
         this.manualComment = manualComment;
     }
-
-   
 
     public Long getId() {
         return id;
@@ -157,4 +145,29 @@ public class RateOrder extends ShardTable implements Serializable {
     public void setItemTitle(String itemTitle) {
         this.itemTitle = itemTitle;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public BigDecimal getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(BigDecimal itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
 }
