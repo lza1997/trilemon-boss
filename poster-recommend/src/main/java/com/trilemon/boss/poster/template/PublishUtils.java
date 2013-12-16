@@ -1,4 +1,4 @@
-package com.trilemon.boss.poster.publish;
+package com.trilemon.boss.poster.template;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
@@ -8,6 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.Map;
+
+import static com.trilemon.boss.poster.template.PosterTemplateConstants.*;
 
 /**
  * @author kevin
@@ -33,16 +35,16 @@ public class PublishUtils {
 
         //插入宝贝描述
         switch (position) {
-            case PublishConstants.POSITION_TOP_START:
+            case POSITION_TOP_START:
                 desc = append2DescTopFirst(tag, pid, sb.toString(), desc);
                 break;
-            case PublishConstants.POSITION_TOP_END:
+            case POSITION_TOP_END:
                 desc = append2DescTopLast(tag, pid, sb.toString(), desc);
                 break;
-            case PublishConstants.POSITION_BOTTOM_START:
+            case POSITION_BOTTOM_START:
                 desc = append2DescBottomFirst(tag, pid, sb.toString(), desc);
                 break;
-            case PublishConstants.POSITION_BOTTOM_END:
+            case POSITION_BOTTOM_END:
                 desc = append2DescBottomLast(tag, pid, sb.toString(), desc);
                 break;
         }
@@ -112,8 +114,4 @@ public class PublishUtils {
         }
         return map;
     }
-
-//    public String getItemPreviewHtml(String ftl,){
-//
-//    }
 }

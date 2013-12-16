@@ -1,9 +1,11 @@
 package com.trilemon.boss.poster.template.dao;
 
 import com.trilemon.boss.poster.template.model.PosterTemplateCategory;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PosterTemplateCategoryDAO {
     int deleteByPrimaryKey(Integer id);
 

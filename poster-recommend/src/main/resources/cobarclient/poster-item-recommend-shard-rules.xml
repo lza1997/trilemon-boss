@@ -1,0 +1,30 @@
+<!DOCTYPE "rules.dtd">
+<rules>
+    <rule>
+        <namespace>poster_recommend_activity_item</namespace>
+        <shards>posterItemRecommendShard1</shards>
+        <shardingExpression>tableId <![CDATA[ <= ]]> 2 </shardingExpression>
+    </rule>
+    <rule>
+        <namespace>poster_recommend_activity_item</namespace>
+        <shards>posterItemRecommendShard1</shards>
+        <shardingExpression>tableId <![CDATA[ <= ]]> 2 </shardingExpression>
+    </rule>
+
+    <rule>
+        <namespace>poster_recommend_activity</namespace>
+        <shards>posterItemRecommendShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_recommend_publish_item_detail_page</namespace>
+        <shards>rateShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_recommend_publish_item</namespace>
+        <shards>rateShard</shards>
+    </rule>
+    <rule>
+        <namespace>poster_recommend_user</namespace>
+        <shards>rateShard</shards>
+    </rule>
+</rules>

@@ -9,12 +9,6 @@ public class PosterTemplate {
 
     private String previewPicUrl;
 
-    private String previewPicHtml;
-
-    private String templateFtl;
-
-    private String templateSlotFtl;
-
     private Integer slotNum;
 
     private String sizes;
@@ -45,6 +39,10 @@ public class PosterTemplate {
 
     private Date updTime;
 
+    private String previewPicHtml;
+
+    private String templateFtl;
+
     public Long getId() {
         return id;
     }
@@ -67,30 +65,6 @@ public class PosterTemplate {
 
     public void setPreviewPicUrl(String previewPicUrl) {
         this.previewPicUrl = previewPicUrl == null ? null : previewPicUrl.trim();
-    }
-
-    public String getPreviewPicHtml() {
-        return previewPicHtml;
-    }
-
-    public void setPreviewPicHtml(String previewPicHtml) {
-        this.previewPicHtml = previewPicHtml == null ? null : previewPicHtml.trim();
-    }
-
-    public String getTemplateFtl() {
-        return templateFtl;
-    }
-
-    public void setTemplateFtl(String templateFtl) {
-        this.templateFtl = templateFtl == null ? null : templateFtl.trim();
-    }
-
-    public String getTemplateSlotFtl() {
-        return templateSlotFtl;
-    }
-
-    public void setTemplateSlotFtl(String templateSlotFtl) {
-        this.templateSlotFtl = templateSlotFtl == null ? null : templateSlotFtl.trim();
     }
 
     public Integer getSlotNum() {
@@ -211,5 +185,21 @@ public class PosterTemplate {
 
     public void setUpdTime(Date updTime) {
         this.updTime = updTime;
+    }
+
+    public String getPreviewPicHtml() {
+        return previewPicHtml;
+    }
+
+    public void setPreviewPicHtml(String previewPicHtml) {
+        this.previewPicHtml = previewPicHtml == null ? null : previewPicHtml.trim();
+    }
+
+    public String getTemplateFtl() {
+        return templateFtl;
+    }
+
+    public void setTemplateFtl(String templateFtl) {
+        this.templateFtl = templateFtl == null ? null : templateFtl.trim();
     }
 }

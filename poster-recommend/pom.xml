@@ -150,15 +150,14 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
         </dependency>
-        <!-- mybatis -->
+        <!-- ibatis -->
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-sqlmap</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
+            <groupId>com.alibaba.cobar</groupId>
+            <artifactId>cobar-client</artifactId>
         </dependency>
 
         <!-- dbcp -->

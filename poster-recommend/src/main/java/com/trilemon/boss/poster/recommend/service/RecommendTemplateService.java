@@ -1,6 +1,8 @@
 package com.trilemon.boss.poster.recommend.service;
 
-import com.trilemon.boss.poster.recommend.model.dto.PosterRecommendTemplate;
+import com.trilemon.boss.infra.base.service.AppService;
+import com.trilemon.boss.poster.recommend.dao.PosterRecommendRecommendTemplateDAO;
+import com.trilemon.boss.poster.recommend.model.PosterRecommendRecommendTemplate;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.client.request.PosterTemplateQueryRequest;
 import com.trilemon.boss.poster.template.client.response.PosterTemplateQueryResponse;
@@ -19,16 +21,17 @@ import java.util.List;
 /**
  * @author kevin
  */
-public class RecommendActivityTemplateService {
+public class RecommendTemplateService {
     @Autowired
-    private PosterTemplateCategoryDAO posterTemplateFeDAO;
+    private PosterRecommendRecommendTemplateDAO posterRecommendRecommendTemplateDAO;
     @Autowired
     private PosterTemplateCategoryDAO posterTemplateCategoryDAO;
     @Autowired
     private PosterTemplateTopicDAO posterTemplateTopicDAO;
     @Autowired
     private PosterTemplateClient posterTemplateClient;
-
+    @Autowired
+    private AppService appService;
     private List<PosterTemplateCategory> posterTemplateCategories;
     private List<PosterTemplateTopic> posterTemplateTopics;
 
@@ -38,9 +41,9 @@ public class RecommendActivityTemplateService {
      * @param userId
      * @return
      */
-    public List<PosterRecommendTemplate> getRecommendPosterTemplate(Long userId) {
-        //查询一周内的节日模板
-        return null;
+    public List<PosterRecommendRecommendTemplate> getRecommendPosterTemplate(Long userId, Byte recommendType) {
+        return posterRecommendRecommendTemplateDAO.selectByRecommendType(recommendType,
+                appService.getLocalSystemTime().toDate());
     }
 
     /**
@@ -53,11 +56,11 @@ public class RecommendActivityTemplateService {
      * @param pageSize
      * @return
      */
-    public Page<PosterTemplate> paginatePosterTemplates(Long userId, List<String> topicIds, List<String> categoryIds,
+    public Page<PosterTemplate> paginatePosterTemplates(Long userId, List<Integer> topicIds, List<Integer> categoryIds,
                                                         int pageNum, int pageSize) {
         PosterTemplateQueryRequest request = new PosterTemplateQueryRequest();
-        request.setTopics(topicIds);
-        request.setCategories(categoryIds);
+        request.setTopicIds(topicIds);
+        request.setCategoryIds(categoryIds);
         request.setPageNum(pageNum);
         request.setPageSize(pageSize);
         PosterTemplateQueryResponse response = posterTemplateClient.queryTemplates(request);

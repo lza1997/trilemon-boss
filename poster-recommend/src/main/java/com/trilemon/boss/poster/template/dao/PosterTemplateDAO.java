@@ -2,13 +2,13 @@ package com.trilemon.boss.poster.template.dao;
 
 import com.trilemon.boss.poster.template.client.request.PosterTemplateQueryRequest;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PosterTemplateDAO {
     int deleteByPrimaryKey(Long id);
-
-    void insert(PosterTemplate record);
 
     void insertSelective(PosterTemplate record);
 
@@ -16,10 +16,8 @@ public interface PosterTemplateDAO {
 
     int updateByPrimaryKeySelective(PosterTemplate record);
 
-    int updateByPrimaryKey(PosterTemplate record);
-
     int countByQueryRequest(PosterTemplateQueryRequest request);
 
-    List<PosterTemplate> selectByQueryRequest(PosterTemplateQueryRequest request);
+    List<PosterTemplate> paginateByQueryRequest(PosterTemplateQueryRequest request);
 
 }

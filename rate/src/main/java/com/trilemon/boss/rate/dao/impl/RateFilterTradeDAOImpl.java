@@ -1,12 +1,13 @@
 package com.trilemon.boss.rate.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
-import com.google.common.base.Preconditions;
 import com.trilemon.boss.rate.dao.RateFilterTradeDAO;
 import com.trilemon.boss.rate.dao.router.RateFilterTradeRouter;
 import com.trilemon.boss.rate.model.RateFilterTrade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Repository
 public class RateFilterTradeDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements RateFilterTradeDAO {
@@ -23,13 +24,13 @@ public class RateFilterTradeDAOImpl extends MysdalCobarSqlMapClientDaoSupport im
     }
 
     public void insert(RateFilterTrade record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         getSqlMapClientTemplate().insert("rate_filter_trade.insert", record);
     }
 
     public void insertSelective(RateFilterTrade record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         getSqlMapClientTemplate().insert("rate_filter_trade.insertSelective", record);
     }
@@ -43,13 +44,13 @@ public class RateFilterTradeDAOImpl extends MysdalCobarSqlMapClientDaoSupport im
     }
 
     public int updateByPrimaryKeySelective(RateFilterTrade record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         return getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(RateFilterTrade record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         return getSqlMapClientTemplate().update("rate_filter_trade.updateByPrimaryKey", record);
     }

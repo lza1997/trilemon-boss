@@ -50,7 +50,7 @@
     <bean id="router" class="com.alibaba.cobarclient.config.SimpleRouterFactoryBean">
         <property name="configLocations">
             <list>
-                <value>classpath*:/cobarclient/rate-shard-rules.xml</value>
+                <value>classpath*:/cobarclient/poster-item-recommend-shard-rules.xml</value>
                 <value>classpath*:/cobarclient/sync-shard-rules.xml</value>
             </list>
         </property>

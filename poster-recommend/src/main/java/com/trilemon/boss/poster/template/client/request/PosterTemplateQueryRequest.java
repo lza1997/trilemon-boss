@@ -7,13 +7,12 @@ import java.util.List;
  */
 public class PosterTemplateQueryRequest {
     private int slotNum;
-    private List<String> tags;
-    private List<String> categories;
-    private List<String> topics;
-    private List<String> festivals;
-    private List<Byte> type;
+    private List<Integer> categoryIds;
+    private List<Integer> topicIds;
+    private List<Integer> festivalIds;
+    private List<Byte> typeList;
     private Byte applyVersion;
-    private Byte status;
+    private List<Byte> statusList;
     private String orderBy;
     private int pageNum;
     private int pageSize;
@@ -26,44 +25,36 @@ public class PosterTemplateQueryRequest {
         this.slotNum = slotNum;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public List<Integer> getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setCategoryIds(List<Integer> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 
-    public List<String> getCategories() {
-        return categories;
+    public List<Integer> getTopicIds() {
+        return topicIds;
     }
 
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+    public void setTopicIds(List<Integer> topicIds) {
+        this.topicIds = topicIds;
     }
 
-    public List<String> getTopics() {
-        return topics;
+    public List<Integer> getFestivalIds() {
+        return festivalIds;
     }
 
-    public void setTopics(List<String> topics) {
-        this.topics = topics;
+    public void setFestivalIds(List<Integer> festivalIds) {
+        this.festivalIds = festivalIds;
     }
 
-    public List<String> getFestivals() {
-        return festivals;
+    public List<Byte> getTypeList() {
+        return typeList;
     }
 
-    public void setFestivals(List<String> festivals) {
-        this.festivals = festivals;
-    }
-
-    public List<Byte> getType() {
-        return type;
-    }
-
-    public void setType(List<Byte> type) {
-        this.type = type;
+    public void setTypeList(List<Byte> typeList) {
+        this.typeList = typeList;
     }
 
     public Byte getApplyVersion() {
@@ -74,12 +65,20 @@ public class PosterTemplateQueryRequest {
         this.applyVersion = applyVersion;
     }
 
-    public Byte getStatus() {
-        return status;
+    public List<Byte> getStatusList() {
+        return statusList;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setStatusList(List<Byte> statusList) {
+        this.statusList = statusList;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 
     public int getPageNum() {
@@ -98,11 +97,11 @@ public class PosterTemplateQueryRequest {
         this.pageSize = pageSize;
     }
 
-    public String getOrderBy() {
-        return orderBy;
+    public int getOffset() {
+        return (pageNum - 1) * pageSize;
     }
 
-    public void setOrderBy(String orderBy) {
-        this.orderBy = orderBy;
+    public int getLimit() {
+        return pageSize;
     }
 }

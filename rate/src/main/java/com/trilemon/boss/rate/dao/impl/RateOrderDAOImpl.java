@@ -1,7 +1,6 @@
 package com.trilemon.boss.rate.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
-import com.google.common.base.Preconditions;
 import com.trilemon.boss.rate.dao.RateOrderDAO;
 import com.trilemon.boss.rate.dao.router.RateOrderRouter;
 import com.trilemon.boss.rate.model.RateOrder;
@@ -11,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Repository
 public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements RateOrderDAO {
@@ -26,13 +27,13 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
     }
 
     public void insert(RateOrder record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         getSqlMapClientTemplate().insert("rate_order.insert", record);
     }
 
     public void insertSelective(RateOrder record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         getSqlMapClientTemplate().insert("rate_order.insertSelective", record);
     }
@@ -46,13 +47,13 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
     }
 
     public int updateByPrimaryKeySelective(RateOrder record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         return getSqlMapClientTemplate().update("rate_order.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(RateOrder record) {
-        Preconditions.checkNotNull(record.getUserId());
+        checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         return getSqlMapClientTemplate().update("rate_order.updateByPrimaryKey", record);
     }
@@ -60,7 +61,7 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
     @Override
     public int batchInsertSelective(List<RateOrder> rateOrders) {
         for (RateOrder rateOrder : rateOrders) {
-            Preconditions.checkNotNull(rateOrder.getUserId());
+            checkNotNull(rateOrder.getUserId());
             router.routeAndSetTableId(rateOrder);
         }
         return batchInsert("rate_order.insertSelective", rateOrders);
@@ -68,7 +69,7 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
 
     @Override
     public RateOrder selectByUserIdAndOid(Long userId, Long oid) {
-        Preconditions.checkNotNull(userId);
+        checkNotNull(userId);
         RateOrder rateOrder = new RateOrder();
         rateOrder.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(rateOrder);
@@ -82,7 +83,7 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
                               Date endDate,
                               int offset,
                               int limit) {
-        Preconditions.checkNotNull(userId);
+        checkNotNull(userId);
         RateOrder rateOrder = new RateOrder();
         rateOrder.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(rateOrder);
@@ -100,7 +101,7 @@ public class RateOrderDAOImpl extends MysdalCobarSqlMapClientDaoSupport implemen
 
     @Override
     public List<RateOrder> paginateBuyerRate(Long userId, Long tid, String buyerNick, List<Byte> statusList, List<String> rateTypes, Date startDate, Date endDate, int offset, int limit) {
-        Preconditions.checkNotNull(userId);
+        checkNotNull(userId);
         RateOrder rateOrder = new RateOrder();
         rateOrder.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(rateOrder);

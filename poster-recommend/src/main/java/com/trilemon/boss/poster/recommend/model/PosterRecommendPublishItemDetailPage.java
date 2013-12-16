@@ -1,9 +1,11 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.commons.db.ShardTable;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class PosterRecommendPublishItemDetailPage {
+public class PosterRecommendPublishItemDetailPage extends ShardTable {
     private Long id;
 
     private Long userId;

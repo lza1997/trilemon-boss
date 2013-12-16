@@ -1,7 +1,6 @@
 package com.trilemon.boss.poster.recommend.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
@@ -9,32 +8,32 @@ import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlExc
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
 import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
-import com.trilemon.boss.poster.recommend.PosterRecommendUtils;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityItemDAO;
+import com.trilemon.boss.poster.recommend.dao.PosterRecommendPublishItemDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
-import com.trilemon.boss.poster.recommend.model.dto.BossItemSearchRequest;
+import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
+import com.trilemon.boss.poster.recommend.model.dto.LastUsedPosterTemplate;
+import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
-import freemarker.cache.StringTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import org.apache.commons.io.output.StringBuilderWriter;
+import org.apache.commons.collections.CollectionUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.io.Writer;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 
@@ -46,6 +45,8 @@ public class RecommendActivityService {
     private final static Logger logger = LoggerFactory.getLogger(RecommendActivityService.class);
     @Autowired
     private PosterRecommendActivityItemDAO posterRecommendActivityItemDAO;
+    @Autowired
+    private PosterRecommendPublishItemDAO posterRecommendPublishItemDAO;
     @Autowired
     private PosterRecommendActivityDAO posterRecommendActivityDAO;
     @Autowired
@@ -67,7 +68,6 @@ public class RecommendActivityService {
     public PosterRecommendActivity getActivity(Long userId, Long activityId) {
         PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
         int itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
-
         activity.setItemNum(itemNum);
         return activity;
     }
@@ -86,7 +86,7 @@ public class RecommendActivityService {
         activity.setAddTime(appService.getLocalSystemTime().toDate());
         activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_DESIGNED);
 
-        Long id = posterRecommendActivityDAO.insertSelective(userId, activity);
+        Long id = posterRecommendActivityDAO.insertSelective(activity);
         logger.info("add activity, activityId[{}] userId[{}].", id, userId);
     }
 
@@ -102,27 +102,12 @@ public class RecommendActivityService {
         activity.setUserId(userId);
         activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
 
-        //生成最终模板
-        PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
-        String templateFtl = posterTemplate.getTemplateFtl();
-        List<PosterRecommendActivityItem> activityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId
-                (userId, activity.getId());
-        String publishHtml = generateActivityPublishHtml(templateFtl, activityItems);
-        activity.setPublishHtml(publishHtml);
+        //过滤非法html 代码
+        String safeHtml = Jsoup.clean(activity.getPublishHtml(), Whitelist.relaxed());
+        activity.setPublishHtml(safeHtml);
 
-        posterRecommendActivityDAO.updateByUserIdAndActivityId(activity);
+        posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
         logger.info("update activity, activityId[{}] userId[{}].", activity.getId(), userId);
-    }
-
-    /**
-     * 生成活动代码
-     *
-     * @param templateFtl
-     * @param activityItems
-     * @return
-     */
-    private String generateActivityPublishHtml(String templateFtl, List<PosterRecommendActivityItem> activityItems) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 
     /**
@@ -158,7 +143,36 @@ public class RecommendActivityService {
             newPosterRecommendActivity.setId(activityId);
             newPosterRecommendActivity.setUserId(userId);
             newPosterRecommendActivity.setDetailPagePosition(detailPagePosition);
-            return posterRecommendActivityDAO.updateByUserIdAndActivityId(newPosterRecommendActivity) == 1;
+            return posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newPosterRecommendActivity) == 1;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 更新投放时间
+     *
+     * @param userId
+     * @param activityId
+     * @param publishType
+     * @param publishStartTime
+     * @param publishEndTime
+     * @return
+     */
+    public boolean updateActivityPublishTime(Long userId, Long activityId, byte publishType,
+                                             Date publishStartTime, Date publishEndTime) {
+        PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
+        if (null != posterRecommendActivity) {
+            PosterRecommendActivity newPosterRecommendActivity = new PosterRecommendActivity();
+            newPosterRecommendActivity.setId(activityId);
+            newPosterRecommendActivity.setUserId(userId);
+            newPosterRecommendActivity.setPublishType(publishType);
+
+            if (publishType == PosterRecommendConstants.PUBLISH_TYPE_ASSIGN_TIME) {
+                newPosterRecommendActivity.setPublishStartTime(publishStartTime);
+                newPosterRecommendActivity.setPublishEndTime(publishEndTime);
+            }
+            return posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newPosterRecommendActivity) == 1;
         } else {
             return false;
         }
@@ -169,12 +183,15 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
-     * @return
+     * @param deleteDetailPage 是否需要删除淘宝详情页中相关内容
      */
     @Transactional
-    public void deleteActivity(Long userId, Long activityId) {
+    public void deleteActivity(Long userId, Long activityId, boolean deleteDetailPage) {
         posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
         posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
+        if (deleteDetailPage) {
+            //TODO
+        }
     }
 
     /**
@@ -196,36 +213,14 @@ public class RecommendActivityService {
      * @param activityId
      * @param posterRecommendActivityItem
      */
-    public String addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
+    public PosterRecommendActivityItem addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
             posterRecommendActivityItem) throws IOException {
-        PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        //生成投放的 html 代码
-        PosterTemplate template = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
-
-        StringTemplateLoader stringLoader = new StringTemplateLoader();
-        String firstTemplate = "firstTemplate";
-        stringLoader.putTemplate(firstTemplate, template.getTemplateSlotFtl());
-        Configuration cfg = new Configuration();
-        cfg.setTemplateLoader(stringLoader);
-        Template ftlTemplate = cfg.getTemplate(firstTemplate);
-        Writer out = new StringBuilderWriter();
-        Map<String, Object> maps = Maps.newHashMap();
-        try {
-            ftlTemplate.process(maps, out);
-            String result = out.toString();
-        } catch (TemplateException e) {
-            logger.error("", e);
-        } finally {
-            out.close();
-        }
-
-        //String itemPreviewHtml=PosterRecommendUtils.posterRecommendActivityItem2Item(posterRecommendActivityItem);
         posterRecommendActivityItem.setUserId(userId);
         posterRecommendActivityItem.setActivityId(activityId);
         posterRecommendActivityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
         posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
         posterRecommendActivityItemDAO.insertSelective(posterRecommendActivityItem);
-        return "";
+        return posterRecommendActivityItem;
     }
 
     /**
@@ -243,55 +238,79 @@ public class RecommendActivityService {
      * 查询已加入活动宝贝
      *
      * @param userId
-     * @param bossItemSearchRequest
+     * @param activityId
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId, final Long activityId,
-                                                                        BossItemSearchRequest bossItemSearchRequest) {
-        return posterRecommendActivityItemDAO.paginateByUserIdAndActivityId(userId, activityId, bossItemSearchRequest);
+    public Page<PosterRecommendActivityItem> paginateActivityAddedItems(Long userId,
+                                                                        Long activityId,
+                                                                        int pageNum, int pageSize) {
+        List<PosterRecommendActivityItem> activityItems = posterRecommendActivityItemDAO.paginateByUserIdAndActivityId
+                (userId, activityId, "add_time desc", (pageNum - 1) * pageSize, pageSize);
+        int count = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
+        if (CollectionUtils.isEmpty(activityItems)) {
+            return Page.empty();
+        } else {
+            return Page.create(count, pageNum, pageSize, activityItems);
+        }
     }
 
     /**
-     * 查询未加入活动宝贝
-     *
+     * 查询可供选择加入活动的宝贝
      * @param userId
      * @param activityId
-     * @param bossItemSearchRequest
-     * @return
+     * @param onSale
+     * @param query
+     * @param sellerCids
+     * @param pageNum
+     * @param pageSize
+     * @return 一定有对象，返回不为空
      * @throws TaobaoAccessControlException
      * @throws TaobaoEnhancedApiException
      * @throws TaobaoSessionExpiredException
      */
-    public Page<PosterRecommendActivityItem> paginateActivityNotAddedItems(final Long userId, final Long activityId,
-                                                                           BossItemSearchRequest bossItemSearchRequest)
+    @NotNull
+    public Page<ActivityItem> paginateItems(Long userId, Long activityId, boolean onSale, String query,
+                                            List<Long> sellerCids, int pageNum, int pageSize)
             throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+
+        Page<Item> itemPage;
+        List<ActivityItem> activityItems = Lists.newArrayList();
+
+        //从淘宝 api 获取商品
+        if (onSale) {
+            itemPage = taobaoApiShopService.paginateOnSaleItems(userId, query,
+                    ITEM_FIELDS, sellerCids, pageNum, pageSize, true, null, "modified:asc");
+
+        } else {
+            itemPage = taobaoApiShopService.paginateInventoryItems(userId, query,
+                    ITEM_FIELDS, Lists.newArrayList(BANNER_FOR_SHELVED), sellerCids,
+                    pageNum, pageSize, true, "modified:asc");
+        }
+
         //获取已经加入活动的宝贝
         List<PosterRecommendActivityItem> addedRecommendActivityItems = posterRecommendActivityItemDAO
                 .selectByUserIdAndActivityId(userId, activityId);
-        //排除淘宝数据，计算分页
-        while (true) {
-            //获取淘宝数据
-            Page<Item> itemPage;
-            List<PosterRecommendActivityItem> activityItems;
-            if (bossItemSearchRequest.isOnSale()) {
-                itemPage = taobaoApiShopService.paginateOnSaleItems(userId, bossItemSearchRequest.getQuery(),
-                        ITEM_FIELDS, bossItemSearchRequest.getSellerCids(), bossItemSearchRequest.getPageNum(),
-                        bossItemSearchRequest.getPageSize(), true, true, "modified:desc");
-                activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems(userId, activityId, itemPage.getItems());
-                // return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(),
-                // activityItems);
-            } else {
-                itemPage = taobaoApiShopService.paginateInventoryItems(userId, bossItemSearchRequest.getQuery(),
-                        ITEM_FIELDS, Lists.newArrayList(BANNER_OFF_SHELF), bossItemSearchRequest.getSellerCids(),
-                        bossItemSearchRequest.getPageNum(), bossItemSearchRequest.getPageSize(), true, "modified:desc");
-                activityItems = PosterRecommendUtils.items2PosterRecommendActivityItems(userId, activityId, itemPage.getItems());
-                // return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(),
-                // activityItems);
-            }
 
-            List<Item> items = itemPage.getItems();
-            //activityItems = Page.create(itemPage.getTotalSize() - addedRecommendActivityItems.size());
+        //设置是否加入活动的标志位
+        if (CollectionUtils.isNotEmpty(itemPage.getItems())) {
+            for (Item item : itemPage.getItems()) {
+                ActivityItem activityItem = new ActivityItem();
+                activityItem.setAdded(false);
+                activityItem.setItem(item);
+
+                if (CollectionUtils.isNotEmpty(addedRecommendActivityItems) && addedRecommendActivityItems.contains(item)) {
+                    activityItem.setAdded(true);
+                } else {
+                    activityItem.setAdded(false);
+                }
+
+                activityItems.add(activityItem);
+            }
         }
+
+        return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(), activityItems);
     }
 
     /**
@@ -300,13 +319,42 @@ public class RecommendActivityService {
      * @param userId
      * @return
      */
-    public PosterTemplate getLastUsedPosterTemplate(Long userId) {
-        PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectLastCreatedActivity(userId);
-        if (null != posterRecommendActivity) {
-            Long templateId = posterRecommendActivity.getTemplateId();
-            return posterTemplateClient.getPosterTemplate(templateId);
+    public LastUsedPosterTemplate getLastUsedPosterTemplate(Long userId) {
+        PosterRecommendActivity lastCreatedActivity = posterRecommendActivityDAO.selectLastCreatedActivity(userId);
+        if (null != lastCreatedActivity) {
+            LastUsedPosterTemplate lastUsedPosterTemplate = new LastUsedPosterTemplate();
+            Long templateId = lastCreatedActivity.getTemplateId();
+            PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(templateId);
+            lastUsedPosterTemplate.setPosterTemplate(posterTemplate);
+            lastUsedPosterTemplate.setLastUsedTime(lastCreatedActivity.getAddTime());
+            return lastUsedPosterTemplate;
         } else {
             return null;
         }
+    }
+
+    /**
+     * 查询活动列表
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public Page<PosterRecommendActivity> paginateActivity(Long userId, int pageNum, int pageSize) {
+        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityAndStatus(userId,
+                ALL_ACTIVITY_STATUS,
+                (pageNum - 1) * pageSize, pageSize);
+        int totalCount = posterRecommendActivityDAO.countActivityByUserIdAndStatus(userId, ALL_ACTIVITY_STATUS);
+
+        //查询投放进度
+        if (CollectionUtils.isNotEmpty(activities)) {
+            for (PosterRecommendActivity activity : activities) {
+                PublishProgress publishProgress = posterRecommendPublishItemDAO.groupStatus(userId,
+                        activity.getId());
+                activity.setPublishProgress(publishProgress);
+            }
+        }
+        return Page.create(totalCount, pageNum, pageSize, activities);
     }
 }

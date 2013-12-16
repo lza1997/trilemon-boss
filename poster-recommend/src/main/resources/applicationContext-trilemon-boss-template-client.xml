@@ -21,38 +21,11 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
        default-lazy-init="false">
 
-    <description>base-client公共配置</description>
+    <description>template-client公共配置</description>
 
-    <bean id="taobaoApiShopService" class="com.trilemon.boss.infra.base.service.api.TaobaoApiShopService">
-        <property name="taobaoApiService" ref="taobaoApiService"/>
-        <property name="baseClient" ref="baseClient"/>
-    </bean>
-
-    <bean id="taobaoApiUserService" class="com.trilemon.boss.infra.base.service.api.TaobaoApiUserService">
-        <property name="taobaoApiService" ref="taobaoApiService"/>
-        <property name="baseClient" ref="baseClient"/>
-    </bean>
-
-    <bean id="taobaoApiTradeService" class="com.trilemon.boss.infra.base.service.api.TaobaoApiTradeService">
-        <property name="taobaoApiService" ref="taobaoApiService"/>
-        <property name="baseClient" ref="baseClient"/>
-    </bean>
-
-    <bean id="taobaoApiItemService" class="com.trilemon.boss.infra.base.service.api.TaobaoApiItemService">
-        <property name="taobaoApiService" ref="taobaoApiService"/>
-        <property name="baseClient" ref="baseClient"/>
-    </bean>
-
-    <bean id="taobaoApiService" class="com.trilemon.boss.infra.base.service.TaobaoApiService">
-        <property name="taobaoAppKey" value="${taobao_app_key}"/>
-        <property name="appService" ref="appService"/>
-        <property name="baseClient" ref="baseClient"/>
-    </bean>
-
-    <bean id="appService" class="com.trilemon.boss.infra.base.service.AppService">
-        <property name="serviceName" value="${service_name}"/>
-        <property name="serviceId" value="${service_id}"/>
-        <property name="casUrl" value="${cas_url}"/>
+    <bean id="posterTemplateClient"
+          class="com.trilemon.boss.poster.template.client.impl.PosterTemplateClientImpl">
+        <property name="templateService" value="templateService"/>
     </bean>
 
 

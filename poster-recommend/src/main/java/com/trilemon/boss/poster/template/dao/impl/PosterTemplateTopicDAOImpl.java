@@ -1,16 +1,12 @@
 package com.trilemon.boss.poster.template.dao.impl;
 
+import com.alibaba.cobarclient.BaseSqlMapClientDaoSupport;
 import com.trilemon.boss.poster.template.dao.PosterTemplateTopicDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplateTopic;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 import java.util.List;
 
-public class PosterTemplateTopicDAOImpl extends SqlMapClientDaoSupport implements PosterTemplateTopicDAO {
-
-    public PosterTemplateTopicDAOImpl() {
-        super();
-    }
+public class PosterTemplateTopicDAOImpl extends BaseSqlMapClientDaoSupport implements PosterTemplateTopicDAO {
 
     public int deleteByPrimaryKey(Integer id) {
         PosterTemplateTopic _key = new PosterTemplateTopic();
@@ -30,8 +26,7 @@ public class PosterTemplateTopicDAOImpl extends SqlMapClientDaoSupport implement
     public PosterTemplateTopic selectByPrimaryKey(Integer id) {
         PosterTemplateTopic _key = new PosterTemplateTopic();
         _key.setId(id);
-        PosterTemplateTopic record = (PosterTemplateTopic) getSqlMapClientTemplate().queryForObject("poster_template_topic.selectByPrimaryKey", _key);
-        return record;
+        return (PosterTemplateTopic) getSqlMapClientTemplate().queryForObject("poster_template_topic.selectByPrimaryKey", _key);
     }
 
     public int updateByPrimaryKeySelective(PosterTemplateTopic record) {

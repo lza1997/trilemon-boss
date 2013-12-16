@@ -21,6 +21,9 @@
     id, user_id, activity_id, item_num_iid, item_title, item_price, item_pic_url, status, 
     add_time, upd_time
   </sql>
+    <sql id="Base_Table_Name">
+        poster_recommend_publish_item_detail_page_#tableId#
+    </sql>
   <sql id="Blob_Column_List" >
     desc, backup_desc
   </sql>
@@ -45,7 +48,7 @@
       #updTime:TIMESTAMP#, #desc:LONGVARCHAR#, #backupDesc:LONGVARCHAR#)
   </insert>
   <insert id="insertSelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage" >
-    insert into poster_recommend_publish_item_detail_page
+    insert into <include refid="poster_recommend_publish_item_detail_page.Base_Table_Name"/>
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
         id
@@ -127,7 +130,7 @@
     </dynamic>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage" >
-    update poster_recommend_publish_item_detail_page
+    update <include refid="poster_recommend_publish_item_detail_page.Base_Table_Name"/>
     <dynamic prepend="set" >
       <isNotNull prepend="," property="userId" >
         user_id = #userId:BIGINT#
@@ -163,34 +166,6 @@
         backup_desc = #backupDesc:LONGVARCHAR#
       </isNotNull>
     </dynamic>
-    where id = #id:BIGINT#
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage" >
-    update poster_recommend_publish_item_detail_page
-    set user_id = #userId:BIGINT#,
-      activity_id = #activityId:BIGINT#,
-      item_num_iid = #itemNumIid:BIGINT#,
-      item_title = #itemTitle:VARCHAR#,
-      item_price = #itemPrice:DECIMAL#,
-      item_pic_url = #itemPicUrl:VARCHAR#,
-      status = #status:TINYINT#,
-      add_time = #addTime:TIMESTAMP#,
-      upd_time = #updTime:TIMESTAMP#,
-      desc = #desc:LONGVARCHAR#,
-      backup_desc = #backupDesc:LONGVARCHAR#
-    where id = #id:BIGINT#
-  </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage" >
-    update poster_recommend_publish_item_detail_page
-    set user_id = #userId:BIGINT#,
-      activity_id = #activityId:BIGINT#,
-      item_num_iid = #itemNumIid:BIGINT#,
-      item_title = #itemTitle:VARCHAR#,
-      item_price = #itemPrice:DECIMAL#,
-      item_pic_url = #itemPicUrl:VARCHAR#,
-      status = #status:TINYINT#,
-      add_time = #addTime:TIMESTAMP#,
-      upd_time = #updTime:TIMESTAMP#
     where id = #id:BIGINT#
   </update>
 </sqlMap>

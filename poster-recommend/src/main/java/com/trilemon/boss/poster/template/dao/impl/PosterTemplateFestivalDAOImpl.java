@@ -1,14 +1,10 @@
 package com.trilemon.boss.poster.template.dao.impl;
 
+import com.alibaba.cobarclient.BaseSqlMapClientDaoSupport;
 import com.trilemon.boss.poster.template.dao.PosterTemplateFestivalDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplateFestival;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
-public class PosterTemplateFestivalDAOImpl extends SqlMapClientDaoSupport implements PosterTemplateFestivalDAO {
-
-    public PosterTemplateFestivalDAOImpl() {
-        super();
-    }
+public class PosterTemplateFestivalDAOImpl extends BaseSqlMapClientDaoSupport implements PosterTemplateFestivalDAO {
 
     public int deleteByPrimaryKey(Integer id) {
         PosterTemplateFestival _key = new PosterTemplateFestival();
@@ -28,17 +24,14 @@ public class PosterTemplateFestivalDAOImpl extends SqlMapClientDaoSupport implem
     public PosterTemplateFestival selectByPrimaryKey(Integer id) {
         PosterTemplateFestival _key = new PosterTemplateFestival();
         _key.setId(id);
-        PosterTemplateFestival record = (PosterTemplateFestival) getSqlMapClientTemplate().queryForObject("poster_template_festival.selectByPrimaryKey", _key);
-        return record;
+        return (PosterTemplateFestival) getSqlMapClientTemplate().queryForObject("poster_template_festival.selectByPrimaryKey", _key);
     }
 
     public int updateByPrimaryKeySelective(PosterTemplateFestival record) {
-        int rows = getSqlMapClientTemplate().update("poster_template_festival.updateByPrimaryKeySelective", record);
-        return rows;
+        return getSqlMapClientTemplate().update("poster_template_festival.updateByPrimaryKeySelective", record);
     }
 
     public int updateByPrimaryKey(PosterTemplateFestival record) {
-        int rows = getSqlMapClientTemplate().update("poster_template_festival.updateByPrimaryKey", record);
-        return rows;
+        return getSqlMapClientTemplate().update("poster_template_festival.updateByPrimaryKey", record);
     }
 }

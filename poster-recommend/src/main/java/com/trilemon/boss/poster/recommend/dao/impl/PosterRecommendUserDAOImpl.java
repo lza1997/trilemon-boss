@@ -1,51 +1,45 @@
 package com.trilemon.boss.poster.recommend.dao.impl;
 
+import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
-import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
-import org.springframework.stereotype.Repository;
+import com.trilemon.commons.db.ShardTableRouter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-@Repository
-public class PosterRecommendUserDAOImpl extends SqlMapClientDaoSupport implements PosterRecommendUserDAO {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    public PosterRecommendUserDAOImpl() {
-        super();
+public class PosterRecommendUserDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendUserDAO {
+    @Autowired
+    @Qualifier("posterRecommendUserRouter")
+    private ShardTableRouter<PosterRecommendUser> router;
+
+    public long insertSelective(PosterRecommendUser record) {
+        checkNotNull(record.getUserId());
+        router.routeAndSetTableId(record);
+        return (long) getSqlMapClientTemplate().insert("poster_recommend_user.insertSelective", record);
     }
 
-    public int deleteByPrimaryKey(Long id) {
+    public int updateByUserIdSelective(Long userId) {
         PosterRecommendUser _key = new PosterRecommendUser();
-        _key.setId(id);
-        int rows = getSqlMapClientTemplate().delete("poster_recommend_user.deleteByPrimaryKey", _key);
-        return rows;
-    }
-
-    public void insert(PosterRecommendUser record) {
-        getSqlMapClientTemplate().insert("poster_recommend_user.insert", record);
-    }
-
-    public void insertSelective(PosterRecommendUser record) {
-        getSqlMapClientTemplate().insert("poster_recommend_user.insertSelective", record);
-    }
-
-    public PosterRecommendUser selectByPrimaryKey(Long id) {
-        PosterRecommendUser _key = new PosterRecommendUser();
-        _key.setId(id);
-        PosterRecommendUser record = (PosterRecommendUser) getSqlMapClientTemplate().queryForObject("poster_recommend_user.selectByPrimaryKey", _key);
-        return record;
-    }
-
-    public int updateByPrimaryKeySelective(PosterRecommendUser record) {
-        int rows = getSqlMapClientTemplate().update("poster_recommend_user.updateByPrimaryKeySelective", record);
-        return rows;
-    }
-
-    public int updateByPrimaryKey(PosterRecommendUser record) {
-        int rows = getSqlMapClientTemplate().update("poster_recommend_user.updateByPrimaryKey", record);
-        return rows;
+        _key.setUserId(userId);
+        router.routeAndSetTableId(_key);
+        return (int) getSqlMapClientTemplate().update("poster_recommend_user.updateByUserIdSelective", _key);
     }
 
     @Override
     public PosterRecommendUser selectByUserId(Long userId) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        PosterRecommendUser _key = new PosterRecommendUser();
+        _key.setUserId(userId);
+        router.routeAndSetTableId(_key);
+        return (PosterRecommendUser) getSqlMapClientTemplate().queryForObject("poster_recommend_user.selectByUserId", _key);
+    }
+
+    public ShardTableRouter<PosterRecommendUser> getRouter() {
+        return router;
+    }
+
+    public void setRouter(ShardTableRouter<PosterRecommendUser> router) {
+        this.router = router;
     }
 }

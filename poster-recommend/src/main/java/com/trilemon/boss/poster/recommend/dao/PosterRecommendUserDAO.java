@@ -1,19 +1,15 @@
 package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PosterRecommendUserDAO {
-    int deleteByPrimaryKey(Long id);
 
-    void insert(PosterRecommendUser record);
+    long insertSelective(PosterRecommendUser record);
 
-    void insertSelective(PosterRecommendUser record);
-
-    PosterRecommendUser selectByPrimaryKey(Long id);
-
-    int updateByPrimaryKeySelective(PosterRecommendUser record);
-
-    int updateByPrimaryKey(PosterRecommendUser record);
+    int updateByUserIdSelective(Long userId);
 
     PosterRecommendUser selectByUserId(Long userId);
+
 }

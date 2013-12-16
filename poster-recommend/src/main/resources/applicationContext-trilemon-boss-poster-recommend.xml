@@ -26,4 +26,5 @@
     <import resource="security/applicationContext-shiro.xml"/>
     <import resource="dubbo/dubbo-provider.xml"/>
     <import resource="cobarclient/applicationContext-cobarclient.xml"/>
+    <import resource="applicationContext-trilemon-boss-template-client.xml"/>
 </beans>

@@ -80,4 +80,9 @@
       upd_time = #updTime:TIMESTAMP#
     where id = #id:INTEGER#
   </update>
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select
+        <include refid="poster_template_topic.Base_Column_List" />
+        from poster_template_topic
+    </select>
 </sqlMap>

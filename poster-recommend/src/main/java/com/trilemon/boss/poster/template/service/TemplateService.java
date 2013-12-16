@@ -5,12 +5,14 @@ import com.trilemon.boss.poster.template.client.response.PosterTemplateQueryResp
 import com.trilemon.boss.poster.template.dao.PosterTemplateDAO;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author kevin
  */
+@Service
 public class TemplateService {
     private PosterTemplateDAO posterTemplateDAO;
 
@@ -21,7 +23,7 @@ public class TemplateService {
      */
     public PosterTemplateQueryResponse queryTemplates(PosterTemplateQueryRequest request) {
         int templateCount = posterTemplateDAO.countByQueryRequest(request);
-        List<PosterTemplate> templateList = posterTemplateDAO.selectByQueryRequest(request);
+        List<PosterTemplate> templateList = posterTemplateDAO.paginateByQueryRequest(request);
         Page<PosterTemplate> page = Page.create(templateCount, request.getPageNum(), request.getPageSize(), templateList);
         PosterTemplateQueryResponse response = new PosterTemplateQueryResponse();
         response.setPosterTemplatePage(page);

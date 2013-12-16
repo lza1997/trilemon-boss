@@ -6,9 +6,10 @@
     <settings cacheModelsEnabled="true" enhancementEnabled="true"
               lazyLoadingEnabled="true" errorTracingEnabled="true"
               useStatementNamespaces="true"/>
-    <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_activity_item_detail_page_SqlMap.xml"/>
     <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_activity_item_SqlMap.xml"/>
-    <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_activity_log_SqlMap.xml"/>
     <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_activity_SqlMap.xml"/>
+    <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_publish_item_SqlMap.xml"/>
+    <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_publish_item_detail_page_SqlMap.xml"/>
     <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_user_SqlMap.xml"/>
+    <sqlMap resource="item-recommend-ibatis/sqlmap/poster_recommend_recommend_template_SqlMap.xml"/>
 </sqlMapConfig>

@@ -1,8 +1,11 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
+import com.trilemon.commons.db.ShardTable;
+
 import java.util.Date;
 
-public class PosterRecommendActivity {
+public class PosterRecommendActivity extends ShardTable{
     private Long id;
 
     private Long userId;
@@ -32,7 +35,9 @@ public class PosterRecommendActivity {
     private Date addTime;
 
     private Date updTime;
-    private int itemNum;
+
+    private int itemNum;//已经参加活动的宝贝数量
+    private PublishProgress publishProgress;//投放的宝贝数量统计
 
     public Long getId() {
         return id;
@@ -160,5 +165,13 @@ public class PosterRecommendActivity {
 
     public int getItemNum() {
         return itemNum;
+    }
+
+    public PublishProgress getPublishProgress() {
+        return publishProgress;
+    }
+
+    public void setPublishProgress(PublishProgress publishProgress) {
+        this.publishProgress = publishProgress;
     }
 }

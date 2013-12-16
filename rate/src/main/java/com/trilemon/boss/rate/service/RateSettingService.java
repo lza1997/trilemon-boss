@@ -4,10 +4,12 @@ import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.BaseConstants;
 import com.trilemon.boss.infra.base.client.BaseClient;
 import com.trilemon.boss.infra.base.model.BuyerBlacklist;
 import com.trilemon.boss.infra.base.service.AppService;
+import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
@@ -51,6 +53,8 @@ public class RateSettingService {
     private RateService rateService;
     @Autowired
     private RateOrderDAO rateOrderDAO;
+    @Autowired
+    private TaobaoApiShopService taobaoApiShopService;
 
     /**
      * 创建
@@ -281,6 +285,7 @@ public class RateSettingService {
 
     /**
      * 查询中差评论,按照评论时间降序排序
+     * TODO 异常处理
      *
      * @param userId
      * @param tid
@@ -299,6 +304,24 @@ public class RateSettingService {
                 (pageNum - 1) * pageSize, pageSize);
         List<RateOrder> rateOrders = rateOrderDAO.paginateBuyerRate(userId, tid, buyerNick, RATE_ORDER_STATUS_LIST_NOT_RATED, rateTypes,
                 startDate, endDate, (pageNum - 1) * pageSize, pageSize);
+        if(CollectionUtils.isNotEmpty(rateOrders)){
+            //填充 title
+            for(RateOrder rateOrder:rateOrders){
+                try {
+                    Item item =taobaoApiShopService.getItem(userId,rateOrder.getItemNumIid(),
+                            Lists.newArrayList("title","num_iid"));
+                    rateOrder.setItemTitle(item.getTitle());
+                } catch (TaobaoEnhancedApiException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (TaobaoSessionExpiredException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (TaobaoAccessControlException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+        }else{
+            rateOrders=Lists.newArrayList();
+        }
         return Page.create(count, pageNum, pageSize, rateOrders);
     }
 
@@ -319,6 +342,16 @@ public class RateSettingService {
         return resultMap;
     }
 
+    /**
+     * 对某宝贝进行评论
+     * @param userId
+     * @param oid
+     * @param comment
+     * @return
+     * @throws TaobaoEnhancedApiException
+     * @throws TaobaoSessionExpiredException
+     * @throws TaobaoAccessControlException
+     */
     public boolean autoRate(Long userId, Long oid, String comment) throws TaobaoEnhancedApiException, TaobaoSessionExpiredException, TaobaoAccessControlException {
         if (StringUtils.isEmpty(comment)) {
             List<String> comments = getComments(userId);
