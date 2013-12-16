@@ -26,10 +26,10 @@ define(function(require, exports, module) {
         };
         // 分页
         $scope.jumpPage = function(page) {
-            getItems({'page': page});
+            return getItems({'page': page});
         };
 
-        // 立即上架
+        // 立即上架，taobao 就叫 list (sb)
         $scope.list = function(item) {
             item.$list();
         };
@@ -37,13 +37,7 @@ define(function(require, exports, module) {
         // 移除
         $scope.remove = function(item) {
             Confirm.open('确定要移除“' + item.itemTitle + '”？').then(function() {
-                item.$remove(function() {
-                    $scope.jumpPage($scope.items.currPage).then(function(data) {
-                        if (data.length === 0 && $scope.items.currPage > 1) {
-                            $scope.jumpPage($scope.items.currPage - 1);
-                        }
-                    });
-                });
+                InventoryItem.removeFromList(item, $scope.items, getItems);
             });
         };
 
@@ -54,6 +48,7 @@ define(function(require, exports, module) {
             $location.search(options);
 
             $scope.items = InventoryItem.query(options);
+            return $scope.items.$promise;
         }
     }];
 
