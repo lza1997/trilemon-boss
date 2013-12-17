@@ -11,7 +11,8 @@ define(function(require, exports, module) {
         factories: {
             'RateCommentSetting': require('./service/comment-setting'),
             'BuyerRate': require('./service/buyer-rate'),
-            'Blacklist': require('./service/blacklist')
+            'Blacklist': require('./service/blacklist'),
+            'RateSetting': require('./service/rate-setting')
         },
         templates: {
             'rate/setting': require('./template/setting.html'),

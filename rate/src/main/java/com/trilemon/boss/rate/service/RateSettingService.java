@@ -241,7 +241,26 @@ public class RateSettingService {
     }
 
     /**
-     * 获取评论设置
+     * 删除黑名单
+     * @param userId
+     * @param nick 这是主键
+     */
+    public void deleteBlacklist(Long userId, String nick){
+        baseClient.deleteBuyerBlacklist(userId, nick, BaseConstants.BLACKLIST_TYPE_RATE);
+    }
+
+    /**
+     * 获取单条黑名单记录
+     * @param userId
+     * @param nick
+     * @return
+     */
+    public BuyerBlacklist getBuyerBlacklist(Long userId, String nick){
+        return baseClient.getBuyerBlacklist(userId, nick);
+    }
+
+    /**
+     * 获取评价设置
      *
      * @param userId
      * @return
@@ -251,7 +270,7 @@ public class RateSettingService {
     }
 
     /**
-     * 获取评论设置（包括过滤设置）
+     * 获取评价设置（包括过滤设置）
      *
      * @param userId
      * @return

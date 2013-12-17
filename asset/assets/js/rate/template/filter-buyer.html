@@ -1,20 +1,21 @@
+<div class="alert alert-success" ng-show="saveSuccess"><i class="icon-ok-sign"></i> 保存成功！</div>
 <div ng-include="'rate/setting'"></div>
 <div class="tab-content">
-    <form class="form-horizontal">
+    <form class="form-horizontal" name="settingForm" ng-submit="saveSetting()">
         <div class="form-group">
             <label class="col-md-2 control-label">买家信誉过滤</label>
 
             <div class="col-md-6">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" ng-model="setting.enableCreditFilter" ng-value="false" />
                         不过滤
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                        不评价信誉积分小于 <input type="text" class="form-control input-sm form-control-inline" /> 分的买家
+                        <input type="radio" ng-model="setting.enableCreditFilter" ng-value="true" />
+                        不评价信誉积分小于 <input type="text" ng-disabled="!setting.enableCreditFilter" ng-model="setting.creditFilterMin" class="form-control input-sm form-control-inline" /> 分的买家
                     </label>
                 </div>
             </div>
@@ -25,14 +26,14 @@
             <div class="col-md-6">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" ng-model="setting.enableGoodRateFilter" ng-value="false" />
                         不过滤
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                        不评价好评率低于 <input type="text" class="form-control input-sm form-control-inline" /> %的买家
+                        <input type="radio" ng-model="setting.enableGoodRateFilter" ng-value="true" />
+                        不评价好评率低于 <input type="text" ng-disabled="!setting.enableGoodRateFilter" ng-model="setting.goodRateFilter" class="form-control input-sm form-control-inline" /> %的买家
                     </label>
                 </div>
             </div>
@@ -43,14 +44,14 @@
             <div class="col-md-6">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" ng-model="setting.enableRegisterDayFilter" ng-value="false"  />
                         不过滤
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                        不评价注册时间少于 <input type="text" class="form-control input-sm form-control-inline" /> 天的买家
+                        <input type="radio" ng-model="setting.enableRegisterDayFilter" ng-value="true" />
+                        不评价注册时间少于 <input ng-disabled="!setting.enableRegisterDayFilter" ng-model="setting.registerDayFilter" type="text" class="form-control input-sm form-control-inline" /> 天的买家
                     </label>
                 </div>
             </div>
@@ -61,14 +62,14 @@
             <div class="col-md-6">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                        <input type="radio" ng-model="setting.enableBadRateFilter" ng-value="false" />
                         不过滤
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                        不评价中差评本店超过 <input type="text" class="form-control input-sm form-control-inline" /> 次的买家
+                        <input type="radio" ng-model="setting.enableBadRateFilter" ng-value="true" />
+                        不评价中差评本店超过 <input ng-disabled="!setting.enableBadRateFilter" ng-model="setting.badRateFilter" type="text" class="form-control input-sm form-control-inline" /> 次的买家
                     </label>
                 </div>
             </div>

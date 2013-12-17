@@ -5,12 +5,9 @@
             {{ setting.content }}
         </div>
         <div class="col-md-5" ng-if="!setting.isEdit">
-            <div class="btn-group">
-                <button class="btn btn-default" ng-click="edit(setting)">编辑</button>
+                <button class="btn btn-primary" ng-click="edit(setting)">编辑</button>
                 <button class="btn btn-default" ng-click="remove(setting)">删除</button>
-            </div>
         </div>
-
     </div>
     <form novalidate class="row setting-item" ng-repeat-end ng-if="setting.isEdit">
         <div class="col-md-4" >
@@ -22,6 +19,7 @@
             <a href="" ng-click="cancelEdit(setting)">取消</a>
         </div>
     </form>
+    <hr />
     <div class="row">
         <form novalidate name="addForm">
             <div class="col-md-4">
