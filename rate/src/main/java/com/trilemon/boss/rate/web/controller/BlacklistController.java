@@ -25,20 +25,21 @@ public class BlacklistController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public List<BuyerBlacklist> index() {
-        List<BuyerBlacklist> list =  rateSettingService.getBuyerBlacklist(sessionService.getUserId());
+        List<BuyerBlacklist> list = rateSettingService.getBuyerBlacklist(sessionService.getUserId());
         return list;
     }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@RequestBody BuyerBlacklist blacklist) {
+    public BuyerBlacklist create(@RequestBody BuyerBlacklist blacklist) {
         rateSettingService.addBlacklist(sessionService.getUserId(), blacklist.getBuyerNick());
+        return rateSettingService.getBuyerBlacklist(sessionService.getUserId(), blacklist.getBuyerNick());
     }
 
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id) {
-        //rateSettingService.
+    public void delete(@PathVariable String id, String nick) {
+        rateSettingService.deleteBlacklist(sessionService.getUserId(), nick);
     }
 
 }

@@ -20,7 +20,7 @@ textarea { resize: none; }
 
 .setting-item { margin-bottom: 20px; }
 
-.blacklist { background: #333333; color: white; font-size: 100%; padding: 5px 10px; }
+.blacklist { display: inline-block; background: #333333; color: white; font-size: 100%; padding: 5px 10px; margin-right: 10px; margin-bottom: 10px; }
 .blacklist a { color: #b3b3b3; margin-left: 10px; text-decoration: none; }
 .blacklist a:hover { color: white; }
 
