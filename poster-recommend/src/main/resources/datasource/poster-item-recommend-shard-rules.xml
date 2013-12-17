@@ -49,13 +49,6 @@
     <rule>
         <namespace>poster_recommend_user</namespace>
         <shards>posterItemRecommendShard1</shards>
-        <shardingExpression>tableId <![CDATA[ <= ]]> 2 </shardingExpression>
-    </rule>
-
-    <rule>
-        <namespace>poster_recommend_user</namespace>
-        <shards>posterItemRecommendShard2</shards>
-        <shardingExpression>tableId <![CDATA[ > ]]> 2 </shardingExpression>
     </rule>
 
     <rule>

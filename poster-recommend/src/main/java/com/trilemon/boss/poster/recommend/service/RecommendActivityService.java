@@ -1,5 +1,8 @@
 package com.trilemon.boss.poster.recommend.service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.AppService;
@@ -22,6 +25,7 @@ import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -30,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -49,6 +54,8 @@ public class RecommendActivityService {
     private PosterRecommendPublishItemDAO posterRecommendPublishItemDAO;
     @Autowired
     private PosterRecommendActivityDAO posterRecommendActivityDAO;
+    @Autowired
+    private RecommendPublishService recommendPublishService;
     @Autowired
     private PosterRecommendUserDAO posterRecommendUserDAO;
     @Autowired
@@ -73,25 +80,60 @@ public class RecommendActivityService {
     }
 
     /**
-     * 创建活动（设计完毕，还没有投放）
+     * 创建活动（{@literal ACTIVITY_STATUS_DESIGNED_S1}，选择海报宝贝步骤）
      *
      * @param userId
      * @param activity
      */
     @Transactional
-    public void createActivityDesignPart(Long userId, PosterRecommendActivity activity) {
+    public void createActivityDesignS1(Long userId, PosterRecommendActivity activity,
+                                       List<PosterRecommendActivityItem> activityItems) throws
+            PosterRecommendException {
+        if(null==activity.getTemplateId()){
+            throw new PosterRecommendException("template id is null");
+        }
+        //创建活动
         createUser(userId);
 
         activity.setUserId(userId);
         activity.setAddTime(appService.getLocalSystemTime().toDate());
-        activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_DESIGNED);
+        activity.setStatus(ACTIVITY_STATUS_DESIGNED_S1);
 
-        Long id = posterRecommendActivityDAO.insertSelective(activity);
-        logger.info("add activity, activityId[{}] userId[{}].", id, userId);
+        Long activityId = posterRecommendActivityDAO.insertSelective(activity);
+        logger.info("add activity, activityId[{}] userId[{}].", activityId, userId);
+
+        //创建海报宝贝
+        addActivityItems(userId,activityId,activityItems);
     }
 
     /**
-     * 更新活动（投放设置完毕，还没有投放）
+     * 更新活动（{@literal ACTIVITY_STATUS_DESIGNED_S2}，选择海报宝贝完毕，预览取名步骤，在这一步保存生成的海报代码）
+     *
+     * @param userId
+     * @param activity
+     */
+    @Transactional
+    public void updateActivityDesignS2(Long userId, PosterRecommendActivity activity) throws PosterRecommendException {
+        checkNotNull(activity.getId(), "activity id is null.");
+
+        if(StringUtils.isEmpty(activity.getTitle())){
+            throw new PosterRecommendException("activity title is null");
+        }
+
+        //过滤非法html 代码
+        String safeHtml = Jsoup.clean(activity.getPublishHtml(), Whitelist.relaxed());
+        activity.setPublishHtml(safeHtml);
+
+        activity.setUserId(userId);
+        activity.setAddTime(appService.getLocalSystemTime().toDate());
+        activity.setStatus(ACTIVITY_STATUS_DESIGNED_S2);
+
+        posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
+        logger.info("add activity, activityId[{}] userId[{}].", activity.getId(), userId);
+    }
+
+    /**
+     * 更新活动（{@literal ACTIVITY_STATUS_PUBLISH_SETTING_DONE}，投放设置完毕，还没有投放）
      *
      * @param userId
      * @param activity
@@ -102,10 +144,6 @@ public class RecommendActivityService {
 
         activity.setUserId(userId);
         activity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
-
-        //过滤非法html 代码
-        String safeHtml = Jsoup.clean(activity.getPublishHtml(), Whitelist.relaxed());
-        activity.setPublishHtml(safeHtml);
 
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
         logger.info("update activity, activityId[{}] userId[{}].", activity.getId(), userId);
@@ -130,7 +168,7 @@ public class RecommendActivityService {
     }
 
     /**
-     * 更新模板位置
+     * 更新模板位置（暂时用不到）
      *
      * @param userId
      * @param activityId
@@ -151,7 +189,7 @@ public class RecommendActivityService {
     }
 
     /**
-     * 更新投放时间
+     * 更新投放时间（暂时用不到）
      *
      * @param userId
      * @param activityId
@@ -184,14 +222,22 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
-     * @param deleteDetailPage 是否需要删除淘宝详情页中相关内容
      */
     @Transactional
-    public void deleteActivity(Long userId, Long activityId, boolean deleteDetailPage) {
-        posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
-        posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
-        if (deleteDetailPage) {
-            //TODO
+    public void deleteActivity(Long userId, Long activityId) {
+        //卸载宝贝
+        try {
+            recommendPublishService.unpublishActivityFromDetailPage(userId, activityId);
+            PosterRecommendActivity updateActivity = new PosterRecommendActivity();
+            updateActivity.setUserId(userId);
+            updateActivity.setId(activityId);
+            updateActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHING);
+            posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(updateActivity);
+        } finally {
+            //删除记录
+            posterRecommendPublishItemDAO.deleteByUserIdAndActivityId(userId, activityId);
+            posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
+            posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
         }
     }
 
@@ -208,26 +254,50 @@ public class RecommendActivityService {
     }
 
     /**
-     * 添加宝贝到活动模板
+     * 添加多个宝贝到活动模板
      *
      * @param userId
      * @param activityId
-     * @param posterRecommendActivityItem
+     * @param posterRecommendActivityItems
      */
-    public PosterRecommendActivityItem addActivityItem(Long userId, Long activityId, PosterRecommendActivityItem
-            posterRecommendActivityItem) {
+    @Transactional
+    public void addActivityItems(Long userId, Long activityId, List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+        //用户有可能重复选择已经加入活动的宝贝，这里需要过滤掉。
+        final List<PosterRecommendActivityItem> currentItems = posterRecommendActivityItemDAO.paginateByUserIdAndActivityId
+                (userId, activityId, null, 1, 1000);
+        final List<Long> currentItemNumIids = Lists.transform(currentItems, new Function<PosterRecommendActivityItem, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable PosterRecommendActivityItem input) {
+                return input.getItemNumIid();
+            }
+        });
+        Iterables.removeIf(posterRecommendActivityItems, new Predicate<PosterRecommendActivityItem>() {
+            @Override
+            public boolean apply(@Nullable PosterRecommendActivityItem input) {
+                return currentItemNumIids.contains(input.getItemNumIid());
+            }
+        });
+
         PosterRecommendActivity posterRecommendActivity = getActivity(userId, activityId);
-        if (null == posterRecommendActivity) {
-            return null;
+
+        if (null != posterRecommendActivity && CollectionUtils.isNotEmpty(posterRecommendActivityItems)) {
+            PosterRecommendActivity newActivity = new PosterRecommendActivity();
+            //newActivity.setStatus(PosterRecommendConstants);
+            newActivity.setUserId(posterRecommendActivity.getUserId());
+            newActivity.setId(posterRecommendActivity.getId());
+            posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
+
+            for (PosterRecommendActivityItem activityItem : posterRecommendActivityItems) {
+                //@葛亮 这里PosterRecommendActivityItem，你前台需要填充和商品相关的属性
+                activityItem.setUserId(userId);
+                activityItem.setTemplateId(posterRecommendActivity.getTemplateId());
+                activityItem.setActivityId(activityId);
+                activityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
+                activityItem.setAddTime(appService.getLocalSystemTime().toDate());
+            }
+            posterRecommendActivityItemDAO.batchInsert(posterRecommendActivityItems);
         }
-        //@葛亮 这里PosterRecommendActivityItem，你前台需要填充和商品相关的属性
-        posterRecommendActivityItem.setUserId(userId);
-        posterRecommendActivityItem.setTemplateId(posterRecommendActivity.getTemplateId());
-        posterRecommendActivityItem.setActivityId(activityId);
-        posterRecommendActivityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
-        posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
-        posterRecommendActivityItemDAO.insertSelective(posterRecommendActivityItem);
-        return posterRecommendActivityItem;
     }
 
     /**
@@ -235,10 +305,12 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
-     * @param itemNumIid
+     * @param itemNumIids
      */
-    public int removeActivityItem(Long userId, Long activityId, Long itemNumIid) {
-        return posterRecommendActivityItemDAO.deleteByUserIdAndActivityIdAndItemNumIid(userId, activityId, itemNumIid);
+    public void removeActivityItems(Long userId, Long activityId, List<Long> itemNumIids) {
+        if (CollectionUtils.isNotEmpty(itemNumIids)) {
+            posterRecommendActivityItemDAO.batchDelete(userId, activityId, itemNumIids);
+        }
     }
 
     /**
@@ -342,6 +414,30 @@ public class RecommendActivityService {
     }
 
     /**
+     * 获取用户曾经使用过的模板
+     *
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public Page<PosterTemplate> paginateUsedPosterTemplates(Long userId, int pageNum, int pageSize) {
+        List<PosterTemplate> templates = Lists.newArrayList();
+        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityByUserId(userId,
+                null, null, "add_time desc", (pageNum - 1) * pageSize, pageSize);
+        int count = posterRecommendActivityDAO.countActivityByUserId(userId, null, null);
+        if (CollectionUtils.isEmpty(activities)) {
+            return Page.empty();
+        } else {
+            for (PosterRecommendActivity activity : activities) {
+                PosterTemplate template = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
+                templates.add(template);
+            }
+            return Page.create(count, pageNum, pageSize, templates);
+        }
+    }
+
+    /**
      * 查询活动列表
      *
      * @param userId
@@ -349,11 +445,13 @@ public class RecommendActivityService {
      * @param pageSize
      * @return
      */
-    public Page<PosterRecommendActivity> paginateActivity(Long userId, int pageNum, int pageSize) {
-        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityAndStatus(userId,
-                ALL_ACTIVITY_STATUS,"add_time desc",
+    public Page<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList,
+                                                                  Date publishTime, int pageNum,
+                                                                  int pageSize) {
+        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityByUserId(userId,
+                statusList, publishTime, "add_time desc",
                 (pageNum - 1) * pageSize, pageSize);
-        int totalCount = posterRecommendActivityDAO.countActivityByUserIdAndStatus(userId, ALL_ACTIVITY_STATUS);
+        int totalCount = posterRecommendActivityDAO.countActivityByUserId(userId, statusList, publishTime);
 
         //查询投放进度
         if (CollectionUtils.isNotEmpty(activities)) {

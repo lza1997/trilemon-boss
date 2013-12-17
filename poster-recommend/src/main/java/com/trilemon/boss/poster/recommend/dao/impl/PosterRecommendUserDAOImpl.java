@@ -1,47 +1,48 @@
 package com.trilemon.boss.poster.recommend.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
-import com.trilemon.commons.db.ShardTableRouter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PosterRecommendUserDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendUserDAO {
-    @Autowired
-    @Qualifier("posterRecommendUserRouter")
-    private ShardTableRouter<PosterRecommendUser> router;
 
     public long insertSelective(PosterRecommendUser record) {
-        checkNotNull(record.getUserId());
-        router.routeAndSetTableId(record);
         return (long) getSqlMapClientTemplate().insert("poster_recommend_user.insertSelective", record);
     }
 
     public int updateByUserIdSelective(Long userId) {
         PosterRecommendUser _key = new PosterRecommendUser();
         _key.setUserId(userId);
-        router.routeAndSetTableId(_key);
-        return (int) getSqlMapClientTemplate().update("poster_recommend_user.updateByUserIdSelective", _key);
+        return getSqlMapClientTemplate().update("poster_recommend_user.updateByUserIdSelective", _key);
     }
 
     @Override
     public PosterRecommendUser selectByUserId(Long userId) {
         PosterRecommendUser _key = new PosterRecommendUser();
         _key.setUserId(userId);
-        router.routeAndSetTableId(_key);
         return (PosterRecommendUser) getSqlMapClientTemplate().queryForObject("poster_recommend_user.selectByUserId", _key);
     }
 
-    public ShardTableRouter<PosterRecommendUser> getRouter() {
-        return router;
+    @Override
+    public List<PosterRecommendUser> paginateUsersByStatus(ImmutableList<Byte> statusList, int offset, int limit) {
+        Map<String,Object> map= Maps.newHashMap();
+        map.put("statusList",statusList);
+        map.put("offset",offset);
+        map.put("limit",limit);
+        return (List<PosterRecommendUser>) getSqlMapClientTemplate().queryForList("poster_recommend_user.paginateUsersByStatus", map);
     }
 
-    public void setRouter(ShardTableRouter<PosterRecommendUser> router) {
-        this.router = router;
+    @Override
+    public int countUsersByStatus(ImmutableList<Byte> statusList) {
+        Map<String,Object> map= Maps.newHashMap();
+        map.put("statusList",statusList);
+        return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_user.countUsersByStatus", map);
     }
 }

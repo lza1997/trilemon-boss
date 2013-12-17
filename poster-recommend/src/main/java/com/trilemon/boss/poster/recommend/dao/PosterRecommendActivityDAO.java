@@ -2,6 +2,7 @@ package com.trilemon.boss.poster.recommend.dao;
 
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PosterRecommendActivityDAO {
@@ -16,8 +17,9 @@ public interface PosterRecommendActivityDAO {
 
     PosterRecommendActivity selectLastCreatedActivity(Long userId);
 
-    List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList,
-                                                            String orderBy, int offset, int limit);
+    List<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList, Date publishTime,
+                                                           String orderBy, int offset, int limit);
 
-    int countActivityByUserIdAndStatus(Long userId, List<Byte> statusList);
+    int countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime);
+
 }

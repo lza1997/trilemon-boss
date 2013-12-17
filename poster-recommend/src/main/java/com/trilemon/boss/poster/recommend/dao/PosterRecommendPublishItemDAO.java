@@ -21,4 +21,8 @@ public interface PosterRecommendPublishItemDAO {
     PublishProgress groupStatus(Long userId, Long activityId);
 
     int countByUserIdAndActivityId(Long userId, Long activityId);
+
+    int deleteByUserIdAndActivityId(Long userId, Long activityId);
+
+    int batchInsert(List<PosterRecommendPublishItem> publishItems);
 }

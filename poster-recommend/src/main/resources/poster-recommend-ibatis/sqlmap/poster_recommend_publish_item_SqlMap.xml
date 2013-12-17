@@ -216,4 +216,12 @@
         and activity_id = #activityId:BIGINT#
         group by status
     </select>
+
+    <delete id="deleteByUserIdAndActivityId"
+            parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem">
+        delete from
+        <include refid="poster_recommend_publish_item.Base_Table_Name"/>
+        where user_id = #userId:BIGINT#
+        and activity_id= #activityId:BIGINT#
+    </delete>
 </sqlMap>

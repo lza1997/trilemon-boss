@@ -1,6 +1,7 @@
 package com.trilemon.boss.poster.recommend.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
+import com.google.common.collect.Lists;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityItemDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.commons.db.ShardTableMap;
@@ -59,8 +60,7 @@ public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientD
     }
 
     @Override
-    public List<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId,
-                                                                           String orderBy,
+    public List<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, String orderBy,
                                                                            int offset, int limit) {
         checkNotNull(userId);
         PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
@@ -72,6 +72,25 @@ public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientD
         shardTableMap.put("offset", offset);
         shardTableMap.put("limit", limit);
         return (List<PosterRecommendActivityItem>) getSqlMapClientTemplate().queryForList("poster_recommend_activity_item.paginateByUserIdAndActivityId", shardTableMap);
+    }
+
+    @Override
+    public int batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+        return batchInsert("poster_recommend_activity_item.insertSelective", posterRecommendActivityItems);
+    }
+
+    @Override
+    public int batchDelete(Long userId, Long activityId, List<Long> itemNumIids) {
+        List<PosterRecommendActivityItem> activityItems = Lists.newArrayList();
+        for (Long numIid : itemNumIids) {
+            PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
+            _key.setUserId(userId);
+            _key.setActivityId(activityId);
+            _key.setItemNumIid(numIid);
+            router.routeAndSetTableId(_key);
+            activityItems.add(_key);
+        }
+        return batchDelete("poster_recommend_activity_item.deleteByUserIdAndActivityIdAndItemNumIid",activityItems);
     }
 
     @Override

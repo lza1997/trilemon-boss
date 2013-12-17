@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -55,33 +56,36 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
         PosterRecommendActivity _key = new PosterRecommendActivity();
         _key.setUserId(userId);
         router.routeAndSetTableId(_key);
-        return (PosterRecommendActivity)getSqlMapClientTemplate().queryForObject("poster_recommend_activity.selectLastCreatedActivity", _key);
+        return (PosterRecommendActivity) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.selectLastCreatedActivity", _key);
     }
 
     @Override
-    public List<PosterRecommendActivity> paginateActivityAndStatus(Long userId, List<Byte> statusList,
-                                                                   String orderBy, int offset, int limit) {
+    public List<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList,
+                                                                  Date publishTime, String orderBy,
+                                                                  int offset, int limit) {
         checkNotNull(userId);
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(activity);
         shardTableMap.put("userId", userId);
         shardTableMap.put("statusList", statusList);
-        shardTableMap.put("orderBy",orderBy);
+        shardTableMap.put("publishTime", publishTime);
+        shardTableMap.put("orderBy", orderBy);
         shardTableMap.put("offset", offset);
         shardTableMap.put("limit", limit);
-        return (List<PosterRecommendActivity>) getSqlMapClientTemplate().queryForList("poster_recommend_activity.paginateActivityAndStatus", shardTableMap);
+        return (List<PosterRecommendActivity>) getSqlMapClientTemplate().queryForList("poster_recommend_activity.paginateActivityByUserId", shardTableMap);
     }
 
     @Override
-    public int countActivityByUserIdAndStatus(Long userId, List<Byte> statusList) {
+    public int countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime) {
         checkNotNull(userId);
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(activity);
         shardTableMap.put("userId", userId);
         shardTableMap.put("statusList", statusList);
-        return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.countActivityByUserIdAndStatus", shardTableMap);
+        shardTableMap.put("publishTime", publishTime);
+        return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.countActivityByUserId", shardTableMap);
     }
 
     public ShardTableRouter<PosterRecommendActivity> getRouter() {

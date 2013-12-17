@@ -12,7 +12,10 @@
         <result column="detail_page_position" property="detailPagePosition" jdbcType="TINYINT" />
         <result column="publish_html" property="publishHtml" jdbcType="VARCHAR" />
         <result column="publish_type" property="publishType" jdbcType="TINYINT" />
+        <result column="publish_owner" property="publishOwner" jdbcType="VARCHAR" />
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+        <result column="unpublish_time" property="unpublishTime" jdbcType="TIMESTAMP" />
+        <result column="unpublish_owner" property="unpublishOwner" jdbcType="VARCHAR" />
         <result column="publish_start_time" property="publishStartTime" jdbcType="TIMESTAMP" />
         <result column="publish_end_time" property="publishEndTime" jdbcType="TIMESTAMP" />
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
@@ -20,7 +23,8 @@
     </resultMap>
     <sql id="Base_Column_List" >
     id, user_id, template_id, title, color, size, status, detail_page_position, publish_html,
-    publish_type, publish_time, publish_start_time, publish_end_time, add_time, upd_time
+    publish_type, publish_owner, publish_time, unpublish_time, unpublish_owner, publish_start_time, publish_end_time,
+    add_time, upd_time
   </sql>
     <sql id="Base_Table_Name">
         poster_recommend_activity_#tableId#
@@ -68,8 +72,17 @@
             <isNotNull prepend="," property="publishType">
                 publish_type
             </isNotNull>
+            <isNotNull prepend="," property="publishOwner">
+                publish_owner
+            </isNotNull>
             <isNotNull prepend="," property="publishTime">
                 publish_time
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishTime">
+                unpublish_time
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishOwner">
+                unpublish_owner
             </isNotNull>
             <isNotNull prepend="," property="publishStartTime">
                 publish_start_time
@@ -117,8 +130,17 @@
             <isNotNull prepend="," property="publishType">
                 #publishType:TINYINT#
             </isNotNull>
+            <isNotNull prepend="," property="publishOwner">
+                #publishOwner:VARCHAR#
+            </isNotNull>
             <isNotNull prepend="," property="publishTime">
                 #publishTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishTime">
+                #unpublishTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishOwner">
+                #unpublishOwner:VARCHAR#
             </isNotNull>
             <isNotNull prepend="," property="publishStartTime">
                 #publishStartTime:TIMESTAMP#
@@ -171,8 +193,17 @@
             <isNotNull prepend="," property="publishType">
                 publish_type = #publishType:TINYINT#
             </isNotNull>
+            <isNotNull prepend="," property="publishOwner">
+                publish_owner = #publishOwner:TINYINT#
+            </isNotNull>
             <isNotNull prepend="," property="publishTime">
                 publish_time = #publishTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishTime">
+                unpublish_time = #unpublishTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="unpublishOwner">
+                unpublish_owner = #unpublishOwner:VARCHAR#
             </isNotNull>
             <isNotNull prepend="," property="publishStartTime">
                 publish_start_time = #publishStartTime:TIMESTAMP#
@@ -208,12 +239,14 @@
         order by add_time desc
         limit 1
     </select>
-    <select id="paginateActivityAndStatus" resultMap="BaseResultMap" parameterClass="map">
+    <select id="paginateActivityByUserId" resultMap="BaseResultMap" parameterClass="map">
         SELECT
         t1.id as id, t1.user_id as user_id, t1.title as `title`, t1.template_id as template_id,
         t1.color as color, t1.size as `size`,t1.status as status,t1.detail_page_position as detail_page_position,
-        t1.publish_html as publish_html,t1.publish_type as publish_type, t1.publish_time as publish_time,
-        t1.publish_start_time as publish_start_time, t1.publish_end_time as publish_end_time,
+        t1.publish_html as publish_html,t1.publish_type as publish_type, t1.publish_owner as publish_owner,
+        t1.publish_time as publish_time,t1.unpublish_time as unpublish_time, t1.unpublish_owner as unpublish_owner,
+        t1.publish_start_time as publish_start_time,
+        t1.publish_end_time as publish_end_time,
         t1.add_time as add_time, t1.upd_time as upd_time
         FROM
         <include refid="poster_recommend_activity.Base_Table_Name"/>
@@ -223,8 +256,12 @@
         WHERE
         user_id = #userId:BIGINT#
         <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]#
+            status = #statusList[]:TINYINT#
         </iterate>
+        <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
+            publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
+            and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
+        </isNotNull>
         <isNotNull prepend="ORDER BY" property="orderBy">
             $orderBy$
         </isNotNull>
@@ -232,13 +269,17 @@
         ) t2
         where t1.id=t2.id
     </select>
-    <select id="countActivityByUserIdAndStatus" resultClass="int" parameterClass="map">
+    <select id="countActivityByUserId" resultClass="int" parameterClass="map">
         SELECT COUNT(1) FROM
         <include refid="poster_recommend_activity.Base_Table_Name"/>
         WHERE
         user_id = #userId:BIGINT#
         <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]#
+            status = #statusList[]:TINYINT#
         </iterate>
+        <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
+            publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
+            and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
+        </isNotNull>
     </select>
 </sqlMap>

@@ -40,12 +40,16 @@ public class PublishProgress {
         return waitingPublishItemNum == 0;
     }
 
+    /**
+     * 返回百分比，95%返回0.95
+     * @return
+     */
     public float getProgress() {
         int total = waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum;
         if (total == 0) {
             return 0;
         } else {
-            return (getPublishedItemNum() * 100.0f) /
+            return (getPublishedItemNum() * 1f) /
                     (waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum);
         }
     }

@@ -10,25 +10,45 @@ public class RateSetting implements Serializable {
     private Long id;
     private Long userId;
     private Byte status;
+    //评论类型，立刻评价or买家评价后在回评
     private Byte rateType;
+    //自动好评
     private Boolean autoGoodRate;
+    //自动中评
     private Boolean autoNeutralRate;
+    //自动差评
     private Boolean autoBadRate;
+    //短信提醒 暂时不用
     private Boolean enableSmsNotify;
+    //短信提醒电话号码
     private String smsNotifyPhone;
+    //开启信誉过滤
     private Boolean enableCreditFilter;
+    //信誉最小值
     private Integer creditFilterMin;
+    //信誉最大值
     private Integer creditFilterMax;
+    //开启好评过滤
     private Boolean enableGoodRateFilter;
+    //好评过滤阀值
     private Float goodRateFilter;
+    //开启差评过滤
     private Boolean enableBadRateFilter;
+    //差评过滤阀值
     private Float badRateFilter;
+    //开启注册时间过滤
     private Boolean enableRegisterDayFilter;
+    //注册了多少天
     private Integer registerDayFilter;
+    //开启黑名单过滤
     private Boolean enableBlacklistFilter;
+    //上次同步评论开始时间
     private Date lastRateStartTime;
+    //上次同步评论结束时间
     private Date lastRateEndTime;
+    //同步状态
     private Byte rateStatus;
+    //同步服务器
     private String rateOwner;
     private Date addTime;
     private Date updTime;

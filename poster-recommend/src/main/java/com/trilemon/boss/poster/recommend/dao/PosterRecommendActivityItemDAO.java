@@ -18,4 +18,8 @@ public interface PosterRecommendActivityItemDAO {
 
     List<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, String orderBy,
                                                                     int offset, int limit);
+
+    int batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems);
+
+    int batchDelete(Long userId, Long activityId, List<Long> itemNumIids);
 }

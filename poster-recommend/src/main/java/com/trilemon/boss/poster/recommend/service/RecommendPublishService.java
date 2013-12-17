@@ -1,5 +1,9 @@
 package com.trilemon.boss.poster.recommend.service;
 
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.taobao.api.request.ItemUpdateRequest;
@@ -16,6 +20,7 @@ import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendPublishItemDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendPublishItemDetailPageDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
+import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage;
 import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
@@ -30,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
@@ -56,9 +62,11 @@ public class RecommendPublishService {
     private PosterRecommendPublishItemDetailPageDAO posterRecommendPublishItemDetailPageDAO;
     @Autowired
     private TaobaoApiCache taobaoApiCache;
+    @Autowired
+    private RecommendActivityService recommendActivityService;
 
     /**
-     * 添加投放宝贝，已商品做为前台id
+     * 添加投放宝贝，posterRecommendPublishItem对象里面 item 相关的值前端赋予
      *
      * @param userId
      * @param activityId
@@ -74,18 +82,66 @@ public class RecommendPublishService {
     }
 
     /**
+     * 添加多个投放宝贝
+     * @param userId
+     * @param activityId
+     * @param publishItems
+     */
+    @Transactional
+    public void addPublishItems(Long userId, Long activityId, List<PosterRecommendPublishItem> publishItems) {
+        //用户有可能重复选择已经加入活动的宝贝，这里需要过滤掉。
+        final List<PosterRecommendPublishItem> currentItems = posterRecommendPublishItemDAO.paginateByUserIdAndActivityId
+                (userId, activityId, null, 1, 1000);
+        final List<Long> currentItemNumIids = Lists.transform(currentItems, new Function<PosterRecommendPublishItem, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable PosterRecommendPublishItem input) {
+                return input.getItemNumIid();
+            }
+        });
+        Iterables.removeIf(publishItems, new Predicate<PosterRecommendPublishItem>() {
+            @Override
+            public boolean apply(@Nullable PosterRecommendPublishItem input) {
+                return currentItemNumIids.contains(input.getItemNumIid());
+            }
+        });
+
+        PosterRecommendActivity posterRecommendActivity = recommendActivityService.getActivity(userId, activityId);
+
+        if (null != posterRecommendActivity && CollectionUtils.isNotEmpty(publishItems)) {
+            PosterRecommendActivity newActivity = new PosterRecommendActivity();
+            newActivity.setStatus(ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
+            newActivity.setUserId(posterRecommendActivity.getUserId());
+            newActivity.setId(posterRecommendActivity.getId());
+            posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
+
+            for (PosterRecommendPublishItem publishItem : publishItems) {
+                //@葛亮 这里PosterRecommendActivityItem，你前台需要填充和商品相关的属性
+                publishItem.setUserId(userId);
+                publishItem.setActivityId(activityId);
+                publishItem.setStatus(PUBLISH_ITEM_STATUS_WAITING_PUBLISH);
+                publishItem.setAddTime(appService.getLocalSystemTime().toDate());
+            }
+            posterRecommendPublishItemDAO.batchInsert(publishItems);
+        }
+    }
+
+    /**
      * 移除投放宝贝
      *
      * @param userId
      * @param activityId
      * @param itemNumIid
      */
-    public int removePublishItem(Long userId, Long activityId, Long itemNumIid) {
+    public int removePublishItem(Long userId, Long activityId, Long itemNumIid, boolean keepDetailPage) {
+        if (!keepDetailPage) {
+            // unpublishItem(userId, activityId, itemNumIid);
+        }
         return posterRecommendPublishItemDAO.deleteByUserIdAndActivityIdAndItemNumIid(userId, activityId, itemNumIid);
     }
 
     /**
-     * 投放活动
+     * 投放活动到详情页
      *
      * @param userId
      * @param activityId
@@ -101,6 +157,7 @@ public class RecommendPublishService {
         newActivity.setId(activityId);
         newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHING);
         newActivity.setPublishTime(appService.getLocalSystemTime().toDate());
+        newActivity.setPublishOwner(appService.getOwner());
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
 
         //投放单个宝贝
@@ -121,7 +178,7 @@ public class RecommendPublishService {
 
         //结束投放活动
         if (CollectionUtils.isEmpty(exceptions)) {
-            newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHING);
+            newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED);
         } else {
             newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED_WITH_ERROR);
         }
@@ -183,7 +240,6 @@ public class RecommendPublishService {
 
     public void afterPublish(Long userId, Long activityId, Long publishItemNumIid, boolean successful) {
         PosterRecommendPublishItem newPublishItem = new PosterRecommendPublishItem();
-        //开始投放
         newPublishItem.setUserId(userId);
         newPublishItem.setActivityId(activityId);
         newPublishItem.setItemNumIid(publishItemNumIid);
@@ -218,7 +274,8 @@ public class RecommendPublishService {
     }
 
     /**
-     *  查询可供选择加入投放的宝贝
+     * 查询可供选择加入投放的宝贝
+     *
      * @param userId
      * @param activityId
      * @param onSale
@@ -282,5 +339,104 @@ public class RecommendPublishService {
     public PublishProgress queryPublishProgress(Long userId, Long activityId) {
         PublishProgress publishProgress = posterRecommendPublishItemDAO.groupStatus(userId, activityId);
         return publishProgress;
+    }
+
+    /**
+     * 卸载活动
+     *
+     * @param userId
+     * @param activityId
+     */
+    public void unpublishActivityFromDetailPage(Long userId, Long activityId) {
+        logger.info("start to unpublish activity, userId[{}] activityId[{}]", userId, activityId);
+
+        PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
+        if (null == activity) {
+            return;
+        }
+        if (!ALL_ACTIVITY_STATUS_ALL_PUBLISHED.contains(activity.getStatus())) {
+            logger.info("userId[{}] activity[{}] status[{}] is not one of [{}], skip.", userId, activity,
+                    activity.getStatus(), ALL_ACTIVITY_STATUS_ALL_PUBLISHED);
+            return;
+        }
+        //开始卸载活动
+        PosterRecommendActivity newActivity = new PosterRecommendActivity();
+        newActivity.setUserId(userId);
+        newActivity.setId(activityId);
+        newActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHING);
+        newActivity.setUnpublishTime(appService.getLocalSystemTime().toDate());
+        newActivity.setUnpublishOwner(appService.getOwner());
+        posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
+
+        //卸载单个宝贝
+        List<PosterRecommendPublishItem> publishItems = posterRecommendPublishItemDAO.selectByUserIdAndActivityId(userId, activityId);
+        List<Exception> exceptions = Lists.newArrayList();
+        for (PosterRecommendPublishItem publishItem : publishItems) {
+            try {
+                unpublishItem(userId, activityId, publishItem.getItemNumIid());
+            } catch (TaobaoAccessControlException e) {
+                exceptions.add(e);
+            } catch (TaobaoEnhancedApiException e) {
+                exceptions.add(e);
+            } catch (TaobaoSessionExpiredException e) {
+                exceptions.add(e);
+            }
+        }
+
+        //结束投放活动
+        if (CollectionUtils.isEmpty(exceptions)) {
+            newActivity.setStatus(ACTIVITY_STATUS_UNPUBLISHED);
+        } else {
+            newActivity.setStatus(ACTIVITY_STATUS_UNPUBLISHED_WITH_ERROR);
+        }
+        posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
+    }
+
+    /**
+     * 卸载参与投放的宝贝
+     *
+     * @param userId
+     * @param activityId
+     * @param itemNumIid
+     */
+    private void unpublishItem(Long userId, Long activityId, Long itemNumIid)
+            throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public void unpublishFailed(Long userId, Long activityId, Long publishItemNumIid) {
+        afterUnpublish(userId, activityId, publishItemNumIid, false);
+    }
+
+    public void unpublishSuccessful(Long userId, Long activityId, Long publishItemNumIid) {
+        afterUnpublish(userId, activityId, publishItemNumIid, true);
+    }
+
+    public void afterUnpublish(Long userId, Long activityId, Long publishItemNumIid, boolean successful) {
+        PosterRecommendPublishItem newPublishItem = new PosterRecommendPublishItem();
+        newPublishItem.setUserId(userId);
+        newPublishItem.setActivityId(activityId);
+        newPublishItem.setItemNumIid(publishItemNumIid);
+        if (successful) {
+            posterRecommendPublishItemDAO.deleteByUserIdAndActivityIdAndItemNumIid(userId, activityId,
+                    publishItemNumIid);
+        } else {
+            newPublishItem.setStatus(PosterRecommendConstants.PUBLISH_ITEM_STATUS_PUBLISHED_FAILED);
+        }
+        posterRecommendPublishItemDAO.updateByUserIdAndActivityIdAndItemNumIid(newPublishItem);
+    }
+
+    /**
+     * 删除指定用户的详情页海报信息
+     *
+     * @param userId
+     */
+    public void unpublishActivityByUserId(Long userId) {
+        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityByUserId
+                (userId, ImmutableList.of(ACTIVITY_STATUS_PUBLISHED, ACTIVITY_STATUS_PUBLISHED_WITH_ERROR),
+                        appService.getLocalSystemTime().toDate(), null, 1, 1000);
+        for (PosterRecommendActivity activity : activities) {
+            unpublishActivityFromDetailPage(userId, activity.getId());
+        }
     }
 }

@@ -5,37 +5,25 @@ import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
 
-public class PosterRecommendActivity extends ShardTable{
+public class PosterRecommendActivity extends ShardTable {
     private Long id;
-
     private Long userId;
-
     private Long templateId;
-
     private String title;
-
     private String color;
-
     private Integer size;
-
     private Byte status;
-
     private Byte detailPagePosition;
-
     private String publishHtml;
-
     private Byte publishType;
-
+    private String publishOwner;
     private Date publishTime;
-
+    private Date unpublishTime;
+    private String unpublishOwner;
     private Date publishStartTime;
-
     private Date publishEndTime;
-
     private Date addTime;
-
     private Date updTime;
-
     private int itemNum;//已经参加活动的宝贝数量
     private PublishProgress publishProgress;//投放的宝贝数量统计
 
@@ -159,12 +147,12 @@ public class PosterRecommendActivity extends ShardTable{
         this.updTime = updTime;
     }
 
-    public void setItemNum(int itemNum) {
-        this.itemNum = itemNum;
-    }
-
     public int getItemNum() {
         return itemNum;
+    }
+
+    public void setItemNum(int itemNum) {
+        this.itemNum = itemNum;
     }
 
     public PublishProgress getPublishProgress() {
@@ -173,5 +161,29 @@ public class PosterRecommendActivity extends ShardTable{
 
     public void setPublishProgress(PublishProgress publishProgress) {
         this.publishProgress = publishProgress;
+    }
+
+    public Date getUnpublishTime() {
+        return unpublishTime;
+    }
+
+    public void setUnpublishTime(Date unpublishTime) {
+        this.unpublishTime = unpublishTime;
+    }
+
+    public String getPublishOwner() {
+        return publishOwner;
+    }
+
+    public void setPublishOwner(String publishOwner) {
+        this.publishOwner = publishOwner;
+    }
+
+    public String getUnpublishOwner() {
+        return unpublishOwner;
+    }
+
+    public void setUnpublishOwner(String unpublishOwner) {
+        this.unpublishOwner = unpublishOwner;
     }
 }

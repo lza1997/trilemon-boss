@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.ALL_ACTIVITY_STATUS;
+
 /**
  * @author kevin
  */
@@ -143,7 +145,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/paginateActivity", method = RequestMethod.GET)
     public Page<PosterRecommendActivity> paginateActivity(@RequestParam Long userId, @RequestParam Integer pageNum) {
-        return activityService.paginateActivity(userId, pageNum, 2);
+        return activityService.paginateActivityByUserId(userId, ALL_ACTIVITY_STATUS, null, pageNum, 2);
     }
 
     //*******************投放测试********************
@@ -164,7 +166,6 @@ public class TestController {
                                  @RequestParam Long itemNumIid) {
         return publishService.removePublishItem(userId, activityId, itemNumIid);
     }
-
 
     @ResponseBody
     @RequestMapping(value = "/publishActivity", method = RequestMethod.GET)

@@ -118,4 +118,28 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
         shardTableMap.put("activityId", activityId);
         return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_publish_item.countByUserIdAndActivityId", shardTableMap);
     }
+
+    @Override
+    public int deleteByUserIdAndActivityId(Long userId, Long activityId) {
+        PosterRecommendPublishItem _key = new PosterRecommendPublishItem();
+        _key.setUserId(userId);
+        _key.setActivityId(activityId);
+        router.routeAndSetTableId(_key);
+        return getSqlMapClientTemplate().delete("poster_recommend_publish_item.deleteByUserIdAndActivityId", _key);
+    }
+
+    @Override
+    public int batchInsert(List<PosterRecommendPublishItem> publishItems) {
+//        List<PosterRecommendActivityItem> activityItems = Lists.newArrayList();
+//        for (Long numIid : itemNumIids) {
+//            PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
+//            _key.setUserId(userId);
+//            _key.setActivityId(activityId);
+//            _key.setItemNumIid(numIid);
+//            router.routeAndSetTableId(_key);
+//            activityItems.add(_key);
+//        }
+//        return batchDelete("poster_recommend_activity_item.deleteByUserIdAndActivityIdAndItemNumIid",activityItems);
+        return 0;
+    }
 }
