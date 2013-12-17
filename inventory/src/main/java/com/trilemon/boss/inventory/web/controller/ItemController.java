@@ -36,7 +36,7 @@ public class ItemController {
     @RequestMapping(method = RequestMethod.GET)
     public Page<InventoryListItem> index(
             String key, @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = InventoryConstants.BANNER_NEVER_ON_SHELF + "," + InventoryConstants.BANNER_FOR_SHELVED) String banner,
+            @RequestParam(defaultValue = InventoryConstants.BANNER_NEVER_ON_SHELF + "," + InventoryConstants.BANNER_OFF_SHELF) String banner,
             @RequestParam(defaultValue = InventoryConstants.LIST_STATUS_SUCCESSFUL + "," + InventoryConstants.LIST_STATUS_WAITING_ADJUST) String status) {
 
         List<String> statusList = COMMA_SPLITTER.splitToList(status);
