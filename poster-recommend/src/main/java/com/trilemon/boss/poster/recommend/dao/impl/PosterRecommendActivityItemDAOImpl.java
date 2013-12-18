@@ -1,7 +1,6 @@
 package com.trilemon.boss.poster.recommend.dao.impl;
 
 import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
-import com.google.common.collect.Lists;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityItemDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.commons.db.ShardTableMap;
@@ -21,25 +20,25 @@ public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientD
     private ShardTableRouter<PosterRecommendActivityItem> router;
 
     @Override
-    public long insertSelective(PosterRecommendActivityItem record) {
+    public Long insertSelective(PosterRecommendActivityItem record) {
         checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        return (long) getSqlMapClientTemplate().insert("poster_recommend_activity_item.insertSelective", record);
+        return (Long) getSqlMapClientTemplate().insert("poster_recommend_activity_item.insertSelective", record);
     }
 
     @Override
-    public int countByUserIdAndActivityId(Long userId, Long activityId) {
+    public Integer countByUserIdAndActivityId(Long userId, Long activityId) {
         checkNotNull(userId);
         PosterRecommendActivityItem activityItem = new PosterRecommendActivityItem();
         activityItem.setUserId(userId);
         ShardTableMap shardTableMap = router.getRouteMap(activityItem);
         shardTableMap.put("userId", userId);
         shardTableMap.put("activityId", activityId);
-        return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_activity_item.countByUserIdAndActivityId", shardTableMap);
+        return (Integer) getSqlMapClientTemplate().queryForObject("poster_recommend_activity_item.countByUserIdAndActivityId", shardTableMap);
     }
 
     @Override
-    public int deleteByUserIdAndActivityId(Long userId, Long activityId) {
+    public Integer deleteByUserIdAndActivityId(Long userId, Long activityId) {
         PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
         _key.setUserId(userId);
         _key.setActivityId(activityId);
@@ -49,7 +48,7 @@ public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientD
     }
 
     @Override
-    public int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid) {
+    public Integer deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid) {
         PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
         _key.setUserId(userId);
         _key.setItemNumIid(itemNumIid);
@@ -75,22 +74,19 @@ public class PosterRecommendActivityItemDAOImpl extends MysdalCobarSqlMapClientD
     }
 
     @Override
-    public int batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+    public Integer batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
         return batchInsert("poster_recommend_activity_item.insertSelective", posterRecommendActivityItems);
     }
 
     @Override
-    public int batchDelete(Long userId, Long activityId, List<Long> itemNumIids) {
-        List<PosterRecommendActivityItem> activityItems = Lists.newArrayList();
-        for (Long numIid : itemNumIids) {
-            PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
-            _key.setUserId(userId);
-            _key.setActivityId(activityId);
-            _key.setItemNumIid(numIid);
-            router.routeAndSetTableId(_key);
-            activityItems.add(_key);
-        }
-        return batchDelete("poster_recommend_activity_item.deleteByUserIdAndActivityIdAndItemNumIid",activityItems);
+    public Integer batchDelete(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+        return batchDelete("poster_recommend_activity_item.deleteByUserIdAndActivityIdAndItemNumIid",posterRecommendActivityItems);
+    }
+
+    @Override
+    public Integer batchUpdate(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+        return batchUpdate("poster_recommend_activity_item.updateByUserIdAndActivityIdAndItemNumIidSelective",
+                posterRecommendActivityItems);
     }
 
     @Override

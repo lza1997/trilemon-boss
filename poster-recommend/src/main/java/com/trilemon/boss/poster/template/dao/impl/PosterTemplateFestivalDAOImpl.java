@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PosterTemplateFestivalDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterTemplateFestivalDAO {
 
-    public int deleteByPrimaryKey(Integer id) {
+    public int deleteByPrimaryKey(Long id) {
         PosterTemplateFestival _key = new PosterTemplateFestival();
         _key.setId(id);
         int rows = getSqlMapClientTemplate().delete("poster_template_festival.deleteByPrimaryKey", _key);
@@ -23,7 +23,7 @@ public class PosterTemplateFestivalDAOImpl extends MysdalCobarSqlMapClientDaoSup
         getSqlMapClientTemplate().insert("poster_template_festival.insertSelective", record);
     }
 
-    public PosterTemplateFestival selectByPrimaryKey(Integer id) {
+    public PosterTemplateFestival selectByPrimaryKey(Long id) {
         PosterTemplateFestival _key = new PosterTemplateFestival();
         _key.setId(id);
         return (PosterTemplateFestival) getSqlMapClientTemplate().queryForObject("poster_template_festival.selectByPrimaryKey", _key);

@@ -224,4 +224,19 @@
         where user_id = #userId:BIGINT#
         and activity_id= #activityId:BIGINT#
     </delete>
+
+    <select id="selectByUserIdAndActivityIdAndItemNumIidAndStatus" resultMap="BaseResultMap"
+            parameterClass="map">
+        select
+        <include refid="poster_recommend_publish_item.Base_Column_List"/>
+        from <include refid="poster_recommend_publish_item.Base_Table_Name"/>
+        where user_id = #userId:BIGINT#
+        and activity_id= #activityId:BIGINT#
+        and item_num_iid=#itemNumIid:BIGINT#
+        <isNotEmpty property="statusList">
+            <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                `status` = #statusList[]:TINYINT#
+            </iterate>
+        </isNotEmpty>
+    </select>
 </sqlMap>

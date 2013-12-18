@@ -5,13 +5,13 @@ import com.trilemon.boss.poster.template.model.PosterTemplateTopic;
 import java.util.List;
 
 public interface PosterTemplateTopicDAO {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     void insert(PosterTemplateTopic record);
 
     void insertSelective(PosterTemplateTopic record);
 
-    PosterTemplateTopic selectByPrimaryKey(Integer id);
+    PosterTemplateTopic selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(PosterTemplateTopic record);
 

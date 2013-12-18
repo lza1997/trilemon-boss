@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface PosterRecommendUserDAO {
 
-    long insertSelective(PosterRecommendUser record);
+    Long insertSelective(PosterRecommendUser record);
 
-    int updateByUserIdSelective(Long userId);
+    Integer updateByUserIdSelective(Long userId);
 
     PosterRecommendUser selectByUserId(Long userId);
 
     List<PosterRecommendUser> paginateUsersByStatus(ImmutableList<Byte> statusList, int offset, int limit);
 
-    int countUsersByStatus(ImmutableList<Byte> statusList);
+    Integer countUsersByStatus(ImmutableList<Byte> statusList);
 }

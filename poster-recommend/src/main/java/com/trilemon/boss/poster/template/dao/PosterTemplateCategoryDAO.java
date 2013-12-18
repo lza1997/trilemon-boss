@@ -1,18 +1,17 @@
 package com.trilemon.boss.poster.template.dao;
 
 import com.trilemon.boss.poster.template.model.PosterTemplateCategory;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 public interface PosterTemplateCategoryDAO {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Long id);
 
     void insert(PosterTemplateCategory record);
 
     void insertSelective(PosterTemplateCategory record);
 
-    PosterTemplateCategory selectByPrimaryKey(Integer id);
+    PosterTemplateCategory selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(PosterTemplateCategory record);
 

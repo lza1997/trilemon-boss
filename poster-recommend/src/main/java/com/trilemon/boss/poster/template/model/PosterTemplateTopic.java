@@ -3,28 +3,28 @@ package com.trilemon.boss.poster.template.model;
 import java.util.Date;
 
 public class PosterTemplateTopic {
-    private Integer id;
+    private Long id;
 
-    private Integer name;
+    private String name;
 
     private Date addTime;
 
     private Date updTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Integer name) {
-        this.name = name;
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public Date getAddTime() {

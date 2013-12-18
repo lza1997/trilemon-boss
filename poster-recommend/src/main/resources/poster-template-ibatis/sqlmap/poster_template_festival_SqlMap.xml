@@ -2,7 +2,7 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="poster_template_festival" >
   <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.template.model.PosterTemplateFestival" >
-    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="id" property="id" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="calendar" property="calendar" jdbcType="TINYINT" />
     <result column="festival_time_type" property="festivalTimeType" jdbcType="TINYINT" />
@@ -19,17 +19,17 @@
     select 
     <include refid="poster_template_festival.Base_Column_List" />
     from poster_template_festival
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </select>
   <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateFestival" >
     delete from poster_template_festival
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </delete>
   <insert id="insert" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateFestival" >
     insert into poster_template_festival (id, name, calendar, festival_time_type, 
       festival_fix_time, festival_dynamic_time, add_time, upd_time
       )
-    values (#id:INTEGER#, #name:VARCHAR#, #calendar:TINYINT#, #festivalTimeType:TINYINT#, 
+    values (#id:BIGINT#, #name:VARCHAR#, #calendar:TINYINT#, #festivalTimeType:TINYINT#, 
       #festivalFixTime:DATE#, #festivalDynamicTime:VARCHAR#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#
       )
   </insert>
@@ -65,7 +65,7 @@
     values
     <dynamic prepend="(" >
       <isNotNull prepend="," property="id" >
-        #id:INTEGER#
+        #id:BIGINT#
       </isNotNull>
       <isNotNull prepend="," property="name" >
         #name:VARCHAR#
@@ -116,7 +116,7 @@
         upd_time = #updTime:TIMESTAMP#
       </isNotNull>
     </dynamic>
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </update>
   <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateFestival" >
     update poster_template_festival
@@ -127,6 +127,6 @@
       festival_dynamic_time = #festivalDynamicTime:VARCHAR#,
       add_time = #addTime:TIMESTAMP#,
       upd_time = #updTime:TIMESTAMP#
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </update>
 </sqlMap>

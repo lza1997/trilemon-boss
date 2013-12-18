@@ -19,7 +19,7 @@ import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
  */
 @Component
 public class TaobaoApiCache {
-    public static final int ITEM_EXPIRED = 5 * 60;
+    public static final int ITEM_EXPIRED = 1 * 60;
     @Autowired
     private JedisTemplate jedisTemplate;
     @Autowired

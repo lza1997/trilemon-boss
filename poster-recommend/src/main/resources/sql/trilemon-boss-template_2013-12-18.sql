@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.27)
 # Database: trilemon-boss-template
-# Generation Time: 2013-12-16 16:11:34 +0000
+# Generation Time: 2013-12-18 10:17:02 +0000
 # ************************************************************
 
 
@@ -66,7 +66,7 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `poster_template_category`;
 
 CREATE TABLE `poster_template_category` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL DEFAULT '',
   `add_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `upd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -81,7 +81,7 @@ CREATE TABLE `poster_template_category` (
 DROP TABLE IF EXISTS `poster_template_festival`;
 
 CREATE TABLE `poster_template_festival` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(16) NOT NULL DEFAULT '',
   `calendar` tinyint(11) unsigned NOT NULL DEFAULT '0',
   `festival_time_type` tinyint(11) unsigned NOT NULL DEFAULT '0',
@@ -100,8 +100,8 @@ CREATE TABLE `poster_template_festival` (
 DROP TABLE IF EXISTS `poster_template_topic`;
 
 CREATE TABLE `poster_template_topic` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` int(11) NOT NULL,
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL DEFAULT '',
   `add_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `upd_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)

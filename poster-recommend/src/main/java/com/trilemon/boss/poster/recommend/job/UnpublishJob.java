@@ -3,7 +3,6 @@ package com.trilemon.boss.poster.recommend.job;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.trilemon.boss.infra.base.service.AppService;
-import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
 import com.trilemon.boss.poster.recommend.service.RecommendPublishService;
@@ -30,8 +29,6 @@ public class UnpublishJob extends AbstractFixRateQueueService<Long> {
     private RecommendPublishService recommendPublishService;
     @Autowired
     private PosterRecommendUserDAO posterRecommendUserDAO;
-    @Autowired
-    private PosterRecommendActivityDAO posterRecommendActivityDAO;
     @Autowired
     private AppService appService;
     @Autowired

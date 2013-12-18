@@ -11,4 +11,6 @@ public interface PosterTemplateClient {
     PosterTemplate getPosterTemplate(Long templateId);
 
     PosterTemplateQueryResponse queryTemplates(PosterTemplateQueryRequest request);
+
+    void favoriteTemplate(Long templateId,int favoriteNum);
 }

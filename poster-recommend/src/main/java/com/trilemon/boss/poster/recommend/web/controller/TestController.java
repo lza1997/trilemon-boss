@@ -1,9 +1,11 @@
 package com.trilemon.boss.poster.recommend.web.controller;
 
 import com.google.common.collect.Lists;
+import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem;
@@ -12,6 +14,7 @@ import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.LastUsedPosterTemplate;
 import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
+import com.trilemon.boss.poster.recommend.service.PosterRecommendException;
 import com.trilemon.boss.poster.recommend.service.RecommendActivityService;
 import com.trilemon.boss.poster.recommend.service.RecommendPublishService;
 import com.trilemon.boss.poster.recommend.service.RecommendTemplateService;
@@ -20,7 +23,6 @@ import com.trilemon.boss.poster.template.model.PosterTemplateCategory;
 import com.trilemon.boss.poster.template.model.PosterTemplateTopic;
 import com.trilemon.commons.DateUtils;
 import com.trilemon.commons.web.Page;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,10 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.ALL_ACTIVITY_STATUS;
+import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
 
 /**
  * @author kevin
@@ -54,16 +55,67 @@ public class TestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/createActivityDesignPart", method = RequestMethod.GET)
-    public String createActivityDesignPart(@RequestParam Long userId) {
+    @RequestMapping(value = "/createActivityDesignS1", method = RequestMethod.GET)
+    public String createActivityDesignS1(@RequestParam Long userId) {
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setTemplateId(100L);
         activity.setTitle("测试活动设计部分");
         activity.setColor("12344");
         activity.setSize(790);
-        activityService.createActivityDesignPart(userId, activity);
+        activity.setPublishHtml("<a>test</a>");
+
+        //测试数据
+        List<ActivityItem> activityItems=Lists.newArrayList();
+        //加入
+        ActivityItem activityItem1=new ActivityItem();
+        activityItem1.setActivityItemStatus(ACTIVITY_ITEM_STATUS_NOT_IN_DB);
+        activityItem1.setStatus(ActivityItem.STATUS_NEW);
+        Item item1=new Item();
+        item1.setTitle("test title");
+        item1.setNumIid(123L);
+        item1.setPrice("123.12");
+        item1.setPicUrl("test pic url");
+        activityItem1.setItem(item1);
+        activityItems.add(activityItem1);
+
+        //更新
+        ActivityItem activityItem2=new ActivityItem();
+        activityItem2.setActivityItemStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
+        activityItem2.setStatus(ActivityItem.STATUS_UPDATED);
+        Item item2=new Item();
+        item2.setTitle("test title 2");
+        item2.setNumIid(123L);
+        item2.setPrice("123.12");
+        item2.setPicUrl("test pic url2");
+        activityItem2.setItem(item2);
+        activityItems.add(activityItem2);
+
+        //删除
+        ActivityItem activityItem3=new ActivityItem();
+        activityItem3.setActivityItemStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
+        activityItem3.setStatus(ActivityItem.STATUS_DELETED);
+        Item item3=new Item();
+        item3.setTitle("test title 3");
+        item3.setNumIid(123L);
+        item3.setPrice("123.12");
+        item3.setPicUrl("test pic url2");
+        activityItem3.setItem(item3);
+        activityItems.add(activityItem3);
+
+        activityService.createActivityDesignS1(userId, activity,activityItems);
         return "success";
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/createActivityDesignS2", method = RequestMethod.GET)
+    public String createActivityDesignS2(@RequestParam Long userId) throws PosterRecommendException {
+        PosterRecommendActivity activity = new PosterRecommendActivity();
+        activity.setTitle("测试活动设计部分S2");
+        activityService.updateActivityDesignS2(userId, activity);
+        return "success";
+    }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/updateActivityPublishPart", method = RequestMethod.GET)
@@ -73,28 +125,41 @@ public class TestController {
         activity.setDetailPagePosition((byte) 1);
         activity.setPublishStartTime(DateUtils.endOfNDaysBefore(10).toDate());
         activity.setPublishEndTime(DateUtils.endOfNDaysBefore(1).toDate());
-        activity.setPublishHtml("<a>test</a>");
-        activityService.updateActivityPublishPart(userId, activity);
+
+        //测试数据
+        List<PublishItem> publishItems=Lists.newArrayList();
+        //加入
+        PublishItem publishItem1=new PublishItem();
+        publishItem1.setPublishItemStatus(PUBLISH_ITEM_STATUS_NOT_IN_DB);
+        publishItem1.setStatus(PublishItem.STATUS_NEW);
+        Item item1=new Item();
+        item1.setTitle("test title");
+        item1.setNumIid(123L);
+        item1.setPrice("123.12");
+        item1.setPicUrl("test pic url");
+        publishItem1.setItem(item1);
+        publishItems.add(publishItem1);
+
+        //删除
+        PublishItem publishItem2=new PublishItem();
+        publishItem2.setPublishItemStatus(PosterRecommendConstants.PUBLISH_ITEM_STATUS_WAITING_PUBLISH);
+        publishItem2.setStatus(PublishItem.STATUS_DELETED);
+        Item item2=new Item();
+        item2.setTitle("test title 2");
+        item2.setNumIid(123L);
+        item2.setPrice("123.12");
+        item2.setPicUrl("test pic url2");
+        publishItem2.setItem(item2);
+        publishItems.add(publishItem2);
+
+        activityService.updateActivityPublishPart(userId, activity,publishItems);
         return "success";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/updateActivityDetailPagePosition", method = RequestMethod.GET)
-    public boolean updateActivityDetailPagePosition(@RequestParam Long userId, @RequestParam Long activityId, byte detailPagePosition) {
-        return activityService.updateActivityDetailPagePosition(userId, activityId, detailPagePosition);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/updateActivityPublishTime", method = RequestMethod.GET)
-    public boolean updateActivityPublishTime(@RequestParam Long userId, @RequestParam Long activityId, byte publishType) {
-        return activityService.updateActivityPublishTime(userId, activityId, publishType,
-                DateUtils.endOfNDaysBefore(100).toDate(), DateUtils.endOfNDaysBefore(10).toDate());
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/deleteActivity", method = RequestMethod.GET)
-    public String deleteActivity(@RequestParam Long userId, @RequestParam Long activityId, boolean deleteDetailPage) {
-        activityService.deleteActivity(userId, activityId, deleteDetailPage);
+    public String deleteActivity(@RequestParam Long userId, @RequestParam Long activityId) {
+        activityService.deleteActivity(userId, activityId);
         return "success";
     }
 
@@ -102,24 +167,6 @@ public class TestController {
     @RequestMapping(value = "/getActivityPublishHtml", method = RequestMethod.GET)
     public String getActivityPublishHtml(@RequestParam Long userId, @RequestParam Long activityId) {
         return activityService.getActivityPublishHtml(userId, activityId);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/addActivityItem", method = RequestMethod.GET)
-    public PosterRecommendActivityItem addActivityItem(@RequestParam Long userId, @RequestParam Long activityId) {
-        PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
-        posterRecommendActivityItem.setItemNumIid(123456L);
-        posterRecommendActivityItem.setItemPicUrl("pic_url");
-        posterRecommendActivityItem.setItemPrice(BigDecimal.TEN);
-        posterRecommendActivityItem.setItemTitle("test title");
-        return activityService.addActivityItem(userId, activityId, posterRecommendActivityItem);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/removeActivityItem", method = RequestMethod.GET)
-    public int removeActivityItem(@RequestParam Long userId, @RequestParam Long activityId,
-                                  @RequestParam Long itemNumIid) {
-        return activityService.removeActivityItem(userId, activityId, itemNumIid);
     }
 
     @ResponseBody
@@ -150,28 +197,15 @@ public class TestController {
 
     //*******************投放测试********************
     @ResponseBody
-    @RequestMapping(value = "/addPublishItem", method = RequestMethod.GET)
-    public PosterRecommendPublishItem addPublishItem(@RequestParam Long userId, @RequestParam Long activityId) {
-        PosterRecommendPublishItem posterRecommendPublishItem = new PosterRecommendPublishItem();
-        posterRecommendPublishItem.setPublishTime(DateTime.now().toDate());
-        posterRecommendPublishItem.setItemPicUrl("pic_url");
-        posterRecommendPublishItem.setItemPrice(BigDecimal.TEN);
-        posterRecommendPublishItem.setItemTitle("test title");
-        return publishService.addPublishItem(userId, activityId, posterRecommendPublishItem);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/removePublishItem", method = RequestMethod.GET)
-    public int removePublishItem(@RequestParam Long userId, @RequestParam Long activityId,
-                                 @RequestParam Long itemNumIid) {
-        return publishService.removePublishItem(userId, activityId, itemNumIid);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/publishActivity", method = RequestMethod.GET)
-    //TODO test
     public void publishActivity(@RequestParam Long userId, @RequestParam Long activityId) {
         publishService.publishActivity(userId, activityId);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/unpublishActivity", method = RequestMethod.GET)
+    public void unpublishActivity(@RequestParam Long userId, @RequestParam Long activityId) {
+        publishService.unpublishActivity(userId, activityId);
     }
 
     @ResponseBody

@@ -6,20 +6,22 @@ import java.util.List;
 
 public interface PosterRecommendActivityItemDAO {
 
-    long insertSelective(PosterRecommendActivityItem record);
+    Long insertSelective(PosterRecommendActivityItem record);
 
-    int countByUserIdAndActivityId(Long userId, Long activityId);
+    Integer countByUserIdAndActivityId(Long userId, Long activityId);
 
-    int deleteByUserIdAndActivityId(Long userId, Long activityId);
+    Integer deleteByUserIdAndActivityId(Long userId, Long activityId);
 
-    int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid);
+    Integer deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid);
 
     List<PosterRecommendActivityItem> selectByUserIdAndActivityId(Long userId, Long activityId);
 
     List<PosterRecommendActivityItem> paginateByUserIdAndActivityId(Long userId, Long activityId, String orderBy,
                                                                     int offset, int limit);
 
-    int batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems);
+    Integer batchInsert(List<PosterRecommendActivityItem> posterRecommendActivityItems);
 
-    int batchDelete(Long userId, Long activityId, List<Long> itemNumIids);
+    Integer batchDelete(List<PosterRecommendActivityItem> posterRecommendActivityItems);
+
+    Integer batchUpdate(List<PosterRecommendActivityItem> posterRecommendActivityItems);
 }

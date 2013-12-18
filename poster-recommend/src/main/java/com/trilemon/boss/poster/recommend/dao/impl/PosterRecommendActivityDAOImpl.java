@@ -20,10 +20,10 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
     @Qualifier("posterRecommendActivityRouter")
     private ShardTableRouter<PosterRecommendActivity> router;
 
-    public long insertSelective(PosterRecommendActivity record) {
+    public Long insertSelective(PosterRecommendActivity record) {
         checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
-        return (long) getSqlMapClientTemplate().insert("poster_recommend_activity.insertSelective", record);
+        return (Long) getSqlMapClientTemplate().insert("poster_recommend_activity.insertSelective", record);
     }
 
     @Override
@@ -36,14 +36,14 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
     }
 
     @Override
-    public int updateByUserIdAndActivityIdSelective(PosterRecommendActivity activity) {
+    public Integer updateByUserIdAndActivityIdSelective(PosterRecommendActivity activity) {
         checkNotNull(activity.getUserId());
         router.routeAndSetTableId(activity);
         return getSqlMapClientTemplate().update("poster_recommend_activity.updateByUserIdAndActivityIdSelective", activity);
     }
 
     @Override
-    public int deleteByUserIdAndActivityId(Long userId, Long activityId) {
+    public Integer deleteByUserIdAndActivityId(Long userId, Long activityId) {
         PosterRecommendActivity _key = new PosterRecommendActivity();
         _key.setUserId(userId);
         _key.setId(activityId);
@@ -77,7 +77,7 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
     }
 
     @Override
-    public int countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime) {
+    public Integer countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime) {
         checkNotNull(userId);
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setUserId(userId);

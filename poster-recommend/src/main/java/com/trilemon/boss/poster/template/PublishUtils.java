@@ -1,7 +1,6 @@
 package com.trilemon.boss.poster.template;
 
 import com.google.common.collect.Maps;
-import org.apache.commons.collections.CollectionUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,7 +8,8 @@ import org.jsoup.select.Elements;
 
 import java.util.Map;
 
-import static com.trilemon.boss.poster.template.PosterTemplateConstants.*;
+import static com.trilemon.boss.poster.template.PosterTemplateConstants.PUBLISH_POSITION_BOTTOM;
+import static com.trilemon.boss.poster.template.PosterTemplateConstants.PUBLISH_POSITION_TOP;
 
 /**
  * @author kevin
@@ -19,69 +19,36 @@ public class PublishUtils {
      * 添加列表
      *
      * @param position
-     * @param tag
+     * @param pType
      * @param html
      * @param desc
      * @return
      */
-    public static String addHtml2DetailPage(byte position, String tag, Long pid, String html, String desc) {
+    public static String addHtml2DetailPage(byte position, String pType, Long pid, String html, String desc) {
 
         //生成待假如代码块
-        String divId = tag + "-" + pid;
         StringBuilder sb = new StringBuilder();
-        sb.append("<div id=\"" + divId + "\">");
+        sb.append("<div id=\"" + getTag(pType, pid) + "\">");
         sb.append(html);
         sb.append("</div>");
 
         //插入宝贝描述
         switch (position) {
-            case POSITION_TOP_START:
-                desc = append2DescTopFirst(tag, pid, sb.toString(), desc);
+            case PUBLISH_POSITION_TOP:
+                desc = append2DescTopFirst(pType, pid, sb.toString(), desc);
                 break;
-            case POSITION_TOP_END:
-                desc = append2DescTopLast(tag, pid, sb.toString(), desc);
-                break;
-            case POSITION_BOTTOM_START:
-                desc = append2DescBottomFirst(tag, pid, sb.toString(), desc);
-                break;
-            case POSITION_BOTTOM_END:
-                desc = append2DescBottomLast(tag, pid, sb.toString(), desc);
+            case PUBLISH_POSITION_BOTTOM:
+                desc = append2DescBottomLast(pType, pid, sb.toString(), desc);
                 break;
         }
         return desc;
     }
 
-    private static String append2DescBottomFirst(String tag, Long pid, String html, String desc) {
-        Document document = Jsoup.parseBodyFragment(desc);
-        Elements elements = document.select("#" + tag);
-        if (CollectionUtils.isEmpty(elements)) {
-            return append2DescBottomLast(tag, pid, html, desc);
-        } else {
-            //寻找描述下面第一段我方代码，插入活动代码
-            Element element = elements.last();
-            element.append(html);
-        }
-        return document.body().html();
-    }
-
-    private static String append2DescTopFirst(String tag, Long pid, String html, String desc) {
+    private static String append2DescTopFirst(String pType, Long pid, String html, String desc) {
         return html + desc;
     }
 
-    private static String append2DescTopLast(String tag, Long pid, String html, String desc) {
-        Document document = Jsoup.parseBodyFragment(desc);
-        Elements elements = document.select("#" + tag);
-        if (CollectionUtils.isEmpty(elements)) {
-            return append2DescTopFirst(tag, pid, html, desc);
-        } else {
-            //寻找描述上面最后一段我方代码，插入活动代码
-            Element element = elements.first();
-            element.append(html);
-        }
-        return document.body().html();
-    }
-
-    private static String append2DescBottomLast(String tag, Long pid, String html, String desc) {
+    private static String append2DescBottomLast(String pType, Long pid, String html, String desc) {
         return desc + html;
     }
 
@@ -113,5 +80,23 @@ public class PublishUtils {
             map.put(element.id(), element.html());
         }
         return map;
+    }
+
+    /**
+     * 把海报从详情页中移除
+     *
+     * @param pType
+     * @param pid
+     * @param desc
+     * @return
+     */
+    public static String removeHtmlFromDetailPage(String pType, Long pid, String desc) {
+        deleteHtmlFromDetailPage(getTag(pType, pid), desc);
+        return desc;
+    }
+
+    public static String getTag(String pType, Long pid) {
+        return pType + "-" + pid;
+
     }
 }

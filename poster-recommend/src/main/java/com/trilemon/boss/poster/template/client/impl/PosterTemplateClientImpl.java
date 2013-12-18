@@ -12,10 +12,6 @@ import com.trilemon.boss.poster.template.service.TemplateService;
 public class PosterTemplateClientImpl implements PosterTemplateClient {
     private TemplateService templateService;
 
-    public void setTemplateService(TemplateService templateService) {
-        this.templateService = templateService;
-    }
-
     @Override
     public PosterTemplate getPosterTemplate(Long templateId) {
         return templateService.getTemplate(templateId);
@@ -26,8 +22,16 @@ public class PosterTemplateClientImpl implements PosterTemplateClient {
         return templateService.queryTemplates(request);
     }
 
+    @Override
+    public void favoriteTemplate(Long templateId, int favoriteNum) {
+        templateService.favorite(templateId, favoriteNum);
+    }
 
     public TemplateService getTemplateService() {
         return templateService;
+    }
+
+    public void setTemplateService(TemplateService templateService) {
+        this.templateService = templateService;
     }
 }
