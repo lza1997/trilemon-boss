@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PosterRecommendRecommendTemplateDAO {
 
-    long insertSelective(PosterRecommendRecommendTemplate record);
+    Long insertSelective(PosterRecommendRecommendTemplate record);
 
     PosterRecommendRecommendTemplate selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(PosterRecommendRecommendTemplate record);
+    Integer updateByPrimaryKeySelective(PosterRecommendRecommendTemplate record);
 
     List<PosterRecommendRecommendTemplate> selectByRecommendType(Byte recommendType, Date now);
 }

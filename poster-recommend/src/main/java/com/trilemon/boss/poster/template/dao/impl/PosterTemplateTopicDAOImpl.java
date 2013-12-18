@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class PosterTemplateTopicDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterTemplateTopicDAO {
 
-    public int deleteByPrimaryKey(Integer id) {
+    public int deleteByPrimaryKey(Long id) {
         PosterTemplateTopic _key = new PosterTemplateTopic();
         _key.setId(id);
         int rows = getSqlMapClientTemplate().delete("poster_template_topic.deleteByPrimaryKey", _key);
@@ -24,7 +24,7 @@ public class PosterTemplateTopicDAOImpl extends MysdalCobarSqlMapClientDaoSuppor
         getSqlMapClientTemplate().insert("poster_template_topic.insertSelective", record);
     }
 
-    public PosterTemplateTopic selectByPrimaryKey(Integer id) {
+    public PosterTemplateTopic selectByPrimaryKey(Long id) {
         PosterTemplateTopic _key = new PosterTemplateTopic();
         _key.setId(id);
         return (PosterTemplateTopic) getSqlMapClientTemplate().queryForObject("poster_template_topic.selectByPrimaryKey", _key);

@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="poster_template_topic" >
-  <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
-    <result column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="INTEGER" />
-    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
-    <result column="upd_time" property="updTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <sql id="Base_Column_List" >
+<sqlMap namespace="poster_template_topic">
+    <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, name, add_time, upd_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
-    select 
-    <include refid="poster_template_topic.Base_Column_List" />
-    from poster_template_topic
-    where id = #id:INTEGER#
-  </select>
-  <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+            parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
+        select
+        <include refid="poster_template_topic.Base_Column_List"/>
+        from poster_template_topic
+        where id = #id:BIGINT#
+    </select>
+    <delete id="deleteByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
     delete from poster_template_topic
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </delete>
-  <insert id="insert" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
+    <insert id="insert" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
     insert into poster_template_topic (id, name, add_time, upd_time)
-    values (#id:INTEGER#, #name:INTEGER#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
+    values (#id:BIGINT#, #name:VARCHAR#, #addTime:TIMESTAMP#, #updTime:TIMESTAMP#)
   </insert>
-  <insert id="insertSelective" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
-    insert into poster_template_topic
-    <dynamic prepend="(" >
-      <isNotNull prepend="," property="id" >
-        id
-      </isNotNull>
-      <isNotNull prepend="," property="name" >
-        name
-      </isNotNull>
-      <isNotNull prepend="," property="addTime" >
-        add_time
-      </isNotNull>
-      <isNotNull prepend="," property="updTime" >
-        upd_time
-      </isNotNull>
-      )
-    </dynamic>
-    values
-    <dynamic prepend="(" >
-      <isNotNull prepend="," property="id" >
-        #id:INTEGER#
-      </isNotNull>
-      <isNotNull prepend="," property="name" >
-        #name:INTEGER#
-      </isNotNull>
-      <isNotNull prepend="," property="addTime" >
-        #addTime:TIMESTAMP#
-      </isNotNull>
-      <isNotNull prepend="," property="updTime" >
-        #updTime:TIMESTAMP#
-      </isNotNull>
-      )
-    </dynamic>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
+    <insert id="insertSelective" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
+        insert into poster_template_topic
+        <dynamic prepend="(">
+            <isNotNull prepend="," property="id">
+                id
+            </isNotNull>
+            <isNotNull prepend="," property="name">
+                name
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                add_time
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                upd_time
+            </isNotNull>
+            )
+        </dynamic>
+        values
+        <dynamic prepend="(">
+            <isNotNull prepend="," property="id">
+                #id:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="name">
+                #name:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                #updTime:TIMESTAMP#
+            </isNotNull>
+            )
+        </dynamic>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
+        update poster_template_topic
+        <dynamic prepend="set">
+            <isNotNull prepend="," property="name">
+                name = #name:VARCHAR#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                add_time = #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                upd_time = #updTime:TIMESTAMP#
+            </isNotNull>
+        </dynamic>
+        where id = #id:BIGINT#
+    </update>
+    <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic">
     update poster_template_topic
-    <dynamic prepend="set" >
-      <isNotNull prepend="," property="name" >
-        name = #name:INTEGER#
-      </isNotNull>
-      <isNotNull prepend="," property="addTime" >
-        add_time = #addTime:TIMESTAMP#
-      </isNotNull>
-      <isNotNull prepend="," property="updTime" >
-        upd_time = #updTime:TIMESTAMP#
-      </isNotNull>
-    </dynamic>
-    where id = #id:INTEGER#
-  </update>
-  <update id="updateByPrimaryKey" parameterClass="com.trilemon.boss.poster.template.model.PosterTemplateTopic" >
-    update poster_template_topic
-    set name = #name:INTEGER#,
+    set name = #name:VARCHAR#,
       add_time = #addTime:TIMESTAMP#,
       upd_time = #updTime:TIMESTAMP#
-    where id = #id:INTEGER#
+    where id = #id:BIGINT#
   </update>
-    <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
         select
-        <include refid="poster_template_topic.Base_Column_List" />
+        <include refid="poster_template_topic.Base_Column_List"/>
         from poster_template_topic
     </select>
 </sqlMap>

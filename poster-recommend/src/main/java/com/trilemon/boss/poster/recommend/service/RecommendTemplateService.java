@@ -106,4 +106,8 @@ public class RecommendTemplateService {
     public void refreshTemplateCategories() {
         posterTemplateCategories = posterTemplateCategoryDAO.selectAll();
     }
+
+    public void favoriteTemplate(Long templateId) {
+        posterTemplateClient.favoriteTemplate(templateId, 1);
+    }
 }

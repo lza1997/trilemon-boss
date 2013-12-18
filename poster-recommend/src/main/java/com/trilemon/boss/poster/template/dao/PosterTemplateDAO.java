@@ -18,4 +18,5 @@ public interface PosterTemplateDAO {
 
     List<PosterTemplate> paginateByQueryRequest(PosterTemplateQueryRequest request);
 
+    int updateFavoriteByPrimaryKey(long templateId, int count);
 }

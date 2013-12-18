@@ -7,27 +7,17 @@ import java.util.Date;
 
 public class PosterRecommendActivityItem extends ShardTable {
     private Long id;
-
     private Long userId;
-
     private Long activityId;
-
     private Long templateId;
-
     private Long itemNumIid;
-
     private String itemTitle;
-
     private BigDecimal itemPrice;
-
     private String itemPicUrl;
-
+    private String copy;
     private Byte templateSequenceIndex;//暂未使用
-
     private Byte status;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {
@@ -92,6 +82,14 @@ public class PosterRecommendActivityItem extends ShardTable {
 
     public void setItemPicUrl(String itemPicUrl) {
         this.itemPicUrl = itemPicUrl == null ? null : itemPicUrl.trim();
+    }
+
+    public String getCopy() {
+        return copy;
+    }
+
+    public void setCopy(String copy) {
+        this.copy = copy;
     }
 
     public Byte getTemplateSequenceIndex() {

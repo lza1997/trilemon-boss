@@ -20,6 +20,7 @@ public class TemplateService {
 
     /**
      * 查询模板
+     *
      * @param request
      * @return
      */
@@ -34,5 +35,9 @@ public class TemplateService {
 
     public PosterTemplate getTemplate(Long templateId) {
         return posterTemplateDAO.selectByPrimaryKey(templateId);
+    }
+
+    public void favorite(long templateId, int count) {
+        posterTemplateDAO.updateFavoriteByPrimaryKey(templateId, count);
     }
 }

@@ -3,7 +3,7 @@ package com.trilemon.boss.poster.template.model;
 import java.util.Date;
 
 public class PosterTemplateFestival {
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -19,11 +19,11 @@ public class PosterTemplateFestival {
 
     private Date updTime;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -7,27 +7,16 @@ import java.util.Date;
 
 public class PosterRecommendPublishItem extends ShardTable {
     private Long id;
-
     private Long userId;
-
     private Long activityId;
-
     private Long itemNumIid;
-
     private String itemTitle;
-
     private BigDecimal itemPrice;
-
     private String itemPicUrl;
-
     private Byte detailPagePosition;
-
     private Byte status;
-
     private Date publishTime;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {

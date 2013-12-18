@@ -1,9 +1,8 @@
 package com.trilemon.boss.poster.recommend.service;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.infra.base.service.api.TaobaoApiShopService;
@@ -17,9 +16,11 @@ import com.trilemon.boss.poster.recommend.dao.PosterRecommendPublishItemDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendUserDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivityItem;
+import com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItem;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendUser;
 import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.LastUsedPosterTemplate;
+import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
@@ -36,8 +37,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
@@ -74,7 +77,10 @@ public class RecommendActivityService {
      */
     public PosterRecommendActivity getActivity(Long userId, Long activityId) {
         PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        int itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
+        if(null==activity){
+            return null;
+        }
+        Integer itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
         activity.setItemNum(itemNum);
         return activity;
     }
@@ -86,24 +92,23 @@ public class RecommendActivityService {
      * @param activity
      */
     @Transactional
-    public void createActivityDesignS1(Long userId, PosterRecommendActivity activity,
-                                       List<PosterRecommendActivityItem> activityItems) throws
-            PosterRecommendException {
-        if(null==activity.getTemplateId()){
-            throw new PosterRecommendException("template id is null");
-        }
-        //创建活动
+    public void createActivityDesignS1(Long userId,
+                                       PosterRecommendActivity activity,
+                                       List<ActivityItem> activityItems) {
+        checkNotNull(userId, "userId id is null.");
+        checkNotNull(activity.getTemplateId(), "templateId id is null.");
+
         createUser(userId);
 
         activity.setUserId(userId);
-        activity.setAddTime(appService.getLocalSystemTime().toDate());
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S1);
+        activity.setAddTime(appService.getLocalSystemTime().toDate());
 
         Long activityId = posterRecommendActivityDAO.insertSelective(activity);
         logger.info("add activity, activityId[{}] userId[{}].", activityId, userId);
 
         //创建海报宝贝
-        addActivityItems(userId,activityId,activityItems);
+        updateActivityItems(userId, activityId, activityItems);
     }
 
     /**
@@ -114,9 +119,10 @@ public class RecommendActivityService {
      */
     @Transactional
     public void updateActivityDesignS2(Long userId, PosterRecommendActivity activity) throws PosterRecommendException {
+        checkNotNull(userId, "userId id is null.");
         checkNotNull(activity.getId(), "activity id is null.");
 
-        if(StringUtils.isEmpty(activity.getTitle())){
+        if (StringUtils.isEmpty(activity.getTitle())) {
             throw new PosterRecommendException("activity title is null");
         }
 
@@ -125,7 +131,6 @@ public class RecommendActivityService {
         activity.setPublishHtml(safeHtml);
 
         activity.setUserId(userId);
-        activity.setAddTime(appService.getLocalSystemTime().toDate());
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S2);
 
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
@@ -137,9 +142,11 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activity
+     * @param publishItems
      */
     @Transactional
-    public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity) {
+    public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity,
+                                          List<PublishItem> publishItems) {
         checkNotNull(activity.getId(), "activity id is null");
 
         activity.setUserId(userId);
@@ -147,6 +154,95 @@ public class RecommendActivityService {
 
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
         logger.info("update activity, activityId[{}] userId[{}].", activity.getId(), userId);
+
+        updatePublishItems(userId, activity.getId(), publishItems);
+
+    }
+
+    /**
+     * 添加、更新、删除多个投放宝贝，主要用于投放宝贝的列表页
+     *
+     * @param userId
+     * @param activityId
+     * @param publishItems
+     */
+    @Transactional
+    public void updatePublishItems(Long userId, Long activityId, List<PublishItem> publishItems) {
+        if (CollectionUtils.isEmpty(publishItems)) {
+            return;
+        }
+
+        //把前台传入的海报宝贝分为，待加入、待删除和待更新宝贝
+        List<PublishItem> toBeAddedPublishItems = Lists.newArrayList();
+        List<PublishItem> toBeDeletedPublishItems = Lists.newArrayList();
+        for (PublishItem publishItem : publishItems) {
+            byte publishItemStatus = publishItem.getPublishItemStatus();
+            byte publishStatus = publishItem.getStatus();
+            if (publishItemStatus == PUBLISH_ITEM_STATUS_NOT_IN_DB
+                    && publishStatus == PublishItem.STATUS_NEW) {
+                toBeAddedPublishItems.add(publishItem);
+            }
+            if (publishItemStatus != PUBLISH_ITEM_STATUS_NOT_IN_DB
+                    && publishStatus == PublishItem.STATUS_DELETED) {
+                toBeDeletedPublishItems.add(publishItem);
+            }
+        }
+
+        //开始加入和删除逻辑
+        PosterRecommendActivity currentActivity = getActivity(userId, activityId);
+
+        if (null != currentActivity &&
+                (CollectionUtils.isNotEmpty(toBeAddedPublishItems)
+                        || CollectionUtils.isNotEmpty(toBeDeletedPublishItems))) {
+            //更新活动状态位
+            PosterRecommendActivity newActivity = new PosterRecommendActivity();
+            byte status = currentActivity.getStatus();
+            //如果还没有进行投放，那么状态不变，否则状态设为「设置完毕，还未投放」
+            if (status != ACTIVITY_STATUS_DESIGNED_S1
+                    && status != ACTIVITY_STATUS_DESIGNED_S2
+                    && status != ACTIVITY_STATUS_PUBLISH_SETTING_DONE
+                    && status != ACTIVITY_STATUS_UNPUBLISHED
+                    && status != ACTIVITY_STATUS_UNPUBLISHED_WITH_ERROR) {
+                newActivity.setStatus(ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
+                newActivity.setUserId(currentActivity.getUserId());
+                newActivity.setId(currentActivity.getId());
+                posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
+            }
+
+            //添加投放宝贝
+            if (CollectionUtils.isNotEmpty(toBeAddedPublishItems)) {
+                List<PosterRecommendPublishItem> batchItems = Lists.newArrayList();
+                for (PublishItem publishItem : toBeAddedPublishItems) {
+                    PosterRecommendPublishItem posterRecommendPublishItem = new PosterRecommendPublishItem();
+                    posterRecommendPublishItem.setUserId(userId);
+                    posterRecommendPublishItem.setActivityId(activityId);
+                    posterRecommendPublishItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
+                    posterRecommendPublishItem.setItemNumIid(publishItem.getItem().getNumIid());
+                    posterRecommendPublishItem.setItemTitle(publishItem.getItem().getTitle());
+                    posterRecommendPublishItem.setItemPrice(new BigDecimal(publishItem.getItem().getPrice()));
+                    posterRecommendPublishItem.setItemPicUrl(publishItem.getItem().getPicUrl());
+                    posterRecommendPublishItem.setAddTime(appService.getLocalSystemTime().toDate());
+                    posterRecommendPublishItem.setDetailPagePosition(currentActivity.getDetailPagePosition());
+
+                    batchItems.add(posterRecommendPublishItem);
+                }
+                posterRecommendPublishItemDAO.batchInsert(batchItems);
+            }
+
+            //删除投放宝贝
+            if (CollectionUtils.isNotEmpty(toBeDeletedPublishItems)) {
+                List<PosterRecommendPublishItem> batchItems = Lists.newArrayList();
+                for (PublishItem publishItem : toBeAddedPublishItems) {
+                    PosterRecommendPublishItem posterRecommendPublishItem = new PosterRecommendPublishItem();
+                    posterRecommendPublishItem.setUserId(userId);
+                    posterRecommendPublishItem.setActivityId(activityId);
+                    posterRecommendPublishItem.setItemNumIid(publishItem.getItem().getNumIid());
+
+                    batchItems.add(posterRecommendPublishItem);
+                }
+                posterRecommendPublishItemDAO.batchDelete(batchItems);
+            }
+        }
     }
 
     /**
@@ -168,56 +264,6 @@ public class RecommendActivityService {
     }
 
     /**
-     * 更新模板位置（暂时用不到）
-     *
-     * @param userId
-     * @param activityId
-     * @param detailPagePosition
-     * @return 是否更新成功
-     */
-    public boolean updateActivityDetailPagePosition(Long userId, Long activityId, Byte detailPagePosition) {
-        PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        if (null != posterRecommendActivity) {
-            PosterRecommendActivity newPosterRecommendActivity = new PosterRecommendActivity();
-            newPosterRecommendActivity.setId(activityId);
-            newPosterRecommendActivity.setUserId(userId);
-            newPosterRecommendActivity.setDetailPagePosition(detailPagePosition);
-            return posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newPosterRecommendActivity) == 1;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 更新投放时间（暂时用不到）
-     *
-     * @param userId
-     * @param activityId
-     * @param publishType
-     * @param publishStartTime
-     * @param publishEndTime
-     * @return
-     */
-    public boolean updateActivityPublishTime(Long userId, Long activityId, byte publishType,
-                                             Date publishStartTime, Date publishEndTime) {
-        PosterRecommendActivity posterRecommendActivity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        if (null != posterRecommendActivity) {
-            PosterRecommendActivity newPosterRecommendActivity = new PosterRecommendActivity();
-            newPosterRecommendActivity.setId(activityId);
-            newPosterRecommendActivity.setUserId(userId);
-            newPosterRecommendActivity.setPublishType(publishType);
-
-            if (publishType == PosterRecommendConstants.PUBLISH_TYPE_ASSIGN_TIME) {
-                newPosterRecommendActivity.setPublishStartTime(publishStartTime);
-                newPosterRecommendActivity.setPublishEndTime(publishEndTime);
-            }
-            return posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newPosterRecommendActivity) == 1;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * 删除活动
      *
      * @param userId
@@ -225,20 +271,15 @@ public class RecommendActivityService {
      */
     @Transactional
     public void deleteActivity(Long userId, Long activityId) {
-        //卸载宝贝
-        try {
-            recommendPublishService.unpublishActivityFromDetailPage(userId, activityId);
-            PosterRecommendActivity updateActivity = new PosterRecommendActivity();
-            updateActivity.setUserId(userId);
-            updateActivity.setId(activityId);
-            updateActivity.setStatus(PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHING);
-            posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(updateActivity);
-        } finally {
-            //删除记录
-            posterRecommendPublishItemDAO.deleteByUserIdAndActivityId(userId, activityId);
-            posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
-            posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
-        }
+
+        //移除详情页海报
+        recommendPublishService.unpublishActivity(userId, activityId);
+
+        //删除数据库信息
+        posterRecommendPublishItemDAO.deleteByUserIdAndActivityId(userId, activityId);
+        posterRecommendActivityItemDAO.deleteByUserIdAndActivityId(userId, activityId);
+        posterRecommendActivityDAO.deleteByUserIdAndActivityId(userId, activityId);
+
     }
 
     /**
@@ -258,58 +299,101 @@ public class RecommendActivityService {
      *
      * @param userId
      * @param activityId
-     * @param posterRecommendActivityItems
+     * @param activityItems
      */
     @Transactional
-    public void addActivityItems(Long userId, Long activityId, List<PosterRecommendActivityItem> posterRecommendActivityItems) {
-        //用户有可能重复选择已经加入活动的宝贝，这里需要过滤掉。
-        final List<PosterRecommendActivityItem> currentItems = posterRecommendActivityItemDAO.paginateByUserIdAndActivityId
-                (userId, activityId, null, 1, 1000);
-        final List<Long> currentItemNumIids = Lists.transform(currentItems, new Function<PosterRecommendActivityItem, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable PosterRecommendActivityItem input) {
-                return input.getItemNumIid();
+    public void updateActivityItems(Long userId, Long activityId, List<ActivityItem> activityItems) {
+        if (CollectionUtils.isEmpty(activityItems)) {
+            return;
+        }
+        //把前台传入的海报宝贝分为，待加入、待删除和待更新宝贝
+        List<ActivityItem> toBeAddedActivityItems = Lists.newArrayList();
+        List<ActivityItem> toBeDeletedActivityItems = Lists.newArrayList();
+        List<ActivityItem> toBeUpdatedActivityItems = Lists.newArrayList();
+        for (ActivityItem activityItem : activityItems) {
+            byte activityItemStatus = activityItem.getActivityItemStatus();
+            byte activityStatus = activityItem.getStatus();
+            if (activityItemStatus == ACTIVITY_ITEM_STATUS_NOT_IN_DB
+                    && activityStatus == ActivityItem.STATUS_NEW) {
+                toBeAddedActivityItems.add(activityItem);
             }
-        });
-        Iterables.removeIf(posterRecommendActivityItems, new Predicate<PosterRecommendActivityItem>() {
-            @Override
-            public boolean apply(@Nullable PosterRecommendActivityItem input) {
-                return currentItemNumIids.contains(input.getItemNumIid());
+            if (activityItemStatus != ACTIVITY_ITEM_STATUS_NOT_IN_DB
+                    && activityStatus == ActivityItem.STATUS_DELETED) {
+                toBeDeletedActivityItems.add(activityItem);
             }
-        });
+            if (activityItemStatus != ACTIVITY_ITEM_STATUS_NOT_IN_DB
+                    && activityStatus == ActivityItem.STATUS_UPDATED) {
+                toBeUpdatedActivityItems.add(activityItem);
+            }
+        }
 
+        //开始加入和删除逻辑
         PosterRecommendActivity posterRecommendActivity = getActivity(userId, activityId);
 
-        if (null != posterRecommendActivity && CollectionUtils.isNotEmpty(posterRecommendActivityItems)) {
+        if (null != posterRecommendActivity &&
+                (CollectionUtils.isNotEmpty(toBeAddedActivityItems)
+                        || CollectionUtils.isNotEmpty(toBeDeletedActivityItems)
+                        || CollectionUtils.isNotEmpty(toBeUpdatedActivityItems))) {
+            //更新活动状态位
             PosterRecommendActivity newActivity = new PosterRecommendActivity();
-            //newActivity.setStatus(PosterRecommendConstants);
-            newActivity.setUserId(posterRecommendActivity.getUserId());
-            newActivity.setId(posterRecommendActivity.getId());
-            posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
-
-            for (PosterRecommendActivityItem activityItem : posterRecommendActivityItems) {
-                //@葛亮 这里PosterRecommendActivityItem，你前台需要填充和商品相关的属性
-                activityItem.setUserId(userId);
-                activityItem.setTemplateId(posterRecommendActivity.getTemplateId());
-                activityItem.setActivityId(activityId);
-                activityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
-                activityItem.setAddTime(appService.getLocalSystemTime().toDate());
+            byte status = posterRecommendActivity.getStatus();
+            //如果还没有进行投放设置，那么状态不变；否则状态设置为投放设置完毕，还未投放
+            if (status != ACTIVITY_STATUS_DESIGNED_S1
+                    && status != ACTIVITY_STATUS_DESIGNED_S2
+                    && status != ACTIVITY_STATUS_PUBLISH_SETTING_DONE
+                    && status != ACTIVITY_STATUS_UNPUBLISHED
+                    && status != ACTIVITY_STATUS_UNPUBLISHED_WITH_ERROR) {
+                newActivity.setStatus(ACTIVITY_STATUS_PUBLISH_SETTING_DONE);
+                newActivity.setUserId(posterRecommendActivity.getUserId());
+                newActivity.setId(posterRecommendActivity.getId());
+                posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(newActivity);
             }
-            posterRecommendActivityItemDAO.batchInsert(posterRecommendActivityItems);
-        }
-    }
 
-    /**
-     * 从活动模板中移除宝贝
-     *
-     * @param userId
-     * @param activityId
-     * @param itemNumIids
-     */
-    public void removeActivityItems(Long userId, Long activityId, List<Long> itemNumIids) {
-        if (CollectionUtils.isNotEmpty(itemNumIids)) {
-            posterRecommendActivityItemDAO.batchDelete(userId, activityId, itemNumIids);
+            //添加海报宝贝
+            if (CollectionUtils.isNotEmpty(toBeAddedActivityItems)) {
+                List<PosterRecommendActivityItem> posterRecommendActivityItems = Lists.newArrayList();
+                for (ActivityItem toBeAddedActivity : toBeAddedActivityItems) {
+                    PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
+                    posterRecommendActivityItem.setUserId(userId);
+                    posterRecommendActivityItem.setTemplateId(posterRecommendActivity.getTemplateId());
+                    posterRecommendActivityItem.setActivityId(activityId);
+                    posterRecommendActivityItem.setStatus(ACTIVITY_ITEM_STATUS_NORMAL);
+                    posterRecommendActivityItem.setItemNumIid(toBeAddedActivity.getItem().getNumIid());
+                    posterRecommendActivityItem.setItemTitle(toBeAddedActivity.getItem().getTitle());
+                    posterRecommendActivityItem.setItemPrice(new BigDecimal(toBeAddedActivity.getItem().getPrice()));
+                    posterRecommendActivityItem.setItemPicUrl(toBeAddedActivity.getItem().getPicUrl());
+                    posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
+                }
+                posterRecommendActivityItemDAO.batchInsert(posterRecommendActivityItems);
+            }
+
+            //更新海报宝贝
+            if (CollectionUtils.isNotEmpty(toBeUpdatedActivityItems)) {
+                List<PosterRecommendActivityItem> posterRecommendActivityItems = Lists.newArrayList();
+                for (ActivityItem toBeUpdatedActivity : toBeAddedActivityItems) {
+                    PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
+                    posterRecommendActivityItem.setUserId(userId);
+                    posterRecommendActivityItem.setActivityId(activityId);
+                    posterRecommendActivityItem.setItemNumIid(toBeUpdatedActivity.getItem().getNumIid());
+                    posterRecommendActivityItem.setItemTitle(toBeUpdatedActivity.getItem().getTitle());
+                    posterRecommendActivityItem.setItemPrice(new BigDecimal(toBeUpdatedActivity.getItem().getPrice()));
+                    posterRecommendActivityItem.setItemPicUrl(toBeUpdatedActivity.getItem().getPicUrl());
+                }
+                posterRecommendActivityItemDAO.batchUpdate(posterRecommendActivityItems);
+            }
+
+            //删除海报宝贝
+            if (CollectionUtils.isNotEmpty(toBeDeletedActivityItems)) {
+                List<PosterRecommendActivityItem> posterRecommendActivityItems = Lists.newArrayList();
+                for (ActivityItem toBeUpdatedActivity : toBeAddedActivityItems) {
+                    PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
+                    posterRecommendActivityItem.setUserId(userId);
+                    posterRecommendActivityItem.setActivityId(activityId);
+                    posterRecommendActivityItem.setItemNumIid(toBeUpdatedActivity.getItem().getNumIid());
+                    posterRecommendActivityItems.add(posterRecommendActivityItem);
+                }
+                posterRecommendActivityItemDAO.batchDelete(posterRecommendActivityItems);
+            }
         }
     }
 
@@ -356,7 +440,7 @@ public class RecommendActivityService {
             throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
 
         Page<Item> itemPage;
-        List<ActivityItem> activityItems = Lists.newArrayList();
+        List<ActivityItem> returnActivityItems = Lists.newArrayList();
 
         //从淘宝 api 获取商品
         if (onSale) {
@@ -369,28 +453,36 @@ public class RecommendActivityService {
                     pageNum, pageSize, true, "modified:asc");
         }
 
-        //获取已经加入活动的宝贝
-        List<PosterRecommendActivityItem> addedRecommendActivityItems = posterRecommendActivityItemDAO
-                .selectByUserIdAndActivityId(userId, activityId);
+        List<Item> taobaoItems = itemPage.getItems();
 
-        //设置是否加入活动的标志位
-        if (CollectionUtils.isNotEmpty(itemPage.getItems())) {
-            for (Item item : itemPage.getItems()) {
-                ActivityItem activityItem = new ActivityItem();
-                activityItem.setAdded(false);
-                activityItem.setItem(item);
-
-                if (CollectionUtils.isNotEmpty(addedRecommendActivityItems) && addedRecommendActivityItems.contains(item)) {
-                    activityItem.setAdded(true);
-                } else {
-                    activityItem.setAdded(false);
-                }
-
-                activityItems.add(activityItem);
-            }
+        if (CollectionUtils.isEmpty(taobaoItems)) {
+            return Page.create(itemPage.getTotalSize(), pageNum, pageSize, Lists.<ActivityItem>newArrayList());
         }
 
-        return Page.create(itemPage.getTotalSize(), itemPage.getPageNum(), itemPage.getPageSize(), activityItems);
+        //获取已经加入活动的宝贝并且设置是否加入活动的标志位
+        List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO
+                .selectByUserIdAndActivityId(userId, activityId);
+
+        Map<Long, PosterRecommendActivityItem> indexMap = Maps.uniqueIndex(posterRecommendActivityItems, new Function<PosterRecommendActivityItem, Long>() {
+            @Nullable
+            @Override
+            public Long apply(@Nullable PosterRecommendActivityItem input) {
+                return input.getItemNumIid();
+            }
+        });
+
+        for (Item item : taobaoItems) {
+            ActivityItem activityItem = new ActivityItem();
+            activityItem.setItem(item);
+
+            if (indexMap.values().contains(item.getNumIid())) {
+                activityItem.setActivityItemStatus(indexMap.get(item.getNumIid()).getStatus());
+            } else {
+                activityItem.setActivityItemStatus(ACTIVITY_ITEM_STATUS_NOT_IN_DB);
+            }
+            returnActivityItems.add(activityItem);
+        }
+        return Page.create(itemPage.getTotalSize(), pageNum, pageSize, returnActivityItems);
     }
 
     /**
@@ -399,6 +491,7 @@ public class RecommendActivityService {
      * @param userId
      * @return
      */
+
     public LastUsedPosterTemplate getLastUsedPosterTemplate(Long userId) {
         PosterRecommendActivity lastCreatedActivity = posterRecommendActivityDAO.selectLastCreatedActivity(userId);
         if (null != lastCreatedActivity) {
@@ -445,9 +538,8 @@ public class RecommendActivityService {
      * @param pageSize
      * @return
      */
-    public Page<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList,
-                                                                  Date publishTime, int pageNum,
-                                                                  int pageSize) {
+    public Page<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList, Date publishTime,
+                                                                  int pageNum, int pageSize) {
         List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityByUserId(userId,
                 statusList, publishTime, "add_time desc",
                 (pageNum - 1) * pageSize, pageSize);

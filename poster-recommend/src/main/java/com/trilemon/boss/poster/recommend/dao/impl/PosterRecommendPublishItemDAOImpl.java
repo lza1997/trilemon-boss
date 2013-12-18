@@ -22,14 +22,14 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
     @Qualifier("posterRecommendPublishItemRouter")
     private ShardTableRouter<PosterRecommendPublishItem> router;
 
-    public long insertSelective(PosterRecommendPublishItem record) {
+    public Long insertSelective(PosterRecommendPublishItem record) {
         checkNotNull(record.getUserId());
         router.routeAndSetTableId(record);
         return (long) getSqlMapClientTemplate().insert("poster_recommend_publish_item.insertSelective", record);
     }
 
     @Override
-    public int deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid) {
+    public Integer deleteByUserIdAndActivityIdAndItemNumIid(Long userId, Long activityId, Long itemNumIid) {
         PosterRecommendPublishItem _key = new PosterRecommendPublishItem();
         _key.setUserId(userId);
         _key.setActivityId(activityId);
@@ -58,7 +58,7 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
     }
 
     @Override
-    public int updateByUserIdAndActivityIdAndItemNumIid(PosterRecommendPublishItem publishItem) {
+    public Integer updateByUserIdAndActivityIdAndItemNumIid(PosterRecommendPublishItem publishItem) {
         checkNotNull(publishItem.getUserId());
         router.routeAndSetTableId(publishItem);
         return getSqlMapClientTemplate().update("poster_recommend_publish_item.updateByUserIdAndActivityIdAndItemNumIidSelective", publishItem);
@@ -109,7 +109,7 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
     }
 
     @Override
-    public int countByUserIdAndActivityId(Long userId, Long activityId) {
+    public Integer countByUserIdAndActivityId(Long userId, Long activityId) {
         checkNotNull(userId);
         PosterRecommendPublishItem publishItem = new PosterRecommendPublishItem();
         publishItem.setUserId(userId);
@@ -120,7 +120,7 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
     }
 
     @Override
-    public int deleteByUserIdAndActivityId(Long userId, Long activityId) {
+    public Integer deleteByUserIdAndActivityId(Long userId, Long activityId) {
         PosterRecommendPublishItem _key = new PosterRecommendPublishItem();
         _key.setUserId(userId);
         _key.setActivityId(activityId);
@@ -129,17 +129,31 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
     }
 
     @Override
-    public int batchInsert(List<PosterRecommendPublishItem> publishItems) {
-//        List<PosterRecommendActivityItem> activityItems = Lists.newArrayList();
-//        for (Long numIid : itemNumIids) {
-//            PosterRecommendActivityItem _key = new PosterRecommendActivityItem();
-//            _key.setUserId(userId);
-//            _key.setActivityId(activityId);
-//            _key.setItemNumIid(numIid);
-//            router.routeAndSetTableId(_key);
-//            activityItems.add(_key);
-//        }
-//        return batchDelete("poster_recommend_activity_item.deleteByUserIdAndActivityIdAndItemNumIid",activityItems);
-        return 0;
+    public Integer batchInsert(List<PosterRecommendPublishItem> publishItems) {
+        return batchInsert("poster_recommend_publish_item.insertSelective", publishItems);
+    }
+
+    @Override
+    public Integer batchDelete(List<PosterRecommendPublishItem> publishItems) {
+        return batchDelete("poster_recommend_publish_item.deleteByUserIdAndActivityIdAndItemNumIid", publishItems);
+    }
+
+    @Override
+    public Integer batchUpdate(List<PosterRecommendPublishItem> publishItems) {
+        return batchDelete("poster_recommend_publish_item.updateByUserIdAndActivityIdAndItemNumIidSelective", publishItems);
+    }
+
+    @Override
+    public PosterRecommendPublishItem selectByUserIdAndActivityIdAndItemNumIidAndStatus(Long userId, Long activityId, Long itemNumIid, List<Byte> statusList) {
+        checkNotNull(userId);
+        PosterRecommendPublishItem publishItem = new PosterRecommendPublishItem();
+        publishItem.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(publishItem);
+        shardTableMap.put("userId", userId);
+        shardTableMap.put("activityId", activityId);
+        shardTableMap.put("itemNumIid", itemNumIid);
+        shardTableMap.put("statusList", statusList);
+        return (PosterRecommendPublishItem) getSqlMapClientTemplate().queryForObject("poster_recommend_publish_item.selectByUserIdAndActivityIdAndItemNumIidAndStatus", shardTableMap);
+
     }
 }

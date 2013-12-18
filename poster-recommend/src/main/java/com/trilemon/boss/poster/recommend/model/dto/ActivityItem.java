@@ -6,15 +6,27 @@ import com.taobao.api.domain.Item;
  * @author kevin
  */
 public class ActivityItem {
-    private boolean added;
+    public static final byte STATUS_NEW = 1;
+    public static final byte STATUS_UPDATED = 2;
+    public static final byte STATUS_DELETED = 3;
+    private byte status=STATUS_NEW;//前端用户操作赋予的状态
+    private byte activityItemStatus;//后台数据库表状态
     private Item item;
 
-    public boolean isAdded() {
-        return added;
+    public byte getActivityItemStatus() {
+        return activityItemStatus;
     }
 
-    public void setAdded(boolean added) {
-        this.added = added;
+    public void setActivityItemStatus(byte activityItemStatus) {
+        this.activityItemStatus = activityItemStatus;
+    }
+
+    public byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(byte status) {
+        this.status = status;
     }
 
     public Item getItem() {

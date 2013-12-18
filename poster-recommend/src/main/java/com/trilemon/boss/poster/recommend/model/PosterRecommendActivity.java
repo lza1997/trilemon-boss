@@ -13,19 +13,21 @@ public class PosterRecommendActivity extends ShardTable {
     private String color;
     private Integer size;
     private Byte status;
-    private Byte detailPagePosition;
-    private String publishHtml;
-    private Byte publishType;
-    private String publishOwner;
-    private Date publishTime;
-    private Date unpublishTime;
-    private String unpublishOwner;
-    private Date publishStartTime;
-    private Date publishEndTime;
+    private Byte detailPagePosition;//详情页位置
+    private String publishHtml;//发布到详情页的代码
+    private String publishOwner;//发布的服务器
+    private Date publishTime;//发布到详情页的时间
+    private Date unpublishTime;//从详情页卸载的时间
+    private String unpublishOwner;//卸载服务器
+    private Byte publishType;//发布类型，一直还是定时
+    private Date publishStartTime;//如果发布类型是定时，开始时间
+    private Date publishEndTime;//如果发布类型是定时，结束时间
     private Date addTime;
     private Date updTime;
-    private int itemNum;//已经参加活动的宝贝数量
-    private PublishProgress publishProgress;//投放的宝贝数量统计
+    
+    private int itemNum;//已经参加活动的宝贝数量，非数据库字段，供前台使用
+    private PublishProgress publishProgress;//非数据库字段，投放的宝贝数量统计
+    private boolean modified = false;//非数据库字段，前端判断是否修改过配置
 
     public Long getId() {
         return id;
@@ -185,5 +187,13 @@ public class PosterRecommendActivity extends ShardTable {
 
     public void setUnpublishOwner(String unpublishOwner) {
         this.unpublishOwner = unpublishOwner;
+    }
+
+    public boolean isModified() {
+        return modified;
+    }
+
+    public void setModified(boolean modified) {
+        this.modified = modified;
     }
 }

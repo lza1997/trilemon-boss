@@ -14,7 +14,7 @@ import java.util.Map;
 public class PosterRecommendRecommendTemplateDAOImpl extends BaseSqlMapClientDaoSupport implements PosterRecommendRecommendTemplateDAO {
 
     @Override
-    public long insertSelective(PosterRecommendRecommendTemplate record) {
+    public Long insertSelective(PosterRecommendRecommendTemplate record) {
         return (long) getSqlMapClientTemplate().insert("poster_recommend_recommend_template.insertSelective", record);
     }
 
@@ -26,7 +26,7 @@ public class PosterRecommendRecommendTemplateDAOImpl extends BaseSqlMapClientDao
     }
 
     @Override
-    public int updateByPrimaryKeySelective(PosterRecommendRecommendTemplate record) {
+    public Integer updateByPrimaryKeySelective(PosterRecommendRecommendTemplate record) {
         return  getSqlMapClientTemplate().update("poster_recommend_recommend_template.updateByPrimaryKeySelective", record);
     }
 

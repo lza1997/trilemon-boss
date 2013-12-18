@@ -13,11 +13,11 @@ import java.util.Map;
 @Repository
 public class PosterRecommendUserDAOImpl extends MysdalCobarSqlMapClientDaoSupport implements PosterRecommendUserDAO {
 
-    public long insertSelective(PosterRecommendUser record) {
+    public Long insertSelective(PosterRecommendUser record) {
         return (long) getSqlMapClientTemplate().insert("poster_recommend_user.insertSelective", record);
     }
 
-    public int updateByUserIdSelective(Long userId) {
+    public Integer updateByUserIdSelective(Long userId) {
         PosterRecommendUser _key = new PosterRecommendUser();
         _key.setUserId(userId);
         return getSqlMapClientTemplate().update("poster_recommend_user.updateByUserIdSelective", _key);
@@ -40,7 +40,7 @@ public class PosterRecommendUserDAOImpl extends MysdalCobarSqlMapClientDaoSuppor
     }
 
     @Override
-    public int countUsersByStatus(ImmutableList<Byte> statusList) {
+    public Integer countUsersByStatus(ImmutableList<Byte> statusList) {
         Map<String,Object> map= Maps.newHashMap();
         map.put("statusList",statusList);
         return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_user.countUsersByStatus", map);

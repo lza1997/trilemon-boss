@@ -7,19 +7,19 @@ import java.util.List;
 
 public interface PosterRecommendActivityDAO {
 
-    long insertSelective(PosterRecommendActivity record);
+    Long insertSelective(PosterRecommendActivity record);
 
     PosterRecommendActivity selectByUserIdAndActivityId(Long userId, Long activityId);
 
-    int updateByUserIdAndActivityIdSelective(PosterRecommendActivity activity);
+    Integer updateByUserIdAndActivityIdSelective(PosterRecommendActivity activity);
 
-    int deleteByUserIdAndActivityId(Long userId, Long activityId);
+    Integer deleteByUserIdAndActivityId(Long userId, Long activityId);
 
     PosterRecommendActivity selectLastCreatedActivity(Long userId);
 
     List<PosterRecommendActivity> paginateActivityByUserId(Long userId, List<Byte> statusList, Date publishTime,
                                                            String orderBy, int offset, int limit);
 
-    int countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime);
+    Integer countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime);
 
 }
