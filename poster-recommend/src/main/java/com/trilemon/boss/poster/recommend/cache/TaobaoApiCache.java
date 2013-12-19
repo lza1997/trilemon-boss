@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-import static com.trilemon.boss.poster.recommend.cache.TaobaoApiFieldConstants.*;
+import static com.trilemon.boss.poster.recommend.cache.TaobaoApiFieldConstants.ITEM_FIELDS;
 import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
 /**
@@ -35,6 +35,13 @@ public class TaobaoApiCache {
         return item;
 
 
+    }
+
+    public boolean invalidItem(Long itemNumIid) throws TaobaoAccessControlException,
+            TaobaoEnhancedApiException,
+            TaobaoSessionExpiredException {
+        String cacheKey = getItemCacheKey(itemNumIid);
+        return jedisTemplate.del(cacheKey);
     }
 
     public String getItemCacheKey(Long itemNumIid) {

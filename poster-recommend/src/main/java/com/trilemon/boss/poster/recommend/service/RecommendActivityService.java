@@ -105,7 +105,7 @@ public class RecommendActivityService {
         activity.setAddTime(appService.getLocalSystemTime().toDate());
 
         Long activityId = posterRecommendActivityDAO.insertSelective(activity);
-        logger.info("add activity, activityId[{}] userId[{}].", activityId, userId);
+        logger.info("add activity [DesignS1]  , activityId[{}] userId[{}].", activityId, userId);
 
         //创建海报宝贝
         updateActivityItems(userId, activityId, activityItems);
@@ -134,7 +134,7 @@ public class RecommendActivityService {
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S2);
 
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
-        logger.info("add activity, activityId[{}] userId[{}].", activity.getId(), userId);
+        logger.info("update activity [DesignS2], activityId[{}] userId[{}].", activity.getId(), userId);
     }
 
     /**
@@ -181,10 +181,12 @@ public class RecommendActivityService {
             if (publishItemStatus == PUBLISH_ITEM_STATUS_NOT_IN_DB
                     && publishStatus == PublishItem.STATUS_NEW) {
                 toBeAddedPublishItems.add(publishItem);
+                continue;
             }
             if (publishItemStatus != PUBLISH_ITEM_STATUS_NOT_IN_DB
                     && publishStatus == PublishItem.STATUS_DELETED) {
                 toBeDeletedPublishItems.add(publishItem);
+                continue;
             }
         }
 
@@ -232,7 +234,7 @@ public class RecommendActivityService {
             //删除投放宝贝
             if (CollectionUtils.isNotEmpty(toBeDeletedPublishItems)) {
                 List<PosterRecommendPublishItem> batchItems = Lists.newArrayList();
-                for (PublishItem publishItem : toBeAddedPublishItems) {
+                for (PublishItem publishItem : toBeDeletedPublishItems) {
                     PosterRecommendPublishItem posterRecommendPublishItem = new PosterRecommendPublishItem();
                     posterRecommendPublishItem.setUserId(userId);
                     posterRecommendPublishItem.setActivityId(activityId);
@@ -252,14 +254,15 @@ public class RecommendActivityService {
      */
     public void createUser(Long userId) {
         PosterRecommendUser posterRecommendUser = posterRecommendUserDAO.selectByUserId(userId);
-        if (null != posterRecommendUser) {
+        if (null == posterRecommendUser) {
+            posterRecommendUser=new PosterRecommendUser();
             posterRecommendUser.setAddTime(appService.getLocalSystemTime().toDate());
             posterRecommendUser.setStatus(USER_STATUS_NORMAL);
             posterRecommendUser.setUserId(userId);
             posterRecommendUserDAO.insertSelective(posterRecommendUser);
             logger.info("add user, userId[{}].", userId);
         } else {
-            logger.info("add user, userId[{}] exist, skip.", userId);
+            logger.debug("add user, userId[{}] exist, skip.", userId);
         }
     }
 
@@ -316,14 +319,17 @@ public class RecommendActivityService {
             if (activityItemStatus == ACTIVITY_ITEM_STATUS_NOT_IN_DB
                     && activityStatus == ActivityItem.STATUS_NEW) {
                 toBeAddedActivityItems.add(activityItem);
+                continue;
             }
             if (activityItemStatus != ACTIVITY_ITEM_STATUS_NOT_IN_DB
                     && activityStatus == ActivityItem.STATUS_DELETED) {
                 toBeDeletedActivityItems.add(activityItem);
+                continue;
             }
             if (activityItemStatus != ACTIVITY_ITEM_STATUS_NOT_IN_DB
                     && activityStatus == ActivityItem.STATUS_UPDATED) {
                 toBeUpdatedActivityItems.add(activityItem);
+                continue;
             }
         }
 
@@ -363,6 +369,7 @@ public class RecommendActivityService {
                     posterRecommendActivityItem.setItemPrice(new BigDecimal(toBeAddedActivity.getItem().getPrice()));
                     posterRecommendActivityItem.setItemPicUrl(toBeAddedActivity.getItem().getPicUrl());
                     posterRecommendActivityItem.setAddTime(appService.getLocalSystemTime().toDate());
+                    posterRecommendActivityItems.add(posterRecommendActivityItem);
                 }
                 posterRecommendActivityItemDAO.batchInsert(posterRecommendActivityItems);
             }
@@ -370,7 +377,7 @@ public class RecommendActivityService {
             //更新海报宝贝
             if (CollectionUtils.isNotEmpty(toBeUpdatedActivityItems)) {
                 List<PosterRecommendActivityItem> posterRecommendActivityItems = Lists.newArrayList();
-                for (ActivityItem toBeUpdatedActivity : toBeAddedActivityItems) {
+                for (ActivityItem toBeUpdatedActivity : toBeUpdatedActivityItems) {
                     PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
                     posterRecommendActivityItem.setUserId(userId);
                     posterRecommendActivityItem.setActivityId(activityId);
@@ -378,6 +385,7 @@ public class RecommendActivityService {
                     posterRecommendActivityItem.setItemTitle(toBeUpdatedActivity.getItem().getTitle());
                     posterRecommendActivityItem.setItemPrice(new BigDecimal(toBeUpdatedActivity.getItem().getPrice()));
                     posterRecommendActivityItem.setItemPicUrl(toBeUpdatedActivity.getItem().getPicUrl());
+                    posterRecommendActivityItems.add(posterRecommendActivityItem);
                 }
                 posterRecommendActivityItemDAO.batchUpdate(posterRecommendActivityItems);
             }
@@ -385,11 +393,12 @@ public class RecommendActivityService {
             //删除海报宝贝
             if (CollectionUtils.isNotEmpty(toBeDeletedActivityItems)) {
                 List<PosterRecommendActivityItem> posterRecommendActivityItems = Lists.newArrayList();
-                for (ActivityItem toBeUpdatedActivity : toBeAddedActivityItems) {
+                for (ActivityItem toBeUpdatedActivity : toBeDeletedActivityItems) {
                     PosterRecommendActivityItem posterRecommendActivityItem = new PosterRecommendActivityItem();
                     posterRecommendActivityItem.setUserId(userId);
                     posterRecommendActivityItem.setActivityId(activityId);
                     posterRecommendActivityItem.setItemNumIid(toBeUpdatedActivity.getItem().getNumIid());
+                    posterRecommendActivityItems.add(posterRecommendActivityItem);
                     posterRecommendActivityItems.add(posterRecommendActivityItem);
                 }
                 posterRecommendActivityItemDAO.batchDelete(posterRecommendActivityItems);
@@ -413,7 +422,7 @@ public class RecommendActivityService {
                 (userId, activityId, "add_time desc", (pageNum - 1) * pageSize, pageSize);
         int count = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
         if (CollectionUtils.isEmpty(activityItems)) {
-            return Page.empty();
+            return Page.create(count, pageNum, pageSize, Lists.<PosterRecommendActivityItem>newArrayList());
         } else {
             return Page.create(count, pageNum, pageSize, activityItems);
         }
@@ -475,7 +484,7 @@ public class RecommendActivityService {
             ActivityItem activityItem = new ActivityItem();
             activityItem.setItem(item);
 
-            if (indexMap.values().contains(item.getNumIid())) {
+            if (indexMap.keySet().contains(item.getNumIid())) {
                 activityItem.setActivityItemStatus(indexMap.get(item.getNumIid()).getStatus());
             } else {
                 activityItem.setActivityItemStatus(ACTIVITY_ITEM_STATUS_NOT_IN_DB);

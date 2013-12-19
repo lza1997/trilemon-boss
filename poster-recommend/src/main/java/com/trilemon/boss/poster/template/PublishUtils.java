@@ -44,38 +44,70 @@ public class PublishUtils {
         return desc;
     }
 
+    /**
+     * 添加代码到顶部
+     *
+     * @param pType
+     * @param pid
+     * @param html
+     * @param desc
+     * @return
+     */
     private static String append2DescTopFirst(String pType, Long pid, String html, String desc) {
-        return html + desc;
+        Map<String, String> listMap = getDetailPageList(pType, pid, desc);
+        if (!listMap.containsKey(getTag(pType, pid))) {
+            return html + desc;
+        } else {
+            return desc;
+        }
     }
 
+    /**
+     * 添加代码到底部
+     *
+     * @param pType
+     * @param pid
+     * @param html
+     * @param desc
+     * @return
+     */
     private static String append2DescBottomLast(String pType, Long pid, String html, String desc) {
-        return desc + html;
+        Map<String, String> listMap = getDetailPageList(pType, pid, desc);
+        if (!listMap.containsKey(getTag(pType, pid))) {
+            return desc + html;
+        } else {
+            return desc;
+        }
     }
 
     /**
      * 删除列表
      *
-     * @param tag
+     * @param pType
+     * @param pid
      * @param desc
      */
-    public static void deleteHtmlFromDetailPage(String tag, String desc) {
+    public static String deleteHtmlFromDetailPage(String pType, Long pid, String desc) {
         Document document = Jsoup.parseBodyFragment(desc);
-        Elements elements = document.select("#" + tag);
+        Elements elements = document.select("#" + getTag(pType, pid));
         for (Element element : elements) {
             element.remove();
         }
+        return document.body().html();
     }
 
     /**
      * 获取宝贝详情页中的活动列表
      *
+     * @param pType
+     * @param pid
      * @param desc
      * @return
      */
-    public static Map<String, String> getDetailPageList(String tag, String desc) {
+    public static Map<String, String> getDetailPageList(String pType, Long pid, String desc) {
         Document document = Jsoup.parseBodyFragment(desc);
         Map<String, String> map = Maps.newHashMap();
-        Elements elements = document.select("#" + tag);
+        Elements elements = document.select("div[id^=" + pType + "]");
         for (Element element : elements) {
             map.put(element.id(), element.html());
         }
@@ -91,8 +123,7 @@ public class PublishUtils {
      * @return
      */
     public static String removeHtmlFromDetailPage(String pType, Long pid, String desc) {
-        deleteHtmlFromDetailPage(getTag(pType, pid), desc);
-        return desc;
+        return deleteHtmlFromDetailPage(pType, pid, desc);
     }
 
     public static String getTag(String pType, Long pid) {
