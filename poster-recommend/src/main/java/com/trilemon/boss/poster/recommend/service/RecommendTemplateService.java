@@ -51,14 +51,13 @@ public class RecommendTemplateService {
     /**
      * 模板翻页
      *
-     * @param userId
      * @param topicIds
      * @param categoryIds
      * @param pageNum
      * @param pageSize
      * @return
      */
-    public Page<PosterTemplate> paginatePosterTemplates(Long userId, List<Integer> topicIds, List<Integer> categoryIds,
+    public Page<PosterTemplate> paginatePosterTemplates(List<Integer> topicIds, List<Integer> categoryIds,
                                                         int pageNum, int pageSize) {
         PosterTemplateQueryRequest request = new PosterTemplateQueryRequest();
         request.setTopicIds(topicIds);

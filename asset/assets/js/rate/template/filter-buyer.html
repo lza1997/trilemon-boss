@@ -1,6 +1,6 @@
 <div class="alert alert-success" ng-show="saveSuccess"><i class="icon-ok-sign"></i> 保存成功！</div>
 <div ng-include="'rate/setting'"></div>
-<div class="tab-content">
+<div class="tab-content" ng-show="setting.$resolved">
     <form class="form-horizontal" name="settingForm" ng-submit="saveSetting()">
         <div class="form-group">
             <label class="col-md-2 control-label">买家信誉过滤</label>

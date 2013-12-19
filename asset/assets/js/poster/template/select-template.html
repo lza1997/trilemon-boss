@@ -1,0 +1,21 @@
+<div class="wrap">
+    <h3>选择模板</h3>
+    <ul class="nav nav-pills">
+        <li ng-repeat="topic in topics" class="active1"><a href="#">{{ topic.name }}</a></li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div ng-repeat="tpl in templates" class="thumbnail">
+            <img ng-src="tpl.previewPicUrl" />
+            </div>
+            <div class="caption">
+                <p>
+                    <a href="#" class="btn btn-primary" role="button">开始制作</a>
+                    <a href="#" class="btn btn-default" role="button">收藏模板</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
