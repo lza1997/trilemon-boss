@@ -84,7 +84,7 @@ public class TestController {
         activityItem2.setStatus(ActivityItem.STATUS_UPDATED);
         Item item2=new Item();
         item2.setTitle("test title 2");
-        item2.setNumIid(123L);
+        item2.setNumIid(1234L);
         item2.setPrice("123.12");
         item2.setPicUrl("test pic url2");
         activityItem2.setItem(item2);
@@ -96,7 +96,7 @@ public class TestController {
         activityItem3.setStatus(ActivityItem.STATUS_DELETED);
         Item item3=new Item();
         item3.setTitle("test title 3");
-        item3.setNumIid(123L);
+        item3.setNumIid(12345L);
         item3.setPrice("123.12");
         item3.setPicUrl("test pic url2");
         activityItem3.setItem(item3);
@@ -107,10 +107,12 @@ public class TestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/createActivityDesignS2", method = RequestMethod.GET)
-    public String createActivityDesignS2(@RequestParam Long userId) throws PosterRecommendException {
+    @RequestMapping(value = "/updateActivityDesignS2", method = RequestMethod.GET)
+    public String updateActivityDesignS2(@RequestParam Long userId) throws PosterRecommendException {
         PosterRecommendActivity activity = new PosterRecommendActivity();
+        activity.setId(3L);
         activity.setTitle("测试活动设计部分S2");
+        activity.setPublishHtml("<a>test_html</a>");
         activityService.updateActivityDesignS2(userId, activity);
         return "success";
     }
@@ -146,7 +148,7 @@ public class TestController {
         publishItem2.setStatus(PublishItem.STATUS_DELETED);
         Item item2=new Item();
         item2.setTitle("test title 2");
-        item2.setNumIid(123L);
+        item2.setNumIid(1234L);
         item2.setPrice("123.12");
         item2.setPicUrl("test pic url2");
         publishItem2.setItem(item2);

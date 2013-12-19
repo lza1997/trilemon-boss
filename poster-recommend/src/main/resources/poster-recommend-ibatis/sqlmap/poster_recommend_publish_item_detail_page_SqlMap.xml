@@ -25,7 +25,7 @@
         poster_recommend_publish_item_detail_page_#tableId#
     </sql>
   <sql id="Blob_Column_List" >
-    desc, backup_desc
+    `desc`, backup_desc
   </sql>
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendPublishItemDetailPage" >
     select 
@@ -73,7 +73,7 @@
         upd_time
       </isNotNull>
       <isNotNull prepend="," property="desc" >
-        desc
+        `desc`
       </isNotNull>
       <isNotNull prepend="," property="backupDesc" >
         backup_desc

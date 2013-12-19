@@ -130,16 +130,25 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
 
     @Override
     public Integer batchInsert(List<PosterRecommendPublishItem> publishItems) {
+        for(PosterRecommendPublishItem publishItem:publishItems){
+            router.routeAndSetTableId(publishItem);
+        }
         return batchInsert("poster_recommend_publish_item.insertSelective", publishItems);
     }
 
     @Override
     public Integer batchDelete(List<PosterRecommendPublishItem> publishItems) {
+        for(PosterRecommendPublishItem publishItem:publishItems){
+            router.routeAndSetTableId(publishItem);
+        }
         return batchDelete("poster_recommend_publish_item.deleteByUserIdAndActivityIdAndItemNumIid", publishItems);
     }
 
     @Override
     public Integer batchUpdate(List<PosterRecommendPublishItem> publishItems) {
+        for(PosterRecommendPublishItem publishItem:publishItems){
+            router.routeAndSetTableId(publishItem);
+        }
         return batchDelete("poster_recommend_publish_item.updateByUserIdAndActivityIdAndItemNumIidSelective", publishItems);
     }
 

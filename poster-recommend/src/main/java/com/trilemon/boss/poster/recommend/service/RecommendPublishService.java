@@ -112,7 +112,8 @@ public class RecommendPublishService {
             throws TaobaoAccessControlException, TaobaoEnhancedApiException, TaobaoSessionExpiredException {
         PosterRecommendPublishItem publishItem = posterRecommendPublishItemDAO
                 .selectByUserIdAndActivityIdAndItemNumIidAndStatus(userId, activityId, itemNumIid,
-                        ImmutableList.of(PUBLISH_ITEM_STATUS_WAITING_PUBLISH, PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY));
+                        ImmutableList.of(PUBLISH_ITEM_STATUS_WAITING_PUBLISH, PUBLISH_ITEM_STATUS_PUBLISHED_FAILED,
+                                PUBLISH_ITEM_STATUS_UNPUBLISHED_SUCCESSFULLY, PUBLISH_ITEM_STATUS_UNPUBLISHED_FAILED));
         if (null == publishItem) {
             return;
         }
@@ -123,10 +124,7 @@ public class RecommendPublishService {
         String backupDesc = item.getDesc();
         //important
         String updatedDesc = PublishUtils.addHtml2DetailPage(publishItem.getDetailPagePosition(),
-                HTML_TAG_RECOMMEND, activityId, publishHtml, item.getDesc());
-        ItemUpdateRequest request = new ItemUpdateRequest();
-        request.setNumIid(itemNumIid);
-        request.setDesc(updatedDesc);
+                HTML_TAG_RECOMMEND, activityId, publishHtml, backupDesc);
         //插入详情页备份
         PosterRecommendPublishItemDetailPage posterRecommendPublishItemDetailPage = new
                 PosterRecommendPublishItemDetailPage();
@@ -140,7 +138,13 @@ public class RecommendPublishService {
         posterRecommendPublishItemDetailPage.setDesc(updatedDesc);
         posterRecommendPublishItemDetailPage.setAddTime(appService.getLocalSystemTime().toDate());
         try {
-            taobaoApiItemService.updateItem(userId, request);
+            if (updatedDesc.equals(backupDesc)) {
+                ItemUpdateRequest request = new ItemUpdateRequest();
+                request.setNumIid(itemNumIid);
+                request.setDesc(updatedDesc);
+                taobaoApiItemService.updateItem(userId, request);
+                taobaoApiCache.invalidItem(itemNumIid);
+            }
             posterRecommendPublishItemDetailPage.setStatus(DETAIL_PAGE_STATUS_NORMAL);
             publishSuccessful(userId, activityId, itemNumIid);
         } catch (BaseTaobaoApiException e) {
@@ -191,7 +195,7 @@ public class RecommendPublishService {
         if (CollectionUtils.isNotEmpty(publishItems)) {
             return Page.create(count, pageNum, pageSize, publishItems);
         } else {
-            return Page.empty();
+            return Page.create(count, pageNum, pageSize, Lists.<PosterRecommendPublishItem>newArrayList());
         }
     }
 
@@ -251,7 +255,7 @@ public class RecommendPublishService {
             PublishItem publishItem = new PublishItem();
             publishItem.setItem(item);
 
-            if (indexMap.values().contains(item.getNumIid())) {
+            if (indexMap.keySet().contains(item.getNumIid())) {
                 publishItem.setPublishItemStatus(indexMap.get(item.getNumIid()).getStatus());
             } else {
                 publishItem.setPublishItemStatus(PUBLISH_ITEM_STATUS_NOT_IN_DB);
@@ -336,7 +340,7 @@ public class RecommendPublishService {
                 .selectByUserIdAndActivityIdAndItemNumIidAndStatus(userId,
                         activityId,
                         itemNumIid,
-                        ImmutableList.of(PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY,PUBLISH_ITEM_STATUS_UNPUBLISHED_FAILED));
+                        ImmutableList.of(PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY, PUBLISH_ITEM_STATUS_UNPUBLISHED_FAILED));
         if (null == publishItem) {
             return;
         }
@@ -347,9 +351,6 @@ public class RecommendPublishService {
         String backupDesc = item.getDesc();
         //important
         String updatedDesc = PublishUtils.removeHtmlFromDetailPage(HTML_TAG_RECOMMEND, activityId, item.getDesc());
-        ItemUpdateRequest request = new ItemUpdateRequest();
-        request.setNumIid(itemNumIid);
-        request.setDesc(updatedDesc);
         //插入详情页备份
         PosterRecommendPublishItemDetailPage posterRecommendPublishItemDetailPage = new
                 PosterRecommendPublishItemDetailPage();
@@ -363,7 +364,13 @@ public class RecommendPublishService {
         posterRecommendPublishItemDetailPage.setDesc(updatedDesc);
         posterRecommendPublishItemDetailPage.setAddTime(appService.getLocalSystemTime().toDate());
         try {
-            taobaoApiItemService.updateItem(userId, request);
+            if (updatedDesc.equals(backupDesc)) {
+                ItemUpdateRequest request = new ItemUpdateRequest();
+                request.setNumIid(itemNumIid);
+                request.setDesc(updatedDesc);
+                taobaoApiItemService.updateItem(userId, request);
+                taobaoApiCache.invalidItem(itemNumIid);
+            }
             posterRecommendPublishItemDetailPage.setStatus(DETAIL_PAGE_STATUS_NORMAL);
             unpublishSuccessful(userId, activityId, itemNumIid);
         } catch (BaseTaobaoApiException e) {
