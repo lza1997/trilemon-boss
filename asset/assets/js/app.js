@@ -33,6 +33,7 @@ define(function() {
         var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
         var inventory = SeajsLazyModuleProvider.create('app/inventory/index');
         var rate = SeajsLazyModuleProvider.create('app/rate/index');
+        var poster = SeajsLazyModuleProvider.create('app/poster/index');
 
         $routeProvider
             .when('/shelf/plan-setting/new', shelf.routeFor('shelf.newPlanSetting'))
@@ -57,6 +58,10 @@ define(function() {
             .when('/rate/filter-buyer', rate.routeFor('rate.filterBuyer'))
             .when('/rate/buyer-rates', rate.routeFor('rate.indexBuyerRate', {reloadOnSearch: false}))
             .when('/rate', {redirectTo: '/rate/comments'})
+
+            .when('/poster/category', poster.routeFor('poster.category'))
+            .when('/poster/select-template', poster.routeFor('poster.selectTemplate'))
+            .when('/poster', {redirectTo: '/poster/category'})
 
             .otherwise({redirectTo: '/shelf'});
     }]);

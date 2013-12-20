@@ -36,6 +36,15 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
                 {name: '中差评', url: '/rate/buyer-rates', navClass: 'rateBuyerRate'},
                 {name: '统计', url: '/rate/sx', navClass: 'rate'}
             ]
+        },
+        {
+            name: '宝贝海报',
+            url: '/poster',
+            children: [
+                {name: '制作海报', url: '/poster/category', navClass: 'posterSetting'},
+                {name: '海报列表', url: '/poster/poster', navClass: 'posterPoster'},
+                {name: '海报模板', url: '/poster/template', navClass: 'posterTemplate'}
+            ]
         }
     ];
 
