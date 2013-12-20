@@ -29,7 +29,7 @@
         <module>inventory</module>
         <module>rate</module>
         <module>poster-recommend</module>
-        <module>trade-remind</module>
+        <module>trade-notify</module>
         <module>delivery</module>
         <module>develop-tool</module>
     </modules>
