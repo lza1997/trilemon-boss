@@ -239,17 +239,21 @@ public class RecommendPublishService {
             return Page.create(itemPage.getTotalSize(), pageNum, pageSize, Lists.<PublishItem>newArrayList());
         }
 
-        //获取已经加入投放的宝贝并且设置是否加入投放的标志位
-        List<PosterRecommendPublishItem> posterRecommendPublishItems = posterRecommendPublishItemDAO
-                .selectByUserIdAndActivityId(userId, activityId);
+        Map<Long, PosterRecommendPublishItem> indexMap = Maps.newHashMap();
 
-        Map<Long, PosterRecommendPublishItem> indexMap = Maps.uniqueIndex(posterRecommendPublishItems, new Function<PosterRecommendPublishItem, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable PosterRecommendPublishItem input) {
-                return input.getItemNumIid();
-            }
-        });
+        if (null != activityId) {
+            //获取已经加入投放的宝贝并且设置是否加入投放的标志位
+            List<PosterRecommendPublishItem> posterRecommendPublishItems = posterRecommendPublishItemDAO
+                    .selectByUserIdAndActivityId(userId, activityId);
+
+            indexMap = Maps.uniqueIndex(posterRecommendPublishItems, new Function<PosterRecommendPublishItem, Long>() {
+                @Nullable
+                @Override
+                public Long apply(@Nullable PosterRecommendPublishItem input) {
+                    return input.getItemNumIid();
+                }
+            });
+        }
 
         for (Item item : taobaoItems) {
             PublishItem publishItem = new PublishItem();

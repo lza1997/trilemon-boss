@@ -77,7 +77,7 @@ public class RecommendActivityService {
      */
     public PosterRecommendActivity getActivity(Long userId, Long activityId) {
         PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
-        if(null==activity){
+        if (null == activity) {
             return null;
         }
         Integer itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
@@ -255,7 +255,7 @@ public class RecommendActivityService {
     public void createUser(Long userId) {
         PosterRecommendUser posterRecommendUser = posterRecommendUserDAO.selectByUserId(userId);
         if (null == posterRecommendUser) {
-            posterRecommendUser=new PosterRecommendUser();
+            posterRecommendUser = new PosterRecommendUser();
             posterRecommendUser.setAddTime(appService.getLocalSystemTime().toDate());
             posterRecommendUser.setStatus(USER_STATUS_NORMAL);
             posterRecommendUser.setUserId(userId);
@@ -468,17 +468,20 @@ public class RecommendActivityService {
             return Page.create(itemPage.getTotalSize(), pageNum, pageSize, Lists.<ActivityItem>newArrayList());
         }
 
-        //获取已经加入活动的宝贝并且设置是否加入活动的标志位
-        List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO
-                .selectByUserIdAndActivityId(userId, activityId);
+        Map<Long, PosterRecommendActivityItem> indexMap = Maps.newHashMap();
+        if (null != activityId) {
+            //获取已经加入活动的宝贝并且设置是否加入活动的标志位
+            List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO
+                    .selectByUserIdAndActivityId(userId, activityId);
 
-        Map<Long, PosterRecommendActivityItem> indexMap = Maps.uniqueIndex(posterRecommendActivityItems, new Function<PosterRecommendActivityItem, Long>() {
-            @Nullable
-            @Override
-            public Long apply(@Nullable PosterRecommendActivityItem input) {
-                return input.getItemNumIid();
-            }
-        });
+            indexMap = Maps.uniqueIndex(posterRecommendActivityItems, new Function<PosterRecommendActivityItem, Long>() {
+                @Nullable
+                @Override
+                public Long apply(@Nullable PosterRecommendActivityItem input) {
+                    return input.getItemNumIid();
+                }
+            });
+        }
 
         for (Item item : taobaoItems) {
             ActivityItem activityItem = new ActivityItem();
