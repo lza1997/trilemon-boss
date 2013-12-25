@@ -1,5 +1,14 @@
-<ul>
-    <li ng-repeat="category in categories">
-        {{ category.name }}
-    </li>
-</ul>
+<p>
+    推荐海报模板：
+    <a ng-repeat="template in templates" ng-href="#/poster/select-item?templateId={{template.templateId}}">
+        {{template.title}}
+    </a>
+</p>
+<div>
+    <label style="margin-bottom: 10px;">选择店铺类型：</label>
+    <ul style="padding-left: 20px;">
+        <li ng-repeat="category in categories" style="margin-bottom: 5px;">
+            <a ng-href="#/poster/select-template?category={{category.id}}">{{ category.name }}</a>
+        </li>
+    </ul>
+</div>

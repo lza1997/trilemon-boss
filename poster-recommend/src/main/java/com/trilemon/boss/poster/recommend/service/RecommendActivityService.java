@@ -432,7 +432,7 @@ public class RecommendActivityService {
      * 查询可供选择加入活动的宝贝
      *
      * @param userId
-     * @param activityId
+     * @param activityId  创建时可以传递 null
      * @param onSale
      * @param query
      * @param sellerCids

@@ -73,6 +73,15 @@ public class RecommendTemplateService {
     }
 
     /**
+     * 根据 ID 获取模板
+     * @param id
+     * @return
+     */
+    public PosterTemplate getTemplate(Long id){
+        return posterTemplateClient.getPosterTemplate(id);
+    }
+
+    /**
      * 获取目录
      *
      * @return
