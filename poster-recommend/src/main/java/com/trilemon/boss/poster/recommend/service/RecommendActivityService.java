@@ -29,7 +29,6 @@ import com.trilemon.commons.JsonMapper;
 import com.trilemon.commons.web.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
@@ -48,7 +47,6 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.trilemon.boss.poster.recommend.PosterRecommendConstants.*;
-import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
 /**
  * @author kevin
@@ -482,30 +480,22 @@ public class RecommendActivityService {
      *
      * @param activityItem                前台传入宝贝
      * @param posterRecommendActivityItem 数据库宝贝
+     *
+     *                                    {@literal}
      * @return
      */
     private boolean isChanged(ActivityItem activityItem, PosterRecommendActivityItem posterRecommendActivityItem) {
         //get template copy
         PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(posterRecommendActivityItem
                 .getTemplateId());
-        String copyKeys = posterTemplate.getCopyKeys();
-        if (StringUtils.isBlank(copyKeys)) {
-            return false;
-        }
-        List<String> copyKeyList = COMMA_SPLITTER.splitToList(copyKeys);
-        JsonMapper jsonMapper = JsonMapper.nonEmptyMapper();
-        Map<?, ?> copyMap;
-        try {
-            copyMap = jsonMapper.fromJson2Map(posterRecommendActivityItem.getCopy());
-        } catch (Exception e) {
-            logger.error("json mapper error, activityItem[" + ToStringBuilder.reflectionToString(activityItem) + "]," +
-                    " posterRecommendActivityItem[" + ToStringBuilder.reflectionToString(posterRecommendActivityItem) + "]", e);
+        Map<?, ?> copyKeyMap = posterTemplate.getCopyKeyMap();
+        if (null==copyKeyMap||copyKeyMap.isEmpty()) {
             return false;
         }
 
-        for (String key : copyKeyList) {
-            if (copyMap.containsKey(key) && activityItem.getCopy().containsKey(key)) {
-                if (!copyMap.get(key).equals(activityItem.getCopy().get(key))) {
+        for (Object key : copyKeyMap.keySet()) {
+            if (activityItem.getCopy().containsKey((String)key)) {
+                if (!copyKeyMap.get(key).equals(activityItem.getCopy().get(key))) {
                     return true;
                 }
             }

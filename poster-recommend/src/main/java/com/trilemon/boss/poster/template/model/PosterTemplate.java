@@ -1,14 +1,9 @@
 package com.trilemon.boss.poster.template.model;
 
-import com.google.common.collect.Maps;
-import org.apache.commons.lang3.StringUtils;
+import com.trilemon.commons.JsonMapper;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-
-import static com.trilemon.boss.poster.template.PosterTemplateConstants.COPY_KEY_MAP;
-import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
 public class PosterTemplate {
     private Long id;
@@ -211,20 +206,14 @@ public class PosterTemplate {
 
     /**
      * 获取 copy key
+     *
      * @return
      */
-    public Map<String, String> getCopyKeyMap() {
-        Map<String, String> copyKeyMap = Maps.newHashMap();
-        if (StringUtils.isBlank(copyKeys)) {
-            return copyKeyMap;
-        } else {
-            List<String> copyKeyList = COMMA_SPLITTER.splitToList(copyKeys);
-            for (String copyKey : copyKeyList) {
-                if (COPY_KEY_MAP.containsKey(copyKey)) {
-                    copyKeyMap.put(copyKey, COPY_KEY_MAP.get(copyKey));
-                }
-            }
-            return copyKeyMap;
+    public Map<?, ?> getCopyKeyMap() {
+        try {
+           return JsonMapper.nonEmptyMapper().fromJson2Map(copyKeys);
+        } catch (Exception e) {
+            return null;
         }
     }
 }
