@@ -13,7 +13,8 @@ define(function(require, exports, module) {
             'PosterTopic': require('./service/poster-topic'),
             'PosterTemplate': require('./service/poster-template'),
             'PosterRecommendTemplate': require('./service/poster-recommend-template'),
-            'PosterItem': require('./service/poster-item')
+            'PosterItem': require('./service/poster-item'),
+            'PosterSellerCat': require('./service/poster-sellercat')
         },
         filters: {
             'rowSplit': require('./filter/row-split')
