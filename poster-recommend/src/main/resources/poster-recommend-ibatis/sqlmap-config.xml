@@ -12,4 +12,5 @@
     <sqlMap resource="poster-recommend-ibatis/sqlmap/poster_recommend_publish_item_detail_page_SqlMap.xml"/>
     <sqlMap resource="poster-recommend-ibatis/sqlmap/poster_recommend_user_SqlMap.xml"/>
     <sqlMap resource="poster-recommend-ibatis/sqlmap/poster_recommend_recommend_template_SqlMap.xml"/>
+    <sqlMap resource="poster-recommend-ibatis/sqlmap/poster_recommend_favorite_template_SqlMap.xml"/>
 </sqlMapConfig>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="poster_recommend_favorite_template">
+    <resultMap id="BaseResultMap" class="com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate">
+        <result column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="template_id" property="templateId" jdbcType="BIGINT"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_id, template_id, add_time, upd_time
+  </sql>
+    <select id="selectByUserIdAndTemplateId" resultMap="BaseResultMap"
+            parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate">
+        select
+        <include refid="poster_recommend_favorite_template.Base_Column_List"/>
+        from poster_recommend_favorite_template
+        where user_id = #userId:BIGINT#
+        and template_id=#templateId:BIGINT#
+    </select>
+    <delete id="deleteByUserIdAndTemplateId"
+            parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate">
+    delete from poster_recommend_favorite_template
+     where user_id = #userId:BIGINT#
+     and template_id=#templateId:BIGINT#
+  </delete>
+    <insert id="insertSelective"
+            parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate">
+        insert IGNORE into poster_recommend_favorite_template
+        <dynamic prepend="(">
+            <isNotNull prepend="," property="id">
+                id
+            </isNotNull>
+            <isNotNull prepend="," property="userId">
+                user_id
+            </isNotNull>
+            <isNotNull prepend="," property="templateId">
+                template_id
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                add_time
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                upd_time
+            </isNotNull>
+            )
+        </dynamic>
+        values
+        <dynamic prepend="(">
+            <isNotNull prepend="," property="id">
+                #id:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="userId">
+                #userId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="templateId">
+                #templateId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                #updTime:TIMESTAMP#
+            </isNotNull>
+            )
+        </dynamic>
+        <selectKey resultClass="long" keyProperty="id">
+            SELECT LAST_INSERT_ID() as id
+        </selectKey>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterClass="com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate">
+        update poster_recommend_favorite_template
+        <dynamic prepend="set">
+            <isNotNull prepend="," property="userId">
+                user_id = #userId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="templateId">
+                template_id = #templateId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="addTime">
+                add_time = #addTime:TIMESTAMP#
+            </isNotNull>
+            <isNotNull prepend="," property="updTime">
+                upd_time = #updTime:TIMESTAMP#
+            </isNotNull>
+        </dynamic>
+        where id = #id:BIGINT#
+    </update>
+    <select id="paginateByUserId" resultMap="BaseResultMap" parameterClass="map">
+        SELECT
+        t1.id as id, t1.user_id as user_id, t1.template_id as template_id,
+        t1.add_time as add_time, t1.upd_time as upd_time
+        FROM poster_recommend_favorite_template t1,
+        (SELECT id FROM poster_recommend_favorite_template
+          WHERE user_id = #userId:BIGINT#
+          order by add_time desc
+          LIMIT $offset$, $limit$
+        ) t2
+        where t1.id=t2.id
+    </select>
+    <select id="countByUserId" resultClass="int" parameterClass="map">
+        SELECT COUNT(1) FROM poster_recommend_favorite_template
+        WHERE
+        user_id = #userId:BIGINT#
+    </select>
+</sqlMap>

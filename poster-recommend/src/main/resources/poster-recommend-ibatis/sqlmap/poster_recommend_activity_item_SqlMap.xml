@@ -5,6 +5,7 @@
         <result column="id" property="id" jdbcType="BIGINT"/>
         <result column="user_id" property="userId" jdbcType="BIGINT"/>
         <result column="activity_id" property="activityId" jdbcType="BIGINT"/>
+        <result column="template_id" property="templateId" jdbcType="BIGINT"/>
         <result column="item_num_iid" property="itemNumIid" jdbcType="BIGINT"/>
         <result column="item_title" property="itemTitle" jdbcType="VARCHAR"/>
         <result column="item_price" property="itemPrice" jdbcType="DECIMAL"/>
@@ -16,7 +17,7 @@
         <result column="upd_time" property="updTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_id, activity_id, item_num_iid, item_title, item_price, item_pic_url, copy,
+    id, user_id, activity_id, template_id, item_num_iid, item_title, item_price, item_pic_url, copy,
     template_sequence_index, status, add_time, upd_time
   </sql>
     <sql id="Base_Table_Name">
@@ -34,6 +35,9 @@
             </isNotNull>
             <isNotNull prepend="," property="activityId">
                 activity_id
+            </isNotNull>
+            <isNotNull prepend="," property="templateId">
+                template_id
             </isNotNull>
             <isNotNull prepend="," property="itemNumIid">
                 item_num_iid
@@ -74,6 +78,9 @@
             </isNotNull>
             <isNotNull prepend="," property="activityId">
                 #activityId:BIGINT#
+            </isNotNull>
+            <isNotNull prepend="," property="templateId">
+                #templateId:BIGINT#
             </isNotNull>
             <isNotNull prepend="," property="itemNumIid">
                 #itemNumIid:BIGINT#
@@ -138,7 +145,8 @@
 
     <select id="paginateByUserIdAndActivityId" resultMap="BaseResultMap" parameterClass="map">
         SELECT
-        t1.id as id, t1.user_id as user_id, t1.activity_id as `activity_id`, t1.item_num_iid as item_num_iid,
+        t1.id as id, t1.user_id as user_id, t1.activity_id as activity_id, t1.template_id as template_id,
+        t1.item_num_iid as item_num_iid,
         t1.item_title as item_title, t1.item_price as item_price,t1.item_pic_url as item_pic_url,
         t1.copy as copy, t1.template_sequence_index as template_sequence_index,t1.status as status,
         t1.add_time as add_time, t1.upd_time as upd_time

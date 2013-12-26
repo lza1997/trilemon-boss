@@ -50,4 +50,10 @@ public class PosterTemplateDAOImpl extends MysdalCobarSqlMapClientDaoSupport imp
         map.put("favoriteNum", count);
         return getSqlMapClientTemplate().update("poster_template.updateFavoriteByPrimaryKey", map);
     }
+
+    @Override
+    public List<PosterTemplate> selectByPrimaryKeys(List<Long> templateIds) {
+        return (List<PosterTemplate>) getSqlMapClientTemplate().queryForList("poster_template.selectByPrimaryKeys",
+                templateIds);
+    }
 }

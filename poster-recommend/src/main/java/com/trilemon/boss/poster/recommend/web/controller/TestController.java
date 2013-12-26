@@ -1,5 +1,6 @@
 package com.trilemon.boss.poster.recommend.web.controller;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.taobao.api.domain.Item;
 import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
@@ -56,7 +57,7 @@ public class TestController {
 
     @ResponseBody
     @RequestMapping(value = "/createActivityDesignS1", method = RequestMethod.GET)
-    public String createActivityDesignS1(@RequestParam Long userId) {
+    public String createActivityDesignS1(@RequestParam Long userId) throws PosterRecommendException {
         PosterRecommendActivity activity = new PosterRecommendActivity();
         activity.setTemplateId(100L);
         activity.setTitle("测试活动设计部分");
@@ -65,44 +66,46 @@ public class TestController {
         activity.setPublishHtml("<a>test</a>");
 
         //测试数据
-        List<ActivityItem> activityItems=Lists.newArrayList();
+        List<ActivityItem> activityItems = Lists.newArrayList();
         //加入
-        ActivityItem activityItem1=new ActivityItem();
+        ActivityItem activityItem1 = new ActivityItem();
         activityItem1.setActivityItemStatus(ACTIVITY_ITEM_STATUS_NOT_IN_DB);
-        activityItem1.setStatus(ActivityItem.STATUS_NEW);
-        Item item1=new Item();
+        Item item1 = new Item();
         item1.setTitle("test title");
         item1.setNumIid(123L);
         item1.setPrice("123.12");
         item1.setPicUrl("test pic url");
         activityItem1.setItem(item1);
+        activityItem1.setCopy(ImmutableMap.of("price", "123"));
         activityItems.add(activityItem1);
 
-        //更新
-        ActivityItem activityItem2=new ActivityItem();
-        activityItem2.setActivityItemStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
-        activityItem2.setStatus(ActivityItem.STATUS_UPDATED);
-        Item item2=new Item();
-        item2.setTitle("test title 2");
-        item2.setNumIid(1234L);
-        item2.setPrice("123.12");
-        item2.setPicUrl("test pic url2");
-        activityItem2.setItem(item2);
-        activityItems.add(activityItem2);
+//        //更新
+//        ActivityItem activityItem2=new ActivityItem();
+//        activityItem2.setActivityItemStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
+//        Item item2=new Item();
+//        item2.setTitle("test title 2");
+//        item2.setNumIid(1234L);
+//        item2.setPrice("123.12");
+//        item2.setPicUrl("test pic url2");
+//        activityItem2.setCopy(ImmutableMap.of("price","1234"));
+//        activityItem2.setItem(item2);
+//        activityItems.add(activityItem2);
 
         //删除
-        ActivityItem activityItem3=new ActivityItem();
+        ActivityItem activityItem3 = new ActivityItem();
         activityItem3.setActivityItemStatus(PosterRecommendConstants.ACTIVITY_ITEM_STATUS_NORMAL);
-        activityItem3.setStatus(ActivityItem.STATUS_DELETED);
-        Item item3=new Item();
+        Item item3 = new Item();
         item3.setTitle("test title 3");
         item3.setNumIid(12345L);
         item3.setPrice("123.12");
         item3.setPicUrl("test pic url2");
+        activityItem3.setCopy(ImmutableMap.of("price", "12345"));
         activityItem3.setItem(item3);
         activityItems.add(activityItem3);
 
-        activityService.createActivityDesignS1(userId, activity,activityItems);
+//        activityService.createActivityDesignS1(userId, activity,activityItems);
+        activityService.updateActivityItems(56912708L, 36L, activityItems);
+
         return "success";
     }
 
@@ -117,8 +120,6 @@ public class TestController {
         return "success";
     }
 
-
-
     @ResponseBody
     @RequestMapping(value = "/updateActivityPublishPart", method = RequestMethod.GET)
     public String updateActivityPublishPart(@RequestParam Long userId, @RequestParam Long activityId) {
@@ -129,12 +130,11 @@ public class TestController {
         activity.setPublishEndTime(DateUtils.endOfNDaysBefore(1).toDate());
 
         //测试数据
-        List<PublishItem> publishItems=Lists.newArrayList();
+        List<PublishItem> publishItems = Lists.newArrayList();
         //加入
-        PublishItem publishItem1=new PublishItem();
+        PublishItem publishItem1 = new PublishItem();
         publishItem1.setPublishItemStatus(PUBLISH_ITEM_STATUS_NOT_IN_DB);
-        publishItem1.setStatus(PublishItem.STATUS_NEW);
-        Item item1=new Item();
+        Item item1 = new Item();
         item1.setTitle("test title");
         item1.setNumIid(123L);
         item1.setPrice("123.12");
@@ -143,10 +143,9 @@ public class TestController {
         publishItems.add(publishItem1);
 
         //删除
-        PublishItem publishItem2=new PublishItem();
+        PublishItem publishItem2 = new PublishItem();
         publishItem2.setPublishItemStatus(PosterRecommendConstants.PUBLISH_ITEM_STATUS_WAITING_PUBLISH);
-        publishItem2.setStatus(PublishItem.STATUS_DELETED);
-        Item item2=new Item();
+        Item item2 = new Item();
         item2.setTitle("test title 2");
         item2.setNumIid(1234L);
         item2.setPrice("123.12");
@@ -154,7 +153,7 @@ public class TestController {
         publishItem2.setItem(item2);
         publishItems.add(publishItem2);
 
-        activityService.updateActivityPublishPart(userId, activity,publishItems);
+        activityService.updateActivityPublishPart(userId, activity, publishItems);
         return "success";
     }
 
@@ -254,5 +253,37 @@ public class TestController {
     @RequestMapping(value = "/getTemplateTopics", method = RequestMethod.GET)
     public List<PosterTemplateTopic> getTemplateTopics() {
         return templateService.getTemplateTopics();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/favoriteTemplate", method = RequestMethod.GET)
+    public String favoriteTemplate() {
+        templateService.favoriteTemplate(56912708L, 100L);
+        return "success";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/unFavoriteTemplate", method = RequestMethod.GET)
+    public String unFavoriteTemplate() {
+        templateService.unFavoriteTemplate(56912708L, 100L);
+        return "success";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/paginateFavoritePosterTemplates", method = RequestMethod.GET)
+    public Page<PosterTemplate> paginateFavoritePosterTemplates() {
+        return templateService.paginateFavoritePosterTemplates(56912708L, 1, 2);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/paginateLatestPosterTemplates", method = RequestMethod.GET)
+    public Page<PosterTemplate> paginateLatestPosterTemplates() {
+        return templateService.paginateLatestPosterTemplates(1, 2);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/paginateUsedPosterTemplates", method = RequestMethod.GET)
+    public Page<PosterTemplate> paginateUsedPosterTemplates() {
+        return templateService.paginateUsedPosterTemplates(56912708L, 1, 2);
     }
 }

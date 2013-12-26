@@ -6,6 +6,8 @@ import com.trilemon.boss.poster.template.client.response.PosterTemplateQueryResp
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.boss.poster.template.service.TemplateService;
 
+import java.util.List;
+
 /**
  * @author kevin
  */
@@ -15,6 +17,11 @@ public class PosterTemplateClientImpl implements PosterTemplateClient {
     @Override
     public PosterTemplate getPosterTemplate(Long templateId) {
         return templateService.getTemplate(templateId);
+    }
+
+    @Override
+    public List<PosterTemplate> getPosterTemplates(List<Long> templateIds) {
+        return templateService.getTemplates(templateIds);
     }
 
     @Override

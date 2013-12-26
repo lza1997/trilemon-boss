@@ -55,4 +55,8 @@
         <namespace>poster_recommend_recommend_template</namespace>
         <shards>posterItemRecommendShard1</shards>
     </rule>
+    <rule>
+        <namespace>poster_recommend_favorite_template</namespace>
+        <shards>posterItemRecommendShard1</shards>
+    </rule>
 </rules>

@@ -40,4 +40,8 @@ public class TemplateService {
     public void favorite(long templateId, int count) {
         posterTemplateDAO.updateFavoriteByPrimaryKey(templateId, count);
     }
+
+    public List<PosterTemplate> getTemplates(List<Long> templateIds) {
+        return posterTemplateDAO.selectByPrimaryKeys(templateIds);
+    }
 }

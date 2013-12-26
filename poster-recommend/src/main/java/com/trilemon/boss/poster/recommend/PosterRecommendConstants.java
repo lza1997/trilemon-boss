@@ -8,7 +8,9 @@ import java.util.List;
  * @author kevin
  */
 public interface PosterRecommendConstants {
-    //活动状态和列表操作文案
+    /**
+     *  活动状态和列表操作文案
+     */
     byte ACTIVITY_STATUS_DESIGNED_S1 = 0;//海报设计，海报宝贝选择完毕；列表显示【编辑宝贝 投放设置 删除】
     byte ACTIVITY_STATUS_DESIGNED_S2 = 1;//海报设计，预览取名步骤完毕；列表显示【编辑宝贝 投放设置 删除 代码】
     byte ACTIVITY_STATUS_PUBLISH_SETTING_DONE = 2;//投放设置完毕；列表显示【编辑宝贝 投放设置 删除 代码 投放】
@@ -32,20 +34,28 @@ public interface PosterRecommendConstants {
             ACTIVITY_STATUS_PUBLISHED, ACTIVITY_STATUS_PUBLISHED_WITH_ERROR,
             ACTIVITY_STATUS_UNPUBLISHING, ACTIVITY_STATUS_UNPUBLISHED,
             ACTIVITY_STATUS_UNPUBLISHED_WITH_ERROR);
-    //投放类型
+    /**
+     * 投放类型
+     */
     byte PUBLISH_TYPE_ALWAYS = 0;//一直投放
     byte PUBLISH_TYPE_ASSIGN_TIME = 1;//选定时间内投放
-    //海报宝贝状态，正常
+    /**
+     * 海报宝贝状态
+     */
     byte ACTIVITY_ITEM_STATUS_NOT_IN_DB = 0;//数据库不存在，为前台标识是否参与活动
     byte ACTIVITY_ITEM_STATUS_NORMAL = 1;
-    //参与投放宝贝状态
+    /**
+     * 参与投放宝贝状态
+     */
     byte PUBLISH_ITEM_STATUS_NOT_IN_DB = 0;//数据库不存在，为前台标识是否参与投放
     byte PUBLISH_ITEM_STATUS_WAITING_PUBLISH = 1;//待投放
     byte PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY = 2;//投放完毕
     byte PUBLISH_ITEM_STATUS_PUBLISHED_FAILED = 3;//投放完毕，但是失败
     byte PUBLISH_ITEM_STATUS_UNPUBLISHED_SUCCESSFULLY = 4;//卸载完毕
     byte PUBLISH_ITEM_STATUS_UNPUBLISHED_FAILED = 5;//卸载完毕，但是失败
-    //宝贝推荐用户状态，正常
+    /**
+     * 宝贝推荐用户状态
+     */
     byte USER_STATUS_NORMAL = 0;
     byte USER_STATUS_EXPIRED = 1;
     //on sale item field
@@ -69,6 +79,6 @@ public interface PosterRecommendConstants {
     int ACTIVITY_ITEM_MAX_NUM = 1000;
     //文案 key
     String COPY_KEY_ITEM_ORIGINAL_PRICE = "item_original_price";
-    String COPY_KEY_ITEM_SPECIAL_PRICE = "item_special_price";
+    List<String> COPY_KEY_LIST=ImmutableList.of(COPY_KEY_ITEM_ORIGINAL_PRICE);
 
 }
