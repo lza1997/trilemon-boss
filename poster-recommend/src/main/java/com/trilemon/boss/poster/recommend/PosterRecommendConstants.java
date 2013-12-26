@@ -1,8 +1,10 @@
 package com.trilemon.boss.poster.recommend;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevin
@@ -77,8 +79,4 @@ public interface PosterRecommendConstants {
     String API_ITEM_GET_ORDER_BY_MODIFIED_DESC = "modified:desc";
     //最大一个活动可以容纳宝贝
     int ACTIVITY_ITEM_MAX_NUM = 1000;
-    //文案 key
-    String COPY_KEY_ITEM_ORIGINAL_PRICE = "item_original_price";
-    List<String> COPY_KEY_LIST=ImmutableList.of(COPY_KEY_ITEM_ORIGINAL_PRICE);
-
 }
