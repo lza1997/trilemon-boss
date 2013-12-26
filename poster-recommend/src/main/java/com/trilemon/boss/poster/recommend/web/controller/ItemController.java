@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 所有宝贝
  *
@@ -30,8 +33,11 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<ActivityItem> index(String key, @RequestParam(defaultValue = "1") Integer page, String category) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-        return activityService.paginateItems(sessionService.getUserId(), null, true, key, null, page, 4);
+    public Page<ActivityItem> index(String key, @RequestParam(defaultValue = "1") Integer page, Long category) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
+        List<Long> categoryIds = new ArrayList<Long>();
+        if (category != null) {
+            categoryIds.add(category);
+        }
+        return activityService.paginateItems(sessionService.getUserId(), null, true, key, categoryIds, page, 4);
     }
-
 }

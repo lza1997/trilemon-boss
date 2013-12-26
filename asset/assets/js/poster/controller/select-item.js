@@ -3,8 +3,9 @@
  */
 define(function(require, exports, module) {
 
-    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash) {
+    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', 'PosterSellerCat', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash, PosterSellerCat) {
 
+        // 初始化
         $scope.init = function() {
             if (!$routeParams.templateId) {
                 $location.url('/poster/category');
@@ -12,6 +13,7 @@ define(function(require, exports, module) {
             }
             $scope.searchKey = $routeParams.key;
             getItems();
+            $scope.sellerCats = PosterSellerCat.query();
             $scope.template = PosterTemplate.get({id: $routeParams.templateId});
         };
 
@@ -21,6 +23,12 @@ define(function(require, exports, module) {
         $scope.setInclude = function(item, flag) {
             item.include = flag;
             $scope.selectedItems = _.where($scope.items, {include: true});
+        };
+
+        // 切换分类
+        $scope.changeCategory = function() {
+            $scope.searchKey = '';
+            getItems({category: $scope.category, key: '', page: 1});
         };
 
         // 搜索

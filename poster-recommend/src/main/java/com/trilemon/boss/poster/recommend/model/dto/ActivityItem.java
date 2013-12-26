@@ -9,33 +9,12 @@ import java.util.Map;
  */
 public class ActivityItem {
     private byte activityItemStatus;//后台数据库表状态
-
-    @Deprecated
-    private String itemOriginalPrice; // 原价
     /**
-     * 前端应该获取模板对象，通过里面的 copy key 字段出自定义文案的表格列（文案key常量见本类中的getCopyKeys()），然后通过copy map 传到后台；展现亦然
+     * 模板自定义列的值，参见 {@link com.trilemon.boss.poster.template.model.PosterTemplate#copyKeys}
+     * 格式为 {key: value}
      */
-    private Map<String, String> copy; // 文案，key ：文案 key，value：文案的内容
+    private Map<String, String> copy;
     private Item item;
-
-    public ActivityItem() {
-
-    }
-
-    public ActivityItem(Long itemId, String itemOriginalPrice) {
-        Item item = new Item();
-        item.setNumIid(itemId);
-        setItem(item);
-        setItemOriginalPrice(itemOriginalPrice);
-    }
-
-    public String getItemOriginalPrice() {
-        return itemOriginalPrice;
-    }
-
-    public void setItemOriginalPrice(String itemOriginalPrice) {
-        this.itemOriginalPrice = itemOriginalPrice;
-    }
 
     public byte getActivityItemStatus() {
         return activityItemStatus;
