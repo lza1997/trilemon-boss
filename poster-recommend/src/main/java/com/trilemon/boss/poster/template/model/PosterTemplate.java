@@ -21,7 +21,10 @@ public class PosterTemplate {
     private String sizes;
     //支持的颜色
     private String colors;
-    //文案的 key
+    /**
+     * 模板中可能需要一些自定义列，如原价等，这些列将由 copyKeys 定义
+     * 可以定义一组，格式为 "{item_original_price: '原价', fuck: '尼玛贵姓'}"
+     */
     private String copyKeys;
     //类目，目前只存一个，当做单数使用
     private String categories;
@@ -205,13 +208,13 @@ public class PosterTemplate {
     }
 
     /**
-     * 获取 copy key
+     * 获取 copy key {@link #copyKeys}
      *
      * @return
      */
     public Map<?, ?> getCopyKeyMap() {
         try {
-           return JsonMapper.nonEmptyMapper().fromJson2Map(copyKeys);
+            return JsonMapper.nonEmptyMapper().fromJson2Map(copyKeys);
         } catch (Exception e) {
             return null;
         }

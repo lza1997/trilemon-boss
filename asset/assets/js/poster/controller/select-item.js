@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 
     var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', 'PosterSellerCat', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash, PosterSellerCat) {
 
+        // 初始化
         $scope.init = function() {
             if (!$routeParams.templateId) {
                 $location.url('/poster/category');

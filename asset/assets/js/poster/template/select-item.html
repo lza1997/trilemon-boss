@@ -14,18 +14,18 @@
         </div>
         <button type="submit" class="btn btn-primary">搜 索</button>
     </form>
-    <table class="table table-hover">
+    <table class="table table-hover" ng-if="template.$resolved">
         <col width="15%"/>
         <col/>
         <col width="10%"/>
-        <col width="10%"/>
+        <col/>
         <col width="15%"/>
         <thead>
         <tr>
             <th>图片</th>
             <th>宝贝名称</th>
             <th class="text-right">价格</th>
-            <th>海报显示原价</th>
+            <th ng-repeat="(k, v) in template.copyKeyMap">{{ v }}</th>
             <th></th>
         </tr>
         </thead>
@@ -33,7 +33,7 @@
             <td><img ng-src="{{item.picUrl}}_sum.jpg" ng-if="item.picUrl"/></td>
             <td>{{ item.title }}</td>
             <td class="text-right">{{ item.price }}</td>
-            <td><input class="form-control" type="text" required /></td>
+            <td ng-repeat="(k, v) in template.copyKeyMap"><input class="form-control" type="text" required /></td>
             <td>
                 <a ng-if="!item.include" href="" ng-click="setInclude(item, true)">加入海报</a>
                 <div ng-if="item.include" >
