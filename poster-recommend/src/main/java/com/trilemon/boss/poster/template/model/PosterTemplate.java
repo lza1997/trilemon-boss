@@ -1,62 +1,52 @@
 package com.trilemon.boss.poster.template.model;
 
+import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static com.trilemon.boss.poster.template.PosterTemplateConstants.COPY_KEY_MAP;
+import static com.trilemon.commons.Collections3.COMMA_SPLITTER;
 
 public class PosterTemplate {
     private Long id;
-
     //预览类型，0图片还是 ；1 html 代码
     private Byte previewType;
-
     //预览图片地址
     private String previewPicUrl;
-
     //预览图片代码
     private String previewPicHtml;
-
     //模板代码
     private String templateFtl;
-
     //可以放置宝贝的数量
     private Integer slotNum;
-
     //支持的尺寸
     private String sizes;
-
     //支持的颜色
     private String colors;
-
     //文案的 key
     private String copyKeys;
-
     //类目，目前只存一个，当做单数使用
     private String categories;
-
     //主题，目前只存一个，当做单数使用
     private String topics;
     //节日，目前只存一个，当做单数使用
     private String festivals;
-
     //类型 参见常量TEMPLATE_TYPE_ITEM_RECOMMEND
     private Byte type;
-
     //使用次数
     private Integer useNum;
-
     //收藏次数
     private Integer favoriteNum;
-
     //喜欢次数
     private Integer likeNum;
-
     //哪些软件版本可以使用 暂时没有用到
     private Byte applyVersion;
-
     //状态 暂时没有用到
     private Byte status;
-
     private Date addTime;
-
     private Date updTime;
 
     public Long getId() {
@@ -217,5 +207,24 @@ public class PosterTemplate {
 
     public void setTemplateFtl(String templateFtl) {
         this.templateFtl = templateFtl == null ? null : templateFtl.trim();
+    }
+
+    /**
+     * 获取 copy key
+     * @return
+     */
+    public Map<String, String> getCopyKeyMap() {
+        Map<String, String> copyKeyMap = Maps.newHashMap();
+        if (StringUtils.isBlank(copyKeys)) {
+            return copyKeyMap;
+        } else {
+            List<String> copyKeyList = COMMA_SPLITTER.splitToList(copyKeys);
+            for (String copyKey : copyKeyList) {
+                if (COPY_KEY_MAP.containsKey(copyKey)) {
+                    copyKeyMap.put(copyKey, COPY_KEY_MAP.get(copyKey));
+                }
+            }
+            return copyKeyMap;
+        }
     }
 }
