@@ -1,9 +1,7 @@
 package com.trilemon.boss.poster.recommend.model.dto;
 
 import com.taobao.api.domain.Item;
-import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,9 +59,5 @@ public class ActivityItem {
 
     public void setCopy(Map<String, String> copy) {
         this.copy = copy;
-    }
-
-    public List<String> getCopyKeys() {
-        return PosterRecommendConstants.COPY_KEY_LIST;
     }
 }

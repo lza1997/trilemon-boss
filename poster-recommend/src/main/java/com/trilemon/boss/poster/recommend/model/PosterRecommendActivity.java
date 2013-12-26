@@ -1,9 +1,11 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
+import java.util.List;
 
 public class PosterRecommendActivity extends ShardTable {
     private Long id;
@@ -200,5 +202,9 @@ public class PosterRecommendActivity extends ShardTable {
 
     public void setModified(boolean modified) {
         this.modified = modified;
+    }
+
+    public List<String> getCopyKeys() {
+        return PosterRecommendConstants.COPY_KEY_LIST;
     }
 }
