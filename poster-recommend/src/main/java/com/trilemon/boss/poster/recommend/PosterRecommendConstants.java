@@ -1,8 +1,10 @@
 package com.trilemon.boss.poster.recommend;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author kevin
@@ -80,5 +82,8 @@ public interface PosterRecommendConstants {
     //文案 key
     String COPY_KEY_ITEM_ORIGINAL_PRICE = "item_original_price";
     List<String> COPY_KEY_LIST=ImmutableList.of(COPY_KEY_ITEM_ORIGINAL_PRICE);
+
+    //文案显示
+     Map<String,String> COPY_KEY_DISPLAY_MAP= ImmutableMap.of(COPY_KEY_ITEM_ORIGINAL_PRICE,"原价");
 
 }

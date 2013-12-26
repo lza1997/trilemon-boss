@@ -6,6 +6,7 @@ import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class PosterRecommendActivity extends ShardTable {
     private Long id;
@@ -206,5 +207,9 @@ public class PosterRecommendActivity extends ShardTable {
 
     public List<String> getCopyKeys() {
         return PosterRecommendConstants.COPY_KEY_LIST;
+    }
+
+    public Map<String, String> getDisplayCopyKeys() {
+        return PosterRecommendConstants.COPY_KEY_DISPLAY_MAP;
     }
 }
