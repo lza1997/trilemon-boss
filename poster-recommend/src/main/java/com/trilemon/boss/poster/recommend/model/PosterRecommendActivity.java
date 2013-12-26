@@ -4,6 +4,7 @@ import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.commons.db.ShardTable;
 
 import java.util.Date;
+import java.util.List;
 
 public class PosterRecommendActivity extends ShardTable {
     private Long id;
@@ -27,12 +28,8 @@ public class PosterRecommendActivity extends ShardTable {
     
     private int itemNum;//已经参加活动的宝贝数量，非数据库字段，供前台使用
     private PublishProgress publishProgress;//非数据库字段，投放的宝贝数量统计
-    /**
-     *  非数据库字段，前端判断是否修改过配置;前端需要实现这样一个逻辑：如果用户修改配置,
-     *  需要判断用户是否真正修改过了，比如某字段值是1，用户先选择了2，提交前又改回了1，那么就不算修改过了；
-     *  只要有一处变化，这个字段就是 true，因为后段需要根据来判断是否需要重新投放宝贝
-     */
-    private boolean modified = false;
+    private List<PosterRecommendActivityItem> posterRecommendActivityItems;//数据库海报宝贝
+
 
     public Long getId() {
         return id;
@@ -194,11 +191,11 @@ public class PosterRecommendActivity extends ShardTable {
         this.unpublishOwner = unpublishOwner;
     }
 
-    public boolean isModified() {
-        return modified;
+    public List<PosterRecommendActivityItem> getPosterRecommendActivityItems() {
+        return posterRecommendActivityItems;
     }
 
-    public void setModified(boolean modified) {
-        this.modified = modified;
+    public void setPosterRecommendActivityItems(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
+        this.posterRecommendActivityItems = posterRecommendActivityItems;
     }
 }

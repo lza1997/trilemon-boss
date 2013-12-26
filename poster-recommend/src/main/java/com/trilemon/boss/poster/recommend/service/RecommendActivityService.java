@@ -85,6 +85,7 @@ public class RecommendActivityService {
         }
         Integer itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
         activity.setItemNum(itemNum);
+        activity.setPosterRecommendActivityItems(posterRecommendActivityItemDAO.selectByUserIdAndActivityId(userId, activityId));
         return activity;
     }
 
