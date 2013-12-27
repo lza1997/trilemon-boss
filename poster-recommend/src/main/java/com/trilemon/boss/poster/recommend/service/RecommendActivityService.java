@@ -137,6 +137,8 @@ public class RecommendActivityService {
         activity.setUserId(userId);
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S2);
 
+
+
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
         logger.info("update activity [DesignS2], activityId[{}] userId[{}].", activity.getId(), userId);
     }

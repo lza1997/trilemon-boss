@@ -255,9 +255,11 @@
         <include refid="poster_recommend_activity.Base_Table_Name"/>
         WHERE
         user_id = #userId:BIGINT#
-        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]:TINYINT#
-        </iterate>
+        <isNotEmpty property="statusList">
+            <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                status = #statusList[]:VARCHAR#
+            </iterate>
+        </isNotEmpty>
         <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
             publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
             and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
@@ -274,9 +276,11 @@
         <include refid="poster_recommend_activity.Base_Table_Name"/>
         WHERE
         user_id = #userId:BIGINT#
-        <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
-            status = #statusList[]:TINYINT#
-        </iterate>
+        <isNotEmpty property="statusList">
+            <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                status = #statusList[]:VARCHAR#
+            </iterate>
+        </isNotEmpty>
         <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
             publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
             and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#

@@ -398,12 +398,9 @@
         ,
         <include refid="poster_template.Blob_Column_List"/>
         from poster_template
-        <dynamic prepend="where">
-            <isNotEmpty property="templateIds">
-                <iterate prepend="AND" property="templateIds" open="(" close=")" conjunction="OR">
-                    id = #templateIds[]:BIGINT#
-                </iterate>
-            </isNotEmpty>
-        </dynamic>
+        where id in
+            <iterate open="(" close=")" conjunction=",">
+                #[]#
+            </iterate>
     </select>
 </sqlMap>
