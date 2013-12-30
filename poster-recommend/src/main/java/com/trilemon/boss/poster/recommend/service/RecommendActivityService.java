@@ -119,7 +119,7 @@ public class RecommendActivityService {
      * @param activity
      */
     @Transactional
-    public void createActivityDesignS1(Long userId,
+    public PosterRecommendActivity createActivityDesignS1(Long userId,
                                        PosterRecommendActivity activity,
                                        List<ActivityItem> activityItems) throws PosterRecommendException {
         checkNotNull(userId, "userId id is null.");
@@ -136,6 +136,7 @@ public class RecommendActivityService {
 
         //创建海报宝贝
         updateActivityItems(userId, activityId, activityItems);
+        return getActivity(userId,activityId);
     }
 
     /**
