@@ -1,5 +1,6 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.commons.db.ShardTable;
 
@@ -28,7 +29,7 @@ public class PosterRecommendActivity extends ShardTable {
     
     private int itemNum;//已经参加活动的宝贝数量，非数据库字段，供前台使用
     private PublishProgress publishProgress;//非数据库字段，投放的宝贝数量统计
-    private List<PosterRecommendActivityItem> posterRecommendActivityItems;//数据库海报宝贝
+    private List<ActivityItem> activityItems;//数据库海报宝贝
 
 
     public Long getId() {
@@ -191,11 +192,11 @@ public class PosterRecommendActivity extends ShardTable {
         this.unpublishOwner = unpublishOwner;
     }
 
-    public List<PosterRecommendActivityItem> getPosterRecommendActivityItems() {
-        return posterRecommendActivityItems;
+    public List<ActivityItem> getActivityItems() {
+        return activityItems;
     }
 
-    public void setPosterRecommendActivityItems(List<PosterRecommendActivityItem> posterRecommendActivityItems) {
-        this.posterRecommendActivityItems = posterRecommendActivityItems;
+    public void setActivityItems(List<ActivityItem> activityItems) {
+        this.activityItems = activityItems;
     }
 }

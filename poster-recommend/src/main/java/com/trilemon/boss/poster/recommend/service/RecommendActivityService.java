@@ -85,7 +85,30 @@ public class RecommendActivityService {
         }
         Integer itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
         activity.setItemNum(itemNum);
-        activity.setPosterRecommendActivityItems(posterRecommendActivityItemDAO.selectByUserIdAndActivityId(userId, activityId));
+        List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId(userId, activityId);
+
+        List<ActivityItem> activityItems = Lists.newArrayList();
+        if (!CollectionUtils.isEmpty(posterRecommendActivityItems)) {
+            for (PosterRecommendActivityItem posterRecommendActivityItem : posterRecommendActivityItems) {
+                ActivityItem activityItem = new ActivityItem();
+
+                activityItem.setActivityItemStatus(posterRecommendActivityItem.getStatus());
+                String copy = JsonMapper.nonEmptyMapper().toJson(posterRecommendActivityItem.getCopy());
+                if (!"null".equals(copy)) {
+                    posterRecommendActivityItem.setCopy(copy);
+                }
+                Item item =new Item();
+                item.setNumIid(posterRecommendActivityItem.getItemNumIid());
+                item.setTitle(posterRecommendActivityItem.getItemTitle());
+                item.setPicUrl(posterRecommendActivityItem.getItemPicUrl());
+                item.setPrice(posterRecommendActivityItem.getItemPrice().toString());
+                activityItem.setItem(item);
+
+                activityItems.add(activityItem);
+            }
+        }
+
+        activity.setActivityItems(activityItems);
         return activity;
     }
 
@@ -136,7 +159,6 @@ public class RecommendActivityService {
 
         activity.setUserId(userId);
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S2);
-
 
 
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
@@ -483,7 +505,7 @@ public class RecommendActivityService {
      *
      * @param activityItem                前台传入宝贝
      * @param posterRecommendActivityItem 数据库宝贝
-     *
+     *                                    <p/>
      *                                    {@literal}
      * @return
      */
@@ -492,12 +514,12 @@ public class RecommendActivityService {
         PosterTemplate posterTemplate = posterTemplateClient.getPosterTemplate(posterRecommendActivityItem
                 .getTemplateId());
         Map<?, ?> copyKeyMap = posterTemplate.getCopyKeyMap();
-        if (null==copyKeyMap||copyKeyMap.isEmpty()) {
+        if (null == copyKeyMap || copyKeyMap.isEmpty()) {
             return false;
         }
 
         for (Object key : copyKeyMap.keySet()) {
-            if (activityItem.getCopy().containsKey((String)key)) {
+            if (activityItem.getCopy().containsKey((String) key)) {
                 if (!copyKeyMap.get(key).equals(activityItem.getCopy().get(key))) {
                     return true;
                 }
