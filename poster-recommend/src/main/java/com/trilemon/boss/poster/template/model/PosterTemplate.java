@@ -220,4 +220,12 @@ public class PosterTemplate {
             return null;
         }
     }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
 }
