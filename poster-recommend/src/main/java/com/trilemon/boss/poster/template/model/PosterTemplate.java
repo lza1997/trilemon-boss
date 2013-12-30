@@ -22,8 +22,7 @@ public class PosterTemplate {
     //支持的颜色
     private String colors;
     /**
-     * 模板中可能需要一些自定义列，如原价等，这些列将由 copyKeys 定义
-     * 可以定义一组，格式为 "{item_original_price: '原价', fuck: '尼玛贵姓'}"
+     * 模板中可能需要一些自定义列，如原价等，这些列将由 copyKeys 定义 可以定义一组，格式为 "{item_original_price: '原价', fuck: '尼玛贵姓'}"
      */
     private String copyKeys;
     //类目，目前只存一个，当做单数使用
@@ -46,6 +45,8 @@ public class PosterTemplate {
     private Byte status;
     private Date addTime;
     private Date updTime;
+    //非数据库字段
+    private boolean isFavorite;
 
     public Long getId() {
         return id;
