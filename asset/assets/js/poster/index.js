@@ -22,7 +22,9 @@ define(function(require, exports, module) {
             'compile': require('./directive/compile')
         },
         filters: {
-            'rowSplit': require('./filter/row-split')
+            'rowSplit': require('./filter/row-split'),
+            'itemUrl': require('./filter/item-url'),
+            'itemPicUrl': require('./filter/item-pic-url')
         },
         templates: {
             'poster/category': require('./template/category.html'),
