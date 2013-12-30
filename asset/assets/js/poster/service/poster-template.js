@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 
     module.exports = ['$resource', '$http', function($resource, $http) {
         var URL = '/poster/templates/:id';
+        var FAV_URL = URL + '/fav'
 
         var PosterTemplate = $resource(URL, {id: '@id'}, {
             query: {
@@ -15,6 +16,14 @@ define(function(require, exports, module) {
                 interceptor: {
                     response: paginateResource.responseInterceptor
                 }
+            },
+            fav: {
+                url: FAV_URL,
+                method: 'POST'
+            },
+            unfav: {
+                url: FAV_URL,
+                method: 'DELETE'
             }
         });
 
