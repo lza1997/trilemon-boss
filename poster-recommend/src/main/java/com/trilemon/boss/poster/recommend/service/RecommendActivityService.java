@@ -97,7 +97,7 @@ public class RecommendActivityService {
                 if (!"null".equals(copy)) {
                     posterRecommendActivityItem.setCopy(copy);
                 }
-                Item item =new Item();
+                Item item = new Item();
                 item.setNumIid(posterRecommendActivityItem.getItemNumIid());
                 item.setTitle(posterRecommendActivityItem.getItemTitle());
                 item.setPicUrl(posterRecommendActivityItem.getItemPicUrl());
@@ -119,9 +119,7 @@ public class RecommendActivityService {
      * @param activity
      */
     @Transactional
-    public PosterRecommendActivity createActivityDesignS1(Long userId,
-                                       PosterRecommendActivity activity,
-                                       List<ActivityItem> activityItems) throws PosterRecommendException {
+    public PosterRecommendActivity createActivityDesignS1(Long userId, PosterRecommendActivity activity) throws PosterRecommendException {
         checkNotNull(userId, "userId id is null.");
         checkNotNull(activity.getTemplateId(), "templateId id is null.");
 
@@ -135,8 +133,8 @@ public class RecommendActivityService {
         logger.info("add activity [DesignS1]  , activityId[{}] userId[{}].", activityId, userId);
 
         //创建海报宝贝
-        updateActivityItems(userId, activityId, activityItems);
-        return getActivity(userId,activityId);
+        updateActivityItems(userId, activityId, activity.getActivityItems());
+        return getActivity(userId, activityId);
     }
 
     /**

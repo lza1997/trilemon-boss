@@ -1,5 +1,7 @@
 package com.trilemon.boss.poster.recommend.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.google.common.collect.Maps;
 import com.taobao.api.domain.Item;
 
 import java.util.Map;
@@ -13,8 +15,25 @@ public class ActivityItem {
      * 模板自定义列的值，参见 {@link com.trilemon.boss.poster.template.model.PosterTemplate#copyKeys}
      * 格式为 {key: value}
      */
-    private Map<String, String> copy;
+    private Map<String, String> copy = Maps.newHashMap();
     private Item item;
+
+    public ActivityItem() {
+
+    }
+
+    @JsonCreator
+    public ActivityItem(Map<String, Object> map) {
+        Item item = new Item();
+        item.setNumIid((Long) map.get("numIid"));
+        item.setPicUrl((String) map.get("picUrl"));
+        item.setTitle((String) map.get("title"));
+        item.setPrice((String) map.get("price"));
+
+        setItem(item);
+
+        setCopy((Map) map.get("copy"));
+    }
 
     public byte getActivityItemStatus() {
         return activityItemStatus;

@@ -6,7 +6,8 @@ define(function(require, exports, module) {
         controllers: {
             'poster.category': require('./controller/category'),
             'poster.selectTemplate': require('./controller/select-template'),
-            'poster.selectItem': require('./controller/select-item')
+            'poster.selectItem': require('./controller/select-item'),
+            'poster.preview': require('./controller/preview')
         },
         factories: {
             'PosterCategory': require('./service/poster-category'),
@@ -14,7 +15,11 @@ define(function(require, exports, module) {
             'PosterTemplate': require('./service/poster-template'),
             'PosterRecommendTemplate': require('./service/poster-recommend-template'),
             'PosterItem': require('./service/poster-item'),
-            'PosterSellerCat': require('./service/poster-sellercat')
+            'PosterSellerCat': require('./service/poster-sellercat'),
+            'PosterActivity': require('./service/poster-activity')
+        },
+        directives: {
+            'compile': require('./directive/compile')
         },
         filters: {
             'rowSplit': require('./filter/row-split')
@@ -22,7 +27,8 @@ define(function(require, exports, module) {
         templates: {
             'poster/category': require('./template/category.html'),
             'poster/selectTemplate': require('./template/select-template.html'),
-            'poster/selectItem': require('./template/select-item.html')
+            'poster/selectItem': require('./template/select-item.html'),
+            'poster/preview': require('./template/preview.html')
         }
     };
 

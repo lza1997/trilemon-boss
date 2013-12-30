@@ -15,7 +15,6 @@ define(function(require, exports, module) {
 
     module.exports = ['$resource', '$http', function($resource, $http) {
         var URL = '/poster/items/:numIid';
-        var EXCLUDE_URL = URL + '/exclude';
 
         var PosterItem = $resource(URL, {numIid: '@numIid'}, {
             query: {

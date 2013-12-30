@@ -104,6 +104,7 @@ angular.module('seajs', []).config(['$controllerProvider', '$compileProvider', '
             this.register.controller(module.controllers || {});
             this.register.factory(module.factories || {});
             this.register.filter(module.filters || {});
+            this.register.directive(module.directives || {});
 
             for (var key in module.templates) {
                 if (module.templates.hasOwnProperty(key)) {

@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', 'PosterSellerCat', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash, PosterSellerCat) {
+    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', 'PosterSellerCat', 'PosterActivity', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash, PosterSellerCat, PosterActivity) {
 
         // 初始化
         $scope.init = function() {
@@ -15,14 +15,29 @@ define(function(require, exports, module) {
             getItems();
             $scope.sellerCats = PosterSellerCat.query();
             $scope.template = PosterTemplate.get({id: $routeParams.templateId});
+            $scope.activity = new PosterActivity({
+                templateId: $routeParams.templateId,
+                activityItems: []
+            });
         };
 
         $scope.init();
 
-        // 加入
+        // 加入或取消
         $scope.setInclude = function(item, flag) {
             item.include = flag;
-            $scope.selectedItems = _.where($scope.items, {include: true});
+            if (flag) {
+                $scope.activity.activityItems.push(item);
+            }
+            else {
+                $scope.activity.activityItems = _.without($scope.activity.activityItems, item);
+            }
+        };
+
+        $scope.save = function() {
+            $scope.activity.$save(function(data) {
+                $location.url('/poster/preview?activityId=' + data.id);
+            });
         };
 
         // 切换分类
@@ -48,13 +63,10 @@ define(function(require, exports, module) {
 
             $scope.items = PosterItem.query(_.omit(options, 'templateId'), function(data) {
                 // 选中的回填
-                var ids = _.pluck($scope.selectedItems, 'numIid');
+                var ids = _.pluck($scope.activity.activityItems, 'numIid');
                 _.each(data, function(item) {
-                    if (_.contains(ids, item.numIid)) {
-                        item.include = true;
-                    }
+                    item.include = _.contains(ids, item.numIid);
                 });
-
             });
             return $scope.items.$promise;
         }
