@@ -46,7 +46,7 @@ public class PosterTemplate {
     private Date addTime;
     private Date updTime;
     //非数据库字段
-    private boolean isFavorite;
+    private boolean favorite=false;
 
     public Long getId() {
         return id;
@@ -221,11 +221,11 @@ public class PosterTemplate {
         }
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
+    public boolean getFavorite() {
+        return favorite;
     }
 
     public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+        this.favorite = favorite;
     }
 }

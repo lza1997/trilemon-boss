@@ -239,7 +239,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/paginatePosterTemplates", method = RequestMethod.GET)
     public Page<PosterTemplate> paginatePosterTemplates(@RequestParam Long userId, @RequestParam int pageNum) {
-        return templateService.paginatePosterTemplates(Lists.newArrayList(1, 2), Lists.newArrayList(1, 2),
+        return templateService.paginatePosterTemplates(123L,Lists.newArrayList(1, 2), Lists.newArrayList(1, 2),
                 pageNum, 2);
     }
 

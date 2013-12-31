@@ -93,9 +93,14 @@ public class RecommendActivityService {
                 ActivityItem activityItem = new ActivityItem();
 
                 activityItem.setActivityItemStatus(posterRecommendActivityItem.getStatus());
-                String copy = JsonMapper.nonEmptyMapper().toJson(posterRecommendActivityItem.getCopy());
-                if (!"null".equals(copy)) {
-                    posterRecommendActivityItem.setCopy(copy);
+                Map<String, String> copy = null;
+                try {
+                    copy = (Map<String, String>) JsonMapper.nonEmptyMapper().fromJson2Map(posterRecommendActivityItem.getCopy());
+                } catch (Exception e) {
+                   logger.error("json 2 map error",e);
+                }
+                if (null!=copy&&!copy.isEmpty()) {
+                    activityItem.setCopy(copy);
                 }
                 Item item = new Item();
                 item.setNumIid(posterRecommendActivityItem.getItemNumIid());
