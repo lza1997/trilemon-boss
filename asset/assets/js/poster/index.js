@@ -19,7 +19,7 @@ define(function(require, exports, module) {
             'PosterActivity': require('./service/poster-activity')
         },
         directives: {
-            'compile': require('./directive/compile')
+            'compileTemplate': require('./directive/compile-template')
         },
         filters: {
             'rowSplit': require('./filter/row-split'),
