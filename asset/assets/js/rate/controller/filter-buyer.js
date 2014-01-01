@@ -7,14 +7,40 @@ define(function(require, exports, module) {
 
         $scope.setting = RateSetting.get();
 
+        watchRadio('enableCreditFilter', 'creditFilterMin');
+        watchRadio('enableGoodRateFilter', 'goodRateFilter');
+        watchRadio('enableRegisterDayFilter', 'registerDayFilter');
+        watchRadio('enableBadRateFilter', 'badRateFilter');
+
         $scope.saveSetting = function() {
-            $scope.setting.$update(function() {
-                $scope.saveSuccess = true;
-                $timeout(function() {
-                    $scope.saveSuccess = false;
-                }, 3000);
-            });
+            if (isValidate()) {
+                $scope.setting.$update(function() {
+                    $scope.saveSuccess = true;
+                    $timeout(function() {
+                        $scope.saveSuccess = false;
+                    }, 3000);
+                });
+            }
         };
+
+        // 校验表单
+        function isValidate() {
+            for (var field in $scope.settingForm) {
+                if (field[0] !== '$' && $scope.settingForm[field].$pristine) {
+                    $scope.settingForm[field].$setViewValue($scope.settingForm[field].$modelValue);
+                }
+            }
+            return $scope.settingForm.$valid;
+        }
+
+        // 监听单选框，如果切换时原来的输入框有错误，则修复，以免影响提交
+        function watchRadio(radio, input) {
+            $scope.$watch('setting.' + radio, function(value) {
+                if (!value && $scope.settingForm[input].$invalid) {
+                    $scope.setting[input] = 1;
+                }
+            });
+        }
 
         $scope.blacklist = Blacklist.query();
         $scope.newBlacklist = new Blacklist();
