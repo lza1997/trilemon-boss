@@ -16,4 +16,6 @@ public interface PosterRecommendFavoriteTemplateDAO {
     List<PosterRecommendFavoriteTemplate> paginateByUserId(Long userId, int offset, int limit);
 
     int countByUserId(Long userId);
+
+    List<PosterRecommendFavoriteTemplate> selectByUserIdAndTemplateIds(Long userId, List<Long> templateIds);
 }

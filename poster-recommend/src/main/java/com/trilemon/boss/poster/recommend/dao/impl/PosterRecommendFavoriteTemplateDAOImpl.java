@@ -4,6 +4,8 @@ import com.alibaba.cobarclient.MysdalCobarSqlMapClientDaoSupport;
 import com.google.common.collect.Maps;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendFavoriteTemplateDAO;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate;
+import com.trilemon.commons.Collections3;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,5 +55,18 @@ public class PosterRecommendFavoriteTemplateDAOImpl extends MysdalCobarSqlMapCli
         Map<String, Object> map = Maps.newHashMap();
         map.put("userId", userId);
         return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_favorite_template.countByUserId", map);
+    }
+
+    @Override
+    public List<PosterRecommendFavoriteTemplate> selectByUserIdAndTemplateIds(Long userId, List<Long> templateIds) {
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("userId", userId);
+        if (CollectionUtils.isNotEmpty(templateIds)) {
+            map.put("templateIds", Collections3.COMMA_JOINER.join(templateIds));
+        } else {
+            map.put("templateIds","");
+        }
+        return (List<PosterRecommendFavoriteTemplate>) getSqlMapClientTemplate().queryForList("poster_recommend_favorite_template.selectByUserIdAndTemplateIds",
+                map);
     }
 }

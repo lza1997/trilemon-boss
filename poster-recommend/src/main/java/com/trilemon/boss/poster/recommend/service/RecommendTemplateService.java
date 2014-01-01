@@ -68,7 +68,7 @@ public class RecommendTemplateService {
      * @param pageSize
      * @return
      */
-    public Page<PosterTemplate> paginatePosterTemplates(List<Integer> topicIds, List<Integer> categoryIds,
+    public Page<PosterTemplate> paginatePosterTemplates(Long userId, List<Integer> topicIds, List<Integer> categoryIds,
                                                         int pageNum, int pageSize) {
         PosterTemplateQueryRequest request = new PosterTemplateQueryRequest();
         request.setTopicIds(topicIds);
@@ -76,11 +76,30 @@ public class RecommendTemplateService {
         request.setPageNum(pageNum);
         request.setPageSize(pageSize);
         PosterTemplateQueryResponse response = posterTemplateClient.queryTemplates(request);
-        if (null == response || null == response.getPosterTemplatePage()) {
-            return Page.empty();
-        } else {
-            return response.getPosterTemplatePage();
+
+        Page<PosterTemplate> page = Page.empty();
+        if (null != response && null != response.getPosterTemplatePage()) {
+            page = response.getPosterTemplatePage();
+            List<PosterTemplate> posterTemplates = page.getItems();
+            List<Long> templateIds = Lists.transform(posterTemplates, new Function<PosterTemplate, Long>() {
+                @Nullable
+                @Override
+                public Long apply(@Nullable PosterTemplate input) {
+                    return input.getId();
+                }
+            });
+            List<PosterRecommendFavoriteTemplate> favoriteTemplates = posterRecommendFavoriteTemplateDAO.selectByUserIdAndTemplateIds(userId, templateIds);
+            if (CollectionUtils.isNotEmpty(favoriteTemplates)) {
+                for (PosterRecommendFavoriteTemplate favoriteTemplate : favoriteTemplates) {
+                    for (PosterTemplate template : posterTemplates) {
+                        if (favoriteTemplate.getTemplateId().equals(template.getId())) {
+                            template.setFavorite(true);
+                        }
+                    }
+                }
+            }
         }
+        return page;
     }
 
     /**
@@ -204,6 +223,7 @@ public class RecommendTemplateService {
 
     /**
      * 收藏
+     *
      * @param userId
      * @param templateId
      */
@@ -218,6 +238,7 @@ public class RecommendTemplateService {
 
     /**
      * 取消收藏
+     *
      * @param userId
      * @param templateId
      */
