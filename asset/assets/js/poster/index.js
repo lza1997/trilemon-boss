@@ -19,10 +19,12 @@ define(function(require, exports, module) {
             'PosterActivity': require('./service/poster-activity')
         },
         directives: {
-            'compile': require('./directive/compile')
+            'compileTemplate': require('./directive/compile-template')
         },
         filters: {
-            'rowSplit': require('./filter/row-split')
+            'rowSplit': require('./filter/row-split'),
+            'itemUrl': require('./filter/item-url'),
+            'itemPicUrl': require('./filter/item-pic-url')
         },
         templates: {
             'poster/category': require('./template/category.html'),

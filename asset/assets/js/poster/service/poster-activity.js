@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 
     module.exports = ['$resource', '$http', function($resource, $http) {
         var URL = '/poster/activities/:id';
+        var HTML_URL = URL + '/html';
 
         var PosterActivity = $resource(URL, {id: '@id'}, {
             query: {
@@ -15,6 +16,11 @@ define(function(require, exports, module) {
                 interceptor: {
                     response: paginateResource.responseInterceptor
                 }
+            },
+
+            saveHTML: {
+                method: 'PUT',
+                url: HTML_URL
             }
         });
 

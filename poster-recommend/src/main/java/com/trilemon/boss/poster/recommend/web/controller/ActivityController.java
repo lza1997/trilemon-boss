@@ -42,6 +42,13 @@ public class ActivityController {
         return activityService.paginateItems(sessionService.getUserId(), null, true, key, categoryIds, page, 4);
     }
 
+    /**
+     * 创建，这一步对应选择宝贝后
+     *
+     * @param activity
+     * @return
+     * @throws PosterRecommendException
+     */
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
     public PosterRecommendActivity create(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
@@ -49,7 +56,21 @@ public class ActivityController {
     }
 
     /**
+     * 修改活动的标题、HTML
+     *
+     * @param activity
+     * @return
+     * @throws PosterRecommendException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/html", method = RequestMethod.PUT)
+    public void html(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+        activityService.updateActivityDesignS2(sessionService.getUserId(), activity);
+    }
+
+    /**
      * 获取活动
+     *
      * @param id
      * @param detail 是否包含模板对象
      * @return

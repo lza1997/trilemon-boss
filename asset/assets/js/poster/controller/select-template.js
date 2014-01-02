@@ -9,6 +9,14 @@ define(function(require, exports, module) {
 
         getItems();
 
+        // 收藏或取消
+        $scope.setFav = function(template, flag) {
+            var method = flag ? '$fav' : '$unfav';
+            template[method](function() {
+                template.isFavorite = flag;
+            });
+        };
+
         $scope.getByTopic = function(topic) {
             getItems({topic: topic || '', page: 1});
         };

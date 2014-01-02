@@ -22,7 +22,10 @@
                 </p>
                 <p class="text-center">
                     <a ng-href="#/poster/select-item?templateId={{tpl.id}}" class="btn btn-primary" style="margin-right:20px;">开始制作</a>
-                    <a href="#" class="btn btn-default">收藏模板</a>
+                    <a href="" class="btn btn-default" ng-class="{active: tpl.isFavorite}" ng-click="setFav(tpl, !tpl.isFavorite)">
+                        <i class="icon-star" ng-class="{'icon-star-empty': !tpl.isFavorite}"></i>
+                        收藏
+                    </a>
                 </p>
             </div>
         </div>

@@ -43,4 +43,24 @@ public class TemplateController {
     public PosterTemplate show(@PathVariable Long id) {
         return templateService.getTemplate(id);
     }
+
+    /**
+     * 添加到收藏
+     * @param id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/fav", method = RequestMethod.POST)
+    public void createFav(@PathVariable Long id) {
+        templateService.favoriteTemplate(sessionService.getUserId(), id);
+    }
+
+    /**
+     * 取消收藏
+     * @param id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/fav", method = RequestMethod.DELETE)
+    public void deleteFav(@PathVariable Long id) {
+        templateService.unFavoriteTemplate(sessionService.getUserId(), id);
+    }
 }
