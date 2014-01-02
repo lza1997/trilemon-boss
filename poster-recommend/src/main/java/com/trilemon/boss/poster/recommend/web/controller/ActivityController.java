@@ -1,21 +1,16 @@
 package com.trilemon.boss.poster.recommend.web.controller;
 
 import com.trilemon.boss.infra.base.service.SessionService;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoAccessControlException;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoEnhancedApiException;
-import com.trilemon.boss.infra.base.service.api.exception.TaobaoSessionExpiredException;
+import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
-import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.service.PosterRecommendException;
 import com.trilemon.boss.poster.recommend.service.RecommendActivityService;
+import com.trilemon.boss.poster.recommend.service.RecommendPublishService;
 import com.trilemon.boss.poster.recommend.service.RecommendTemplateService;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 海报活动，就是用户制作的海报
@@ -30,16 +25,14 @@ public class ActivityController {
     @Autowired
     private RecommendTemplateService templateService;
     @Autowired
+    private RecommendPublishService publishService;
+    @Autowired
     private SessionService sessionService;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<ActivityItem> index(String key, @RequestParam(defaultValue = "1") Integer page, Long category) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
-        List<Long> categoryIds = new ArrayList<Long>();
-        if (category != null) {
-            categoryIds.add(category);
-        }
-        return activityService.paginateItems(sessionService.getUserId(), null, true, key, categoryIds, page, 4);
+    public Page<PosterRecommendActivity> index(@RequestParam(defaultValue = "1") Integer page) {
+        return activityService.paginateActivityByUserId(sessionService.getUserId(), PosterRecommendConstants.ALL_LIST_ACTIVITY_STATUS, null, page, 5);
     }
 
     /**
@@ -83,5 +76,39 @@ public class ActivityController {
             activity.setTemplate(templateService.getTemplate(activity.getTemplateId()));
         }
         return activity;
+    }
+
+    /**
+     * 删除
+     * @param id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        activityService.deleteActivity(sessionService.getUserId(), id);
+    }
+
+    /**
+     * 发布
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/publish", method = RequestMethod.POST)
+    public PosterRecommendActivity publish(@PathVariable Long id) {
+        publishService.publishActivity(sessionService.getUserId(), id);
+        return activityService.getActivity(sessionService.getUserId(), id);
+    }
+
+    /**
+     * 停止发布
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/publish", method = RequestMethod.DELETE)
+    public PosterRecommendActivity unpublish(@PathVariable Long id) {
+        publishService.unpublishActivity(sessionService.getUserId(), id);
+        return activityService.getActivity(sessionService.getUserId(), id);
     }
 }

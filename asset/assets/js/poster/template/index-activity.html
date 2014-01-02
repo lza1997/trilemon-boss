@@ -1,0 +1,44 @@
+<table class="table table-hover">
+    <col width="15%"/>
+    <col width="15%"/>
+    <col width="15%"/>
+    <col/>
+    <col width="15%"/>
+    <thead>
+    <tr>
+        <th>名称</th>
+        <th>创建时间</th>
+        <th>投放截止时间</th>
+        <th>投放位置</th>
+        <th>投放宝贝数量</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tr ng-repeat="activity in activities">
+        <td>{{ activity.title }}</td>
+        <td>{{ activity.addTime | date:'yyyy-MM-dd HH:ss' }}</td>
+        <td>
+            <span ng-if="activity.publishType == 0">一直投放</span>
+            <span ng-if="activity.publishType == 1">
+                {{ activity.publishEndTime | date:'yyyy-MM-dd HH:ss' }}
+            </span>
+        </td>
+        <td>
+            {{ POSITION_TYPE[activity.detailPagePosition] }}
+        </td>
+        <td>
+            总投放：<a ng-href="#/poster/activity/{{activity.id}}/publish">{{ activity.publishProgress.publishItemNum }}</a> <br/>
+            已投放：{{ activity.publishProgress.publishedItemNum }}
+        </td>
+        <td>
+            <a href="">编辑宝贝</a>
+            <a href="">重新制作</a>
+            <a href="">代码</a>
+            <a href="" ng-click="publish(activity)">投放</a>
+            <a href="" ng-click="delete(activity)">删除</a>
+        </td>
+    </tr>
+</table>
+<div class="pagination-wrap clearfix">
+    <pagination class="pull-right" items="activities" pager-click="jumpPage(page)"></pagination>
+</div>
