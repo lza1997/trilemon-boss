@@ -36,6 +36,10 @@ public class PublishProgress {
         return publishedSuccessfullyItemNum + publishedFailedItemNum;
     }
 
+    public int getPublishItemNum() {
+        return waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum;
+    }
+
     public boolean isFinished() {
         return waitingPublishItemNum == 0;
     }
