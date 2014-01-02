@@ -133,6 +133,7 @@ public class RecommendActivityService {
         activity.setUserId(userId);
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S1);
         activity.setAddTime(appService.getLocalSystemTime().toDate());
+        activity.setPublishType(PosterRecommendConstants.PUBLISH_TYPE_ALWAYS);
 
         Long activityId = posterRecommendActivityDAO.insertSelective(activity);
         logger.info("add activity [DesignS1]  , activityId[{}] userId[{}].", activityId, userId);

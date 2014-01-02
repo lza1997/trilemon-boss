@@ -1,6 +1,7 @@
 package com.trilemon.boss.poster.recommend.model;
 
 import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
+import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.db.ShardTable;
@@ -26,12 +27,13 @@ public class PosterRecommendActivity extends ShardTable {
     private Date publishStartTime;//如果发布类型是定时，开始时间
     private Date publishEndTime;//如果发布类型是定时，结束时间
     private Date addTime;
-
     private Date updTime;
-    
+
+    //non db fields
     private int itemNum;//已经参加活动的宝贝数量，非数据库字段，供前台使用
     private PublishProgress publishProgress;//非数据库字段，投放的宝贝数量统计
     private List<ActivityItem> activityItems;//数据库海报宝贝
+    private List<PublishItem> publishItems;
     private PosterTemplate template;
 
     public PosterTemplate getTemplate() {
@@ -208,5 +210,13 @@ public class PosterRecommendActivity extends ShardTable {
 
     public void setActivityItems(List<ActivityItem> activityItems) {
         this.activityItems = activityItems;
+    }
+
+    public List<PublishItem> getPublishItems() {
+        return publishItems;
+    }
+
+    public void setPublishItems(List<PublishItem> publishItems) {
+        this.publishItems = publishItems;
     }
 }
