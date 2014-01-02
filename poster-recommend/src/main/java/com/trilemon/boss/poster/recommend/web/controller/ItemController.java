@@ -33,11 +33,11 @@ public class ItemController {
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<ActivityItem> index(String key, @RequestParam(defaultValue = "1") Integer page, Long category) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
+    public Page<ActivityItem> index(String key, @RequestParam(defaultValue = "1") Integer page, Long category,@RequestParam(defaultValue = "true") Boolean onsale) throws TaobaoSessionExpiredException, TaobaoAccessControlException, TaobaoEnhancedApiException {
         List<Long> categoryIds = new ArrayList<Long>();
         if (category != null) {
             categoryIds.add(category);
         }
-        return activityService.paginateItems(sessionService.getUserId(), null, true, key, categoryIds, page, 4);
+        return activityService.paginateItems(sessionService.getUserId(), null, onsale, key, categoryIds, page, 4);
     }
 }

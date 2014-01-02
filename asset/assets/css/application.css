@@ -3,6 +3,8 @@ body { font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", SimSun, "
 
 textarea { resize: none; }
 
+.form-inline .form-group { margin: 0; }
+
 .trilemon-banner { background: #563d7c; border-bottom: 1px solid #463265; margin-bottom: 0; }
 .trilemon-banner a { color: #fff; }
 .trilemon-banner .logo { padding: 15px 15px; font-size: 18px; line-height: 20px; float: left; }
