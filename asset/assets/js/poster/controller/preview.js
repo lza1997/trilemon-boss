@@ -6,11 +6,7 @@ define(function(require, exports, module) {
     var Controller = ['$scope', 'PosterActivity', 'PosterTemplate', '$routeParams', '$location', function($scope, PosterActivity, PosterTemplate, $routeParams, $location) {
 
         $scope.activity = PosterActivity.get({id: $routeParams.id, detail: true}, function(data) {
-            $scope.items = _.map(data.activityItems, function(item) {
-                _.extend(item, item.item);
-                delete item.item;
-                return item;
-            });
+            $scope.items = data.activityItems;
             $scope.template = data.template;
         });
 
