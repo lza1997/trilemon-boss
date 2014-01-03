@@ -46,6 +46,20 @@ public class ActivityController {
     }
 
     /**
+     * 修改活动的宝贝
+     *
+     * @param activity
+     * @return
+     * @throws PosterRecommendException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
+    public PosterRecommendActivity updateItems(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+        activityService.updateActivityItems(sessionService.getUserId(), activity.getId(), activity.getActivityItems());
+        return activity;
+    }
+
+    /**
      * 修改活动的标题、HTML
      *
      * @param activity
@@ -54,7 +68,7 @@ public class ActivityController {
      */
     @ResponseBody
     @RequestMapping(value = "/{id}/html", method = RequestMethod.PUT)
-    public void html(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+    public void updateHtml(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
         activityService.updateActivityDesignS2(sessionService.getUserId(), activity);
     }
 
@@ -75,7 +89,7 @@ public class ActivityController {
      * 获取活动
      *
      * @param id
-     * @param template 是否包含模板对象
+     * @param template      是否包含模板对象
      * @param publishItems
      * @param activityItems
      * @return

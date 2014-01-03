@@ -1,5 +1,6 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
@@ -218,5 +219,15 @@ public class PosterRecommendActivity extends ShardTable {
 
     public void setPublishItems(List<PublishItem> publishItems) {
         this.publishItems = publishItems;
+    }
+
+    // 可以投放，需要完成所有步骤
+    public boolean canPublish(){
+        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE;
+    }
+
+    // 可以被停止投放
+    public boolean canStopPublish(){
+        return true;
     }
 }
