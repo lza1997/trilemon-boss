@@ -23,6 +23,7 @@ import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.LastUsedPosterTemplate;
 import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
+import com.trilemon.boss.poster.template.PosterTemplateConstants;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
 import com.trilemon.boss.poster.template.model.PosterTemplate;
 import com.trilemon.commons.JsonMapper;
@@ -172,6 +173,8 @@ public class RecommendActivityService {
         activity.setStatus(ACTIVITY_STATUS_DESIGNED_S1);
         activity.setAddTime(appService.getLocalSystemTime().toDate());
         activity.setPublishType(PosterRecommendConstants.PUBLISH_TYPE_ALWAYS);
+        activity.setDetailPagePosition(PosterTemplateConstants.PUBLISH_POSITION_TOP);
+        activity.setSize(750);
 
         Long activityId = posterRecommendActivityDAO.insertSelective(activity);
         logger.info("add activity [DesignS1]  , activityId[{}] userId[{}].", activityId, userId);
