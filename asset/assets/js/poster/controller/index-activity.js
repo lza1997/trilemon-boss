@@ -19,6 +19,10 @@ define(function(require, exports, module) {
             activity.$publish();
         };
 
+        $scope.publish = function(activity) {
+            activity.$unPublish();
+        };
+
         // 删除
         $scope.delete = function(activity) {
             Confirm.open('确定要删除“' + activity.title + '”？').then(function() {
