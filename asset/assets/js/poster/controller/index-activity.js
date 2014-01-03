@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var Controller = ['$scope', 'PosterActivity', 'Confirm', '$modal', '$routeParams', '$location', function($scope, PosterActivity, Confirm, $modal, $routeParams, $location) {
+    var Controller = ['$scope', 'PosterActivity', 'Confirm', '$routeParams', '$location', function($scope, PosterActivity, Confirm, $routeParams, $location) {
         $scope.activities = PosterActivity.query();
         $scope.POSITION_TYPE = {
             1: '宝贝描述上方',
@@ -15,28 +15,20 @@ define(function(require, exports, module) {
             return $scope.activities.$promise;
         };
 
+        $scope.publish = function(activity) {
+            activity.$publish();
+        };
+
         // 删除
-        $scope.delete = function(item) {
-            Confirm.open('确定要删除“' + item.title + '”？').then(function() {
-                item.$remove(function() {
+        $scope.delete = function(activity) {
+            Confirm.open('确定要删除“' + activity.title + '”？').then(function() {
+                activity.$remove(function() {
                     PosterActivity.refreshCurrPage($scope.activities.currPage, function(options) {
                         return $scope.jumpPage(options.page);
                     });
                 });
             });
         };
-
-        // 显示代码
-        $scope.showCode = function(activity) {
-            var modal = $modal.open({
-                templateUrl: 'poster/codeModal',
-                controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
-                    $scope.activity = activity;
-                    $scope.modal = $modalInstance;
-                }]
-            });
-        };
-
     }];
 
     Controller.title = '海报列表 - 宝贝海报';

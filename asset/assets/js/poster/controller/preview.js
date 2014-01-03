@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var Controller = ['$scope', 'PosterActivity', 'PosterTemplate', '$routeParams', '$location', function($scope, PosterActivity, PosterTemplate, $routeParams, $location) {
+    var Controller = ['$scope', 'PosterActivity', 'PosterTemplate', '$modal', '$routeParams', '$location', function($scope, PosterActivity, PosterTemplate, $modal, $routeParams, $location) {
 
         $scope.activity = PosterActivity.get({
             id: $routeParams.id,
@@ -32,6 +32,17 @@ define(function(require, exports, module) {
             }
             return form.$valid;
         }
+
+        // 显示代码
+        $scope.showCode = function(activity) {
+            var modal = $modal.open({
+                templateUrl: 'poster/codeModal',
+                controller: ['$scope', '$modalInstance', function($scope, $modalInstance) {
+                    $scope.activity = activity;
+                    $scope.modal = $modalInstance;
+                }]
+            });
+        };
     }];
 
     Controller.title = '预览 - 宝贝海报';
