@@ -40,6 +40,7 @@ public class PublishProgress {
         return waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum;
     }
 
+    //
     public boolean isFinished() {
         return waitingPublishItemNum == 0;
     }
@@ -49,12 +50,10 @@ public class PublishProgress {
      * @return
      */
     public float getProgress() {
-        int total = waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum;
-        if (total == 0) {
+        if (getPublishItemNum() == 0) {
             return 0;
         } else {
-            return (getPublishedItemNum() * 1f) /
-                    (waitingPublishItemNum + publishedSuccessfullyItemNum + publishedFailedItemNum);
+            return (getPublishedItemNum() * 1f) /getPublishItemNum();
         }
     }
 }

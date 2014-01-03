@@ -52,7 +52,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/getActivity", method = RequestMethod.GET)
     public PosterRecommendActivity getActivity(@RequestParam Long userId, @RequestParam Long activityId) {
-        return activityService.getActivity(userId, activityId);
+        return activityService.getActivity(userId, activityId,true,true,true);
     }
 
     @ResponseBody

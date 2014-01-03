@@ -70,50 +70,88 @@ public class RecommendActivityService {
     private TaobaoApiShopService taobaoApiShopService;
     @Autowired
     private PosterTemplateClient posterTemplateClient;
+    @Autowired
+    private RecommendTemplateService recommendTemplateService;
 
     /**
      * 获取活动信息
      *
      * @param userId
      * @param activityId
+     * @param loadActivityItems 是否加载海报宝贝信息
+     * @param loadPublishItems  是否加载投放宝贝信息
      * @return
      */
-    public PosterRecommendActivity getActivity(Long userId, Long activityId) {
+    public PosterRecommendActivity getActivity(Long userId, Long activityId,
+                                               boolean loadActivityItems,
+                                               boolean loadPublishItems,
+                                               boolean loadTemplate) {
         PosterRecommendActivity activity = posterRecommendActivityDAO.selectByUserIdAndActivityId(userId, activityId);
         if (null == activity) {
             return null;
         }
         Integer itemNum = posterRecommendActivityItemDAO.countByUserIdAndActivityId(userId, activityId);
         activity.setItemNum(itemNum);
-        List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId(userId, activityId);
 
-        List<ActivityItem> activityItems = Lists.newArrayList();
-        if (!CollectionUtils.isEmpty(posterRecommendActivityItems)) {
-            for (PosterRecommendActivityItem posterRecommendActivityItem : posterRecommendActivityItems) {
-                ActivityItem activityItem = new ActivityItem();
-
-                activityItem.setActivityItemStatus(posterRecommendActivityItem.getStatus());
-                Map<String, String> copy = null;
-                try {
-                    copy = (Map<String, String>) JsonMapper.nonEmptyMapper().fromJson2Map(posterRecommendActivityItem.getCopy());
-                } catch (Exception e) {
-                   logger.error("json 2 map error",e);
-                }
-                if (null!=copy&&!copy.isEmpty()) {
-                    activityItem.setCopy(copy);
-                }
-                Item item = new Item();
-                item.setNumIid(posterRecommendActivityItem.getItemNumIid());
-                item.setTitle(posterRecommendActivityItem.getItemTitle());
-                item.setPicUrl(posterRecommendActivityItem.getItemPicUrl());
-                item.setPrice(posterRecommendActivityItem.getItemPrice().toString());
-                activityItem.setItem(item);
-
-                activityItems.add(activityItem);
-            }
+        if (loadTemplate && (null != activity.getTemplateId())) {
+            PosterTemplate template = recommendTemplateService.getTemplate(activity.getTemplateId());
+            activity.setTemplate(template);
         }
 
-        activity.setActivityItems(activityItems);
+        if (loadActivityItems) {
+            List<PosterRecommendActivityItem> posterRecommendActivityItems = posterRecommendActivityItemDAO.selectByUserIdAndActivityId(userId, activityId);
+
+            List<ActivityItem> activityItems = Lists.newArrayList();
+            if (!CollectionUtils.isEmpty(posterRecommendActivityItems)) {
+                for (PosterRecommendActivityItem posterRecommendActivityItem : posterRecommendActivityItems) {
+                    ActivityItem activityItem = new ActivityItem();
+
+                    activityItem.setActivityItemStatus(posterRecommendActivityItem.getStatus());
+                    Map<String, String> copy = null;
+                    try {
+                        copy = (Map<String, String>) JsonMapper.nonEmptyMapper().fromJson2Map(posterRecommendActivityItem.getCopy());
+                    } catch (Exception e) {
+                        logger.error("json 2 map error", e);
+                    }
+                    if (null != copy && !copy.isEmpty()) {
+                        activityItem.setCopy(copy);
+                    }
+                    Item item = new Item();
+                    item.setNumIid(posterRecommendActivityItem.getItemNumIid());
+                    item.setTitle(posterRecommendActivityItem.getItemTitle());
+                    item.setPicUrl(posterRecommendActivityItem.getItemPicUrl());
+                    item.setPrice(posterRecommendActivityItem.getItemPrice().toString());
+                    activityItem.setItem(item);
+
+                    activityItems.add(activityItem);
+                }
+            }
+            activity.setActivityItems(activityItems);
+        }
+
+        if (loadPublishItems) {
+            List<PosterRecommendPublishItem> posterRecommendPublishItems = posterRecommendPublishItemDAO
+                    .selectByUserIdAndActivityId(userId, activityId);
+
+            List<PublishItem> publishItems = Lists.newArrayList();
+            if (!CollectionUtils.isEmpty(posterRecommendPublishItems)) {
+                for (PosterRecommendPublishItem posterRecommendPublishItem : posterRecommendPublishItems) {
+                    PublishItem publishItem = new PublishItem();
+
+                    publishItem.setPublishItemStatus(posterRecommendPublishItem.getStatus());
+                    Item item = new Item();
+                    item.setNumIid(posterRecommendPublishItem.getItemNumIid());
+                    item.setTitle(posterRecommendPublishItem.getItemTitle());
+                    item.setPicUrl(posterRecommendPublishItem.getItemPicUrl());
+                    item.setPrice(posterRecommendPublishItem.getItemPrice().toString());
+                    publishItem.setItem(item);
+
+                    publishItems.add(publishItem);
+                }
+            }
+            activity.setPublishItems(publishItems);
+        }
+
         return activity;
     }
 
@@ -140,7 +178,7 @@ public class RecommendActivityService {
 
         //创建海报宝贝
         updateActivityItems(userId, activityId, activity.getActivityItems());
-        return getActivity(userId, activityId);
+        return getActivity(userId, activityId, true, false, false);
     }
 
     /**
@@ -250,7 +288,7 @@ public class RecommendActivityService {
 
 
         //开始加入和删除逻辑
-        PosterRecommendActivity currentActivity = getActivity(userId, activityId);
+        PosterRecommendActivity currentActivity = getActivity(userId, activityId, false, true, false);
 
         if (null != currentActivity &&
                 (CollectionUtils.isNotEmpty(toBeAddedPublishItemNumIids)
@@ -416,7 +454,7 @@ public class RecommendActivityService {
         }
 
         //操作数据库，进行加入、更新和删除逻辑
-        PosterRecommendActivity posterRecommendActivity = getActivity(userId, activityId);
+        PosterRecommendActivity posterRecommendActivity = getActivity(userId, activityId, true, false, false);
 
         if (null != posterRecommendActivity &&
                 (CollectionUtils.isNotEmpty(toBeAddedActivityItemNumIids)

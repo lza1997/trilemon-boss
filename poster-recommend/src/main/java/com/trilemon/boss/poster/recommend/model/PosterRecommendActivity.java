@@ -33,8 +33,8 @@ public class PosterRecommendActivity extends ShardTable {
     private int itemNum;//已经参加活动的宝贝数量，非数据库字段，供前台使用
     private PublishProgress publishProgress;//非数据库字段，投放的宝贝数量统计
     private List<ActivityItem> activityItems;//数据库海报宝贝
-    private List<PublishItem> publishItems;
-    private PosterTemplate template;
+    private List<PublishItem> publishItems;//数据库投放宝贝
+    private PosterTemplate template;//海报
 
     public PosterTemplate getTemplate() {
         return template;

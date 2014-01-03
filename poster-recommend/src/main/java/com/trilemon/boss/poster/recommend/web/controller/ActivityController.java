@@ -78,10 +78,7 @@ public class ActivityController {
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public PosterRecommendActivity show(@PathVariable Long id, Boolean detail) {
-        PosterRecommendActivity activity = activityService.getActivity(sessionService.getUserId(), id);
-        if (detail) {
-            activity.setTemplate(templateService.getTemplate(activity.getTemplateId()));
-        }
+        PosterRecommendActivity activity = activityService.getActivity(sessionService.getUserId(), id, true, false, detail);
         return activity;
     }
 }
