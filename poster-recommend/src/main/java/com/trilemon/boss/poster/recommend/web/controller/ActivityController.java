@@ -3,18 +3,13 @@ package com.trilemon.boss.poster.recommend.web.controller;
 import com.trilemon.boss.infra.base.service.SessionService;
 import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
-import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.service.PosterRecommendException;
 import com.trilemon.boss.poster.recommend.service.RecommendActivityService;
 import com.trilemon.boss.poster.recommend.service.RecommendPublishService;
-import com.trilemon.boss.poster.recommend.service.RecommendTemplateService;
 import com.trilemon.commons.web.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 海报活动，就是用户制作的海报
@@ -26,8 +21,6 @@ import java.util.List;
 public class ActivityController {
     @Autowired
     private RecommendActivityService activityService;
-    @Autowired
-    private RecommendTemplateService templateService;
     @Autowired
     private RecommendPublishService publishService;
     @Autowired
@@ -98,7 +91,7 @@ public class ActivityController {
     @RequestMapping(value = "/{id}/publish", method = RequestMethod.POST)
     public PosterRecommendActivity publish(@PathVariable Long id) {
         publishService.publishActivity(sessionService.getUserId(), id);
-        return activityService.getActivity(sessionService.getUserId(), id);
+        return activityService.getActivity(sessionService.getUserId(), id,false,false,false);
     }
 
     /**
@@ -110,6 +103,6 @@ public class ActivityController {
     @RequestMapping(value = "/{id}/publish", method = RequestMethod.DELETE)
     public PosterRecommendActivity unpublish(@PathVariable Long id) {
         publishService.unpublishActivity(sessionService.getUserId(), id);
-        return activityService.getActivity(sessionService.getUserId(), id);
+        return activityService.getActivity(sessionService.getUserId(), id,false,false,false);
     }
 }
