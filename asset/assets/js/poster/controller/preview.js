@@ -5,12 +5,8 @@ define(function(require, exports, module) {
 
     var Controller = ['$scope', 'PosterActivity', 'PosterTemplate', '$routeParams', '$location', function($scope, PosterActivity, PosterTemplate, $routeParams, $location) {
 
-        $scope.activity = PosterActivity.get({id: $routeParams.activityId, detail: true}, function(data) {
-            $scope.items = _.map(data.activityItems, function(item) {
-                _.extend(item, item.item);
-                delete item.item;
-                return item;
-            });
+        $scope.activity = PosterActivity.get({id: $routeParams.id, detail: true}, function(data) {
+            $scope.items = data.activityItems;
             $scope.template = data.template;
         });
 
@@ -18,7 +14,7 @@ define(function(require, exports, module) {
         $scope.save = function() {
             if (isValidate($scope.form)) {
                 $scope.activity.$saveHTML(function() {
-                    $location.url();
+                    $location.url('/poster/activity/' + $routeParams.id + '/publish');
                 });
             }
         };

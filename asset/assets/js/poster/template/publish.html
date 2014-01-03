@@ -1,0 +1,107 @@
+<div class="wrap">
+    <h3>设置海报投放</h3>
+</div>
+
+<div>
+    <form class="form-horizontal" name="form" novalidate>
+        <div class="form-group">
+            <label class="col-md-1 control-label">投放位置</label>
+
+            <div class="col-md-6">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="activity.detailPagePosition" value="1"> 宝贝描述上方
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="activity.detailPagePosition" value="2"> 宝贝描述下方
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-1 control-label">截止时间</label>
+
+            <div class="col-md-6">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="activity.publishType" value="0"> 一直投放
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" ng-model="activity.publishType" value="1"> 指定时间
+                </label>
+                <label class="radio-inline" ng-show="activity.publishType == 1">
+                    <input type="text" class="form-control" datepicker-popup ng-model="endDate" required />
+                </label>
+                <label class="radio-inline" ng-show="activity.publishType == 1" style="margin-left: 0;padding-left:0">
+                    <select class="form-control" ng-model="endHour" ng-options="hour.value as hour.name for hour in hours">
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-1 control-label">宝贝选择</label>
+
+            <div class="col-md-10">
+                <div class="well" style="background: white">
+                    <div ng-form="searchForm" class="form-inline wrap">
+                        <div class="form-group">
+                            <select class="form-control" ng-model="onsale" ng-change="changeOnsale()">
+                                <option value="true">出售中的宝贝</option>
+                                <option value="false">库存中的宝贝</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" ng-options="cat.cid as cat.name for cat in sellerCats"
+                                    ng-model="category" ng-change="changeCategory()">
+                                <option value="">所有分类</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="宝贝标题、编号" maxlength="20"
+                                   ng-model="searchKey"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="search()">搜 索</button>
+                    </div>
+                    <table class="table table-hover">
+                        <col width="15%"/>
+                        <col/>
+                        <col width="10%"/>
+                        <col/>
+                        <col width="15%"/>
+                        <thead>
+                        <tr>
+                            <th>图片</th>
+                            <th>宝贝名称</th>
+                            <th class="text-right">价格</th>
+                            <th ng-repeat="(k, v) in template.copyKeyMap">{{ v }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="item in items" ng-class="{success:item.include}">
+                            <td><img ng-src="{{item.picUrl}}_sum.jpg" ng-if="item.picUrl"/></td>
+                            <td>{{ item.title }}</td>
+                            <td class="text-right">{{ item.price }}</td>
+                            <td ng-repeat="(k, v) in template.copyKeyMap">
+                                <input class="form-control" type="text" required ng-model="item.copy[k]"/>
+                            </td>
+                            <td>
+                                <a ng-if="!item.include" href="" ng-click="setInclude(item, true)">参加投放</a>
+
+                                <div ng-if="item.include">
+                                    已参加 <a href="" ng-click="setInclude(item, false)">取消</a>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="pagination-wrap clearfix">
+                        <pagination class="pull-right" items="items" pager-click="jumpPage(page)"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-1 col-md-6">
+                <button class="btn btn-primary btn-lg" ng-click="save()">保 存</button>
+                &nbsp;&nbsp;<a ng-href="#/poster/activity/{{activity.id}}/preview">返回</a>
+            </div>
+        </div>
+    </form>
+</div>

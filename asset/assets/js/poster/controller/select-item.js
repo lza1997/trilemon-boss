@@ -7,18 +7,26 @@ define(function(require, exports, module) {
 
         // 初始化
         $scope.init = function() {
-            if (!$routeParams.templateId) {
+            if (!$routeParams.templateId && !$routeParams.activityId) {
                 $location.url('/poster/category');
                 return;
+            }
+            // 修改或创建
+            if ($routeParams.activityId) {
+                $scope.activity = PosterActivity.get({id: $routeParams.activityId, detail: true});
+                $scope.template = $scope.activity.template;
+            }
+            else {
+                $scope.activity = new PosterActivity({
+                    templateId: $routeParams.templateId,
+                    activityItems: []
+                });
+                $scope.template = PosterTemplate.get({id: $routeParams.templateId});
             }
             $scope.searchKey = $routeParams.key;
             getItems();
             $scope.sellerCats = PosterSellerCat.query();
-            $scope.template = PosterTemplate.get({id: $routeParams.templateId});
-            $scope.activity = new PosterActivity({
-                templateId: $routeParams.templateId,
-                activityItems: []
-            });
+
         };
 
         $scope.init();
@@ -30,13 +38,16 @@ define(function(require, exports, module) {
                 $scope.activity.activityItems.push(item);
             }
             else {
-                $scope.activity.activityItems = _.without($scope.activity.activityItems, item);
+                $scope.activity.activityItems = _.filter($scope.activity.activityItems, function(i) {
+                    return i.numIid != item.numIid;
+                });
             }
         };
 
+        // 下一步，保存结果
         $scope.save = function() {
-            $scope.activity.$save(function(data) {
-                $location.url('/poster/preview?activityId=' + data.id);
+            PosterActivity.save(_.pick($scope.activity, 'id', 'activityItems', 'templateId'), function(data) {
+                $location.url('/poster/activity/' + data.id + '/preview');
             });
         };
 
@@ -61,7 +72,7 @@ define(function(require, exports, module) {
             options = _.defaults(options || {}, $routeParams);
             $location.search(options);
 
-            $scope.items = PosterItem.query(_.omit(options, 'templateId'), function(data) {
+            $scope.items = PosterItem.query(_.omit(options, 'templateId', 'activityId'), function(data) {
                 // 选中的回填
                 var ids = _.pluck($scope.activity.activityItems, 'numIid');
                 _.each(data, function(item) {

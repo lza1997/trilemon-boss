@@ -62,7 +62,9 @@ define(function() {
             .when('/poster/category', poster.routeFor('poster.category'))
             .when('/poster/select-template', poster.routeFor('poster.selectTemplate', {reloadOnSearch: false}))
             .when('/poster/select-item', poster.routeFor('poster.selectItem', {reloadOnSearch: false}))
-            .when('/poster/preview', poster.routeFor('poster.preview'))
+            .when('/poster/activity/:id/preview', poster.routeFor('poster.preview'))
+            .when('/poster/activity/:id/publish', poster.routeFor('poster.publish'))
+            .when('/poster/activity', poster.routeFor('poster.indexActivity'))
             .when('/poster', {redirectTo: '/poster/category'})
 
             .otherwise({redirectTo: '/shelf'});

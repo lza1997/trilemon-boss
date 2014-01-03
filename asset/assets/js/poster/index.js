@@ -7,7 +7,9 @@ define(function(require, exports, module) {
             'poster.category': require('./controller/category'),
             'poster.selectTemplate': require('./controller/select-template'),
             'poster.selectItem': require('./controller/select-item'),
-            'poster.preview': require('./controller/preview')
+            'poster.preview': require('./controller/preview'),
+            'poster.publish': require('./controller/publish'),
+            'poster.indexActivity': require('./controller/index-activity')
         },
         factories: {
             'PosterCategory': require('./service/poster-category'),
@@ -30,7 +32,9 @@ define(function(require, exports, module) {
             'poster/category': require('./template/category.html'),
             'poster/selectTemplate': require('./template/select-template.html'),
             'poster/selectItem': require('./template/select-item.html'),
-            'poster/preview': require('./template/preview.html')
+            'poster/preview': require('./template/preview.html'),
+            'poster/publish': require('./template/publish.html'),
+            'poster/indexActivity': require('./template/index-activity.html')
         }
     };
 
