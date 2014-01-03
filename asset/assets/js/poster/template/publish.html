@@ -27,10 +27,10 @@
                     <input type="radio" ng-model="activity.publishType" value="1"> 指定时间
                 </label>
                 <label class="radio-inline" ng-show="activity.publishType == 1">
-                    <input type="text" class="form-control" datepicker-popup ng-model="endDate" required />
+                    <input type="text" class="form-control" datepicker-popup ng-model="activity.publishEndTime" required />
                 </label>
                 <label class="radio-inline" ng-show="activity.publishType == 1" style="margin-left: 0;padding-left:0">
-                    <select class="form-control" ng-model="endHour" ng-options="hour.value as hour.name for hour in hours">
+                    <select class="form-control" ng-model="publishEndHour" ng-options="hour.value as hour.name for hour in hours">
                     </select>
                 </label>
             </div>
@@ -63,7 +63,7 @@
                         <col width="15%"/>
                         <col/>
                         <col width="10%"/>
-                        <col/>
+                        <col ng-repeat="(k, v) in template.copyKeyMap"/>
                         <col width="15%"/>
                         <thead>
                         <tr>

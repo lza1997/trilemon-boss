@@ -216,8 +216,7 @@ public class RecommendActivityService {
      * @param publishItems
      */
     @Transactional
-    public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity,
-                                          List<PublishItem> publishItems) {
+    public void updateActivityPublishPart(Long userId, PosterRecommendActivity activity) {
         checkNotNull(activity.getId(), "activity id is null");
 
         activity.setUserId(userId);
@@ -226,7 +225,7 @@ public class RecommendActivityService {
         posterRecommendActivityDAO.updateByUserIdAndActivityIdSelective(activity);
         logger.info("update activity, activityId[{}] userId[{}].", activity.getId(), userId);
 
-        updatePublishItems(userId, activity.getId(), publishItems);
+        updatePublishItems(userId, activity.getId(), activity.getPublishItems());
 
     }
 

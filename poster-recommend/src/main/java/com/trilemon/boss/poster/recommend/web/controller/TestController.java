@@ -153,7 +153,7 @@ public class TestController {
         publishItem2.setItem(item2);
         publishItems.add(publishItem2);
 
-        activityService.updateActivityPublishPart(userId, activity, publishItems);
+        //activityService.updateActivityPublishPart(userId, activity, publishItems);
         return "success";
     }
 

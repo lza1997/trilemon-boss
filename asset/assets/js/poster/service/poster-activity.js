@@ -16,6 +16,7 @@ define(function(require, exports, module) {
         var BASE_URL = '/poster/activities';
         var URL = BASE_URL + '/:id';
         var HTML_URL = URL + '/html';
+        var PUBLISH_URL = URL + '/publish-setting';
 
         var PosterActivity = $resource(URL, {id: '@id'}, {
             query: {
@@ -33,6 +34,7 @@ define(function(require, exports, module) {
                     response: function(response) {
                         var data = response.resource;
                         transformItem(data.activityItems);
+                        transformItem(data.publishItems);
                         return data;
                     }
                 }
@@ -41,6 +43,11 @@ define(function(require, exports, module) {
             saveHTML: {
                 method: 'PUT',
                 url: HTML_URL
+            },
+
+            savePublish: {
+                method: 'PUT',
+                url: PUBLISH_URL
             },
 
             save: {

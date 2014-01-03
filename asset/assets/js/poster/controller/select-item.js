@@ -3,7 +3,7 @@
  */
 define(function(require, exports, module) {
 
-    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', '$routeParams', '$location', 'Flash', 'PosterSellerCat', 'PosterActivity', function($scope, PosterItem, PosterTemplate, $routeParams, $location, Flash, PosterSellerCat, PosterActivity) {
+    var Controller = ['$scope', 'PosterItem', 'PosterTemplate', 'PosterSellerCat', 'PosterActivity', '$routeParams', '$location', function($scope, PosterItem, PosterTemplate, PosterSellerCat, PosterActivity, $routeParams, $location) {
 
         // 初始化
         $scope.init = function() {
@@ -13,7 +13,7 @@ define(function(require, exports, module) {
             }
             // 修改或创建
             if ($routeParams.activityId) {
-                $scope.activity = PosterActivity.get({id: $routeParams.activityId, detail: true});
+                $scope.activity = PosterActivity.get({id: $routeParams.activityId, template: true});
                 $scope.template = $scope.activity.template;
             }
             else {

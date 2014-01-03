@@ -5,7 +5,11 @@ define(function(require, exports, module) {
 
     var Controller = ['$scope', 'PosterActivity', 'PosterTemplate', '$routeParams', '$location', function($scope, PosterActivity, PosterTemplate, $routeParams, $location) {
 
-        $scope.activity = PosterActivity.get({id: $routeParams.id, detail: true}, function(data) {
+        $scope.activity = PosterActivity.get({
+            id: $routeParams.id,
+            template: true,
+            activityItems: true
+        }, function(data) {
             $scope.items = data.activityItems;
             $scope.template = data.template;
         });
