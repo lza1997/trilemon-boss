@@ -91,19 +91,20 @@ public class PosterRecommendPublishItemDAOImpl extends MysdalCobarSqlMapClientDa
                 shardTableMap, "status", "count");
         PublishProgress publishProgress = new PublishProgress();
 
-        Object waitingPublishItemNumObj = returnMap.get(PUBLISH_ITEM_STATUS_WAITING_PUBLISH);
-        if (null != returnMap.get(waitingPublishItemNumObj)) {
-            publishProgress.setWaitingPublishItemNum((int) waitingPublishItemNumObj);
+        Long waitingPublishItemNumObj = (Long)returnMap.get(Integer.valueOf(PUBLISH_ITEM_STATUS_WAITING_PUBLISH));
+        if (null != waitingPublishItemNumObj) {
+            publishProgress.setWaitingPublishItemNum(waitingPublishItemNumObj.intValue());
         }
 
-        Object publishedSuccessfullyItemNumObj = returnMap.get(PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY);
-        if (null != returnMap.get(publishedSuccessfullyItemNumObj)) {
-            publishProgress.setPublishedSuccessfullyItemNum((int) publishedSuccessfullyItemNumObj);
+        Long publishedSuccessfullyItemNumObj = (Long)returnMap.get(Integer.valueOf
+                (PUBLISH_ITEM_STATUS_PUBLISHED_SUCCESSFULLY));
+        if (null != publishedSuccessfullyItemNumObj) {
+            publishProgress.setPublishedSuccessfullyItemNum( publishedSuccessfullyItemNumObj.intValue());
         }
 
-        Object publishedFailedItemNumObj = returnMap.get(PUBLISH_ITEM_STATUS_PUBLISHED_FAILED);
-        if (null != returnMap.get(publishedFailedItemNumObj)) {
-            publishProgress.setPublishedFailedItemNum((int) publishedFailedItemNumObj);
+        Long publishedFailedItemNumObj =(Long) returnMap.get(Integer.valueOf(PUBLISH_ITEM_STATUS_PUBLISHED_FAILED));
+        if (null != publishedFailedItemNumObj) {
+            publishProgress.setPublishedFailedItemNum(publishedFailedItemNumObj.intValue());
         }
         return publishProgress;
     }

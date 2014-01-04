@@ -111,6 +111,6 @@
         from poster_recommend_favorite_template
         where
         user_id = #userId:BIGINT#
-        and template_id in (#templateIds:VARCHAR#)
+        and template_id in ($templateIds$)
     </select>
 </sqlMap>
