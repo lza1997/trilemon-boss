@@ -140,17 +140,37 @@ public class RecommendTemplateService {
      * @param pageSize
      * @return
      */
-    public Page<PosterTemplate> paginateLatestPosterTemplates(int pageNum, int pageSize) {
+    public Page<PosterTemplate> paginateLatestPosterTemplates(Long userId,int pageNum, int pageSize) {
         PosterTemplateQueryRequest request = new PosterTemplateQueryRequest();
         request.setPageNum(pageNum);
         request.setPageSize(pageSize);
         request.setOrderBy("upd_time desc");
         PosterTemplateQueryResponse response = posterTemplateClient.queryTemplates(request);
-        if (null == response || null == response.getPosterTemplatePage()) {
-            return Page.empty();
-        } else {
-            return response.getPosterTemplatePage();
+
+        Page<PosterTemplate> page = Page.empty();
+
+        if (null != response && null != response.getPosterTemplatePage()) {
+            page = response.getPosterTemplatePage();
+            List<PosterTemplate> posterTemplates = page.getItems();
+            List<Long> templateIds = Lists.transform(posterTemplates, new Function<PosterTemplate, Long>() {
+                @Nullable
+                @Override
+                public Long apply(@Nullable PosterTemplate input) {
+                    return input.getId();
+                }
+            });
+            List<PosterRecommendFavoriteTemplate> favoriteTemplates = posterRecommendFavoriteTemplateDAO.selectByUserIdAndTemplateIds(userId, templateIds);
+            if (CollectionUtils.isNotEmpty(favoriteTemplates)) {
+                for (PosterRecommendFavoriteTemplate favoriteTemplate : favoriteTemplates) {
+                    for (PosterTemplate template : posterTemplates) {
+                        if (favoriteTemplate.getTemplateId().equals(template.getId())) {
+                            template.setFavorite(true);
+                        }
+                    }
+                }
+            }
         }
+        return page;
     }
 
     /**
