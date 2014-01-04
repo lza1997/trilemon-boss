@@ -124,6 +124,24 @@ public class RecommendTemplateService {
                             return input.getTemplateId();
                         }
                     }));
+
+            List<Long> templateIds = Lists.transform(templates, new Function<PosterTemplate, Long>() {
+                @Nullable
+                @Override
+                public Long apply(@Nullable PosterTemplate input) {
+                    return input.getId();
+                }
+            });
+            List<PosterRecommendFavoriteTemplate> favoriteTemplates = posterRecommendFavoriteTemplateDAO.selectByUserIdAndTemplateIds(userId, templateIds);
+            if (CollectionUtils.isNotEmpty(favoriteTemplates)) {
+                for (PosterRecommendFavoriteTemplate favoriteTemplate : favoriteTemplates) {
+                    for (PosterTemplate template : templates) {
+                        if (favoriteTemplate.getTemplateId().equals(template.getId())) {
+                            template.setFavorite(true);
+                        }
+                    }
+                }
+            }
             return Page.create(count, pageNum, pageSize, templates);
         }
     }
@@ -139,7 +157,7 @@ public class RecommendTemplateService {
      * @param pageSize
      * @return
      */
-    public Page<PosterTemplate> paginateLatestPosterTemplates(Long userId,int pageNum, int pageSize) {
+    public Page<PosterTemplate> paginateLatestPosterTemplates(Long userId, int pageNum, int pageSize) {
         PosterTemplateQueryRequest request = new PosterTemplateQueryRequest();
         request.setPageNum(pageNum);
         request.setPageSize(pageSize);
@@ -192,6 +210,26 @@ public class RecommendTemplateService {
                 PosterTemplate template = posterTemplateClient.getPosterTemplate(templateId);
                 templates.add(template);
             }
+            if (CollectionUtils.isNotEmpty(templates)) {
+                List<PosterRecommendFavoriteTemplate> favoriteTemplates = posterRecommendFavoriteTemplateDAO
+                        .selectByUserIdAndTemplateIds(userId, Lists.transform(templates, new Function<PosterTemplate, Long>() {
+                            @Nullable
+                            @Override
+                            public Long apply(@Nullable PosterTemplate input) {
+                                return input.getId();
+                            }
+                        }));
+                if (CollectionUtils.isNotEmpty(favoriteTemplates)) {
+                    for (PosterRecommendFavoriteTemplate favoriteTemplate : favoriteTemplates) {
+                        for (PosterTemplate template : templates) {
+                            if (favoriteTemplate.getTemplateId().equals(template.getId())) {
+                                template.setFavorite(true);
+                            }
+                        }
+                    }
+                }
+            }
+
             return Page.create(count, pageNum, pageSize, templates);
         }
     }
