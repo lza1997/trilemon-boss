@@ -278,7 +278,7 @@ public class TestController {
     @ResponseBody
     @RequestMapping(value = "/paginateLatestPosterTemplates", method = RequestMethod.GET)
     public Page<PosterTemplate> paginateLatestPosterTemplates() {
-        return templateService.paginateLatestPosterTemplates(1, 2);
+        return templateService.paginateLatestPosterTemplates(56912708L,1, 2);
     }
 
     @ResponseBody
