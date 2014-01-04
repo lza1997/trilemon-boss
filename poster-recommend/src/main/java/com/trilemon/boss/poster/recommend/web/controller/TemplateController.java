@@ -19,23 +19,52 @@ import java.util.List;
 @Controller
 @RequestMapping("/templates")
 public class TemplateController {
+    private static int PAGE_SIZE = 3;
+
     @Autowired
     private SessionService sessionService;
     @Autowired
     private RecommendTemplateService templateService;
 
+    /**
+     * 获取所有模板
+     *
+     * @param category 制作时选择模板，才提供此参数
+     * @param type     对应所有、使用过的、收藏的 等类型
+     * @param topic
+     * @param page
+     * @return
+     */
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
-    public Page<PosterTemplate> index(Integer category, Integer topic, @RequestParam(defaultValue = "1") int page) {
+    public Page<PosterTemplate> index(Integer category, @RequestParam(required = false, defaultValue = "") String type, Integer topic, @RequestParam(defaultValue = "1") int page) {
         List<Integer> categoryIds = Lists.newArrayList();
-        List<Integer> topicIds =  Lists.newArrayList();
+        List<Integer> topicIds = Lists.newArrayList();
+        Long userId = sessionService.getUserId();
+
         if (category != null) {
-            categoryIds.add(category);
+            // 制作前选择模板
+            if (category != null) {
+                categoryIds.add(category);
+            }
+            if (topic != null) {
+                topicIds.add(topic);
+            }
+            return templateService.paginatePosterTemplates(userId, topicIds, categoryIds, page, PAGE_SIZE);
+        } else {
+            // 模板列表页
+            if (type.equals("")) {
+                return templateService.paginatePosterTemplates(userId, topicIds, categoryIds, page, PAGE_SIZE);
+            } else if (type.equals("favorite")) {
+                return templateService.paginateFavoritePosterTemplates(userId, page, PAGE_SIZE);
+            } else if (type.equals("latest")) {
+                return templateService.paginateLatestPosterTemplates(page, PAGE_SIZE);
+            } else if (type.equals("used")) {
+                return templateService.paginateUsedPosterTemplates(userId, page, PAGE_SIZE);
+            } else {
+                return null;
+            }
         }
-        if (topic != null) {
-            topicIds.add(topic);
-        }
-        return templateService.paginatePosterTemplates(sessionService.getUserId(),topicIds, categoryIds, page, 2);
     }
 
     @ResponseBody
@@ -46,6 +75,7 @@ public class TemplateController {
 
     /**
      * 添加到收藏
+     *
      * @param id
      */
     @ResponseBody
@@ -56,6 +86,7 @@ public class TemplateController {
 
     /**
      * 取消收藏
+     *
      * @param id
      */
     @ResponseBody
