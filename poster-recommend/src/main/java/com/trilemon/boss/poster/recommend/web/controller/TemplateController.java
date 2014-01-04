@@ -80,8 +80,11 @@ public class TemplateController {
      */
     @ResponseBody
     @RequestMapping(value = "/{id}/fav", method = RequestMethod.POST)
-    public void createFav(@PathVariable Long id) {
+    public PosterTemplate createFav(@PathVariable Long id) {
         templateService.favoriteTemplate(sessionService.getUserId(), id);
+        PosterTemplate template =  templateService.getTemplate(id);
+        template.setFavorite(true);
+        return template;
     }
 
     /**
@@ -91,7 +94,10 @@ public class TemplateController {
      */
     @ResponseBody
     @RequestMapping(value = "/{id}/fav", method = RequestMethod.DELETE)
-    public void deleteFav(@PathVariable Long id) {
+    public PosterTemplate deleteFav(@PathVariable Long id) {
         templateService.unFavoriteTemplate(sessionService.getUserId(), id);
+        PosterTemplate template =  templateService.getTemplate(id);
+        template.setFavorite(false);
+        return template;
     }
 }

@@ -28,9 +28,7 @@ define(function(require, exports, module) {
         // 收藏或取消
         $scope.setFav = function(template, flag) {
             var method = flag ? '$fav' : '$unfav';
-            template[method](function() {
-                template.isFavorite = flag;
-            });
+            template[method]();
         };
 
         $scope.getByType = function(type) {
