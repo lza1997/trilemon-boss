@@ -65,7 +65,7 @@ define(function() {
             .when('/poster/select-item', poster.routeFor('poster.selectItem', {reloadOnSearch: false}))
             .when('/poster/activity/:id/preview', poster.routeFor('poster.preview'))
             .when('/poster/activity/:id/publish', poster.routeFor('poster.publish'))
-            .when('/poster/activity', poster.routeFor('poster.indexActivity'))
+            .when('/poster/activity', poster.routeFor('poster.indexActivity', {reloadOnSearch: false}))
             .when('/poster', {redirectTo: '/poster/category'})
 
             .otherwise({redirectTo: '/shelf'});

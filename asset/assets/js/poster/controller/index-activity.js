@@ -12,6 +12,7 @@ define(function(require, exports, module) {
 
         $scope.jumpPage = function(page) {
             $scope.activities = PosterActivity.query({page: page});
+            $location.search({page: page});
             return $scope.activities.$promise;
         };
 
@@ -19,7 +20,7 @@ define(function(require, exports, module) {
             activity.$publish();
         };
 
-        $scope.publish = function(activity) {
+        $scope.unPublish = function(activity) {
             activity.$unPublish();
         };
 

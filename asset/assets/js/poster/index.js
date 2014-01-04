@@ -16,6 +16,7 @@ define(function(require, exports, module) {
             'PosterTopic': require('./service/poster-topic'),
             'PosterTemplate': require('./service/poster-template'),
             'PosterRecommendTemplate': require('./service/poster-recommend-template'),
+            'PosterLastUsedTemplate': require('./service/poster-last-used-template'),
             'PosterItem': require('./service/poster-item'),
             'PosterSellerCat': require('./service/poster-sellercat'),
             'PosterActivity': require('./service/poster-activity')
