@@ -3,11 +3,10 @@
  */
 define(function(require, exports, module) {
 
-    var IndexController = ['$scope', 'PosterCategory', 'PosterRecommendTemplate', '$location', function($scope, PosterCategory, PosterRecommendTemplate, $location) {
+    var IndexController = ['$scope', 'PosterCategory', 'PosterRecommendTemplate', 'PosterLastUsedTemplate', function($scope, PosterCategory, PosterRecommendTemplate, PosterLastUsedTemplate) {
         $scope.categories = PosterCategory.query();
-
-        $scope.templates = PosterRecommendTemplate.query();
-
+        $scope.recommendTemplates = PosterRecommendTemplate.query();
+        $scope.lastUsedTemplate = PosterLastUsedTemplate.get();
     }];
 
     IndexController.title = '选择店铺类型 - 宝贝海报';

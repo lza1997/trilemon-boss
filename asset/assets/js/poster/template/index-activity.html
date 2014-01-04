@@ -35,9 +35,9 @@
             已投放：{{ activity.publishProgress.publishedItemNum }}
         </td>
         <td>
-            <a href="" class="btn btn-default" disabled ng-if="activity.needComplete">投放</a>
-            <a href="" ng-click="publish(activity)" class="btn btn-default" ng-if="activity.canPublish">投放</a>
-            <a href="" ng-click="unPublish(activity)" class="btn btn-default" ng-if="activity.canStopPublish">停止</a>
+            <a href="" class="btn btn-default" disabled ng-if="activity.needComplete"><i class="icon-play"></i> 投 放</a>
+            <a href="" ng-click="publish(activity)" class="btn btn-default" ng-if="activity.canPublish"><i class="icon-play"></i> 投 放</a>
+            <a href="" ng-click="unPublish(activity)" class="btn btn-default" ng-if="activity.canStopPublish"><i class="icon-pause"></i> 停 止</a>
 
             <div class="btn-group">
                 <a ng-href="#/poster/select-item?activityId={{activity.id}}" class="btn btn-default">编辑宝贝</a>

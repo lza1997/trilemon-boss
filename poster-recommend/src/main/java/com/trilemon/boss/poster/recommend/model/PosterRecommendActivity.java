@@ -233,7 +233,7 @@ public class PosterRecommendActivity extends ShardTable {
     public boolean isCanPublish() {
         return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE
                 || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHED
-                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED_WITH_ERROR;
+                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHED_WITH_ERROR;
     }
 
     // 可以被停止投放，包括已经投放完毕（即使有错）

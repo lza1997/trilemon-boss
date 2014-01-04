@@ -58,7 +58,7 @@ public class TemplateController {
             } else if (type.equals("favorite")) {
                 return templateService.paginateFavoritePosterTemplates(userId, page, PAGE_SIZE);
             } else if (type.equals("latest")) {
-                return templateService.paginateLatestPosterTemplates(page, PAGE_SIZE);
+                return templateService.paginateLatestPosterTemplates(userId, page, PAGE_SIZE);
             } else if (type.equals("used")) {
                 return templateService.paginateUsedPosterTemplates(userId, page, PAGE_SIZE);
             } else {
