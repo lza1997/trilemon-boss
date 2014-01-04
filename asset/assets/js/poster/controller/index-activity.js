@@ -20,7 +20,7 @@ define(function(require, exports, module) {
             activity.$publish();
         };
 
-        $scope.publish = function(activity) {
+        $scope.unpublish = function(activity) {
             activity.$unPublish();
         };
 
