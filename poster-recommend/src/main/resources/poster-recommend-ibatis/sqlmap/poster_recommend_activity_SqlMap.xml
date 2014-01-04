@@ -288,7 +288,7 @@
     </select>
     <select id="paginateActivityUsedTemplateByUserId" resultClass="long" parameterClass="map">
         SELECT
-        t1.template_id
+        distinct(t1.template_id)
         FROM
         <include refid="poster_recommend_activity.Base_Table_Name"/>
         t1,
