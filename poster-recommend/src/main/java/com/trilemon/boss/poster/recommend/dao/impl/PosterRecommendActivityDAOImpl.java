@@ -88,6 +88,34 @@ public class PosterRecommendActivityDAOImpl extends MysdalCobarSqlMapClientDaoSu
         return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.countActivityByUserId", shardTableMap);
     }
 
+    @Override
+    public List<Long> paginateActivityUsedTemplateByUserId(Long userId, List<Byte> statusList, Date publishTime, String orderBy, int offset, int limit) {
+        checkNotNull(userId);
+        PosterRecommendActivity activity = new PosterRecommendActivity();
+        activity.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(activity);
+        shardTableMap.put("userId", userId);
+        shardTableMap.put("statusList", statusList);
+        shardTableMap.put("publishTime", publishTime);
+        shardTableMap.put("orderBy", orderBy);
+        shardTableMap.put("offset", offset);
+        shardTableMap.put("limit", limit);
+        return (List<Long>) getSqlMapClientTemplate().queryForList("poster_recommend_activity" +
+                ".paginateActivityUsedTemplateByUserId", shardTableMap);
+    }
+
+    @Override
+    public int countActivityUsedTemplateByUserId(Long userId, List<Byte> statusList, Date publishTime) {
+        checkNotNull(userId);
+        PosterRecommendActivity activity = new PosterRecommendActivity();
+        activity.setUserId(userId);
+        ShardTableMap shardTableMap = router.getRouteMap(activity);
+        shardTableMap.put("userId", userId);
+        shardTableMap.put("statusList", statusList);
+        shardTableMap.put("publishTime", publishTime);
+        return (int) getSqlMapClientTemplate().queryForObject("poster_recommend_activity.countActivityUsedTemplateByUserId", shardTableMap);
+    }
+
     public ShardTableRouter<PosterRecommendActivity> getRouter() {
         return router;
     }

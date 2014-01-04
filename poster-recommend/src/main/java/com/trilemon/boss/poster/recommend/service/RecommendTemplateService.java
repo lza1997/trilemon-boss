@@ -6,7 +6,6 @@ import com.trilemon.boss.infra.base.service.AppService;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendActivityDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendFavoriteTemplateDAO;
 import com.trilemon.boss.poster.recommend.dao.PosterRecommendRecommendTemplateDAO;
-import com.trilemon.boss.poster.recommend.model.PosterRecommendActivity;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendFavoriteTemplate;
 import com.trilemon.boss.poster.recommend.model.PosterRecommendRecommendTemplate;
 import com.trilemon.boss.poster.template.client.PosterTemplateClient;
@@ -183,14 +182,14 @@ public class RecommendTemplateService {
      */
     public Page<PosterTemplate> paginateUsedPosterTemplates(Long userId, int pageNum, int pageSize) {
         List<PosterTemplate> templates = Lists.newArrayList();
-        List<PosterRecommendActivity> activities = posterRecommendActivityDAO.paginateActivityByUserId(userId,
+        List<Long> templateIdList = posterRecommendActivityDAO.paginateActivityUsedTemplateByUserId(userId,
                 null, null, "add_time desc", (pageNum - 1) * pageSize, pageSize);
-        int count = posterRecommendActivityDAO.countActivityByUserId(userId, null, null);
-        if (CollectionUtils.isEmpty(activities)) {
+        int count = posterRecommendActivityDAO.countActivityUsedTemplateByUserId(userId, null, null);
+        if (CollectionUtils.isEmpty(templateIdList)) {
             return Page.empty();
         } else {
-            for (PosterRecommendActivity activity : activities) {
-                PosterTemplate template = posterTemplateClient.getPosterTemplate(activity.getTemplateId());
+            for (Long templateId : templateIdList) {
+                PosterTemplate template = posterTemplateClient.getPosterTemplate(templateId);
                 templates.add(template);
             }
             return Page.create(count, pageNum, pageSize, templates);

@@ -22,4 +22,8 @@ public interface PosterRecommendActivityDAO {
 
     Integer countActivityByUserId(Long userId, List<Byte> statusList, Date publishTime);
 
+    List<Long> paginateActivityUsedTemplateByUserId(Long userId, List<Byte> statusList, Date publishTime,
+                                                                       String orderBy, int offset, int limit);
+
+    int countActivityUsedTemplateByUserId(Long userId, List<Byte> statusList, Date publishTime);
 }

@@ -286,4 +286,45 @@
             and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
         </isNotNull>
     </select>
+    <select id="paginateActivityUsedTemplateByUserId" resultClass="long" parameterClass="map">
+        SELECT
+        t1.template_id
+        FROM
+        <include refid="poster_recommend_activity.Base_Table_Name"/>
+        t1,
+        (SELECT id FROM
+        <include refid="poster_recommend_activity.Base_Table_Name"/>
+        WHERE
+        user_id = #userId:BIGINT#
+        <isNotEmpty property="statusList">
+            <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                status = #statusList[]:VARCHAR#
+            </iterate>
+        </isNotEmpty>
+        <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
+            publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
+            and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
+        </isNotNull>
+        <isNotNull prepend="ORDER BY" property="orderBy">
+            $orderBy$
+        </isNotNull>
+        LIMIT $offset$, $limit$
+        ) t2
+        where t1.id=t2.id
+    </select>
+    <select id="countActivityUsedTemplateByUserId" resultClass="int" parameterClass="map">
+        SELECT COUNT(template_id) FROM
+        <include refid="poster_recommend_activity.Base_Table_Name"/>
+        WHERE
+        user_id = #userId:BIGINT#
+        <isNotEmpty property="statusList">
+            <iterate prepend="AND" property="statusList" open="(" close=")" conjunction="OR">
+                status = #statusList[]:VARCHAR#
+            </iterate>
+        </isNotEmpty>
+        <isNotNull prepend="AND" property="publishTime" open="(" close=")" >
+            publish_start_time <![CDATA[ <= ]]> #publishTime:TIMESTAMP#
+            and publish_end_time <![CDATA[ >= ]]> #publishTime:TIMESTAMP#
+        </isNotNull>
+    </select>
 </sqlMap>
