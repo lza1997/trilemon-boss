@@ -17,25 +17,28 @@
     <tr ng-repeat="activity in activities">
         <td>{{ activity.title }}</td>
         <td>{{ activity.addTime | date:'yyyy-MM-dd HH:ss' }}</td>
-        <td colspan="3" ng-if="!activity.settingDone">
+        <td colspan="3" ng-if="activity.needComplete">
             <a ng-href="#/poster/activity/{{activity.id}}/publish">投放设置</a>
         </td>
-        <td ng-if="activity.settingDone">
+        <td ng-if="!activity.needComplete">
             <span ng-if="activity.publishType == 0">一直投放</span>
             <span ng-if="activity.publishType == 1">
                 {{ activity.publishEndTime | date:'yyyy-MM-dd HH:ss' }}
             </span>
         </td>
-        <td ng-if="activity.settingDone">
+        <td ng-if="!activity.needComplete">
             {{ POSITION_TYPE[activity.detailPagePosition] }}
         </td>
-        <td ng-if="activity.settingDone">
-            总投放：<a ng-href="#/poster/activity/{{activity.id}}/publish">{{ activity.publishProgress.publishItemNum }}</a> <br/>
+        <td ng-if="!activity.needComplete">
+            总投放：<a ng-href="#/poster/activity/{{activity.id}}/publish">{{ activity.publishProgress.publishItemNum }}</a>
+            <br/>
             已投放：{{ activity.publishProgress.publishedItemNum }}
         </td>
         <td>
-            <a href="" ng-click="publish(activity)" class="btn btn-default" ng-disabled="!activity.settingDone" ng-if="!activity.canStopPublish">投放</a>
+            <a href="" class="btn btn-default" disabled ng-if="activity.needComplete">投放</a>
+            <a href="" ng-click="publish(activity)" class="btn btn-default" ng-if="activity.canPublish">投放</a>
             <a href="" ng-click="unPublish(activity)" class="btn btn-default" ng-if="activity.canStopPublish">停止</a>
+
             <div class="btn-group">
                 <a ng-href="#/poster/select-item?activityId={{activity.id}}" class="btn btn-default">编辑宝贝</a>
                 <a ng-href="#/poster/activity/{{activity.id}}/preview" class="btn btn-default">模板设置</a>

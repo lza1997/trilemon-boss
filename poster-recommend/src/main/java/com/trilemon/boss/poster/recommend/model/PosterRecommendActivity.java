@@ -224,13 +224,14 @@ public class PosterRecommendActivity extends ShardTable {
     }
 
     // 是否完成了所有的填写
-    public boolean isSettingDone() {
-        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE;
+    public boolean isNeedComplete() {
+        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_DESIGNED_S1
+                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_DESIGNED_S2;
     }
 
     // 是否可以投放，包括填写完毕，或者已经卸载完毕（即使有错）
     public boolean isCanPublish() {
-        return isSettingDone()
+        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE
                 || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHED
                 || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED_WITH_ERROR;
     }
