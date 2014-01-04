@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface PosterRecommendConstants {
     /**
-     *  活动状态和列表操作文案
+     * 活动状态和列表操作文案
      */
     byte ACTIVITY_STATUS_DESIGNED_S1 = 0;//海报设计，海报宝贝选择完毕；列表显示【编辑宝贝 投放设置 删除】
     byte ACTIVITY_STATUS_DESIGNED_S2 = 1;//海报设计，预览取名步骤完毕；列表显示【编辑宝贝 投放设置 删除 代码】
@@ -24,10 +24,9 @@ public interface PosterRecommendConstants {
     List<Byte> ALL_PUBLISHED_ACTIVITY_STATUS = ImmutableList.of(ACTIVITY_STATUS_PUBLISHED,
             ACTIVITY_STATUS_PUBLISHED_WITH_ERROR);
     //所有供页面列表暂时的状态
-    List<Byte> ALL_LIST_ACTIVITY_STATUS = ImmutableList.of(ACTIVITY_STATUS_DESIGNED_S1, ACTIVITY_STATUS_DESIGNED_S2,
+    List<Byte> ALL_LIST_ACTIVITY_STATUS = ImmutableList.of(ACTIVITY_STATUS_DESIGNED_S2,
             ACTIVITY_STATUS_PUBLISH_SETTING_DONE, ACTIVITY_STATUS_PUBLISHING,
-            ACTIVITY_STATUS_PUBLISHED, ACTIVITY_STATUS_PUBLISHED_WITH_ERROR,ACTIVITY_STATUS_UNPUBLISHING);
-
+            ACTIVITY_STATUS_PUBLISHED, ACTIVITY_STATUS_PUBLISHED_WITH_ERROR, ACTIVITY_STATUS_UNPUBLISHING);
     //所有状态
     List<Byte> ALL_ACTIVITY_STATUS = ImmutableList.of(ACTIVITY_STATUS_DESIGNED_S1, ACTIVITY_STATUS_DESIGNED_S2,
             ACTIVITY_STATUS_PUBLISH_SETTING_DONE, ACTIVITY_STATUS_PUBLISHING,
