@@ -23,6 +23,8 @@ define(function(require, exports, module) {
                     $scope.activity.publishEndTime = moment().startOf('hour').toDate();
                 }
                 $scope.publishEndHour = $scope.activity.publishEndTime.getHours();
+                // tab
+                $scope.tab = $scope.activity.canPublish ? 'selected' : 'all';
             });
 
             // 小时下拉框
@@ -34,6 +36,10 @@ define(function(require, exports, module) {
         };
 
         $scope.init();
+
+        $scope.selectTab = function(tab) {
+            $scope.tab = tab;
+        };
 
         // 参与投放
         $scope.setInclude = function(item, flag) {
@@ -84,8 +90,13 @@ define(function(require, exports, module) {
             var items = PosterItem.query($scope.queryOptions, function(data) {
                 // 选中的回填
                 var ids = _.pluck($scope.activity.publishItems, 'numIid');
-                _.each(data, function(item) {
-                    item.include = _.contains(ids, item.numIid);
+                _.each(data, function(item, index) {
+                    //item.include = _.contains(ids, item.numIid);
+                    if(_.contains(ids, item.numIid)){
+                        var publishItem = _.findWhere($scope.activity.publishItems, {numIid: item.numIid});
+                        publishItem.include = true;
+                        data[index] = publishItem;
+                    }
                 });
                 $scope.items = data;
             });

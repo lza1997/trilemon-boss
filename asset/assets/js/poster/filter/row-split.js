@@ -28,9 +28,7 @@ define(function(require, exports, module) {
         };
 
         split = _.memoize(split, function(array, rowSize) {
-            var tmp = angular.copy(array);
-            tmp.push(rowSize);
-            return tmp;
+            return angular.toJson(array) + rowSize;
         });
 
         return function(array, rowSize) {

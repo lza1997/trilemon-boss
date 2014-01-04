@@ -43,7 +43,7 @@ angular.module('common').controller('nav', ['$scope', '$location', '$rootScope',
             children: [
                 {name: '制作海报', url: '/poster/category', navClass: 'posterSetting'},
                 {name: '海报列表', url: '/poster/activity', navClass: 'posterIndexActivity'},
-                {name: '海报模板', url: '/poster/template', navClass: 'posterTemplate'}
+                {name: '海报模板', url: '/poster/template', navClass: 'posterIndexTemplate'}
             ]
         }
     ];

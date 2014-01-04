@@ -24,7 +24,7 @@ define(function(require, exports, module) {
         };
 
         // 删除
-        $scope.delete = function(activity) {
+        $scope.remove = function(activity) {
             Confirm.open('确定要删除“' + activity.title + '”？').then(function() {
                 activity.$remove(function() {
                     PosterActivity.refreshCurrPage($scope.activities.currPage, function(options) {

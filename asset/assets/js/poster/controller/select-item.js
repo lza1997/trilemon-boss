@@ -11,6 +11,7 @@ define(function(require, exports, module) {
                 $location.url('/poster/category');
                 return;
             }
+            $scope.$routeParams = $routeParams;
             // 修改或创建
             if ($routeParams.activityId) {
                 $scope.activity = PosterActivity.get({
@@ -20,6 +21,7 @@ define(function(require, exports, module) {
                 }, function() {
                     $scope.template = $scope.activity.template;
                 });
+                $scope.tab = 'selected';
             }
             else {
                 $scope.activity = new PosterActivity({
@@ -27,6 +29,7 @@ define(function(require, exports, module) {
                     activityItems: []
                 });
                 $scope.template = PosterTemplate.get({id: $routeParams.templateId});
+                $scope.tab = 'all';
             }
             $scope.searchKey = $routeParams.key;
             getItems();
@@ -34,6 +37,10 @@ define(function(require, exports, module) {
         };
 
         $scope.init();
+
+        $scope.selectTab = function(tab) {
+            $scope.tab = tab;
+        };
 
         // 加入或取消
         $scope.setInclude = function(item, flag) {
@@ -43,7 +50,7 @@ define(function(require, exports, module) {
             }
             else {
                 $scope.activity.activityItems = _.filter($scope.activity.activityItems, function(i) {
-                    return i.numIid != item.numIid;
+                    return i.numIid !== item.numIid;
                 });
             }
         };
@@ -86,11 +93,11 @@ define(function(require, exports, module) {
             $scope.items = PosterItem.query(_.omit(options, 'templateId', 'activityId'), function(data) {
                 // 选中的回填
                 var ids = _.pluck($scope.activity.activityItems, 'numIid');
-                _.each(data, function(item) {
+                _.each(data, function(item, index) {
                     if (_.contains(ids, item.numIid)) {
                         var activityItem = _.findWhere($scope.activity.activityItems, {numIid: item.numIid});
-                        item.include = true;
-                        item.copy = activityItem.copy;
+                        activityItem.include = true;
+                        data[index] = activityItem;
                     }
                 });
             });

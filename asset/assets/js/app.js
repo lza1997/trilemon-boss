@@ -60,7 +60,8 @@ define(function() {
             .when('/rate', {redirectTo: '/rate/comments'})
 
             .when('/poster/category', poster.routeFor('poster.category'))
-            .when('/poster/select-template', poster.routeFor('poster.selectTemplate', {reloadOnSearch: false}))
+            .when('/poster/select-template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
+            .when('/poster/template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
             .when('/poster/select-item', poster.routeFor('poster.selectItem', {reloadOnSearch: false}))
             .when('/poster/activity/:id/preview', poster.routeFor('poster.preview'))
             .when('/poster/activity/:id/publish', poster.routeFor('poster.publish'))
