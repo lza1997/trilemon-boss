@@ -15,9 +15,18 @@ define(function(require, exports, module) {
             return $scope.activities.$promise;
         };
 
-        $scope.delete = function(item) {
-            Confirm.open('确定要删除“' + item.title + '”？').then(function() {
-                item.$remove(function() {
+        $scope.publish = function(activity) {
+            activity.$publish();
+        };
+
+        $scope.publish = function(activity) {
+            activity.$unPublish();
+        };
+
+        // 删除
+        $scope.delete = function(activity) {
+            Confirm.open('确定要删除“' + activity.title + '”？').then(function() {
+                activity.$remove(function() {
                     PosterActivity.refreshCurrPage($scope.activities.currPage, function(options) {
                         return $scope.jumpPage(options.page);
                     });

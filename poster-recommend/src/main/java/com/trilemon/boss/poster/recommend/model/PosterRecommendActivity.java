@@ -1,5 +1,7 @@
 package com.trilemon.boss.poster.recommend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.trilemon.boss.poster.recommend.PosterRecommendConstants;
 import com.trilemon.boss.poster.recommend.model.dto.ActivityItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishItem;
 import com.trilemon.boss.poster.recommend.model.dto.PublishProgress;
@@ -9,6 +11,7 @@ import com.trilemon.commons.db.ShardTable;
 import java.util.Date;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PosterRecommendActivity extends ShardTable {
     private Long id;
     private Long userId;
@@ -218,5 +221,23 @@ public class PosterRecommendActivity extends ShardTable {
 
     public void setPublishItems(List<PublishItem> publishItems) {
         this.publishItems = publishItems;
+    }
+
+    // 是否完成了所有的填写
+    public boolean isSettingDone() {
+        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISH_SETTING_DONE;
+    }
+
+    // 是否可以投放，包括填写完毕，或者已经卸载完毕（即使有错）
+    public boolean isCanPublish() {
+        return isSettingDone()
+                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_UNPUBLISHED
+                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED_WITH_ERROR;
+    }
+
+    // 可以被停止投放，包括已经投放完毕（即使有错）
+    public boolean isCanStopPublish() {
+        return getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED
+                || getStatus() == PosterRecommendConstants.ACTIVITY_STATUS_PUBLISHED_WITH_ERROR;
     }
 }

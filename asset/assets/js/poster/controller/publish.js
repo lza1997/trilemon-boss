@@ -2,6 +2,8 @@
  * 投放设置
  */
 define(function(require, exports, module) {
+    var moment = require('moment');
+    var FORMAT = 'YYYY-MM-DD';
 
     var Controller = ['$scope', 'PosterActivity', 'PosterItem', 'PosterSellerCat', '$routeParams', '$location', function($scope, PosterActivity, PosterItem, PosterSellerCat, $routeParams, $location) {
 
@@ -9,14 +11,25 @@ define(function(require, exports, module) {
             $scope.queryOptions = {onsale: 'true'};
             $scope.onsale = $scope.queryOptions.onsale;
             $scope.sellerCats = PosterSellerCat.query();
-            $scope.activity = PosterActivity.get({id: $routeParams.id});
+            $scope.activity = PosterActivity.get({
+                id: $routeParams.id,
+                publishItems: true
+            }, function() {
+                // 截止日期
+                if ($scope.activity.publishEndTime) {
+                    $scope.activity.publishEndTime = new Date($scope.activity.publishEndTime);
+                }
+                else {
+                    $scope.activity.publishEndTime = moment().startOf('hour').toDate();
+                }
+                $scope.publishEndHour = $scope.activity.publishEndTime.getHours();
+            });
 
-            // 截止日期
-            $scope.hours = _.map(_.range(25), function(i) {
+            // 小时下拉框
+            $scope.hours = _.map(_.range(24), function(i) {
                 return {name: i + '时', value: i};
             });
-            $scope.endDate = new Date();
-            $scope.endHour = new Date().getHours();
+
             getItems();
         };
 
@@ -24,8 +37,6 @@ define(function(require, exports, module) {
 
         // 参与投放
         $scope.setInclude = function(item, flag) {
-            $scope.activity.publishItems = $scope.activity.publishItems || [];
-
             item.include = flag;
             if (flag) {
                 $scope.activity.publishItems.push(item);
@@ -37,7 +48,10 @@ define(function(require, exports, module) {
 
         // 保存
         $scope.save = function() {
-
+            $scope.activity.publishEndTime.setHours($scope.publishEndHour);
+            $scope.activity.$savePublish(function() {
+                $location.url('/poster/activity');
+            });
         };
 
         // 切换在售与库存

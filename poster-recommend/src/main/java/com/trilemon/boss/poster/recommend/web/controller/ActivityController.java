@@ -46,6 +46,20 @@ public class ActivityController {
     }
 
     /**
+     * 修改活动的宝贝
+     *
+     * @param activity
+     * @return
+     * @throws PosterRecommendException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
+    public PosterRecommendActivity updateItems(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+        activityService.updateActivityItems(sessionService.getUserId(), activity.getId(), activity.getActivityItems());
+        return activity;
+    }
+
+    /**
      * 修改活动的标题、HTML
      *
      * @param activity
@@ -54,26 +68,45 @@ public class ActivityController {
      */
     @ResponseBody
     @RequestMapping(value = "/{id}/html", method = RequestMethod.PUT)
-    public void html(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+    public void updateHtml(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
         activityService.updateActivityDesignS2(sessionService.getUserId(), activity);
+    }
+
+    /**
+     * 修改活动的标题、HTML
+     *
+     * @param activity
+     * @return
+     * @throws PosterRecommendException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/{id}/publish-setting", method = RequestMethod.PUT)
+    public void publishSetting(@RequestBody PosterRecommendActivity activity) throws PosterRecommendException {
+        activityService.updateActivityPublishPart(sessionService.getUserId(), activity);
     }
 
     /**
      * 获取活动
      *
      * @param id
-     * @param detail 是否包含模板对象
+     * @param template      是否包含模板对象
+     * @param publishItems
+     * @param activityItems
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public PosterRecommendActivity show(@PathVariable Long id, Boolean detail) {
-        PosterRecommendActivity activity = activityService.getActivity(sessionService.getUserId(), id, true, false, detail);
+    public PosterRecommendActivity show(@PathVariable Long id,
+                                        @RequestParam(defaultValue = "false") Boolean template,
+                                        @RequestParam(defaultValue = "false") Boolean publishItems,
+                                        @RequestParam(defaultValue = "false") Boolean activityItems) {
+        PosterRecommendActivity activity = activityService.getActivity(sessionService.getUserId(), id, activityItems, publishItems, template);
         return activity;
     }
 
     /**
      * 删除
+     *
      * @param id
      */
     @ResponseBody
@@ -84,6 +117,7 @@ public class ActivityController {
 
     /**
      * 发布
+     *
      * @param id
      * @return
      */
@@ -91,11 +125,12 @@ public class ActivityController {
     @RequestMapping(value = "/{id}/publish", method = RequestMethod.POST)
     public PosterRecommendActivity publish(@PathVariable Long id) {
         publishService.publishActivity(sessionService.getUserId(), id);
-        return activityService.getActivity(sessionService.getUserId(), id,false,false,false);
+        return activityService.getActivity(sessionService.getUserId(), id, false, false, false);
     }
 
     /**
      * 停止发布
+     *
      * @param id
      * @return
      */
@@ -103,6 +138,6 @@ public class ActivityController {
     @RequestMapping(value = "/{id}/publish", method = RequestMethod.DELETE)
     public PosterRecommendActivity unpublish(@PathVariable Long id) {
         publishService.unpublishActivity(sessionService.getUserId(), id);
-        return activityService.getActivity(sessionService.getUserId(), id,false,false,false);
+        return activityService.getActivity(sessionService.getUserId(), id, false, false, false);
     }
 }
