@@ -1,0 +1,34 @@
+{
+    "totalSize": 3,
+    "pageSize": 2,
+    "pageNum": 1,
+    "items": [
+        {
+            "title": "乔威极速万能充 手机座充 T 相机座充 三星黑莓小米中兴华",
+            "numIid": 20005074958,
+            "picUrl": "http://img01.taobaocdn.com/bao/uploaded/i1/12708029223895707/T12MKrFd0gXXXXXXXX_!!0-item_pic.jpg",
+            "exclude": true
+        },
+        {
+            "title": "乔威极速万能充 手机座充 相机座充 三星黑莓小米中兴华为座充",
+            "numIid": 19480514567,
+            "picUrl": "http://img01.taobaocdn.com/bao/uploaded/i1/12708026241141413/T1IVp9FopdXXXXXXXX_!!0-item_pic.jpg",
+            "exclude": false
+        },
+        {
+            "title": "乔威极速万能充 手机座充 相机座充 三星黑莓小米中兴华为座充",
+            "numIid": 19480514567,
+            "picUrl": "http://img01.taobaocdn.com/bao/uploaded/i1/12708026241141413/T1IVp9FopdXXXXXXXX_!!0-item_pic.jpg",
+            "exclude": false
+        },
+        {
+            "title": "乔威极速万能充 手机座充 相机座充 三星黑莓小米中兴华为座充",
+            "numIid": 19480514567,
+            "picUrl": "http://img01.taobaocdn.com/bao/uploaded/i1/12708026241141413/T1IVp9FopdXXXXXXXX_!!0-item_pic.jpg",
+            "exclude": false
+        }
+    ],
+    "empty": false,
+    "pages": 5,
+    "lastPage": false
+}

@@ -1,0 +1,119 @@
+[ {
+    "sellerCat" : {
+        "cid" : 791686717,
+        "name" : "充电器A",
+        "parentCid" : 0,
+        "picUrl" : "http://nc1.superboss.cc/collectDataAction.do?taobaoId=56912708",
+        "sortOrder" : 1,
+        "type" : "manual_type"
+    },
+    "itemNum" : 3,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 809023016,
+        "name" : "充电器A子分类1",
+        "parentCid" : 791686717,
+        "picUrl" : "",
+        "sortOrder" : 1,
+        "type" : "manual_type"
+    },
+    "itemNum" : 3,
+    "used" : true
+}, {
+    "sellerCat" : {
+        "cid" : 809023017,
+        "name" : "充电器A子分类2",
+        "parentCid" : 791686717,
+        "picUrl" : "",
+        "sortOrder" : 2,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : true
+}, {
+    "sellerCat" : {
+        "cid" : 804731967,
+        "name" : "充电器B",
+        "parentCid" : 0,
+        "picUrl" : "",
+        "sortOrder" : 2,
+        "type" : "manual_type"
+    },
+    "itemNum" : 3,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 819049790,
+        "name" : "大炮",
+        "parentCid" : 804731967,
+        "picUrl" : "",
+        "sortOrder" : 2,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 819049789,
+        "name" : "情趣用品",
+        "parentCid" : 804731967,
+        "picUrl" : "",
+        "sortOrder" : 1,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : true
+}, {
+    "sellerCat" : {
+        "cid" : -1,
+        "name" : "未分类",
+        "parentCid" : 0
+    },
+    "itemNum" : 3,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 810013599,
+        "name" : "超级店长日历",
+        "parentCid" : 0,
+        "picUrl" : "http://nr1.superboss.cc//img/create/lovely/y153.gif",
+        "sortOrder" : 3,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 819049793,
+        "name" : "钢材",
+        "parentCid" : 810013599,
+        "picUrl" : "",
+        "sortOrder" : 2,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : false
+}, {
+    "sellerCat" : {
+        "cid" : 819049791,
+        "name" : "长枪",
+        "parentCid" : 804731967,
+        "picUrl" : "",
+        "sortOrder" : 3,
+        "type" : "manual_type"
+    },
+    "itemNum" : 3,
+    "used" : true
+}, {
+    "sellerCat" : {
+        "cid" : 819049792,
+        "name" : "青铜器",
+        "parentCid" : 810013599,
+        "picUrl" : "",
+        "sortOrder" : 1,
+        "type" : "manual_type"
+    },
+    "itemNum" : 0,
+    "used" : false
+} ]

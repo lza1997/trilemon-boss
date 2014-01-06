@@ -1,0 +1,19 @@
+{
+    "id" : 25,
+    "userId" : 56912708,
+    "name" : "111aaasdf",
+    "namePinyin" : "111",
+    "includeSellerCids" : "809023017,819049789,819049791",
+    "autoAddNewItems" : true,
+    "excludeItemNumIids" : "20005074958",
+    "distribution" : "{\"1\":{\"8\":true,\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"2\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"3\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"4\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"5\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"6\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true},\"7\":{\"9\":true,\"10\":true,\"11\":true,\"12\":true,\"13\":true,\"14\":true,\"15\":true,\"16\":true,\"17\":true,\"18\":true,\"19\":true,\"20\":true,\"21\":true,\"22\":true,\"23\":true}}",
+    "distributionType" : 1,
+    "status" : 1,
+    "lastPlanTime" : 1389016533000,
+    "addTime" : 1384269485000,
+    "updTime" : 1389016533000,
+    "itemNum" : 0,
+    "newItemNum" : 0,
+    "waitAdjustItemNum" : 0,
+    "paused" : false
+}

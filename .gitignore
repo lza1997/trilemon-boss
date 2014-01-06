@@ -1,6 +1,7 @@
 .idea/
 *.iml
 target/
+asset/mock/node_modules/
 
 # Compiled source #
 ###################
