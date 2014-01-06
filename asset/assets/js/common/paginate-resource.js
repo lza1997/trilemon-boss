@@ -4,11 +4,16 @@
 define(function(require, exports, module) {
 
     exports.createTransform = function($http) {
-        return $http.defaults.transformResponse.concat([function(data) {
-            var items = data.items;
-            items.totalPage = data.pages;
-            items.currPage = data.pageNum;
-            return items;
+        return $http.defaults.transformResponse.concat([function(data, header) {
+            if (data.items && angular.isArray(data.items)) {
+                var items = data.items;
+                items.totalPage = data.pages;
+                items.currPage = data.pageNum;
+                return items;
+            }
+            else {
+                return data;
+            }
         }]);
     };
 
@@ -26,7 +31,7 @@ define(function(require, exports, module) {
     };
 
     // 刷新当前页，如果当前页无数据则进入上一页
-    exports.refreshCurrPage = function(currPage, getDataFn){
+    exports.refreshCurrPage = function(currPage, getDataFn) {
         // 移除完毕后刷新当前页，如果当前页无数据则进入上一页
         getDataFn({page: currPage}).then(function(data) {
             if (data.length === 0 && currPage > 1) {

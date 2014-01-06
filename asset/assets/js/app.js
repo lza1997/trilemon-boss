@@ -69,6 +69,17 @@ define(function() {
             .when('/poster', {redirectTo: '/poster/category'})
 
             .otherwise({redirectTo: '/shelf'});
+
+        $httpProvider.interceptors.push(['$q', function($q) {
+            return {
+                'responseError': function(responseError) {
+                    if (responseError.status >= 500) {
+                        alert('出错啦！');
+                        return $q.reject(responseError);
+                    }
+                }
+            };
+        }]);
     }]);
 
     app.constant({
