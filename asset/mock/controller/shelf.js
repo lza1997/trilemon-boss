@@ -9,6 +9,8 @@ module.exports = function(app) {
         var json = requireUncached('../json/shelf/plan-settings.json');
         json.pageNum = parseInt(req.query.page || 1);
         res.json(json);
+        //res.status(500);
+        //res.end('');
     });
 
     app.get('/shelf/plan-settings/chart', function(req, res) {
@@ -42,9 +44,12 @@ module.exports = function(app) {
         req.body.exclude = true;
         res.json(req.body);
     });
-
     app.del('/shelf/plan-settings/:id/items/:nid/exclude', function(req, res) {
         req.body.exclude = false;
         res.json(req.body);
+    });
+    app.get('/shelf/plan-settings/:id/distribution', function(req, res) {
+        var json = requireUncached('../json/shelf/distribution.json');
+        res.json(json);
     });
 };
