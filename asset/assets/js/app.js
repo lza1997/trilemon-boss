@@ -23,50 +23,62 @@
 //
 //               佛祖保佑         永无BUG
 //
-define(function() {
-    var app = angular.module('app', ['ngRoute', 'ngSanitize', 'ngResource', 'ui.bootstrap', 'common', 'seajs', 'ajax-spinner', 'highchart']);
+define(function(require, exports, module) {
+    var angular = require('angularjs');
+    var SeajsLazyAngular = require('seajs-lazy-angular');
+    var common = require('./common/index');
 
-    app.config(['$routeProvider', '$httpProvider', 'SeajsLazyModuleProvider', function($routeProvider, $httpProvider, SeajsLazyModuleProvider) {
+    var app = angular.module('app', [common.name]);
 
-        SeajsLazyModuleProvider.setTilteSuffix(' - Trilemon');
-        var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
-        var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
-        var inventory = SeajsLazyModuleProvider.create('app/inventory/index');
-        var rate = SeajsLazyModuleProvider.create('app/rate/index');
-        var poster = SeajsLazyModuleProvider.create('app/poster/index');
+    app.config(SeajsLazyAngular.cacheInternals);
+    SeajsLazyAngular.patchAngular();
+    SeajsLazyAngular.setResolveCallback(['$rootScope', 'controller', function($rootScope, controller) {
+        $rootScope.title = controller.title + ' - Trilemon';
+        $rootScope.navClass = controller.navClass;
+    }]);
+
+    app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+
+        //        var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
+        //        var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
+        //        var inventory = SeajsLazyModuleProvider.create('app/inventory/index');
+        //        var rate = SeajsLazyModuleProvider.create('app/rate/index');
+        //        var poster = SeajsLazyModuleProvider.create('app/poster/index');
+
+        var shelf = SeajsLazyAngular.createLazyStub('app/shelf/index');
 
         $routeProvider
-            .when('/shelf/plan-setting/new', shelf.routeFor('shelf.newPlanSetting'))
-            .when('/shelf/plan-setting/:id/filter', shelf.routeFor('shelf.filter', {reloadOnSearch: false}))
-            .when('/shelf/plan-setting/:id/edit', shelf.routeFor('shelf.editPlanSetting'))
-            .when('/shelf/plan-setting/:id/distribution', shelf.routeFor('shelf.distribution'))
-            .when('/shelf/plan-setting', shelf.routeFor('shelf.indexPlanSetting', {reloadOnSearch: false}))
-            .when('/shelf', {redirectTo: '/shelf/plan-setting'})
-
-            .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
-            .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase', {reloadOnSearch: false}))
-            .when('/showcase/exclude-item', showCase.routeFor('showcase.excludeItem', {reloadOnSearch: false}))
-            .when('/showcase/include-item', showCase.routeFor('showcase.includeItem', {reloadOnSearch: false}))
-            .when('/showcase', {redirectTo: '/showcase/setting/edit'})
-
-            .when('/inventory/setting/edit', inventory.routeFor('inventory.editSetting'))
-            .when('/inventory/setting', inventory.routeFor('inventory.showSetting', {reloadOnSearch: false}))
-            .when('/inventory/distribution', inventory.routeFor('inventory.distribution'))
-            .when('/inventory', {redirectTo: '/inventory/setting/edit'})
-
-            .when('/rate/comments', rate.routeFor('rate.indexComment'))
-            .when('/rate/filter-buyer', rate.routeFor('rate.filterBuyer'))
-            .when('/rate/buyer-rates', rate.routeFor('rate.indexBuyerRate', {reloadOnSearch: false}))
-            .when('/rate', {redirectTo: '/rate/comments'})
-
-            .when('/poster/category', poster.routeFor('poster.category'))
-            .when('/poster/select-template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
-            .when('/poster/template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
-            .when('/poster/select-item', poster.routeFor('poster.selectItem', {reloadOnSearch: false}))
-            .when('/poster/activity/:id/preview', poster.routeFor('poster.preview'))
-            .when('/poster/activity/:id/publish', poster.routeFor('poster.publish'))
-            .when('/poster/activity', poster.routeFor('poster.indexActivity', {reloadOnSearch: false}))
-            .when('/poster', {redirectTo: '/poster/category'})
+            .when('/shelf/plan-setting/new', shelf.createRoute('./controller/form'))
+            .when('/shelf/plan-setting/:id/edit', shelf.createRoute('./controller/form'))
+            .when('/shelf/plan-setting/:id/filter', shelf.createRoute('./controller/filter', {reloadOnSearch: false}))
+            .when('/shelf/plan-setting/:id/distribution', shelf.createRoute('./controller/distribution'))
+            .when('/shelf/plan-setting', shelf.createRoute('./controller/index-plan-setting', {reloadOnSearch: false}))
+            .when('/shelf', {redirectTo: '/shelf/plan-setting/new'})
+            //
+            //            .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
+            //            .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase', {reloadOnSearch: false}))
+            //            .when('/showcase/exclude-item', showCase.routeFor('showcase.excludeItem', {reloadOnSearch: false}))
+            //            .when('/showcase/include-item', showCase.routeFor('showcase.includeItem', {reloadOnSearch: false}))
+            //            .when('/showcase', {redirectTo: '/showcase/setting/edit'})
+            //
+            //            .when('/inventory/setting/edit', inventory.routeFor('inventory.editSetting'))
+            //            .when('/inventory/setting', inventory.routeFor('inventory.showSetting', {reloadOnSearch: false}))
+            //            .when('/inventory/distribution', inventory.routeFor('inventory.distribution'))
+            //            .when('/inventory', {redirectTo: '/inventory/setting/edit'})
+            //
+            //            .when('/rate/comments', rate.routeFor('rate.indexComment'))
+            //            .when('/rate/filter-buyer', rate.routeFor('rate.filterBuyer'))
+            //            .when('/rate/buyer-rates', rate.routeFor('rate.indexBuyerRate', {reloadOnSearch: false}))
+            //            .when('/rate', {redirectTo: '/rate/comments'})
+            //
+            //            .when('/poster/category', poster.routeFor('poster.category'))
+            //            .when('/poster/select-template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
+            //            .when('/poster/template', poster.routeFor('poster.indexTemplate', {reloadOnSearch: false}))
+            //            .when('/poster/select-item', poster.routeFor('poster.selectItem', {reloadOnSearch: false}))
+            //            .when('/poster/activity/:id/preview', poster.routeFor('poster.preview'))
+            //            .when('/poster/activity/:id/publish', poster.routeFor('poster.publish'))
+            //            .when('/poster/activity', poster.routeFor('poster.indexActivity', {reloadOnSearch: false}))
+            //            .when('/poster', {redirectTo: '/poster/category'})
 
             .otherwise({redirectTo: '/shelf'});
 
@@ -104,9 +116,9 @@ define(function() {
         }
     });
 
-    app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
-        SeajsLazyModule.init($templateCache);
-    }]);
+    //    app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
+    //        SeajsLazyModule.init($templateCache);
+    //    }]);
 
     angular.bootstrap(document.documentElement, [app.name]);
 });

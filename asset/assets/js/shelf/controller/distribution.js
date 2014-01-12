@@ -2,8 +2,9 @@
  * 手动设置上架时间
  */
 define(function(require, exports, module) {
+    var _ = require('_');
 
-    var DistributionController = ['$scope', 'DistributionFactory', '$modal', '$routeParams', '$location', function($scope, DistributionFactory, $modal, $routeParams, $location) {
+    var DistributionController = ['$scope', 'DistributionFactory', '$modal', '$routeParams', '$location', 'RelativeUrlFactory', function($scope, DistributionFactory, $modal, $routeParams, $location, RelativeUrlFactory) {
         var Distribution = DistributionFactory.create('/shelf/plan-settings/:id/distribution');
 
         // 格式为 {1: {1:true, 2:false, ... , 23:true}, ...}
@@ -11,7 +12,7 @@ define(function(require, exports, module) {
 
         $scope.showModal = function(day) {
             $modal.open({
-                templateUrl: 'shelf/distributionModal',
+                templateUrl: RelativeUrlFactory.create(module)('./distribution-modal.html'),
                 controller: ModalController,
                 resolve: {
                     distribution: function() {
@@ -54,7 +55,6 @@ define(function(require, exports, module) {
         $scope.selectTab(_.first($scope.tabs));
     }];
 
-    DistributionController.template = 'shelf/distribution';
     DistributionController.title = "设置上架时间";
 
     module.exports = DistributionController;

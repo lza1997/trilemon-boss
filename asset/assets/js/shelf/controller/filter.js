@@ -2,6 +2,7 @@
  * 筛选宝贝
  */
 define(function(require, exports, module) {
+    var _ = require('_');
 
     var FilterController = ['$scope', 'PlanItem', '$routeParams', '$location', function($scope, PlanItem, $routeParams, $location) {
 
@@ -35,7 +36,6 @@ define(function(require, exports, module) {
         }
     }];
 
-    FilterController.template = 'shelf/filter';
     FilterController.title = "筛选宝贝";
 
     module.exports = FilterController;

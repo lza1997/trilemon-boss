@@ -2,7 +2,9 @@
  * 计划列表
  */
 define(function(require, exports, module) {
-    var IndexController = ['$scope', 'PlanSetting', 'Flash', 'Confirm', '$location', '$routeParams', '$modal', function($scope, PlanSetting, Flash, Confirm, $location, $routeParams, $modal) {
+    var IndexController = ['$scope', 'PlanSetting', 'Flash', 'Confirm', '$location', '$routeParams', '$modal', 'RelativeUrlFactory', function($scope, PlanSetting, Flash, Confirm, $location, $routeParams, $modal, RelativeUrlFactory) {
+        $scope.relativeUrl = RelativeUrlFactory.create(module);
+
         // 初始化
         $scope.init = function() {
             $scope.flashSuccess = Flash.success();
@@ -33,14 +35,16 @@ define(function(require, exports, module) {
         // 处理分页
         $scope.jumpPage = function(page) {
             $location.search('page', page);
-            $scope.planSettings = PlanSetting.query({page: page || 1});
-            return $scope.planSettings.$promise;
+            var items = PlanSetting.query({page: page || 1}, function(data){
+                $scope.planSettings = data;
+            });
+            return items.$promise;
         };
 
         // 统计图表
         $scope.showChart = function() {
             var modal = $modal.open({
-                templateUrl: 'shelf/chart',
+                templateUrl: $scope.relativeUrl('./chart.html'),
                 controller: require('./chart')
             });
         };
@@ -48,7 +52,6 @@ define(function(require, exports, module) {
         $scope.init();
     }];
 
-    IndexController.template = 'shelf/index';
     IndexController.title = '计划列表';
     IndexController.navClass = 'shelfIndex';
 

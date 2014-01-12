@@ -2,6 +2,8 @@
  * 用于弹出层显示折线图
  */
 define(function(require, exports, module) {
+    var _ = require('_');
+
     var ChartController = ['$scope', '$modalInstance', 'PlanSetting', function($scope, $modalInstance, PlanSetting) {
         $scope.modal = $modalInstance;
         PlanSetting.chart(function(data) {
