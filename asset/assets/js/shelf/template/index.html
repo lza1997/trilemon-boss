@@ -1,14 +1,14 @@
 <div class="alert alert-success" ng-if="flashSuccess" ng-bind-html="flashSuccess"></div>
-<div ng-show="planSettings.$resolved && planSettings.length>0">
+<div class="wrap clearfix" ng-show="planSettings.$resolved && planSettings.length>0">
     <a class="pull-right" href="" ng-click="showChart()"><i class="icon-bar-chart"></i> 当前上下架统计</a>
 </div>
-<table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover">
+<table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover table-bordered">
     <col width="150px"/>
     <col/>
     <col/>
     <col/>
     <col/>
-    <col width="280px"/>
+    <col width="180px"/>
     <thead>
     <tr>
         <th>计划名称</th>
@@ -19,36 +19,33 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="planSetting in planSettings" ng-class="{danger: planSetting.paused}">
+    <tr ng-repeat="planSetting in planSettings" ng-class="{warning: planSetting.paused}">
         <td>{{ planSetting.name }}</td>
-        <td>{{ planSetting.itemNum }}</td>
+        <td class="text-danger">{{ planSetting.itemNum }}</td>
         <td>{{ planSetting.newItemNum }} 个宝贝自动加入</td>
         <td>{{ planSetting.waitAdjustItemNum }} 个宝贝等待调整</td>
         <td>
             {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}
         </td>
         <td>
-            <button class="btn btn-primary" ng-click="pause(planSetting, true)" ng-if="!planSetting.paused">
-                <i class="icon-pause"></i> 暂停
+            <button class="btn btn-default btn-sm" ng-click="pause(planSetting, true)" ng-if="!planSetting.paused">
+                暂 停
             </button>
-            <button class="btn btn-primary" ng-click="pause(planSetting, false)" ng-if="planSetting.paused">
-                <i class="icon-play"></i> 执行
-            </button>
-            &nbsp;
-            <button ng-click="remove(planSetting)" class="btn btn-primary">
-                <i class="icon-remove"></i> 删除
+            <button class="btn btn-default btn-sm" ng-click="pause(planSetting, false)" ng-if="planSetting.paused">
+                执 行
             </button>
             &nbsp;
             <div class="btn-group">
-                <a href="#/shelf/plan-setting/{{planSetting.id}}/edit" class="btn btn-primary">
-                    <i class="icon-pencil"></i> 修改
+                <a href="#/shelf/plan-setting/{{planSetting.id}}/edit" class="btn btn-default btn-sm">
+                    修 改
                 </a>
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
                     <li><a href="#shelf/plan-setting/{{planSetting.id}}/filter">筛选宝贝</a></li>
                     <li><a href="#shelf/plan-setting/{{planSetting.id}}/distribution">修改时间</a></li>
+                    <li><a href="" ng-click="remove(planSetting)">删除</a></li>
                 </ul>
             </div>
         </td>

@@ -29,7 +29,9 @@ define(function(require, exports, module) {
             options = _.defaults(options || {}, $routeParams);
             $location.search(_.omit(options, 'id'));
 
-            $scope.items = PlanItem.query(options);
+            PlanItem.query(options, function(data) {
+                $scope.items = data;
+            });
         }
     }];
 

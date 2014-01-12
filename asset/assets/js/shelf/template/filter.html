@@ -4,7 +4,7 @@
     </div>
     <button class="btn btn-primary" type="submit">搜 索</button>
 </form>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
     <col width="15%"/>
     <col/>
     <col width="15%"/>
@@ -15,17 +15,16 @@
         <th>操作</th>
     </tr>
     </thead>
-    <tr ng-repeat="item in items" ng-class="{danger:item.exclude}">
+    <tr ng-repeat="item in items" ng-class="{warning:item.exclude}">
         <td><img ng-src="{{item.picUrl}}_sum.jpg"/></td>
         <td>{{ item.title }}</td>
         <td>
-            <a ng-if="!item.exclude" href="" ng-click="setExclude(item, true)">排除</a>
+            <a ng-if="!item.exclude" href="" ng-click="setExclude(item, true)" class="btn btn-warning btn-sm">排除</a>
 
             <div ng-if="item.exclude">
-                已排除
-                <a href="" ng-click="setExclude(item, false)">恢复</a>
+                <a href="" ng-click="setExclude(item, false)" class="btn btn-success btn-sm">恢复</a>
+                <small>已排除</small>
             </div>
-
         </td>
     </tr>
 </table>

@@ -20,6 +20,12 @@ app.use(function(req, res, next) {
         setTimeout(next, _.random(300, 1000));
     }
 });
+// is mac?
+app.use(function(req, res, next) {
+    req.isMac = /mac/.test(req.header('User-Agent').toLowerCase());
+    res.locals.req = req;
+    next();
+});
 app.use('/assets', express.static(path.join(__dirname, '../assets')));
 app.use(app.router);
 

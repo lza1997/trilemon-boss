@@ -13,6 +13,13 @@
     <link href="<%= asset %>/base/css/bootstrap.css" rel="stylesheet">
     <link href="<%= asset %>/base/css/font-awesome.css" rel="stylesheet">
     <link href="<%= asset %>/css/application.css" rel="stylesheet">
+    <% if(req.isMac) { %>
+    <style>
+    body, h1, h2, h3 {
+        font-family: Helvetica, Tahoma, Arial, "Hiragino Sans GB", STXihei, "华文细黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
+    }
+    </style>
+    <% } %>
 
     <!--[if lt IE 9]>
     <script src="<%= asset %>/base/js/html5shiv.js"></script>
@@ -110,7 +117,7 @@
 <footer>
     <div class="container">
         <ul class="list-inline">
-            <li>? 2013 GLSB, Inc.</li>
+            <li>&copy; 2013 GYSB, Inc.</li>
             <li><a href="">联系我们</a></li>
             <li><a href="">使用帮助</a></li>
         </ul>

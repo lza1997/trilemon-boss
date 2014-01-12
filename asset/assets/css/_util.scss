@@ -1,0 +1,14 @@
+@charset "utf-8";
+// 工具类
+
+$inline-block-alignment: middle !default;
+
+@mixin inline-block($alignment: $inline-block-alignment) {
+  display: inline-block;
+  @if $alignment and $alignment != none {
+    vertical-align: $alignment;
+  }
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
