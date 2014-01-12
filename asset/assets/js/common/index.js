@@ -18,12 +18,29 @@ define(function(require, exports, module) {
 
     common.controller(require('./controller/nav'));
 
-    common.factory(require('./service/confirm'));
-    common.factory(require('./service/flash'));
-    common.factory(require('./service/seller-cat-factory'));
-    common.factory(require('./service/distribution-factory'));
+    common.factory(require('./factory/confirm'));
+    common.factory(require('./factory/flash'));
+    common.factory(require('./factory/seller-cat-factory'));
+    common.factory(require('./factory/distribution-factory'));
+    common.factory(require('./factory/paginate-util'));
 
     common.filter(require('./filter/distribution-text'));
+
+    // http method override
+    common.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push(['$q', function($q) {
+            return {
+                'request': function(config) {
+                    var method = config.method;
+                    if (method === 'DELETE' || method === "PUT") {
+                        config.method = 'POST';
+                        config.headers['X-HTTP-Method-Override'] = method;
+                    }
+                    return config || $q.when(config);
+                }
+            };
+        }]);
+    }]);
 
     module.exports = common;
 });

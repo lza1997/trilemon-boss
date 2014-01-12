@@ -2,10 +2,8 @@
  * 计划
  */
 define(function(require, exports, module) {
-    var paginateResource = require('../../common/paginate-resource');
-
     module.exports = {
-        'PlanSetting': ['$resource', '$http', function($resource, $http) {
+        'PlanSetting': ['$resource', '$http', 'PaginateUtil', function($resource, $http, PaginateUtil) {
             var BASE_URL = '/shelf/plan-settings';
             var PLAN_URL = BASE_URL + '/:id';
             var PAUSE_URL = PLAN_URL + '/pause';
@@ -36,14 +34,14 @@ define(function(require, exports, module) {
                 query: {
                     method: 'GET',
                     isArray: true,
-                    transformResponse: paginateResource.createTransform($http),
+                    transformResponse: PaginateUtil.createTransform(),
                     interceptor: {
-                        response: paginateResource.responseInterceptor
+                        response: PaginateUtil.responseInterceptor
                     }
                 }
             });
 
-            PlanSetting.removeFromList = paginateResource.removeFromList;
+            PlanSetting.removeFromList = PaginateUtil.removeFromList;
 
             return PlanSetting;
         }]

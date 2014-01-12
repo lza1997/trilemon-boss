@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     var paginateResource = require('../../common/paginate-resource');
 
     module.exports = {
-        'PlanItem': ['$resource', '$http', function($resource, $http) {
+        'PlanItem': ['$resource', 'PaginateUtil', function($resource, PaginateUtil) {
             var URL = '/shelf/plan-settings/:id/items/:numIid';
             var EXCLUDE_URL = URL + '/exclude';
 
@@ -13,9 +13,9 @@ define(function(require, exports, module) {
                 query: {
                     method: 'GET',
                     isArray: true,
-                    transformResponse: paginateResource.createTransform($http),
+                    transformResponse: PaginateUtil.createTransform(),
                     interceptor: {
-                        response: paginateResource.responseInterceptor
+                        response: PaginateUtil.responseInterceptor
                     }
                 },
                 exclude: {

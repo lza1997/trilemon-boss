@@ -11,9 +11,9 @@ define(function(require, exports, module) {
     shelf.seajsController(require('./controller/index-plan-setting'));
     shelf.seajsController(require('./controller/distribution'));
 
-    shelf.factory(require('./service/plan-setting'));
-    shelf.factory(require('./service/plan-item'));
-    shelf.factory(require('./service/plan-setting-form'));
+    shelf.factory(require('./factory/plan-setting'));
+    shelf.factory(require('./factory/plan-item'));
+    shelf.factory(require('./factory/plan-setting-form'));
 
     module.exports = shelf;
 });
