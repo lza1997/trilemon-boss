@@ -1,9 +1,9 @@
 /**
- * @license AngularJS v1.2.3
+ * @license AngularJS v1.2.7
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
-define("angular/angularjs/1.2.3/angular-cookies-debug",["angularjs"],function(require){ var angular = require("angularjs");(function(window, angular, undefined) {'use strict';
+define("angular/angularjs/1.2.7/angular-cookies-debug",["angularjs"],function(require){ var angular = require("angularjs");(function(window, angular, undefined) {'use strict';
 
 /**
  * @ngdoc overview
