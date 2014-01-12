@@ -39,7 +39,6 @@ define(function(require, exports, module) {
 
     app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 
-        //        var shelf = SeajsLazyModuleProvider.create('app/shelf/index');
         //        var showCase = SeajsLazyModuleProvider.create('app/showcase/index');
         //        var inventory = SeajsLazyModuleProvider.create('app/inventory/index');
         //        var rate = SeajsLazyModuleProvider.create('app/rate/index');
@@ -115,10 +114,6 @@ define(function(require, exports, module) {
             showButtonBar: false
         }
     });
-
-    //    app.run(['SeajsLazyModule', '$templateCache', function(SeajsLazyModule, $templateCache) {
-    //        SeajsLazyModule.init($templateCache);
-    //    }]);
 
     angular.bootstrap(document.documentElement, [app.name]);
 });
