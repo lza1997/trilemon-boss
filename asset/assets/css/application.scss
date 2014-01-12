@@ -126,6 +126,7 @@ input.ng-invalid.ng-dirty:focus {
   padding: 12px 0 2px 0;
   background: #FCF6CF;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  z-index: -1;
 
   -webkit-transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -171,16 +172,16 @@ footer .container {
   }
 
   .form-field {
-    width: 740px;
+    width: 760px;
     float: right;
 
     .form-control {
       width: 400px;
     }
   }
+
   .form-action {
-    padding-left: 170px;
-    border-bottom: 0 none
+    border-bottom: 0;
   }
 }
 

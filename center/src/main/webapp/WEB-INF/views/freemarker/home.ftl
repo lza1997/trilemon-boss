@@ -10,7 +10,6 @@
 
     <#assign asset = "/assets">
 
-    <link href="${asset}/base/css/bootstrap.css" rel="stylesheet">
     <link href="${asset}/base/css/font-awesome.css" rel="stylesheet">
     <link href="${asset}/css/application.css" rel="stylesheet">
 
@@ -22,55 +21,39 @@
     </script>
     <![endif]-->
 
-    <script src="${asset}/base/js/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
-    <script src="${asset}/base/js/underscore.js"></script>
-    <script src="${asset}/base/js/jquery.js"></script>
-    <script src="${asset}/base/js/highcharts.src.js"></script>
-    <script src="${asset}/base/js/angular.js"></script>
-    <script src="${asset}/base/js/angular-resource.js"></script>
-    <script src="${asset}/base/js/angular-route.js"></script>
-    <script src="${asset}/base/js/angular-sanitize.js"></script>
-    <script src="${asset}/base/js/angular-locale_zh.js"></script>
-    <script src="${asset}/base/js/bootstrap/index.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-modal.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-tabs.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-position.js"></script>
-    <script src="${asset}/base/js/bootstrap/angular-datepicker.js"></script>
-    <script src="${asset}/base/js/seajs-lazy-module.js"></script>
-    <script src="${asset}/base/js/angular/ajax-spinner.js"></script>
-    <script src="${asset}/base/js/angular/highchart.js"></script>
+    <script src="${asset}/base/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
+    <#--<script src="${asset}/base/js/underscore.js"></script>-->
+    <#--<script src="${asset}/base/js/jquery.js"></script>-->
+    <#--<script src="${asset}/base/js/highcharts.src.js"></script>-->
+    <#--<script src="${asset}/base/js/angular.js"></script>-->
+    <#--<script src="${asset}/base/js/angular-resource.js"></script>-->
+    <#--<script src="${asset}/base/js/angular-route.js"></script>-->
+    <#--<script src="${asset}/base/js/angular-sanitize.js"></script>-->
+    <#--<script src="${asset}/base/js/angular-locale_zh.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/index.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-modal.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-tabs.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-position.js"></script>-->
+    <#--<script src="${asset}/base/js/bootstrap/angular-datepicker.js"></script>-->
+    <#--<script src="${asset}/base/js/seajs-lazy-module.js"></script>-->
+    <#--<script src="${asset}/base/js/angular/ajax-spinner.js"></script>-->
+    <#--<script src="${asset}/base/js/angular/highchart.js"></script>-->
 
-    <script src="${asset}/js/common/index.js"></script>
-    <script src="${asset}/js/common/http-method-override.js"></script>
-    <script src="${asset}/js/common/controller/nav.js"></script>
-    <script src="${asset}/js/common/service/distribution-factory.js"></script>
-    <script src="${asset}/js/common/service/confirm.js"></script>
-    <script src="${asset}/js/common/service/flash.js"></script>
-    <script src="${asset}/js/common/service/seller-cat-factory.js"></script>
-    <script src="${asset}/js/common/filter/distribution-text.js"></script>
+    <#--<script src="${asset}/js/common/index.js"></script>-->
+    <#--<script src="${asset}/js/common/http-method-override.js"></script>-->
+    <#--<script src="${asset}/js/common/controller/nav.js"></script>-->
+    <#--<script src="${asset}/js/common/service/distribution-factory.js"></script>-->
+    <#--<script src="${asset}/js/common/service/confirm.js"></script>-->
+    <#--<script src="${asset}/js/common/service/flash.js"></script>-->
+    <#--<script src="${asset}/js/common/service/seller-cat-factory.js"></script>-->
+    <#--<script src="${asset}/js/common/filter/distribution-text.js"></script>-->
 
     <!--[if lt IE 8]>
     <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
     <script src="${asset}/base/js/json2.js"></script>
-    <script src="${asset}/base/js/angular/animate-ie7fix.js"></script>
-    <script>
-        app.config(AnimateIE7Fix);
-    </script>
     <![endif]-->
-
-    <script>
-        seajs.config({
-            preload: ['seajs/seajs-text/1.0.3/seajs-text'],
-            paths: {
-                'app':'${asset}/js'
-            },
-            alias:{
-                moment: 'gallery/moment/2.3.1/moment'
-            }
-        });
-    </script>
 
     <link rel="shortcut icon" href="${asset}/ico/favicon.ico">
 </head>
@@ -110,13 +93,35 @@
 <footer>
     <div class="container">
         <ul class="list-inline">
-            <li>© 2013 GLSB, Inc.</li>
+            <li>© 2013 GYSB, Inc.</li>
             <li><a href="">联系我们</a></li>
             <li><a href="">使用帮助</a></li>
         </ul>
     </div>
 </footer>
 <script>
+    seajs.config({
+        alias: {
+            'angularjs': 'angular/angularjs/1.2.7/angular',
+            'angular-animate': 'angular/angularjs/1.2.7/angular-animate',
+            'angular-resource': 'angular/angularjs/1.2.7/angular-resource',
+            'angular-route': 'angular/angularjs/1.2.7/angular-route',
+            'angular-sanitize': 'angular/angularjs/1.2.7/angular-sanitize',
+
+            '_': 'gallery/underscore/1.4.4/underscore',
+            'moment': 'gallery/moment/2.3.1/moment',
+            'seajs-lazy-angular': 'angular/seajs-lazy-angular/0.0.1/seajs-lazy-angular'
+        },
+        preload: ['seajs/seajs-text/1.0.3/seajs-text'],
+        paths: {
+            'app': '${asset}/js'
+        }
+    });
+    seajs.on('exec', function(m) {
+        if (m.exports) {
+            m.exports.__moduleUri = m.uri;
+        }
+    });
     seajs.use('${asset}/js/app.js');
 </script>
 </body>

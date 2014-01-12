@@ -2,8 +2,6 @@
  * 计划对应的宝贝
  */
 define(function(require, exports, module) {
-    var paginateResource = require('../../common/paginate-resource');
-
     module.exports = {
         'PlanItem': ['$resource', 'PaginateUtil', function($resource, PaginateUtil) {
             var URL = '/shelf/plan-settings/:id/items/:numIid';
