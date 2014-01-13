@@ -985,7 +985,7 @@ footer .container { margin: 40px auto; }
 .plan-form .control-label { display: inline-block; vertical-align: middle; *vertical-align: auto; zoom: 1; *display: inline; width: 150px; float: left; }
 .plan-form .form-field { width: 760px; float: right; }
 .plan-form .form-field .form-control { width: 400px; }
-.plan-form .form-action { width: 760px; border-bottom: 0; }
+.plan-form .form-action { border-bottom: 0; }
 
 .shelf-filter-form { width: 400px; margin-bottom: 20px; }
 
