@@ -3,8 +3,9 @@
  */
 define(function(require, exports, module) {
     var angular = require('angularjs');
+    var angularHighcharts = require('angular/angular-highcharts/3.0.7/angular-highcharts');
 
-    var shelf = angular.module('shelf', []);
+    var shelf = angular.module('shelf', [angularHighcharts.name]);
 
     shelf.seajsController(require('./controller/filter'));
     shelf.seajsController(require('./controller/form'));
