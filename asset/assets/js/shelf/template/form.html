@@ -11,8 +11,6 @@
         <label class="control-label text-right">宝贝分类</label>
 
         <div class="form-field">
-            <p class="form-control-static">共 {{sellerCats.parentLength}} 个分类，{{sellerCats.length -
-                sellerCats.parentLength}} 个子分类</p>
 
             <div class="checkbox" ng-repeat="sellercat in sellerCats | filter:{parentCid:0}:true">
                 <label>
@@ -33,6 +31,8 @@
                     </label>
                 </div>
             </div>
+            <p class="form-control-static text-muted"><small>共 {{sellerCats.parentLength}} 个分类，{{sellerCats.length -
+                sellerCats.parentLength}} 个子分类</small></p>
             <input type="hidden" ng-model="planSetting.includeSellerCids" name="includeSellerCids" required/>
             <label class="error"><i class="icon-exclamation-sign"></i> 请选择分类</label>
         </div>
@@ -49,7 +49,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group form-action">
         <div class="form-field">
             <button class="btn btn-primary btn-lg" ng-click="save()">{{ planSetting.id ? '保存' : '创建计划' }}</button>
         </div>

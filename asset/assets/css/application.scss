@@ -2,7 +2,6 @@
 
 // 变量，包括覆盖的 bs 的变量
 $banner-bg: #242d3c;
-
 $navbar-height: 40px;
 $navbar-border-radius: 0;
 $navbar-default-bg: #7accc8 !default;
@@ -15,6 +14,7 @@ $navbar-padding-vertical: 10px;
 // 引入
 @import "../base/css/bootstrap/bootstrap";
 @import "./util";
+@import "./form";
 
 // 全局
 body {
@@ -66,7 +66,7 @@ input.ng-invalid.ng-dirty:focus {
 }
 
 .wrap {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .pagination {
@@ -153,35 +153,30 @@ footer .container {
 }
 
 // 计划的表单
+.from-label-normal{}
+
 .plan-form {
-  border: 1px solid #e2e2e2;
-  border-radius: 5px;
-  padding: 20px 35px;
-
+  @include form-border;
+  padding-top:$padding-large-vertical;
+  padding-right:$padding-large-vertical*2;
+  padding-left:$padding-large-vertical*2;
+  padding-bottom:$padding-large-vertical;
   .form-group {
-    @include clearfix();
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-    border-bottom: 1px dotted #ececec;
+    @include form-group;
   }
-
   .control-label {
     @include inline-block;
-    width: 150px;
-    float: left;
+    width:$form-label-wm;
+
   }
-
   .form-field {
-    width: 760px;
-    float: right;
-
+    width: $form-field-wm;
     .form-control {
-      width: 400px;
+      width: $form-control-wxl;
     }
   }
-
   .form-action {
-    border-bottom: 0;
+    @include form-action;
   }
 }
 

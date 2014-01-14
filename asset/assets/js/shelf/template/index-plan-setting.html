@@ -3,16 +3,16 @@
     <a class="pull-right" href="" ng-click="showChart()"><i class="icon-bar-chart"></i> 当前上下架统计</a>
 </div>
 <table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover table-bordered">
-    <col width="150px"/>
+    <col width="300"/>
+    <col width="100"/>
+    <col width="160"/>
     <col/>
     <col/>
-    <col/>
-    <col/>
-    <col width="180px"/>
+    <col width="160px"/>
     <thead>
     <tr>
         <th>计划名称</th>
-        <th>宝贝数量</th>
+        <th class="text-center">宝贝数量</th>
         <th>新上架宝贝</th>
         <th>进度</th>
         <th>创建时间</th>
@@ -21,11 +21,11 @@
     </thead>
     <tr ng-repeat="planSetting in planSettings" ng-class="{warning: planSetting.paused}">
         <td>{{ planSetting.name }}</td>
-        <td class="text-danger">{{ planSetting.itemNum }}</td>
-        <td>{{ planSetting.newItemNum }} 个宝贝自动加入</td>
-        <td>{{ planSetting.waitAdjustItemNum }} 个宝贝等待调整</td>
+        <td class="text-danger text-center">{{ planSetting.itemNum }}</td>
+        <td><small>{{ planSetting.newItemNum }} 个宝贝自动加入</small></td>
+        <td><small class="text-info">{{ planSetting.waitAdjustItemNum }} 个宝贝等待调整</small></td>
         <td>
-            {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}
+          <small>  {{ planSetting.addTime | date:'yyyy-MM-dd HH:ss' }}</small>
         </td>
         <td>
             <button class="btn btn-default btn-sm" ng-click="pause(planSetting, true)" ng-if="!planSetting.paused">
