@@ -34,7 +34,6 @@ define(function(require, exports, module) {
                     var newSettings = {};
                     angular.extend(newSettings, chartsDefaults, value);
                     var chart = new Highcharts.Chart(newSettings);
-
                 });
             }
         };

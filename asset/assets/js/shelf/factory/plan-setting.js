@@ -2,6 +2,8 @@
  * 计划
  */
 define(function(require, exports, module) {
+    var _ = require('_');
+
     module.exports = {
         'PlanSetting': ['$resource', '$http', 'PaginateUtil', function($resource, $http, PaginateUtil) {
             var BASE_URL = '/shelf/plan-settings';
@@ -26,7 +28,7 @@ define(function(require, exports, module) {
                     url: CHART_URL,
                     isArray: true,
                     transformResponse: $http.defaults.transformResponse.concat([function(data) {
-                        return data.map(function(i) {
+                        return _.map(data, function(i) {
                             return {value: i};
                         });
                     }])
