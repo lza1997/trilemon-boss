@@ -2,7 +2,7 @@
 <div class="wrap clearfix" ng-show="planSettings.$resolved && planSettings.length>0">
     <a class="pull-right" href="" ng-click="showChart()"><i class="icon-bar-chart"></i> 当前上下架统计</a>
 </div>
-<table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover table-bordered">
+<table ng-show="planSettings.$resolved && planSettings.length>0" class="table table-hover">
     <col width="300"/>
     <col width="100"/>
     <col width="160"/>
@@ -52,7 +52,7 @@
     </tr>
 </table>
 <div class="clearfix">
-    <pagination class="pull-right" items="planSettings" pager-click="jumpPage(page)"></pagination>
+    <div pagination class="pull-right" items="planSettings" pager-click="jumpPage(page)"></div>
 </div>
 <div class="well" ng-show="planSettings.$resolved && planSettings.length<1">
     <p>暂时还没有计划呢~</p>

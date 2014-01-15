@@ -30,7 +30,12 @@ define(function(require, exports, module) {
 
     var app = angular.module('app', [common.name]);
 
+    if (window.IE7_FIX_CONFIG) {
+        app.config(window.IE7_FIX_CONFIG);
+    }
+
     app.config(SeajsLazyAngular.cacheInternals);
+
     SeajsLazyAngular.patchAngular();
     SeajsLazyAngular.setResolveCallback(['$rootScope', 'controller', function($rootScope, controller) {
         $rootScope.title = controller.title + ' - Trilemon';
@@ -52,7 +57,7 @@ define(function(require, exports, module) {
             .when('/shelf/plan-setting/:id/filter', shelf.createRoute('./controller/filter', {reloadOnSearch: false}))
             .when('/shelf/plan-setting/:id/distribution', shelf.createRoute('./controller/distribution'))
             .when('/shelf/plan-setting', shelf.createRoute('./controller/index-plan-setting', {reloadOnSearch: false}))
-            .when('/shelf', {redirectTo: '/shelf/plan-setting/new'})
+            .when('/shelf', {redirectTo: '/shelf/plan-setting'})
             //
             //            .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
             //            .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase', {reloadOnSearch: false}))

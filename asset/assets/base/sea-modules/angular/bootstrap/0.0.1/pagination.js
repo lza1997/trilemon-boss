@@ -13,7 +13,7 @@ define(function(require, exports, module) {
                 var OMIT_STR = '...';
 
                 return {
-                    restrict: 'E',
+                    restrict: 'EA',
                     replace: true,
                     transclude: true,
                     scope: {

@@ -12,6 +12,11 @@
 
     <link href="<%= asset %>/base/css/font-awesome.css" rel="stylesheet">
     <link href="<%= asset %>/css/application.css" rel="stylesheet">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
     <% if(req.isMac) { %>
     <style>
         body, h1, h2, h3 {
@@ -23,44 +28,20 @@
     <!--[if lt IE 9]>
     <script src="<%= asset %>/base/js/html5shiv.js"></script>
     <script src="<%= asset %>/base/js/respond.min.js"></script>
-    <script>
-        document.createElement('pagination');
-    </script>
     <![endif]-->
-
-    <script src="<%= asset %>/base/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
-    <!--<script src="<%= asset %>/base/js/underscore.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/jquery.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/highcharts.src.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/index.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-dropdown.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-pagination.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-modal.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-tabs.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-position.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/bootstrap/angular-datepicker.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/seajs-lazy-module.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/angular/ajax-spinner.js"></script>-->
-    <!--<script src="<%= asset %>/base/js/angular/highchart.js"></script>-->
-
-    <!--<script src="<%= asset %>/js/common/index.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/http-method-override.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/controller/nav.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/service/distribution-factory.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/service/confirm.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/service/flash.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/service/seller-cat-factory.js"></script>-->
-    <!--<script src="<%= asset %>/js/common/filter/distribution-text.js"></script>-->
 
     <!--[if lt IE 8]>
     <link href="<%= asset %>/base/css/font-awesome-ie7.css" rel="stylesheet"/>
+    <script src="<%= asset %>/base/js/jquery.js"></script>
     <script src="<%= asset %>/base/js/json2.js"></script>
     <![endif]-->
+
+    <script src="<%= asset %>/base/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
 
     <link rel="shortcut icon" href="<%= asset %>/ico/favicon.ico">
 </head>
 
-<body>
+<body ng-cloak>
 
 <header>
     <div class="trilemon-banner">
@@ -101,6 +82,9 @@
         </ul>
     </div>
 </footer>
+<!--[if lt IE 8]>
+<script src="<%= asset %>/js/ie7-fix.js"></script>
+<![endif]-->
 <script>
     seajs.config({
         alias: {
@@ -124,7 +108,7 @@
             m.exports.__moduleUri = m.uri;
         }
     });
-    seajs.use('<%= asset %>/js/app.js');
+    seajs.use('<%= asset %>/js/app');
 </script>
 </body>
 </html>
