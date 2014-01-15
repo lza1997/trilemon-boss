@@ -1,30 +1,32 @@
-<h3>设置上架时间</h3>
-<table class="table-condensed">
-    <col width="120"/>
-    <col width="300" />
-    <col width="180"/>
-    <tr ng-repeat="day in distribution">
-        <td>
+<div class="shelf-setting-time">
+    <h3>设置上架时间</h3>
+    <table class="table-condensed">
+        <col width="100"/>
+        <col width="300"/>
+        <col width="180"/>
+        <tr ng-repeat="day in distribution">
+            <td>
 
                 <label>
                     <input type="checkbox" ng-model="day.checked" ng-change="day.toggleChecked(week)"/> {{day.name}}
                 </label>
 
-        </td>
-        <td class="small">
-            <div ng-if="day.checked">
-                {{day.hours | distributionText}}
-            </div>
-        </td>
-        <td>
-            <div ng-if="day.checked">
-                <a href="" ng-click="showModal(day)" class="btn btn-sm btn-default">选择时间段</a>
-            </div>
-        </td>
-    </tr>
-</table>
-<div class="form-action">
-    <button class="btn btn-primary" ng-click="save()">保存</button>
-    &nbsp;
-    <a href="#/shelf/plan-setting">放弃</a>
+            </td>
+            <td class="small">
+                <div ng-if="day.checked">
+                    {{day.hours | distributionText}}
+                </div>
+            </td>
+            <td>
+                <div ng-if="day.checked">
+                    <a href="" ng-click="showModal(day)" class="btn btn-sm btn-default">选择时间段</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="form-action">
+        <button class="btn btn-primary" ng-click="save()">保存</button>
+        &nbsp;
+        <a href="#/shelf/plan-setting" class="btn btn-default">放弃</a>
+    </div>
 </div>

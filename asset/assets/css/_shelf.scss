@@ -1,0 +1,67 @@
+@charset "utf-8";
+
+// 计划表单
+.plan-form {
+  @include form-border;
+  padding-top: $padding-large-vertical;
+  padding-right: $padding-large-vertical*2;
+  padding-left: $padding-large-vertical*2;
+  padding-bottom: $padding-large-vertical;
+  .form-group {
+    @include form-group;
+  }
+  .control-label {
+    @include inline-block;
+    width: $form-label-wm;
+
+  }
+  .form-field {
+    width: $form-field-wm;
+    .form-control {
+      width: $form-control-wxl;
+    }
+  }
+  .form-action {
+    @include form-action;
+  }
+}
+
+// 计划列表
+.plan-list-table {
+  border: 1px solid #d7d7d7;
+
+  > thead > tr > th {
+    background: #F3F9F8;
+    border-width: 1px;
+  }
+}
+
+.table-hover.plan-list-table {
+  > tbody > tr:hover {
+    > td,
+    > th {
+      background-color: #FCF8E3;
+    }
+  }
+
+  > tbody > tr {
+    > td,
+    > th {
+      border-top-style: dashed;
+    }
+  }
+}
+
+// 调整时间
+.shelf-setting-time {
+  h3 {
+    border-bottom: 1px dotted #d7d7d7;
+    padding-bottom: $padding-large-vertical;
+  }
+
+  .form-action {
+    margin-top: $padding-large-vertical;
+    padding-top: $padding-large-vertical;
+    border-top: 1px dotted #d7d7d7;
+  }
+}

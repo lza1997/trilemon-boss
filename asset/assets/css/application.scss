@@ -15,6 +15,7 @@ $navbar-padding-vertical: 10px;
 @import "../base/css/bootstrap/bootstrap";
 @import "./util";
 @import "./form";
+@import "./shelf";
 
 // 全局
 body {
@@ -153,32 +154,6 @@ footer .container {
 }
 
 // 计划的表单
-.from-label-normal{}
-
-.plan-form {
-  @include form-border;
-  padding-top:$padding-large-vertical;
-  padding-right:$padding-large-vertical*2;
-  padding-left:$padding-large-vertical*2;
-  padding-bottom:$padding-large-vertical;
-  .form-group {
-    @include form-group;
-  }
-  .control-label {
-    @include inline-block;
-    width:$form-label-wm;
-
-  }
-  .form-field {
-    width: $form-field-wm;
-    .form-control {
-      width: $form-control-wxl;
-    }
-  }
-  .form-action {
-    @include form-action;
-  }
-}
 
 // 筛选宝贝的搜索表单
 .shelf-filter-form {
