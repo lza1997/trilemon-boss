@@ -65,9 +65,9 @@ p {
   font-weight: 200;
   line-height: 1.4;
 
-  @media (min-width: $screen-sm-min) {
+  //@media (min-width: $screen-sm-min) {
     font-size: ($font-size-base * 1.5);
-  }
+  //}
 }
 
 
@@ -238,7 +238,7 @@ dd {
 // Defaults to being stacked without any of the below styles applied, until the
 // grid breakpoint is reached (default of ~768px).
 
-@media (min-width: $grid-float-breakpoint) {
+//@media (min-width: $grid-float-breakpoint) {
   .dl-horizontal {
     dt {
       float: left;
@@ -252,7 +252,7 @@ dd {
       @include clearfix(); // Clear the floated `dt` if an empty `dd` is present
     }
   }
-}
+//}
 
 // MISC
 // ----

@@ -34,7 +34,7 @@
     @include translate(0, -25%);
     @include transition-transform(0.3s ease-out);
   }
-  &.in .modal-dialog { @include translate(0, 0)}
+  &.in .modal-dialog { @include translate(0, 0); }
 }
 
 // Shell div to position the modal with bottom padding
@@ -120,7 +120,7 @@
 }
 
 // Scale up the modal
-@media (min-width: $screen-sm-min) {
+//@media (min-width: $screen-sm-min) {
 
   // Automatically set modal's width for larger viewports
   .modal-dialog {
@@ -135,4 +135,4 @@
   .modal-sm { width: $modal-sm; }
   .modal-lg { width: $modal-lg; }
 
-}
+//}
