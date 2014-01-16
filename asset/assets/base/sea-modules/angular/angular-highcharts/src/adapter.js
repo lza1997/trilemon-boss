@@ -6,7 +6,7 @@
  * License: MIT License
  */
 
-define('angular/angular-highcharts/3.0.7/adapter', [], function(){
+define(function(){
 
 
 /*global Highcharts */
