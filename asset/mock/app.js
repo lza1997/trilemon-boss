@@ -41,4 +41,4 @@ app.get('/test', function(req, res) {
 require('./controller/shelf')(app);
 
 app.listen(8889);
-require("openurl").open("http://localhost:8888");
+require("openurl").open("http://localhost:8889");
