@@ -30,7 +30,6 @@ textarea {
   resize: none;
 }
 
-
 // === IE7 START ===
 button.btn {
   *overflow: visible;
@@ -83,7 +82,7 @@ input.ng-invalid.ng-dirty:focus {
   color: red;
 }
 
-.ng-invalid.ng-dirty + .error {
+.ng-invalid.ng-dirty ~ .error {
   display: block;
 }
 
@@ -119,13 +118,26 @@ input.ng-invalid.ng-dirty:focus {
   .dropdown-toggle {
     color: #000;
     font-size: 18px;
+    @include clearfix();
+
+    span {
+      float:left;
+    }
+
+    i {
+      float: right;
+    }
+  }
+
+  .dropdown-menu {
+    min-width: 130px;
   }
 
   .navbar-nav>li>a.nav-menu-trigger {
     background: #298c92;
     font-weight: bold;
     color: #fff;
-    padding-right: 50px;
+    width: 130px;
     font-family: "Microsoft YaHei", "微软雅黑";
 
     &:hover {

@@ -46,7 +46,7 @@
             <ul class="nav navbar-nav" ng-controller="nav">
                 <li class="dropdown">
                     <a class="nav-menu-trigger dropdown-toggle" href="">
-                        <i class="icon-reorder"></i> {{currNav.name}}
+                        <span>{{currNav.name}}</span><i class="icon-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-repeat="nav in navs"><a ng-href="{{'#' + nav.url}}">{{nav.name}}</a></li>
