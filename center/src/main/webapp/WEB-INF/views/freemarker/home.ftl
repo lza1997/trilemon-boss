@@ -12,58 +12,33 @@
 
     <link href="${asset}/base/css/font-awesome.css" rel="stylesheet">
     <link href="${asset}/css/application.css" rel="stylesheet">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
 
     <!--[if lt IE 9]>
     <script src="${asset}/base/js/html5shiv.js"></script>
-    <script src="${asset}/base/js/respond.min.js"></script>
-    <script>
-        document.createElement('pagination');
-    </script>
     <![endif]-->
-
-    <script src="${asset}/base/sea-modules/seajs/seajs/2.1.1/sea-debug.js"></script>
-    <#--<script src="${asset}/base/js/underscore.js"></script>-->
-    <#--<script src="${asset}/base/js/jquery.js"></script>-->
-    <#--<script src="${asset}/base/js/highcharts.src.js"></script>-->
-    <#--<script src="${asset}/base/js/angular.js"></script>-->
-    <#--<script src="${asset}/base/js/angular-resource.js"></script>-->
-    <#--<script src="${asset}/base/js/angular-route.js"></script>-->
-    <#--<script src="${asset}/base/js/angular-sanitize.js"></script>-->
-    <#--<script src="${asset}/base/js/angular-locale_zh.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/index.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-dropdown.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-pagination.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-modal.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-tabs.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-position.js"></script>-->
-    <#--<script src="${asset}/base/js/bootstrap/angular-datepicker.js"></script>-->
-    <#--<script src="${asset}/base/js/seajs-lazy-module.js"></script>-->
-    <#--<script src="${asset}/base/js/angular/ajax-spinner.js"></script>-->
-    <#--<script src="${asset}/base/js/angular/highchart.js"></script>-->
-
-    <#--<script src="${asset}/js/common/index.js"></script>-->
-    <#--<script src="${asset}/js/common/http-method-override.js"></script>-->
-    <#--<script src="${asset}/js/common/controller/nav.js"></script>-->
-    <#--<script src="${asset}/js/common/service/distribution-factory.js"></script>-->
-    <#--<script src="${asset}/js/common/service/confirm.js"></script>-->
-    <#--<script src="${asset}/js/common/service/flash.js"></script>-->
-    <#--<script src="${asset}/js/common/service/seller-cat-factory.js"></script>-->
-    <#--<script src="${asset}/js/common/filter/distribution-text.js"></script>-->
 
     <!--[if lt IE 8]>
-    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet" />
+    <link href="${asset}/base/css/font-awesome-ie7.css" rel="stylesheet"/>
+    <script src="${asset}/base/js/jquery.js"></script>
     <script src="${asset}/base/js/json2.js"></script>
     <![endif]-->
+
+    <script src="${asset}/base/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
 
     <link rel="shortcut icon" href="${asset}/ico/favicon.ico">
 </head>
 
-<body>
+<body ng-cloak>
 
 <header>
     <div class="trilemon-banner">
         <div class="container">
-            <a href="/" style="color:white" class="logo">Trilemon</a>
+            <a href="/" style="color:white" class="logo" title="Trilemon"></a>
         </div>
     </div>
     <div class="navbar navbar-default trilemon-navbar">
@@ -87,19 +62,36 @@
 
 <div ajax-spinner></div>
 
-<div class="container" ng-view ng-cloak>
+<div class="container main" ng-view ng-cloak>
 </div>
 
 <footer>
     <div class="container">
-        <ul class="list-inline">
-            <li>© 2013 GYSB, Inc.</li>
-            <li><a href="">联系我们</a></li>
-            <li><a href="">使用帮助</a></li>
-        </ul>
+        <p class="list-inline text-center">
+            <span> &copy; 2013 GYSB, Inc. </span>
+            <a href="">联系我们</a>
+            <a href="">使用帮助</a
+        </p>
     </div>
 </footer>
+<!--[if lt IE 8]>
+<script src="${asset}/js/ie7-fix.js"></script>
+<![endif]-->
 <script>
+    // footer
+    (function() {
+        var style = document.createElement('style');
+        var head = document.getElementsByTagName('head')[0] || document.documentElement;
+        var minHeight = window.innerHeight || Math.max(document.documentElement.clientHeight, document.body.clientHeight);
+        var cssText = '.main {min-height: ' + (minHeight - 250) + 'px}';
+        head.appendChild(style);
+        if (style.styleSheet) {
+            style.styleSheet.cssText += cssText;
+        }
+        else {
+            style.appendChild(document.createTextNode(cssText))
+        }
+    })();
     seajs.config({
         alias: {
             'angularjs': 'angular/angularjs/1.2.7/angular',
@@ -110,6 +102,8 @@
 
             '_': 'gallery/underscore/1.4.4/underscore',
             'moment': 'gallery/moment/2.3.1/moment',
+            'bootstrap': 'angular/bootstrap/0.0.1/index',
+            'angular-highcharts': 'angular/angular-highcharts/3.0.7/angular-highcharts',
             'seajs-lazy-angular': 'angular/seajs-lazy-angular/0.0.1/seajs-lazy-angular'
         },
         preload: ['seajs/seajs-text/1.0.3/seajs-text'],
@@ -122,7 +116,7 @@
             m.exports.__moduleUri = m.uri;
         }
     });
-    seajs.use('${asset}/js/app.js');
+    seajs.use('${asset}/js/app');
 </script>
 </body>
 </html>

@@ -30,6 +30,27 @@ textarea {
   resize: none;
 }
 
+
+// === IE7 START ===
+button.btn {
+  *overflow: visible;
+}
+
+.btn-group {
+  *display: inline;
+  *zoom: 1;
+}
+
+.btn-group.open {
+  *z-index: 10;
+}
+
+button {
+  *display: inline;
+  *zoom: 1;
+}
+// === IE7 END ===
+
 .container {
   width: 990px;
   margin: 0 auto;
@@ -67,7 +88,7 @@ input.ng-invalid.ng-dirty:focus {
 }
 
 .wrap {
-  margin-bottom: 10px;
+  padding: 10px 0;
 }
 
 .pagination {
@@ -87,7 +108,6 @@ input.ng-invalid.ng-dirty:focus {
     height: 46px;
     overflow: hidden;
     background: url("../ico/logo.png") 0 0 no-repeat;
-    text-indent: 20em;
   }
 }
 
@@ -145,20 +165,14 @@ input.ng-invalid.ng-dirty:focus {
 
 // 页脚
 footer {
-  margin-top: 20px;
-  border-top: 1px solid #eee;
-}
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
 
-footer .container {
-  margin: 40px auto;
-}
-
-// 计划的表单
-
-// 筛选宝贝的搜索表单
-.shelf-filter-form {
-  width: 400px;
-  margin-bottom: 20px;
+  a, span {
+    @include inline-block;
+    margin: 0 5px;
+  }
 }
 
 // 橱窗的搜索表单
@@ -203,7 +217,6 @@ footer .container {
     }
   }
 }
-
 
 .modal-dialog.confirm-dialog {
   width: 300px;

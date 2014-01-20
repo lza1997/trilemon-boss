@@ -1,13 +1,13 @@
-<div class="modal-dialog" style="width:350px">
+<div class="modal-dialog shelf-distribution-modal">
     <div class="modal-content">
         <div class="modal-body">
-            <div class="nav nav-tabs" style="margin-bottom: 20px">
+            <ul class="nav nav-tabs clearfix">
                 <li ng-class="{active: tab.active}" ng-repeat="tab in tabs">
                     <a href="" ng-click="selectTab(tab)">{{tab.name}}</a>
                 </li>
-            </div>
+            </ul>
             <div class="tab-content">
-                <table>
+                <table width="100%">
                     <tr ng-repeat="hour in hours">
                         <td>
                             <div class="checkbox">

@@ -1,35 +1,67 @@
 @charset "utf-8";
 //通用类
-$form-label-ws:140px;
-$form-label-wm:200px;
-$form-label-wl:260px;
-$form-field-ws:800px;
-$form-field-wm:740px;
-$form-field-wl:680px;
-$form-control-wxs:120px;
-$form-control-ws:180px;
-$form-control-wm:240px;
-$form-control-wl:300px;
-$form-control-wxl:360px;
-$form-control-wxxl:400px;
+$form-label-ws: 140px;
+$form-label-wm: 200px;
+$form-label-wl: 260px;
+$form-field-ws: 800px;
+$form-field-wm: 740px;
+$form-field-wl: 680px;
+$form-control-wxs: 120px;
+$form-control-ws: 180px;
+$form-control-wm: 240px;
+$form-control-wl: 300px;
+$form-control-wxl: 360px;
+$form-control-wxxl: 400px;
 $form-border: 1px solid #d7d7d7;
-$radius: 10px;
+$radius: 5px;
 
-@mixin form-border{
- border:$form-border;
--webkit-border-radius: $radius;-moz-border-radius: $radius;-ms-border-radius: $radius;-o-border-radius: $radius;border-radius: $radius;
+@mixin form-border {
+  border: $form-border;
+  border-radius: $radius;
 }
 
-@mixin form-group{
+@mixin form-group {
   @include clearfix();
-  padding:10px 0;
-    border-bottom: 1px dotted #d7d7d7;
+  padding: 10px 0;
+  border-bottom: 1px dotted #d7d7d7;
 }
-@mixin form-action{
+
+@mixin form-action {
   border: 0;
   margin-bottom: 0px;
 }
-.form-horizontal .control-label{float:left;}
-.form-horizontal .form-field{float: right}
-.form-horizontal .form-group{margin-bottom: 0}
 
+.form-horizontal {
+  .control-label {
+    float: left;
+  }
+
+  .form-field {
+    float: right;
+  }
+
+  .form-group {
+    margin-bottom: 0
+  }
+}
+
+// IE7
+.form-group {
+  *zoom: 1;
+}
+
+.form-control {
+  *padding-top: 1px;
+  *padding-bottom: 1px;
+}
+
+.form-horizontal {
+  .control-label,
+  .radio,
+  .checkbox,
+  .radio-inline,
+  .checkbox-inline {
+    *padding-top: 0;
+    *padding-bottom: 0;
+  }
+}
