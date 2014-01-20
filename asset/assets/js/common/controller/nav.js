@@ -12,8 +12,8 @@ define(function(require, exports, module) {
                     name: '上下架',
                     url: '/shelf',
                     children: [
-                        {name: '计划列表', url: '/shelf/plan-setting', navClass: 'shelfIndex'},
-                        {name: '创建计划', url: '/shelf/plan-setting/new', navClass: 'shelfNew'}
+                        {name: '创建计划', url: '/shelf/plan-setting/new', navClass: 'shelfNew'},
+                        {name: '计划列表', url: '/shelf/plan-setting', navClass: 'shelfIndex'}
                     ]
                 },
                 {

@@ -57,7 +57,7 @@ define(function(require, exports, module) {
             .when('/shelf/plan-setting/:id/filter', shelf.createRoute('./controller/filter', {reloadOnSearch: false}))
             .when('/shelf/plan-setting/:id/distribution', shelf.createRoute('./controller/distribution'))
             .when('/shelf/plan-setting', shelf.createRoute('./controller/index-plan-setting', {reloadOnSearch: false}))
-            .when('/shelf', {redirectTo: '/shelf/plan-setting'})
+            .when('/shelf', {redirectTo: '/shelf/plan-setting/new'})
             //
             //            .when('/showcase/setting/edit', showCase.routeFor('showcase.editSetting'))
             //            .when('/showcase/showcase-item', showCase.routeFor('showcase.indexShowcase', {reloadOnSearch: false}))
