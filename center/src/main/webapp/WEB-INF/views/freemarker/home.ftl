@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title ng-bind="title"></title>
+    <title ng-bind="title + '- 柠檬助手'"></title>
 
     <#assign asset = "/assets">
 
