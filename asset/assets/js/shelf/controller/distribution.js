@@ -55,7 +55,7 @@ define(function(require, exports, module) {
         $scope.selectTab(_.first($scope.tabs));
     }];
 
-    DistributionController.title = "设置上架时间";
+    DistributionController.title = "设置上架时间 - 上下架";
 
     module.exports = DistributionController;
 });

@@ -9,13 +9,13 @@ define(function(require, exports, module) {
             PlanSetting.get({id: $routeParams.id}, function(planSetting) {
                 PlanSettingForm.initScope($scope, planSetting);
             });
-            $rootScope.title = '修改计划';
+            $rootScope.title = '修改计划 - 上下架';
 
         }
         else {
             var planSetting = new PlanSetting({autoAddNewItems: true});
             PlanSettingForm.initScope($scope, planSetting);
-            $rootScope.title = '创建计划';
+            $rootScope.title = '创建计划 - 上下架';
             $rootScope.navClass = 'shelfNew';
         }
     }];

@@ -38,7 +38,7 @@ define(function(require, exports, module) {
 
     SeajsLazyAngular.patchAngular();
     SeajsLazyAngular.setResolveCallback(['$rootScope', 'controller', function($rootScope, controller) {
-        $rootScope.title = controller.title + ' - Trilemon';
+        $rootScope.title = controller.title;
         $rootScope.navClass = controller.navClass;
     }]);
 

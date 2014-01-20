@@ -36,7 +36,7 @@ define(function(require, exports, module) {
         }
     }];
 
-    FilterController.title = "筛选宝贝";
+    FilterController.title = "筛选宝贝 - 上下架";
 
     module.exports = FilterController;
 });

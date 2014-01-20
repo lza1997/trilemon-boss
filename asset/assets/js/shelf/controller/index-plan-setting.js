@@ -52,7 +52,7 @@ define(function(require, exports, module) {
         $scope.init();
     }];
 
-    IndexController.title = '计划列表';
+    IndexController.title = '计划列表 - 上下架';
     IndexController.navClass = 'shelfIndex';
 
     module.exports = IndexController;
