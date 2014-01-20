@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var ngResource = require('angular-resource');
     var ngRoute = require('angular-route');
     var ngSanitize = require('angular-sanitize');
-    var bootstrap = require('angular/bootstrap/0.0.1/index');
+    var bootstrap = require('bootstrap');
     var ajaxSpinner = require('./ajax-spinner');
 
     var common = angular.module('common', [

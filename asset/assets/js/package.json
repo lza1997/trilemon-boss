@@ -1,0 +1,20 @@
+{
+    "name": "trilemon",
+    "spm" : {
+        "output" : [
+            "shelf/index.js",
+            "app.js"
+        ],
+        "alias" : {
+            "angularjs": "angularjs",
+            "angular-resource": "angular-resource",
+            "angular-route": "angular-route",
+            "angular-sanitize": "angular-sanitize",
+            "_": "_",
+            "moment": "moment",
+            "seajs-lazy-angular": "seajs-lazy-angular",
+            "bootstrap": "bootstrap",
+            "angular-highcharts": "angular-highcharts"
+        }
+    }
+}
